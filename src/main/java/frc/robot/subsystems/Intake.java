@@ -13,9 +13,10 @@ import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
 
+  private static Intake instance;
+  
   private final CANSparkMax motor = new CANSparkMax(Constants.INTAKE_ID, MotorType.kBrushless);
 
-  private static Intake instance;
 
   /** Creates a new Intake. */
   public Intake() {

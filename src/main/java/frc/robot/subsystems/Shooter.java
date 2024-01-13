@@ -14,20 +14,19 @@ import frc.robot.Constants;
 public class Shooter extends SubsystemBase {
 
   private static Shooter instance;
-  private final CANSparkMax lead = new CANSparkMax(Constants.SHOOTER_LEAD_ID, MotorType.kBrushless);
-  private final CANSparkMax follow = new CANSparkMax(Constants.SHOOTER_FOLLOW_ID, MotorType.kBrushless);
+  private final CANSparkMax leftMotor = new CANSparkMax(Constants.SHOOTER_LEAD_ID, MotorType.kBrushless);
+  private final CANSparkMax rightMotor = new CANSparkMax(Constants.SHOOTER_FOLLOW_ID, MotorType.kBrushless);
 
   /** Creates a new Shooter. */
   public Shooter() {
 
-    lead.restoreFactoryDefaults();
-    lead.setInverted(false);
-    lead.setIdleMode(IdleMode.kBrake);
+    leftMotor.restoreFactoryDefaults();
+    leftMotor.setInverted(false);
+    leftMotor.setIdleMode(IdleMode.kBrake);
 
-    follow.restoreFactoryDefaults();
-    follow.setInverted(true);
-    follow.setIdleMode(IdleMode.kBrake);
-    follow.follow(lead);
+    rightMotor.restoreFactoryDefaults();
+    rightMotor.setInverted(true);
+    rightMotor.setIdleMode(IdleMode.kBrake);
   }
 
   public static Shooter getInstance() {
@@ -43,7 +42,16 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
   }
   
-  public void run(double speed) {
-    lead.set(speed);
+  public void runLeft(double speed) {
+    leftMotor.set(speed);
+  }
+
+  public void runRight(double speed) {
+    rightMotor.set(speed);
+  }
+
+  public void runBoth(double leftSpeed, double rightSpeed) {
+    leftMotor.set(leftSpeed);
+    rightMotor.set(rightSpeed);
   }
 }

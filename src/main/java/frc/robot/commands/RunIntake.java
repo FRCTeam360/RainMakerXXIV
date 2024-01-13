@@ -26,9 +26,9 @@ public class RunIntake extends Command {
   @Override
   public void execute() {
     if (operatorCont.getRightBumperPressed()) {
-      intake.run(0.5);
+      intake.run(0.8);
     } else if (operatorCont.getLeftBumperPressed()) {
-      intake.run(-0.5);
+      intake.run(-0.8);
     }
   }
 
