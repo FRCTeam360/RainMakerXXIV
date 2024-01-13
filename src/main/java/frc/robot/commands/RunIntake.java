@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 
 public class RunIntake extends Command {
-  private Intake intake = Intake.getInstance();
+  private Intake intake;
   private static XboxController operatorCont = new XboxController(1);
   
   /** Creates a new Java. */

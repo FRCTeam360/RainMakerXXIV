@@ -9,8 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterLinkage;
 
 public class RunShooterLinkage extends Command {
-
-  private final ShooterLinkage shooterLinkage = ShooterLinkage.getInstance();
+  private ShooterLinkage shooterLinkage;
   private final XboxController operatorCont = new XboxController(1);
 
   /** Creates a new RunShooterLinkage. */

@@ -10,30 +10,33 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.io.IntakeIOInputsAutoLogged;
+import frc.robot.io.ShooterLinkageIO;
+import frc.robot.io.ShooterLinkageIOInputsAutoLogged;
+
+import org.littletonrobotics.junction.AutoLogOutput;
+import org.littletonrobotics.junction.Logger;
+
 
 public class ShooterLinkage extends SubsystemBase {
+  private final ShooterLinkageIO io;
+  private final ShooterLinkageIOInputsAutoLogged inputs = new ShooterLinkageIOInputsAutoLogged();
 
-  private static ShooterLinkage instance;
   private final CANSparkMax motor = new CANSparkMax(Constants.SHOOTER_LINKAGE_ID, MotorType.kBrushless);
 
   /** Creates a new ShooterLinkage. */
-  public ShooterLinkage() {
+  public ShooterLinkage(ShooterLinkageIO io) {
+    this.io = io;
     motor.restoreFactoryDefaults();
     motor.setInverted(false);
     motor.setIdleMode(IdleMode.kBrake);
   }
 
-  public static ShooterLinkage getInstance() {
-    if (instance == null) {
-      instance = new ShooterLinkage();
-    }
-
-    return instance;
-  }
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    io.updateInputs(inputs);
+    Logger.processInputs("ShooterLinkage", inputs);
   }
 
   public void run(double speed) {
