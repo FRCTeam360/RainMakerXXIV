@@ -27,6 +27,7 @@ public class Shooter extends SubsystemBase {
     follow.restoreFactoryDefaults();
     follow.setInverted(true);
     follow.setIdleMode(IdleMode.kBrake);
+    follow.follow(lead);
   }
 
   public static Shooter getInstance() {
@@ -40,5 +41,9 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+  
+  public void run(double speed) {
+    lead.set(speed);
   }
 }
