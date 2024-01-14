@@ -12,7 +12,10 @@ public interface ShooterIO {
   @AutoLog
   /** Creates a new ShooterIO. */
   public static class ShooterIOInputs {
-    public double shooterSpeed = 0.0;
+    public double positionRad = 0.0;
+    public double velocityRadPerSec = 0.0;
+    public double appliedVolts = 0.0;
+    public double[] currentAmps = new double[] {};
   }
 
   public default void updateInputs(ShooterIOInputs inputs) {}
