@@ -31,7 +31,7 @@ public class RunIntake extends Command {
     } else if (operaterCont.getRightBumper()) {
     intake.run(1.0);
     } else {
-      intake.run(0.0);
+      intake.stop();
     }
   }
 
