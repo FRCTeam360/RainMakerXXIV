@@ -38,7 +38,7 @@ public class RunShooter extends Command {
     }else if (Math.abs(operaterCont.getRightY()) < -0.1) {
       shooter.runRight(-1.0);
     } else {
-      shooter.stop(); //u could use ur stop method here
+      shooter.stop();
     }
     }
 
