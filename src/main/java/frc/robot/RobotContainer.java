@@ -65,7 +65,7 @@ public class RobotContainer {
   }
 
   private void configureDefaultCommands() {
-    shooter.setDefaultCommand(runShooter);
+    //shooter.setDefaultCommand(runShooter);
     shooterLinkage.setDefaultCommand(runShooterLinkage);
   }
 
@@ -81,6 +81,7 @@ public class RobotContainer {
   private void configureBindings() {
     operatorController.rightBumper().whileTrue(runIntake);
     operatorController.leftBumper().whileTrue(runIntakeReversed);
+    operatorController.a().whileTrue(runShooter);
     
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityX(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1) * MaxSpeed) // Drive forward with

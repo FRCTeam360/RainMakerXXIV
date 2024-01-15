@@ -25,20 +25,25 @@ public class RunShooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(Math.abs(operatorCont.getLeftY()) > 0.1) {
-      shooter.runLeft(operatorCont.getLeftY());
-    } else {
-      shooter.runLeft(0.0);
-    }
+    // if(Math.abs(operatorCont.getLeftY()) > 0.1) {
+    //   shooter.runLeft(operatorCont.getLeftY());
+    // } else {
+    //   shooter.stopLeft();
+    // }
 
-    if(Math.abs(operatorCont.getRightY()) > 0.1) {
-      shooter.runRight(operatorCont.getRightY());
-    } else {
-      shooter.runRight(0.0);
-    }
+    // if(Math.abs(operatorCont.getRightY()) > 0.1) {
+    //   shooter.runRight(operatorCont.getRightY());
+    // } else {
+    //   shooter.stopRight();
+    // }
+
+    shooter.runBoth(-0.8, -1.0);
   }
     
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    shooter.stopLeft();
+    shooter.stopRight();
+  }
 
   // Returns true when the command should end.
   @Override

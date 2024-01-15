@@ -8,35 +8,46 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class ShooterLinkage extends SubsystemBase {
+public class Linkage extends SubsystemBase {
 
-  private static ShooterLinkage instance;
+  private static Linkage instance;
   private final CANSparkMax motor = new CANSparkMax(Constants.SHOOTER_LINKAGE_ID, MotorType.kBrushless);
 
   /** Creates a new ShooterLinkage. */
-  public ShooterLinkage() {
+  public Linkage() {
     motor.restoreFactoryDefaults();
     motor.setInverted(false);
     motor.setIdleMode(IdleMode.kBrake);
   }
 
-  public static ShooterLinkage getInstance() {
+  public static Linkage getInstance() {
     if (instance == null) {
-      instance = new ShooterLinkage();
+      instance = new Linkage();
     }
 
     return instance;
+  }
+  
+  public void run(double speed) {
+    motor.set(speed);
+  }
+
+  public void stop() {
+    motor.stopMotor();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Linkage Angle", 0);
   }
 
-  public void run(double speed) {
-    motor.set(speed);
-  }
+
+  // public double getLinkageAngle() {
+
+  // }
 }

@@ -4,16 +4,13 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 
-public class RunIntake extends Command {
+public class RunIntakeReversed extends Command {
   private Intake intake = Intake.getInstance();
-  private static XboxController operatorCont = new XboxController(1);
-  
-  /** Creates a new Java. */
-  public RunIntake() {
+  /** Creates a new RunIntakeReversed. */
+  public RunIntakeReversed() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
   }
@@ -25,15 +22,7 @@ public class RunIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // if (operatorCont.getRightBumperPressed()) {
-    //   intake.run(1.0);
-    // } else if (operatorCont.getLeftBumperPressed()) {
-    //   intake.run(-1.0);
-    // } else {
-    //   intake.stop();
-    // }
-
-      intake.run(0.7);
+    intake.run(-0.7);
   }
 
   // Called once the command ends or is interrupted.
