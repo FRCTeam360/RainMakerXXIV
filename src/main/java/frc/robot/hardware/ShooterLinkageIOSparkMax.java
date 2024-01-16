@@ -22,8 +22,9 @@ public class ShooterLinkageIOSparkMax implements ShooterLinkageIO {
     final double GEAR_RATIO = 6.0;
   }
   @Override 
-  public void updateInputs(ShooterLinkageIOInputs SparkMax) {
+  public void updateInputs(ShooterLinkageIOInputs inputs) {
     // This method will be called once per scheduler run
+    // inputs.shooterLinkageAngle
   }
 }
 

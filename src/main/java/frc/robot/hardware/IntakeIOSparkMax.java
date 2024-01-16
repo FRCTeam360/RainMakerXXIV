@@ -22,7 +22,8 @@ public class IntakeIOSparkMax implements IntakeIO {
     final double GEAR_RATIO = 2.0;
   }
   @Override
-  public void updateInputs(IntakeIOInputs SparkMax) {
+  public void updateInputs(IntakeIOInputs inputs) {
     // This method will be called once per scheduler run
+    // inputs.intakeSpeed = new double 
   }
 }
