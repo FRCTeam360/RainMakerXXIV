@@ -68,7 +68,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getRightSpeed() {
-    return leftMotor.get();
+    return rightMotor.get();
   }
 
   @Override

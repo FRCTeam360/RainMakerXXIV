@@ -33,7 +33,7 @@ public class RunIntake extends Command {
     //   intake.stop();
     // }
 
-      intake.run(0.7);
+      intake.run(0.5);
   }
 
   // Called once the command ends or is interrupted.
