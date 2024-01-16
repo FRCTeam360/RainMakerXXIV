@@ -10,19 +10,20 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.io.IntakeIO;
+import frc.robot.io.ShooterLinkageIO;
 
-public class IntakeIOSparkMax implements IntakeIO {
+public class ShooterLinkageIOSparkMax implements ShooterLinkageIO {
   /** Creates a new IntakeIOSparkMax. */
-    private final CANSparkMax SparkMax= new CANSparkMax (5, MotorType.kBrushless);
+    private final CANSparkMax SparkMax = new CANSparkMax (2, MotorType.kBrushless);
     private final RelativeEncoder encoder = SparkMax.getEncoder();
     private final SparkPIDController pid = SparkMax.getPIDController();
 
-  public IntakeIOSparkMax() {
-    final double GEAR_RATIO = 2;
+  public ShooterLinkageIOSparkMax() {
+    final double GEAR_RATIO = 6;
   }
-  @Override
-  public void updateInputs(IntakeIOInputs SparkMax) {
+  @Override 
+  public void updateInputs(ShooterLinkageIOInputs SparkMax) {
     // This method will be called once per scheduler run
   }
 }
+

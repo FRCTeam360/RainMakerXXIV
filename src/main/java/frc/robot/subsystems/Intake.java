@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems;
 import frc.robot.io.IntakeIO;
-import frc.robot.io.IntakeIOInputsAutoLogged;
+import frc.robot.io.IntakeIO.IntakeIOInputs;
 
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkMax;
@@ -15,11 +15,12 @@ import frc.robot.Constants;
 
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.inputs.LoggableInputs;
 
 
 public class Intake extends SubsystemBase {
   private final IntakeIO io;
-  private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
+  private final IntakeIOInputs inputs = new IntakeIOInputs();
 
   private final CANSparkMax motor = new CANSparkMax(Constants.INTAKE_ID, MotorType.kBrushless);
 
@@ -30,14 +31,16 @@ public class Intake extends SubsystemBase {
     motor.setInverted(false);
     motor.setIdleMode(IdleMode.kBrake);
   }
+  // inputs not updated
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
-    Logger.processInputs("Intake", inputs);
+    Logger.processInputs("Intake", (LoggableInputs) inputs);
   }
 
+  // inputs are now updated
   public void run(double speed) {
     motor.set(speed);
   }

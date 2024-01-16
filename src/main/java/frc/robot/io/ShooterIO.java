@@ -17,6 +17,6 @@ public interface ShooterIO {
     public double appliedVolts = 0.0;
     public double[] currentAmps = new double[] {};
   }
-
+  
   public default void updateInputs(ShooterIOInputs inputs) {}
 }
