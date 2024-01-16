@@ -20,7 +20,7 @@ public class ShooterIOSparkMax implements ShooterIO {
     private final SparkPIDController pid = left.getPIDController();
 
   public ShooterIOSparkMax() {
-    final double GEAR_RATIO = 1;
+    final double GEAR_RATIO = 1.0;
     left.follow(left);
   }
   @Override

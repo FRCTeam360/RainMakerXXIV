@@ -19,7 +19,7 @@ public class ShooterLinkageIOSparkMax implements ShooterLinkageIO {
     private final SparkPIDController pid = SparkMax.getPIDController();
 
   public ShooterLinkageIOSparkMax() {
-    final double GEAR_RATIO = 6;
+    final double GEAR_RATIO = 6.0;
   }
   @Override 
   public void updateInputs(ShooterLinkageIOInputs SparkMax) {

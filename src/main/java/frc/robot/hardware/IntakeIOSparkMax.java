@@ -19,7 +19,7 @@ public class IntakeIOSparkMax implements IntakeIO {
     private final SparkPIDController pid = SparkMax.getPIDController();
 
   public IntakeIOSparkMax() {
-    final double GEAR_RATIO = 2;
+    final double GEAR_RATIO = 2.0;
   }
   @Override
   public void updateInputs(IntakeIOInputs SparkMax) {
