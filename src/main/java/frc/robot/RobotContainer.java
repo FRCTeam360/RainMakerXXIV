@@ -8,6 +8,7 @@ import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunIntakeReversed;
 import frc.robot.commands.RunShooter;
 import frc.robot.commands.RunShooterLinkage;
+import frc.robot.commands.SetLinkage;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -19,6 +20,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -38,13 +40,14 @@ public class RobotContainer {
   //subsystems
   private final Intake intake = Intake.getInstance();
   private final Shooter shooter = Shooter.getInstance();
-  private final Linkage shooterLinkage = Linkage.getInstance();
+  private final Linkage linkage = Linkage.getInstance();
 
   //commands
   private final RunIntake runIntake = new RunIntake();
   private final RunIntakeReversed runIntakeReversed = new RunIntakeReversed();
   private final RunShooter runShooter = new RunShooter();
   private final RunShooterLinkage runShooterLinkage = new RunShooterLinkage();
+  private final SetLinkage setLinkage = new SetLinkage();
 
   final double MaxSpeed = 13.7; // used to be 6 meters per second desired top speed
   final double MaxAngularRate = Math.PI * 3; // Half a rotation per second max angular velocity
@@ -66,7 +69,7 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
     //shooter.setDefaultCommand(runShooter);
-    shooterLinkage.setDefaultCommand(runShooterLinkage);
+    linkage.setDefaultCommand(setLinkage);
   }
 
   /**
@@ -79,9 +82,11 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    operatorController.rightBumper().whileTrue(runIntake);
-    operatorController.leftBumper().whileTrue(runIntakeReversed);
-    operatorController.a().whileTrue(runShooter);
+    // operatorController.rightBumper().whileTrue(runIntake);
+    // operatorController.leftBumper().whileTrue(runIntakeReversed);
+    // operatorController.a().whileTrue(runShooter);
+
+    operatorController.x().whileTrue(new InstantCommand(() -> linkage.zero(), linkage));
     
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityX(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1) * MaxSpeed) // Drive forward with
