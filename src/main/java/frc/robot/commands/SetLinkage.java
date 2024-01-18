@@ -8,12 +8,13 @@ import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.ControlType;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Linkage;
 
 public class SetLinkage extends Command {
-  private double kP = 0.0;
+  private double kP = 0.01;
   private double kD = 0.0;
   private double kI = 0.0;
   private double kFF = 0.0;
@@ -21,6 +22,9 @@ public class SetLinkage extends Command {
   private double setPosition = 0.0;
 
   private Linkage linkage = Linkage.getInstance();
+  private Timer time = new Timer();
+
+  private boolean isAtTarget;
 
   /** Creates a new SetLinkage. */
   public SetLinkage() {
@@ -48,7 +52,7 @@ public class SetLinkage extends Command {
   @Override
   public void execute() {
 
-    double p = SmartDashboard.getNumber("p", 0);
+    double p = SmartDashboard.getNumber("p", 0.01);
     double i = SmartDashboard.getNumber("i", 0);
     double d = SmartDashboard.getNumber("d", 0);
     double ff = SmartDashboard.getNumber("ff", 0);
@@ -72,12 +76,22 @@ public class SetLinkage extends Command {
       kFF = ff;
     }
 
+
     double setPoint = SmartDashboard.getNumber("Set Position", 5.0);
     if (setPoint != setPosition) {
       System.out.println("updating setpoint: " + setPoint);
-
+      time.reset();
+      time.start();
+      isAtTarget = false;
       linkage.pidController.setReference(setPoint, CANSparkBase.ControlType.kPosition);
       setPosition = setPoint;
+    }
+
+    if(setPoint < linkage.getAngle()+1 && setPoint > linkage.getAngle()-1) {
+      time.stop();
+      isAtTarget = true;
+    } else {
+      isAtTarget = false;
     }
     // processVariable = encoder.getPosition();
 
@@ -85,6 +99,8 @@ public class SetLinkage extends Command {
     SmartDashboard.putNumber("Output", linkage.getSpeed());
     SmartDashboard.putNumber("Position", linkage.encoder.getPosition());
     SmartDashboard.putNumber("Error", setPoint - linkage.encoder.getPosition());
+    SmartDashboard.putNumber("Time elapsed", time.get());
+    SmartDashboard.putBoolean("At target", isAtTarget);
     //SmartDashboard.putNumber("Process Variable", processVariable);
   }
 

@@ -38,6 +38,7 @@ public class Linkage extends SubsystemBase {
     motor.enableSoftLimit(SoftLimitDirection.kForward, true);
     motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
+    motor.setClosedLoopRampRate(1.0);
   }
 
   public static Linkage getInstance() {
@@ -50,10 +51,6 @@ public class Linkage extends SubsystemBase {
   
   public void run(double speed) {
     motor.set(speed);
-  }
-
-  public void burnFlash() {
-    motor.burnFlash();
   }
 
   public void stop() {
