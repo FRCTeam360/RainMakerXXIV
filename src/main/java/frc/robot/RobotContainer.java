@@ -69,7 +69,7 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
     //shooter.setDefaultCommand(runShooter);
-    linkage.setDefaultCommand(setLinkage);
+    linkage.setDefaultCommand(runShooterLinkage);
   }
 
   /**
@@ -82,8 +82,9 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // operatorController.rightBumper().whileTrue(runIntake);
-    // operatorController.leftBumper().whileTrue(runIntakeReversed);
+
+    operatorController.rightTrigger(.005).whileTrue(runIntake);
+    operatorController.leftTrigger(.005).whileTrue(runIntakeReversed);
     // operatorController.a().whileTrue(runShooter);
 
     operatorController.x().whileTrue(new InstantCommand(() -> linkage.zero(), linkage));
@@ -98,6 +99,8 @@ public class RobotContainer {
     driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
     driverController.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1), MathUtil.applyDeadband(-driverController.getLeftX(), 0.1)))));
+
+    
 
     // if (Utils.isSimulation()) {
     //   drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));

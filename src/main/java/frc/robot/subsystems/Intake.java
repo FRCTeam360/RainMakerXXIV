@@ -41,6 +41,9 @@ public class Intake extends SubsystemBase {
     motor.stopMotor();
   }
 
+  public double getAmps() {
+    return motor.getOutputCurrent();
+  }
 
   public double getSpeed() {
     return motor.get();
@@ -50,5 +53,6 @@ public class Intake extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Intake Speed", getSpeed());
+    SmartDashboard.putNumber("Amps", getAmps());
   }
 }
