@@ -4,9 +4,12 @@
 
 package frc.robot.hardware;
 
+import org.littletonrobotics.junction.AutoLog;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.util.Units;
@@ -22,8 +25,15 @@ public class ShooterIOSparkMax implements ShooterIO {
     final double GEAR_RATIO = 1.0;
 
   public ShooterIOSparkMax() {
-    left.follow(right);
+    left.restoreFactoryDefaults();
+    left.setInverted(false);
+    left.setIdleMode(IdleMode.kBrake);
+
+    right.restoreFactoryDefaults();
+    right.setInverted(true);
+    right.setIdleMode(IdleMode.kBrake);
   }
+
   @Override
   public void updateInputs(ShooterIOInputs inputs) {
     // This method will be called once per scheduler run
@@ -32,6 +42,36 @@ public class ShooterIOSparkMax implements ShooterIO {
         Units.rotationsPerMinuteToRadiansPerSecond(encoder.getVelocity() / GEAR_RATIO);
     inputs.appliedVolts = right.getAppliedOutput() * right.getBusVoltage();
     inputs.currentAmps = new double[] {right.getOutputCurrent(), left.getOutputCurrent()};
+  }
+
+  @Override
+  public void setLeft(double speed) {
+    right.set(speed);
+  }
+
+  @Override
+  public void setRight(double speed) {
+    left.set(speed);
+  }
+
+  @Override
+  public void stopLeftMotor() {
+    left.stopMotor();
+  }
+
+  @Override
+  public void stopRightMotor() {
+    right.stopMotor();
+  }
+
+  @Override
+  public double getLeft() {
+    return left.get();
+  }
+
+  @Override
+  public double getRight() {
+    return right.get();
   }
 }
 

@@ -16,4 +16,18 @@ public interface ShooterLinkageIO {
   }
 
   public default void updateInputs(ShooterLinkageIOInputs inputs) {}
+
+  public default void set(double speed) {}
+
+  public void stopMotor();
+
+  public double getPosition();
+
+  public double get();
+
+  public void setPosition(int i);
+
+  public void setFF(double d);
+
+  public double getAppliedOutput();
 }

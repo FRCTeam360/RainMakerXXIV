@@ -8,28 +8,48 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.io.ShooterLinkageIO;
 import frc.robot.io.ShooterLinkageIO.ShooterLinkageIOInputs;
 
+import org.littletonrobotics.junction.AutoLog;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
-
 
 public class ShooterLinkage extends SubsystemBase {
   private final ShooterLinkageIO io;
   private final ShooterLinkageIOInputs inputs = new ShooterLinkageIOInputs();
 
-  private final CANSparkMax motor = new CANSparkMax(Constants.SHOOTER_LINKAGE_ID, MotorType.kBrushless);
-
   /** Creates a new ShooterLinkage. */
   public ShooterLinkage(ShooterLinkageIO io) {
     this.io = io;
-    motor.restoreFactoryDefaults();
-    motor.setInverted(false);
-    motor.setIdleMode(IdleMode.kBrake);
+  }
+
+  public void run(double speed) {
+    io.set(speed);
+  }
+
+  public void stop() {
+    io.stopMotor();
+  }
+
+  public double getAngle() {
+    return io.getPosition();
+  }
+
+  public double getSpeed() {
+    return io.get();
+  }
+
+  public void zero() {
+    io.setPosition(0);
+  }
+
+  public void setFFWScaling(double ff) {
+    io.setFF(ff * Math.cos(getAngle()));
   }
 
   @Override
@@ -37,9 +57,8 @@ public class ShooterLinkage extends SubsystemBase {
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("ShooterLinkage", (LoggableInputs) inputs);
+    SmartDashboard.putNumber("Linkage Angle", getAngle());
+    SmartDashboard.putNumber("linkage voltage", io.getAppliedOutput());
   }
 
-  public void run(double speed) {
-    motor.set(speed);
-  }
 }

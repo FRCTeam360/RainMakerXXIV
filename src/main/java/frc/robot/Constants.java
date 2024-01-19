@@ -11,6 +11,19 @@ import edu.wpi.first.math.util.Units;
 
 public class Constants {
 
+ public static final Mode currentMode = Mode.REAL;
+ 
+ public static enum Mode {
+    /** Running on a real robot. */
+    REAL,
+
+    /** Running a physics simulator. */
+    SIM,
+
+    /** Replaying from a log file. */
+    REPLAY
+  }
+
 
     public static final int INTAKE_ID = 1;
     public static final int SHOOTER_LINKAGE_ID = 2;

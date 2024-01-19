@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
@@ -55,10 +55,10 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
   }
 
-  private void setUseTiming(boolean b) {
+  // private void setUseTiming(boolean b) {
     // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'setUseTiming'");
-  }
+    //throw new UnsupportedOperationException("Unimplemented method 'setUseTiming'");
+  // }
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics

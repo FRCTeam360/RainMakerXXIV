@@ -5,6 +5,9 @@
 package frc.robot.io;
 
 import org.littletonrobotics.junction.AutoLog;
+
+import com.revrobotics.CANSparkBase.IdleMode;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public interface IntakeIO {
@@ -16,5 +19,9 @@ public interface IntakeIO {
   
   public default void updateInputs(IntakeIOInputs inputs) {}
 
-  
+  public void set(double speed);
+
+  public void stopMotor();
+
+  public double get();
 }

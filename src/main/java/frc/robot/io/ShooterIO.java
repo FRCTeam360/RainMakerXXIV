@@ -19,4 +19,16 @@ public interface ShooterIO {
   }
   
   public default void updateInputs(ShooterIOInputs inputs) {}
+
+  public void stopLeftMotor();
+
+  public void stopRightMotor();
+
+  public double getLeft();
+
+  public double getRight();
+
+  public void setLeft(double leftSpeed);
+
+  public void setRight(double speed); 
 }
