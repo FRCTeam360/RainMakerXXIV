@@ -48,7 +48,7 @@ public class RobotContainer {
   private final Linkage linkage = Linkage.getInstance();
 
   // auto commands
-  private final SetFlywheel setFlywheel = new SetFlywheel(0, 0);
+  private final SetFlywheel setFlywheel = new SetFlywheel( 0);
 
   // tele commands
   private final RunIntake runIntake = new RunIntake();

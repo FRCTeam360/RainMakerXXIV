@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Linkage;
 
-public class RunShooterLinkage extends Command {
+public class ManualLinkage extends Command {
 
   private final Linkage shooterLinkage = Linkage.getInstance();
   private final XboxController operatorCont = new XboxController(1);
 
   /** Creates a new RunShooterLinkage. */
-  public RunShooterLinkage() {
+  public ManualLinkage() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooterLinkage);
   }
