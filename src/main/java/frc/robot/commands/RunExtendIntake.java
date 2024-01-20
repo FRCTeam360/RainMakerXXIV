@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
 
-public class RunIntake extends Command {
+public class RunExtendIntake extends Command {
   enum IntakeCases {CHECK_ROBOT_EMPTY, EXTEND_INTAKE, WAIT_FOR_SENSOR, RETRACT_STOP}; 
   private Linkage linkage = Linkage.getInstance();
   
@@ -20,13 +20,21 @@ public class RunIntake extends Command {
   private boolean hasPiece = false;
   private Timer timer = new Timer();
   private Timer sensorTimer = new Timer();
+  private boolean inAuto;
   
   private IntakeCases state = IntakeCases.CHECK_ROBOT_EMPTY;
 
  
   
   /** Creates a new Java. */
-  public RunIntake() {
+  public RunExtendIntake() {
+    inAuto = false;
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(intake, linkage);
+  }
+
+    public RunExtendIntake(boolean isAuto) {
+    inAuto = isAuto;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake, linkage);
   }
@@ -51,7 +59,7 @@ public class RunIntake extends Command {
         break;
       case EXTEND_INTAKE:
         intake.run(.5); // we should extend too but idk how we should implement this
-        linkage.setAngle(180);
+        //linkage.setAngle(180);
         if(intake.getAmps() > 20 && timer.get() > .25) {
           sensorTimer.start();
           state = IntakeCases.WAIT_FOR_SENSOR;
@@ -64,7 +72,11 @@ public class RunIntake extends Command {
           state = IntakeCases.EXTEND_INTAKE;
           sensorTimer.reset();
         } else if(intake.getSensor()) {
-          state = IntakeCases.RETRACT_STOP;
+          if(inAuto) {
+            end(true);
+          } else {
+            state = IntakeCases.RETRACT_STOP;
+          }
         }
         break;
       case RETRACT_STOP:
@@ -116,7 +128,7 @@ public class RunIntake extends Command {
     timer.stop();
     timer.reset();
     intake.stop();
-    linkage.setAngle(43);
+    //linkage.setAngle(43);
 
   }
 

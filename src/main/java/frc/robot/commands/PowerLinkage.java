@@ -6,16 +6,17 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Linkage;
 
-public class RunShooter extends Command {
-  private final Shooter shooter = Shooter.getInstance();
+public class PowerLinkage extends Command {
+
+  private final Linkage shooterLinkage = Linkage.getInstance();
   private final XboxController operatorCont = new XboxController(1);
 
-  /** Creates a new RunShooter. */
-  public RunShooter() {
+  /** Creates a new RunShooterLinkage. */
+  public PowerLinkage() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shooter);
+    addRequirements(shooterLinkage);
   }
 
   // Called when the command is initially scheduled.
@@ -25,24 +26,21 @@ public class RunShooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // if(Math.abs(operatorCont.getLeftY()) > 0.1) {
-    //   shooter.runLeft(-operatorCont.getLeftY());
+    // if (operatorCont.getRightTriggerAxis() > 0.1) {
+    //   shooterLinkage.run(0.2);
+    // } else if (operatorCont.getLeftTriggerAxis() > 0.1) {
+    //   shooterLinkage.run(-0.2);
     // } else {
-    //   shooter.stopLeft();
+    //   shooterLinkage.stop();
     // }
 
-    // if(Math.abs(operatorCont.getRightY()) > 0.1) {
-    //   shooter.runRight(-operatorCont.getRightY());
-    // } else {
-    //   shooter.stopRight();
-    // }
-
-    shooter.runBoth(0.73, -0.73); //todo: invert motor
+    shooterLinkage.run(operatorCont.getLeftY() * 0.2);
   }
-    
+
+  // Called once the command ends or is interrupted.
+  @Override
   public void end(boolean interrupted) {
-    shooter.stopLeft();
-    shooter.stopRight();
+    shooterLinkage.stop();
   }
 
   // Returns true when the command should end.

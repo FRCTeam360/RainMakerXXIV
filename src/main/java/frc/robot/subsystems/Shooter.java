@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -21,6 +22,8 @@ public class Shooter extends SubsystemBase {
   private final CANSparkFlex leftMotor = new CANSparkFlex(Constants.SHOOTER_LEFT_ID, MotorType.kBrushless);
   private final CANSparkFlex rightMotor = new CANSparkFlex(Constants.SHOOTER_RIGHT_ID, MotorType.kBrushless);
 
+  public final SparkPIDController leftPidController = leftMotor.getPIDController();
+  public final SparkPIDController rightPidController = rightMotor.getPIDController();
   /** Creates a new Shooter. */
   public Shooter() {
 
