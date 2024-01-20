@@ -41,17 +41,8 @@ public class RotateDriveTrain extends Command {
   @Override
   public void execute() {
     driveTrain.applyRequest(
-      () -> drive.withVelocityX(velocityX) 
-      // Drive
-      // forward
-      // with
-      // negative Y (forward)
-    .withVelocityY(velocityY) 
-      // Drive left with
-      // negative X
-// (left)
-    .withRotationalRate(desiredAngle)
-    )
+      () -> drive.withVelocityX(velocityX).withVelocityY(velocityY) // drive forward with negative y
+    .withRotationalRate(desiredAngle)); //drive left with negative x
   }
 
   // Called once the command ends or is interrupted.
