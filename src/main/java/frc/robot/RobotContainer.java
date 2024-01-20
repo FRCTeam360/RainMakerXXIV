@@ -4,11 +4,11 @@
 
 package frc.robot;
 
-import frc.robot.commands.RunIntake;
-import frc.robot.commands.ManualIntakeReversed;
-import frc.robot.commands.RunShooter;
-import frc.robot.commands.ManualIntake;
-import frc.robot.commands.ManualLinkage;
+import frc.robot.commands.RunExtendIntake;
+import frc.robot.commands.PowerIntakeReversed;
+import frc.robot.commands.PowerShooter;
+import frc.robot.commands.PowerIntake;
+import frc.robot.commands.PowerLinkage;
 import frc.robot.commands.SetFlywheel;
 import frc.robot.commands.SetLinkage;
 import frc.robot.generated.TunerConstants;
@@ -51,11 +51,11 @@ public class RobotContainer {
   private final SetFlywheel setFlywheel = new SetFlywheel( 0);
 
   // tele commands
-  private final RunIntake runIntake = new RunIntake();
-  private final ManualIntakeReversed manualIntakeReversed = new ManualIntakeReversed();
-  private final ManualIntake manualIntake = new ManualIntake();
-  private final RunShooter runShooter = new RunShooter();
-  private final ManualLinkage runShooterLinkage = new ManualLinkage();
+  private final RunExtendIntake runIntake = new RunExtendIntake();
+  private final PowerIntakeReversed manualIntakeReversed = new PowerIntakeReversed();
+  private final PowerIntake manualIntake = new PowerIntake();
+  private final PowerShooter runShooter = new PowerShooter();
+  private final PowerLinkage runShooterLinkage = new PowerLinkage();
   private final SetLinkage setLinkage = new SetLinkage();
 
   final double MaxSpeed = 13.7; // used to be 6 meters per second desired top speed
