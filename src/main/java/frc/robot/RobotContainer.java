@@ -4,10 +4,7 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
@@ -58,14 +55,13 @@ public class RobotContainer {
   private final Linkage linkage = Linkage.getInstance();
 
   // auto commands
-  private final SetFlywheel setFlywheel = new SetFlywheel( 0);
+  private final SetFlywheel setFlywheel = new SetFlywheel(0);
 
   // tele commands
   private final RunIntake runIntake = new RunIntake();
   private final RunIntakeReversed runIntakeReversed = new RunIntakeReversed();
   private final RunShooter runShooter = new RunShooter();
   private final RunLinkage runShooterLinkage = new RunLinkage();
-  private final SetLinkage setLinkage = new SetLinkage();
 
   final double MaxSpeed = 13.7; // used to be 6 meters per second desired top speed
   final double MaxAngularRate = Math.PI * 3; // Half a rotation per second max angular velocity
@@ -90,9 +86,9 @@ public class RobotContainer {
   }
 
   private void configureDefaultCommands() {
-    //shooter.setDefaultCommand(runShooter);
+    // shooter.setDefaultCommand(runShooter);
     linkage.setDefaultCommand(runShooterLinkage);
-    //intake.setDefaultCommand(runIntake);
+    // intake.setDefaultCommand(runIntake);
   }
 
   /**
@@ -141,8 +137,6 @@ public class RobotContainer {
         .applyRequest(
             () -> point.withModuleDirection(new Rotation2d(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1),
                 MathUtil.applyDeadband(-driverController.getLeftX(), 0.1)))));
-
-    
 
     // if (Utils.isSimulation()) {
     // drivetrain.seedFieldRelative(new Pose2d(new Translation2d(),

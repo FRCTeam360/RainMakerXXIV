@@ -4,8 +4,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.SetLinkage;
+
 /** Add your docs here. */
 public class Setpoints {
 
+    public static Command groundIntake() {
+        return new SetLinkage(180);
+    }
     
 }
