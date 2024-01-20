@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 
-public class RunIntakeReversed extends Command {
+public class ManualIntakeReversed extends Command {
   private XboxController operatorCont = new XboxController(1);
   private Intake intake = Intake.getInstance();
   /** Creates a new RunIntakeReversed. */
-  public RunIntakeReversed() {
+  public ManualIntakeReversed() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
   }
