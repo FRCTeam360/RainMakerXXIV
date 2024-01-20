@@ -7,7 +7,7 @@ package frc.robot;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunIntakeReversed;
 import frc.robot.commands.RunShooter;
-import frc.robot.commands.RunShooterLinkage;
+import frc.robot.commands.RunLinkage;
 import frc.robot.commands.SetFlywheel;
 import frc.robot.commands.SetLinkage;
 import frc.robot.generated.TunerConstants;
@@ -47,13 +47,13 @@ public class RobotContainer {
   private final Linkage linkage = Linkage.getInstance();
 
   // auto commands
-  private final SetFlywheel setFlywheel = new SetFlywheel(0, 0);
+  private final SetFlywheel setFlywheel = new SetFlywheel( 0);
 
   // tele commands
   private final RunIntake runIntake = new RunIntake();
   private final RunIntakeReversed runIntakeReversed = new RunIntakeReversed();
   private final RunShooter runShooter = new RunShooter();
-  private final RunShooterLinkage runShooterLinkage = new RunShooterLinkage();
+  private final RunLinkage runShooterLinkage = new RunLinkage();
   private final SetLinkage setLinkage = new SetLinkage();
 
   final double MaxSpeed = 13.7; // used to be 6 meters per second desired top speed

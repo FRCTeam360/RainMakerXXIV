@@ -4,22 +4,18 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Shooter;
 
 public class SetFlywheel extends Command {
   private final Shooter shooter = Shooter.getInstance();
-  private final double left;
-  private final double right;
+  private final double speed;
 
   /** Creates a new SetFlywheel. */
-  public SetFlywheel(double leftSpeed, double rightSpeed) {
+  public SetFlywheel(double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
-    left = leftSpeed;
-    right = rightSpeed;
-  }
+    this.speed = speed;}
 
   // Called when the command is initially scheduled.
   @Override
@@ -28,7 +24,8 @@ public class SetFlywheel extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.runBoth(left, right);
+  
+    shooter.runBoth(speed *0.8, speed);
   }
 
   // Called once the command ends or is interrupted.
