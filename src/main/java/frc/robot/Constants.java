@@ -10,5 +10,8 @@ public class Constants {
         public static final int SHOOTER_RIGHT_ID = 4;
         public static final int INTAKE_ID = 5;
 
+        public static final double MaxSpeed = 13.7; // used to be 6 meters per second desired top speed
+        public static final double MaxAngularRate = Math.PI * 3; // Half a rotation per second max angular velocity
+
 
 }

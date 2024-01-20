@@ -12,11 +12,13 @@ import frc.robot.commands.PowerLinkage;
 import frc.robot.commands.SetFlywheel;
 import frc.robot.commands.SetLinkage;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Linkage;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -63,7 +65,9 @@ public class RobotContainer {
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
-  SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric(); // I want field-centric
+  SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle()
+    .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1)
+    .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
   // driving in open loop
   SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();

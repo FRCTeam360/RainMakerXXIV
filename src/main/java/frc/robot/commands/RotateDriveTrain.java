@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.PointWheelsAt;
 
@@ -11,11 +12,18 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class RotateDriveTrain extends Command {
-  private Rotation2d desiredAngle;
+  private Rotation2d desiredAngle = Rotation2d.fromDegrees(90);
+  private double veloictyX = 0;
+  private double velocityY = 0;
   private CommandSwerveDrivetrain driveTrain;
+  //private Constants MaxSpeed; 
+  SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle()
+    .withDeadband(Constants.MaxSpeed * 0.1).withRotationalDeadband(Constants.MaxAngularRate * 0.1)
+    .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
   
   /** Creates a new RotateDriveTrain. */
   public RotateDriveTrain(Rotation2d angle, CommandSwerveDrivetrain drive) {
@@ -32,7 +40,18 @@ public class RotateDriveTrain extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    swerveRequest.withModuleDirection(desiredAngle);
+    driveTrain.applyRequest(
+      () -> drive.withVelocityX(velocityX) 
+      // Drive
+      // forward
+      // with
+      // negative Y (forward)
+    .withVelocityY(velocityY) 
+      // Drive left with
+      // negative X
+// (left)
+    .withRotationalRate(desiredAngle)
+    )
   }
 
   // Called once the command ends or is interrupted.
