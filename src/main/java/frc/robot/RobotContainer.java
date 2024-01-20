@@ -5,9 +5,10 @@
 package frc.robot;
 
 import frc.robot.commands.RunIntake;
-import frc.robot.commands.RunIntakeReversed;
+import frc.robot.commands.ManualIntakeReversed;
 import frc.robot.commands.RunShooter;
-import frc.robot.commands.RunShooterLinkage;
+import frc.robot.commands.ManualIntake;
+import frc.robot.commands.ManualLinkage;
 import frc.robot.commands.SetFlywheel;
 import frc.robot.commands.SetLinkage;
 import frc.robot.generated.TunerConstants;
@@ -51,9 +52,10 @@ public class RobotContainer {
 
   // tele commands
   private final RunIntake runIntake = new RunIntake();
-  private final RunIntakeReversed runIntakeReversed = new RunIntakeReversed();
+  private final ManualIntakeReversed manualIntakeReversed = new ManualIntakeReversed();
+  private final ManualIntake manualIntake = new ManualIntake();
   private final RunShooter runShooter = new RunShooter();
-  private final RunShooterLinkage runShooterLinkage = new RunShooterLinkage();
+  private final ManualLinkage runShooterLinkage = new ManualLinkage();
   private final SetLinkage setLinkage = new SetLinkage();
 
   final double MaxSpeed = 13.7; // used to be 6 meters per second desired top speed
@@ -77,9 +79,9 @@ public class RobotContainer {
   }
 
   private void configureDefaultCommands() {
-    //shooter.setDefaultCommand(runShooter);
+    // shooter.setDefaultCommand(runShooter);
     linkage.setDefaultCommand(runShooterLinkage);
-    //intake.setDefaultCommand(runIntake);
+    // intake.setDefaultCommand(runIntake);
   }
 
   /**
@@ -98,12 +100,12 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    operatorController.rightTrigger(.005).whileTrue(runIntake);
-    operatorController.leftTrigger(.005).whileTrue(runIntakeReversed);
+    operatorController.rightTrigger(.005).whileTrue(manualIntake);
+    operatorController.leftTrigger(.005).whileTrue(manualIntakeReversed);
     // operatorController.leftBumper().whileTrue(runIntake);
     // operatorController.rightBumper().whileTrue(runIntakeReversed);
     operatorController.a().whileTrue(runShooter);
-
+    operatorController.b().whileTrue(runIntake);
     operatorController.x().whileTrue(new InstantCommand(() -> linkage.zero(), linkage));
 
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
@@ -128,8 +130,6 @@ public class RobotContainer {
         .applyRequest(
             () -> point.withModuleDirection(new Rotation2d(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1),
                 MathUtil.applyDeadband(-driverController.getLeftX(), 0.1)))));
-
-    
 
     // if (Utils.isSimulation()) {
     // drivetrain.seedFieldRelative(new Pose2d(new Translation2d(),
