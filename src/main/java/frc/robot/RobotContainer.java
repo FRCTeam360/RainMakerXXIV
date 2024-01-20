@@ -106,6 +106,7 @@ public class RobotContainer {
     // operatorController.rightBumper().whileTrue(runIntakeReversed);
     operatorController.a().whileTrue(runShooter);
     operatorController.b().whileTrue(runIntake);
+    
     operatorController.x().whileTrue(new InstantCommand(() -> linkage.zero(), linkage));
 
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically

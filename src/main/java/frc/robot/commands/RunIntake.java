@@ -27,9 +27,8 @@ public class RunIntake extends Command {
   
   /** Creates a new Java. */
   public RunIntake() {
-
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intake);
+    addRequirements(intake, linkage);
   }
 
   // Called when the command is initially scheduled.
