@@ -24,7 +24,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
     CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
-    SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
+     static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
 
 
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency, SwerveModuleConstants... modules) {
@@ -58,7 +58,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         });
         m_simNotifier.startPeriodic(kSimLoopPeriod);
     }
-    public static void turntoCMD(Rotation2d desiredAngle, CommandSwerveDrivetrain drivetrain, double velocityX, double velocityY){
-        return drivetrain.applyRequest(() -> drive.withVelocityX(velocityX).withVelocityY(velocityY) .withRotationalRate(desiredAngle));
+    public Command turntoCMD(Rotation2d desiredAngle, double velocityX, double velocityY){
+        return this.applyRequest(() -> drive.withTargetDirection(desiredAngle).withVelocityX(velocityX).withVelocityY(velocityY));
     }
 }
