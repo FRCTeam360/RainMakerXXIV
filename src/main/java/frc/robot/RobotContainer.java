@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.commands.Autos;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -16,11 +17,15 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+
+  private final Intake intake;
+  private final shooter shooter;
+  
   // The robot's subsystems and commands are defined here...
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
- 
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {

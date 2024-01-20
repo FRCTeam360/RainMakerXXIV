@@ -12,11 +12,13 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.io.IntakeIO;
 
 public class IntakeIOSparkMax implements IntakeIO {
   /** Creates a new IntakeIOSparkMax. */
+    private final DCMotor m_intakeIOSSparkMax = DCMotor.getVex775Pro(4);
     private final CANSparkMax sparkMax = new CANSparkMax (5, MotorType.kBrushless);
     private final RelativeEncoder encoder = sparkMax.getEncoder();
     private final SparkPIDController pid = sparkMax.getPIDController();
@@ -31,6 +33,7 @@ public class IntakeIOSparkMax implements IntakeIO {
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
     inputs.intakeSpeed = sparkMax.get();
+    inputs.appliedVolts = sparkMax.getAppliedOutput();
   }
 
   @Override

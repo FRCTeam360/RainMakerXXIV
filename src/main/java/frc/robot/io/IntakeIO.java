@@ -15,6 +15,7 @@ public interface IntakeIO {
   @AutoLog
   public static class IntakeIOInputs{
     public double intakeSpeed = 0.0;
+    public double appliedVolts = 0.0;
   }
   
   public default void updateInputs(IntakeIOInputs inputs) {}
