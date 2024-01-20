@@ -34,46 +34,47 @@ public class RunIntake extends Command {
   @Override
   public void execute() {
     
-    if(pieceTimer.get() == .5) {
-      intake.stop();
-      pieceTimer.stop();
-    }
-    // if (operatorCont.getRightBumperPressed()) {
-    //   intake.run(1.0);
+    // if(pieceTimer.get() >= .5) {
+    //   intake.stop();
+    //   pieceTimer.stop();
+    // }
+     if (operatorCont.getRightBumperPressed()) {
+      intake.run(1.0);}
     // } else if (operatorCont.getLeftBumperPressed()) {
     //   intake.run(-1.0);
     // } else {
     //   intake.stop();
     // }
-    if(operatorCont.getRightTriggerAxis() > .75 && intake.getAmps() > 20 && timer.get() > .25) {
-      hasPiece = true;
-      pieceTimer.start();
-    }
-    if(intake.getSpeed() == 0) {
-      hasPiece = false;
-    }
 
-    if(hasPiece) {
-      intake.run(-.15);
-    }
-    else if(operatorCont.getRightTriggerAxis() > .75) {
-      intake.run(-.5);
-    }
-     else {
-      intake.run(-.15);
-    }
+    // if(operatorCont.getRightTriggerAxis() > .75 && intake.getAmps() > 20 && timer.get() > .25) {
+    //   hasPiece = true;
+    //   pieceTimer.start();
+    // }
+    // if(intake.getSpeed() == 0) {
+    //   hasPiece = false;
+    // }
+
+    // if(hasPiece) {
+    //   intake.run(-.15);
+    // }
+    // else if(operatorCont.getRightTriggerAxis() > .75) {
+    //   intake.run(-.5);
+    // }
+    //  else {
+    //   intake.run(-.15);
+    // }
 
       
-      System.out.println(operatorCont.getRightTriggerAxis());
-      SmartDashboard.putNumber("Trigger val: ", operatorCont.getRightTriggerAxis());
+      // System.out.println(operatorCont.getRightTriggerAxis());
+      // SmartDashboard.putNumber("Trigger val: ", operatorCont.getRightTriggerAxis());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    pieceTimer.reset();
-    timer.reset();
-    timer.stop();
+    // pieceTimer.reset();
+    // timer.reset();
+    // timer.stop();
     intake.stop();
   }
 
