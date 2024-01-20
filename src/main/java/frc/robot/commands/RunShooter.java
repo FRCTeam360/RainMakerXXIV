@@ -26,18 +26,18 @@ public class RunShooter extends Command {
   @Override
   public void execute() {
     // if(Math.abs(operatorCont.getLeftY()) > 0.1) {
-    //   shooter.runLeft(operatorCont.getLeftY());
+    //   shooter.runLeft(-operatorCont.getLeftY());
     // } else {
     //   shooter.stopLeft();
     // }
 
     // if(Math.abs(operatorCont.getRightY()) > 0.1) {
-    //   shooter.runRight(operatorCont.getRightY());
+    //   shooter.runRight(-operatorCont.getRightY());
     // } else {
     //   shooter.stopRight();
     // }
 
-    shooter.runBoth(-0.8, -1.0);
+    shooter.runBoth(0.8, 1.0);
   }
     
   public void end(boolean interrupted) {

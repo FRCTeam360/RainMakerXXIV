@@ -79,6 +79,7 @@ public class RobotContainer {
   private void configureDefaultCommands() {
     //shooter.setDefaultCommand(runShooter);
     linkage.setDefaultCommand(runShooterLinkage);
+    //intake.setDefaultCommand(runIntake);
   }
 
   /**
@@ -99,7 +100,9 @@ public class RobotContainer {
 
     operatorController.rightTrigger(.005).whileTrue(runIntake);
     operatorController.leftTrigger(.005).whileTrue(runIntakeReversed);
-    // operatorController.a().whileTrue(runShooter);
+    // operatorController.leftBumper().whileTrue(runIntake);
+    // operatorController.rightBumper().whileTrue(runIntakeReversed);
+    operatorController.a().whileTrue(runShooter);
 
     operatorController.x().whileTrue(new InstantCommand(() -> linkage.zero(), linkage));
 
