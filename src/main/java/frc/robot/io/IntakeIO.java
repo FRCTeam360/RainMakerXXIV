@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public interface IntakeIO {
   /** Creates a new IntakeIO. */
   @AutoLog
-  public static class IntakeIOInputs{
+  public static class IntakeIOInputs {
     public double intakeSpeed = 0.0;
     public double appliedVolts = 0.0;
   }

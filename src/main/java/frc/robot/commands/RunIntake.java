@@ -13,7 +13,8 @@ public class RunIntake extends Command {
   private static XboxController operatorCont = new XboxController(1);
   
   /** Creates a new Java. */
-  public RunIntake() {
+  public RunIntake(Intake intake) {
+    this.intake = intake;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
   }

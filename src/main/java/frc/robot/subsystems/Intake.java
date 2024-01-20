@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 import frc.robot.io.IntakeIO;
+import frc.robot.io.IntakeIOInputsAutoLogged;
 import frc.robot.io.IntakeIO.IntakeIOInputs;
 
 import com.revrobotics.CANSparkBase.IdleMode;
@@ -21,7 +22,7 @@ import org.littletonrobotics.junction.inputs.LoggableInputs;
 
 public class Intake extends SubsystemBase {
   private final IntakeIO io;
-  private final IntakeIOInputs inputs = new IntakeIOInputs();
+  private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
 
   /** Creates a new Intake. */
   public Intake(IntakeIO io) {
@@ -44,7 +45,7 @@ public class Intake extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
-    Logger.processInputs("Intake", (LoggableInputs) inputs);
+    Logger.processInputs("Intake", inputs);
     SmartDashboard.putNumber("Intake Speed", getSpeed());
   }
 }
