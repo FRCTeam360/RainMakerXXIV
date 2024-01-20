@@ -37,7 +37,7 @@ public class RunShooter extends Command {
     //   shooter.stopRight();
     // }
 
-    shooter.runBoth(-0.8, -1.0);
+    shooter.runBoth(0.8, 1.0);
   }
     
   public void end(boolean interrupted) {

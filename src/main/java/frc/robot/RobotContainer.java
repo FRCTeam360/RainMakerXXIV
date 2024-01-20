@@ -98,8 +98,10 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    // operatorController.rightTrigger(.005).whileTrue(runIntake);
-    // operatorController.leftTrigger(.005).whileTrue(runIntakeReversed);
+    operatorController.rightTrigger(.005).whileTrue(runIntake);
+    operatorController.leftTrigger(.005).whileTrue(runIntakeReversed);
+    // operatorController.leftBumper().whileTrue(runIntake);
+    // operatorController.rightBumper().whileTrue(runIntakeReversed);
     operatorController.a().whileTrue(runShooter);
 
     operatorController.x().whileTrue(new InstantCommand(() -> linkage.zero(), linkage));
