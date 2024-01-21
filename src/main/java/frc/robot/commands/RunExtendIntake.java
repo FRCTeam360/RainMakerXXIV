@@ -12,7 +12,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
 
 public class RunExtendIntake extends Command {
-  enum IntakeCases {CHECK_ROBOT_EMPTY, EXTEND_INTAKE, WAIT_FOR_SENSOR, RETRACT_STOP}; 
+  enum IntakeCases {CHECK_ROBOT_EMPTY, EXTEND_INTAKE, WAIT_FOR_SENSOR, REVERSE_TRIGGER, RETRACT_STOP}; 
   private Linkage linkage = Linkage.getInstance();
   
   private Intake intake = Intake.getInstance();
@@ -28,16 +28,15 @@ public class RunExtendIntake extends Command {
   
   /** Creates a new Java. */
   public RunExtendIntake() {
-    inAuto = false;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intake, linkage);
+    addRequirements(intake);
   }
 
-    public RunExtendIntake(boolean isAuto) {
-    inAuto = isAuto;
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intake, linkage);
-  }
+  //   public RunExtendIntake(boolean isAuto) {
+  //   inAuto = isAuto;
+  //   // Use addRequirements() here to declare subsystem dependencies.
+  //   addRequirements(intake);
+  // }
 
   // Called when the command is initially scheduled.
   @Override
@@ -48,39 +47,42 @@ public class RunExtendIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
     switch(state){
       case CHECK_ROBOT_EMPTY:
-        if(intake.getSensor()) {
-          end(true);
-        } else {
-          state = IntakeCases.EXTEND_INTAKE;
-        }
+      if(intake.getSensor()) {
+        state = IntakeCases.EXTEND_INTAKE;
         break;
+      }
       case EXTEND_INTAKE:
         intake.run(.5); // we should extend too but idk how we should implement this
         //linkage.setAngle(180);
         if(intake.getAmps() > 20 && timer.get() > .25) {
           sensorTimer.start();
           state = IntakeCases.WAIT_FOR_SENSOR;
-          
         }
         break;
       case WAIT_FOR_SENSOR:
-        intake.run(.15);
-        if(sensorTimer.get() > .25) {
+        intake.run(.25);
+        if(sensorTimer.get() > 1) {
           state = IntakeCases.EXTEND_INTAKE;
           sensorTimer.reset();
-        } else if(intake.getSensor()) {
-          if(inAuto) {
-            end(true);
-          } else {
-            state = IntakeCases.RETRACT_STOP;
-          }
+        } 
+        if(!intake.getSensor()){
+          state = IntakeCases.REVERSE_TRIGGER;
+        // } else if(!intake.getSensor()) {
+        //   if(inAuto) {
+        //     end(true);
+        //   } else {
+        //     state = IntakeCases.RETRACT_STOP;
+        //   }
         }
         break;
+      case REVERSE_TRIGGER:
+        intake.run(-.10);
+        if(intake.getSensor()) {
+          state = IntakeCases.RETRACT_STOP;
+        }
       case RETRACT_STOP:
-        end(true);
         break;
 
     }
@@ -128,6 +130,7 @@ public class RunExtendIntake extends Command {
     timer.stop();
     timer.reset();
     intake.stop();
+    state = IntakeCases.CHECK_ROBOT_EMPTY;
     //linkage.setAngle(43);
 
   }
@@ -135,6 +138,9 @@ public class RunExtendIntake extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if(state == IntakeCases.RETRACT_STOP) {
+      return true;
+    }
     return false;
   }
 }
