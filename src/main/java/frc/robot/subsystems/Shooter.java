@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.io.ShooterIO;
+import frc.robot.io.ShooterIOInputsAutoLogged;
 import frc.robot.io.ShooterIO.ShooterIOInputs;
 
 import org.littletonrobotics.junction.AutoLog;
@@ -22,7 +23,7 @@ import org.littletonrobotics.junction.inputs.LoggableInputs;
 
 public class Shooter extends SubsystemBase {
   private final ShooterIO io;
-  private final ShooterIOInputs inputs = new ShooterIOInputs();
+  private final ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
 
   /** Creates a new Shooter. */
   public Shooter(ShooterIO io) {
@@ -67,7 +68,7 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
-    Logger.processInputs("Shooter", (LoggableInputs) inputs);
+    Logger.processInputs("Shooter", inputs);
     SmartDashboard.putNumber("Left Speed", getLeftSpeed());
     SmartDashboard.putNumber("Right Speed", getRightSpeed());
   }

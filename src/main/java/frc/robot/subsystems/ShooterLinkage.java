@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.io.ShooterLinkageIO;
+import frc.robot.io.ShooterLinkageIOInputsAutoLogged;
 import frc.robot.io.ShooterLinkageIO.ShooterLinkageIOInputs;
 
 import org.littletonrobotics.junction.AutoLog;
@@ -21,7 +22,7 @@ import org.littletonrobotics.junction.inputs.LoggableInputs;
 
 public class ShooterLinkage extends SubsystemBase {
   private final ShooterLinkageIO io;
-  private final ShooterLinkageIOInputs inputs = new ShooterLinkageIOInputs();
+  private final ShooterLinkageIOInputsAutoLogged inputs = new ShooterLinkageIOInputsAutoLogged();
 
   /** Creates a new ShooterLinkage. */
   public ShooterLinkage(ShooterLinkageIO io) {

@@ -13,7 +13,8 @@ public class RunShooterLinkage extends Command {
   private final XboxController operatorCont = new XboxController(1);
 
   /** Creates a new RunShooterLinkage. */
-  public RunShooterLinkage() {
+  public RunShooterLinkage(ShooterLinkage shooterLinkage) {
+    this.shooterLinkage = shooterLinkage;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooterLinkage);
   }
@@ -34,7 +35,9 @@ public class RunShooterLinkage extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    shooterLinkage.run(0.0);
+  }
 
   // Returns true when the command should end.
   @Override

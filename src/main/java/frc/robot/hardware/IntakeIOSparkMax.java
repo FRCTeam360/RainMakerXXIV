@@ -18,7 +18,6 @@ import frc.robot.io.IntakeIO;
 
 public class IntakeIOSparkMax implements IntakeIO {
   /** Creates a new IntakeIOSparkMax. */
-    private final DCMotor m_intakeIOSSparkMax = DCMotor.getNeo550(1);
     private final CANSparkMax sparkMax = new CANSparkMax (8, MotorType.kBrushless);
     private final RelativeEncoder encoder = sparkMax.getEncoder();
     private final SparkPIDController pid = sparkMax.getPIDController();

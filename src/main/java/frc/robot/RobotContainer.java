@@ -36,12 +36,12 @@ public class RobotContainer {
 
   // declared as final in example code, but gives error in our code
   private Intake intake;
-  // private Shooter shooter;
-  // private ShooterLinkage shooterLinkage;
+  private Shooter shooter;
+  private ShooterLinkage shooterLinkage;
 
   private RunIntake runIntake;
-  // private final RunShooter runShooter = new RunShooter();
-  // private final RunShooterLinkage runShooterLinkage = new RunShooterLinkage();
+  private RunShooter runShooter;
+  private RunShooterLinkage runShooterLinkage;
 
   
   // The robot's subsystems and commands are defined here...
@@ -55,17 +55,17 @@ public class RobotContainer {
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
-        // shooter = new Shooter(new ShooterIOSparkMax());
+        shooter = new Shooter(new ShooterIOSparkMax());
         intake = new Intake(new IntakeIOSparkMax());
-        // shooterLinkage = new ShooterLinkage(new ShooterLinkageIOSparkMax());
+        shooterLinkage = new ShooterLinkage(new ShooterLinkageIOSparkMax());
         break;
 
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
         // CHANGE SHOOTER AND SHOOTER LINKAGE TO SIM LATER
-        // shooter = new Shooter(new ShooterIOSparkMax());
+        shooter = new Shooter(new ShooterIOSparkMax());
         intake = new Intake(new IntakeIOSim());
-        // shooterLinkage = new ShooterLinkage(new ShooterLinkageIOSparkMax());
+        shooterLinkage = new ShooterLinkage(new ShooterLinkageIOSparkMax());
         break;
 
       default:
@@ -94,10 +94,12 @@ public class RobotContainer {
   private void configureBindings() {
   
     runIntake = new RunIntake(intake);
+    runShooter = new RunShooter(shooter);
+    runShooterLinkage = new RunShooterLinkage(shooterLinkage);
 
-    // operatorController.a().whileTrue(runShooter);
+    operatorController.a().whileTrue(runShooter);
     operatorController.b().whileTrue(runIntake);
-    // operatorController.x().whileTrue(new InstantCommand(() -> shooterLinkage.zero(), shooterLinkage));
+    operatorController.x().whileTrue(new InstantCommand(() -> shooterLinkage.zero(), shooterLinkage));
     
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
@@ -106,8 +108,8 @@ public class RobotContainer {
 
 
   private void configureDefaultCommands() {
-    // shooter.setDefaultCommand(runShooter);
-    // shooterLinkage.setDefaultCommand(runShooterLinkage);
+    shooter.setDefaultCommand(runShooter);
+    shooterLinkage.setDefaultCommand(runShooterLinkage);
     intake.setDefaultCommand(runIntake);
   }
 
