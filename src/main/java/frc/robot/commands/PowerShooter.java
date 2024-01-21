@@ -37,7 +37,8 @@ public class PowerShooter extends Command {
     //   shooter.stopRight();
     // }
 
-    shooter.runBoth(0.73, -0.73); //todo: invert motor
+    shooter.runBoth(0.8, 1.0);
+
   }
     
   public void end(boolean interrupted) {
