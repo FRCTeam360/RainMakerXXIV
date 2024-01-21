@@ -100,12 +100,12 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    operatorController.rightTrigger(.005).whileTrue(manualIntake);
-    operatorController.leftTrigger(.005).whileTrue(manualIntakeReversed);
+    operatorController.rightTrigger(.01).whileTrue(manualIntake);
+    operatorController.leftTrigger(.01).whileTrue(manualIntakeReversed);
+    operatorController.y().onTrue(runIntake);
     // operatorController.leftBumper().whileTrue(runIntake);
     // operatorController.rightBumper().whileTrue(runIntakeReversed);
     operatorController.a().whileTrue(runShooter);
-    operatorController.b().whileTrue(runIntake);
     operatorController.x().whileTrue(new InstantCommand(() -> linkage.zero(), linkage));
 
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically

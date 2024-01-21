@@ -14,6 +14,7 @@ public class PowerIntake extends Command {
   private Intake intake = Intake.getInstance();
   /** Creates a new ManualIntake. */
   public PowerIntake() {
+    addRequirements(intake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -33,7 +34,9 @@ public class PowerIntake extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    intake.stop();
+  }
 
   // Returns true when the command should end.
   @Override

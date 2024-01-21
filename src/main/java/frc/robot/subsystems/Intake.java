@@ -16,7 +16,7 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
 
   private static Intake instance;
-  private final DigitalInput sensor = new DigitalInput(345); // update port later idk what it is
+  private final DigitalInput sensor = new DigitalInput(0); // update port later idk what it is
   private final CANSparkMax motor = new CANSparkMax(Constants.INTAKE_ID, MotorType.kBrushless);
 
   /** Creates a new Intake. */
@@ -59,5 +59,6 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Intake Speed", getSpeed());
     SmartDashboard.putNumber("Amps", getAmps());
+    SmartDashboard.putBoolean("this sensor sucks", getSensor());
   }
 }
