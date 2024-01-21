@@ -6,16 +6,21 @@ package frc.robot.io;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkBase.SoftLimitDirection;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public interface ShooterLinkageIO {
-  /** Creates a new ShooterLinkageIO. */
+public interface LinkageIO {
+  /** Creates a new LinkageIO. */
   @AutoLog
-  public static class ShooterLinkageIOInputs {
-    public double shooterLinkageAngle = 0.0;
+  public static class LinkageIOInputs {
+    public double linkageAngle = 0.0;
+    public double linkageVoltage = 0.0;
   }
 
-  public default void updateInputs(ShooterLinkageIOInputs inputs) {}
+  public default void updateInputs(LinkageIOInputs inputs) {}
 
   public default void set(double speed) {}
 
@@ -25,9 +30,11 @@ public interface ShooterLinkageIO {
 
   public double get();
 
-  public void setPosition(int i);
-
   public void setFF(double d);
 
   public double getAppliedOutput();
+
+  public void setReference(int setPoint, ControlType kposition);
+
+  public void setPosition(double angle);
 }

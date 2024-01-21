@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.inputs.LoggableInputs;
+
 import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -15,72 +18,53 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.io.LinkageIO;
+import frc.robot.io.LinkageIOInputsAutoLogged;
 
 public class Linkage extends SubsystemBase {
-
-  private static Linkage instance;
-  private final CANSparkMax motor = new CANSparkMax(Constants.SHOOTER_LINKAGE_ID, MotorType.kBrushless);
-  public final RelativeEncoder encoder = motor.getEncoder();
-  public final SparkPIDController pidController = motor.getPIDController();
+  private final LinkageIO io;
+  private final LinkageIOInputsAutoLogged inputs = new LinkageIOInputsAutoLogged();
 
   /** Creates a new ShooterLinkage. */
-  public Linkage() {
-    motor.restoreFactoryDefaults();
-    motor.setInverted(true);
-    motor.setIdleMode(IdleMode.kBrake);
-
-    encoder.setPositionConversionFactor(360.0/36.0); //360deg / 36:1 gear ratio
-    encoder.setPosition(43.0);
-
-    motor.setSoftLimit(SoftLimitDirection.kForward,180f);
-    motor.setSoftLimit(SoftLimitDirection.kReverse, 50f);
-    motor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-
-    motor.setClosedLoopRampRate(1.0);
-  }
-
-  public static Linkage getInstance() {
-    if (instance == null) {
-      instance = new Linkage();
-    }
-
-    return instance;
+  public Linkage(LinkageIO io) {
+    this.io = io;
   }
   
   public void run(double speed) {
-    motor.set(speed);
+    io.set(speed);
   }
 
   public void stop() {
-    motor.stopMotor();
+    io.stopMotor();
   }
 
   public double getAngle() {
-    return encoder.getPosition();
+    return io.getPosition();
   }
 
   public void setAngle(int setPoint){
-    pidController.setReference(setPoint, CANSparkBase.ControlType.kPosition);
+    io.setReference(setPoint, CANSparkBase.ControlType.kPosition);
   }
 
   public double getSpeed() {
-    return motor.get();
+    return io.get();
   }
 
   public void zero() {
-    encoder.setPosition(0);
+    io.setPosition(0);
   }
 
   public void setFFWScaling(double ff) {
-    pidController.setFF(ff * Math.cos(getAngle()));
+    io.setFF(ff * Math.cos(getAngle()));
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    io.updateInputs(inputs);
+    Logger.processInputs("Linkage", inputs);
     SmartDashboard.putNumber("Linkage Angle", getAngle());
-    SmartDashboard.putNumber("linkage voltage", motor.getAppliedOutput());
+    SmartDashboard.putNumber("linkage voltage", io.getAppliedOutput());
   }
 
 

@@ -13,9 +13,9 @@ import frc.robot.subsystems.Linkage;
 
 public class RunExtendIntake extends Command {
   enum IntakeCases {CHECK_ROBOT_EMPTY, EXTEND_INTAKE, WAIT_FOR_SENSOR, REVERSE_TRIGGER, RETRACT_STOP}; 
-  private Linkage linkage = Linkage.getInstance();
+  private Linkage linkage;
   
-  private Intake intake = Intake.getInstance();
+  private Intake intake;
   private static XboxController operatorCont = new XboxController(1);
   private boolean hasPiece = false;
   private Timer timer = new Timer();
@@ -27,7 +27,8 @@ public class RunExtendIntake extends Command {
  
   
   /** Creates a new Java. */
-  public RunExtendIntake() {
+  public RunExtendIntake(Intake intake) {
+    this.intake = intake;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
   }

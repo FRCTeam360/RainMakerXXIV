@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+/*package frc.robot.commands;
 
 import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkBase.ControlType;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.hardware.LinkageIOSparkMax;
 import frc.robot.subsystems.Linkage;
 
 public class SetLinkage extends Command {
@@ -21,21 +22,16 @@ public class SetLinkage extends Command {
 
   private double setPosition = 0.0;
 
-  private Linkage linkage = Linkage.getInstance();
+  private Linkage linkage;
   private Timer time = new Timer();
 
   private boolean isAtTarget;
 
-  /** Creates a new SetLinkage. */
-  public SetLinkage() {
+  /** Creates a new SetLinkage. 
+  public SetLinkage(Linkage linkage) {
+    this.linkage = linkage;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(linkage);
-
-    linkage.pidController.setP(kP);
-    linkage.pidController.setD(kD);
-    linkage.pidController.setI(kI);
-    linkage.pidController.setFF(kFF);
-
   }
 
   // Called when the command is initially scheduled.
@@ -114,4 +110,4 @@ public class SetLinkage extends Command {
   public boolean isFinished() {
     return false;
   }
-}
+} */

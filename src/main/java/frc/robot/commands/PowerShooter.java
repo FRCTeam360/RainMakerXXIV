@@ -9,11 +9,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Shooter;
 
 public class PowerShooter extends Command {
-  private final Shooter shooter = Shooter.getInstance();
+  private final Shooter shooter;
   private final XboxController operatorCont = new XboxController(1);
 
   /** Creates a new RunShooter. */
-  public PowerShooter() {
+  public PowerShooter(Shooter shooter) {
+    this.shooter = shooter;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
   }

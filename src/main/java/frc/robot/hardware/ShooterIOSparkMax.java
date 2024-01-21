@@ -15,6 +15,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.io.ShooterIO;
+import frc.robot.Constants;
 
 public class ShooterIOSparkMax implements ShooterIO {
   /** Creates a new IntakeIOSparkMax. */
@@ -42,6 +43,8 @@ public class ShooterIOSparkMax implements ShooterIO {
         Units.rotationsPerMinuteToRadiansPerSecond(encoder.getVelocity() / GEAR_RATIO);
     inputs.appliedVolts = right.getAppliedOutput() * right.getBusVoltage();
     inputs.currentAmps = new double[] {right.getOutputCurrent(), left.getOutputCurrent()};
+    inputs.leftSpeed = left.get();
+    inputs.rightSpeed = right.get();
   }
 
   @Override

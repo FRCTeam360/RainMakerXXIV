@@ -6,6 +6,8 @@ package frc.robot.io;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import com.revrobotics.CANSparkBase.IdleMode;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public interface ShooterIO {
@@ -16,6 +18,8 @@ public interface ShooterIO {
     public double velocityRadPerSec = 0.0;
     public double appliedVolts = 0.0;
     public double[] currentAmps = new double[] {};
+    public double leftSpeed = 0.0;
+    public double rightSpeed = 0.0;
   }
   
   public default void updateInputs(ShooterIOInputs inputs) {}

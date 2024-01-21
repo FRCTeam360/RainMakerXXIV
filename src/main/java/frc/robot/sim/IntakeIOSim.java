@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.sim;
+/* package frc.robot.sim;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.io.IntakeIO;
 
 public class IntakeIOSim implements IntakeIO {
-  /** Creates a new IntakeIOSim. */
+  /** Creates a new IntakeIOSim.
   private DCMotor sim = DCMotor.getNEO(4);
   private PIDController pid = new PIDController(0.0, 0.0, 0.0);
   private final Encoder m_encoder = 
@@ -60,3 +60,4 @@ public class IntakeIOSim implements IntakeIO {
     throw new UnsupportedOperationException("Unimplemented method 'get'");
   }
 }
+*/

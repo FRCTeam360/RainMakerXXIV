@@ -13,14 +13,17 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.io.IntakeIO;
 
 public class IntakeIOSparkMax implements IntakeIO {
   /** Creates a new IntakeIOSparkMax. */
-    private final CANSparkMax sparkMax = new CANSparkMax (8, MotorType.kBrushless);
+    private final CANSparkMax sparkMax = new CANSparkMax(5, MotorType.kBrushless);
     private final RelativeEncoder encoder = sparkMax.getEncoder();
     private final SparkPIDController pid = sparkMax.getPIDController();
+    // new hardware class for sensor?
+    private final DigitalInput sensor = new DigitalInput(0); // update port later idk what it is
 
   public IntakeIOSparkMax() {
     sparkMax.restoreFactoryDefaults();
@@ -32,7 +35,9 @@ public class IntakeIOSparkMax implements IntakeIO {
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
     inputs.intakeSpeed = sparkMax.get();
-    inputs.appliedVolts = sparkMax.getAppliedOutput();
+    inputs.output = sparkMax.getAppliedOutput();
+    inputs.amps = sparkMax.getOutputCurrent();
+    inputs.sensor = sensor.get();
   }
 
   @Override
@@ -48,5 +53,15 @@ public class IntakeIOSparkMax implements IntakeIO {
   @Override
   public double get() {
     return sparkMax.get();
+  }
+
+  @Override
+  public double getOutputCurrent() {
+    return sparkMax.getOutputCurrent();
+  }
+
+  @Override
+  public boolean getSensor() {
+    return sensor.get();
   }
 }

@@ -15,7 +15,9 @@ public interface IntakeIO {
   @AutoLog
   public static class IntakeIOInputs {
     public double intakeSpeed = 0.0;
-    public double appliedVolts = 0.0;
+    public double output = 0.0;
+    public boolean sensor = true;
+    public double amps = 0.0;
   }
   
   public default void updateInputs(IntakeIOInputs inputs) {}
@@ -25,4 +27,8 @@ public interface IntakeIO {
   public void stopMotor();
 
   public double get();
+
+  public double getOutputCurrent();
+
+  public boolean getSensor();
 }

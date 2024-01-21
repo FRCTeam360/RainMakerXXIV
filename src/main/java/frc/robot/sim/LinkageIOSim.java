@@ -6,9 +6,9 @@ package frc.robot.sim;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class ShooterLinkageIOSim extends SubsystemBase {
+public class LinkageIOSim extends SubsystemBase {
   /** Creates a new ShooterLinkageIOSim. */
-  public ShooterLinkageIOSim() {}
+  public LinkageIOSim() {}
 
   @Override
   public void periodic() {

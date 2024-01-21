@@ -9,21 +9,27 @@ import org.littletonrobotics.junction.AutoLog;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.io.ShooterLinkageIO;
+import frc.robot.io.LinkageIO;
 
-public class ShooterLinkageIOSparkMax implements ShooterLinkageIO {
+public class LinkageIOSparkMax implements LinkageIO {
   /** Creates a new IntakeIOSparkMax. */
     private final CANSparkMax sparkMax = new CANSparkMax (2, MotorType.kBrushless);
     private final RelativeEncoder encoder = sparkMax.getEncoder();
-    private final SparkPIDController pid = sparkMax.getPIDController();
+    private final SparkPIDController pidController = sparkMax.getPIDController();
 
-  public ShooterLinkageIOSparkMax() {
+  public LinkageIOSparkMax() {
     final double GEAR_RATIO = 6.0;
+    final double kP = 0.01;
+    final double kD = 0.0;
+    final double kI = 0.0;
+    final double kFF = 0.0;
+
     sparkMax.restoreFactoryDefaults();
     sparkMax.setInverted(false);
     sparkMax.setIdleMode(IdleMode.kBrake);
@@ -38,9 +44,11 @@ public class ShooterLinkageIOSparkMax implements ShooterLinkageIO {
 
     sparkMax.setClosedLoopRampRate(1.0);
   }
+
   @Override 
-  public void updateInputs(ShooterLinkageIOInputs inputs) {
-    inputs.shooterLinkageAngle = encoder.getPosition(); 
+  public void updateInputs(LinkageIOInputs inputs) {
+    inputs.linkageAngle = encoder.getPosition(); 
+    inputs.linkageVoltage = sparkMax.getBusVoltage();
   }
 
   public void set(double speed) {
@@ -59,16 +67,21 @@ public class ShooterLinkageIOSparkMax implements ShooterLinkageIO {
     return sparkMax.get();
   }
   
-  public void setPosition(int angle) {
-    encoder.setPosition(angle);
-  }
-  
   public void setFF(double ff) {
-    pid.setFF(ff);
+    pidController.setFF(ff);
   }
 
   public double getAppliedOutput() {
     return sparkMax.getAppliedOutput();
+  }
+  
+  public void setPosition(double angle) {
+    encoder.setPosition(angle);
+  }
+
+  @Override
+  public void setReference(int setPoint, ControlType kposition) {
+    pidController.setReference(setPoint, kposition);
   }
 }
 

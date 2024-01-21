@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+/* package frc.robot.commands;
 
 import com.revrobotics.SparkPIDController;
 
@@ -12,14 +12,15 @@ import frc.robot.subsystems.Shooter;
 
 public class SetpointFlywheel extends Command {
   private double setpoint;
-  private Shooter shooter = new Shooter();
+  private Shooter shooter;
 
   private double kP = 0.01;
   private double kD = 0.0;
   private double kI = 0.0;
   private double kFF = 0.0;
 
-  public SetpointFlywheel(double setpointVelocity) {
+  public SetpointFlywheel(double setpointVelocity, Shooter shooter) {
+    this.shooter = shooter;
     setpoint = setpointVelocity;
   }
 
@@ -67,3 +68,4 @@ public class SetpointFlywheel extends Command {
     return false;
   }
 }
+*/

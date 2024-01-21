@@ -10,9 +10,10 @@ import frc.robot.subsystems.Intake;
 
 public class PowerIntakeReversed extends Command {
   private XboxController operatorCont = new XboxController(1);
-  private Intake intake = Intake.getInstance();
+  private Intake intake;
   /** Creates a new RunIntakeReversed. */
-  public PowerIntakeReversed() {
+  public PowerIntakeReversed(Intake intake) {
+    this.intake = intake;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
   }
