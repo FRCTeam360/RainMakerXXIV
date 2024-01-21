@@ -50,7 +50,7 @@ public class RobotContainer {
   private final Linkage linkage = Linkage.getInstance();
 
   // auto commands
-  private final SetFlywheel setFlywheel = new SetFlywheel( 0);
+  private final SetFlywheel setFlywheel = new SetFlywheel(0);
 
   // tele commands
   private final RunExtendIntake runIntake = new RunExtendIntake();
@@ -68,8 +68,8 @@ public class RobotContainer {
   /* Setting up bindings for necessary control of the swerve drive platform */
   CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
   SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-    .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1)
-    .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
+      .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1)
+      .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
   // driving in open loop
   SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
@@ -86,8 +86,15 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
     // shooter.setDefaultCommand(runShooter);
-    linkage.setDefaultCommand(runShooterLinkage);
     // intake.setDefaultCommand(runIntake);
+    linkage.setDefaultCommand(runShooterLinkage);
+     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+        drivetrain.applyRequest(
+            () -> drive.withVelocityX(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1) * MaxSpeed) //drive forward with negative y
+                // negative Y (forward)
+                .withVelocityY(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1) * MaxSpeed) // drive left with negative x
+                .withRotationalRate(MathUtil.applyDeadband(-driverController.getRightX(), 0.1) * MaxAngularRate) // drive counterclockwise with negative x                                                                                                  
+    ));
   }
 
   /**
@@ -106,32 +113,16 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
+    // OPERATOR CONTROLLER BINDINGS
     operatorController.rightTrigger(.005).whileTrue(manualIntake);
     operatorController.leftTrigger(.005).whileTrue(manualIntakeReversed);
     // operatorController.leftBumper().whileTrue(runIntake);
     // operatorController.rightBumper().whileTrue(runIntakeReversed);
     operatorController.a().whileTrue(runShooter);
     operatorController.b().whileTrue(runIntake);
-    
     operatorController.x().whileTrue(new InstantCommand(() -> linkage.zero(), linkage));
-
-    drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(
-            () -> drive.withVelocityX(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1) * MaxSpeed) // Drive
-                                                                                                            // forward
-                                                                                                            // with
-                // negative Y (forward)
-                .withVelocityY(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1) * MaxSpeed) // Drive left with
-                                                                                                     // negative X
-                                                                                                     // (left)
-                .withRotationalRate(MathUtil.applyDeadband(-driverController.getRightX(), 0.1) * MaxAngularRate) // Drive
-                                                                                                                 // counterclockwise
-                                                                                                                 // with
-                                                                                                                 // negative
-                                                                                                                 // X
-                                                                                                                 // (left)
-        ));
-
+    
+    // DRIVER CONTROLLER BINDINGS
     driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
     driverController.b().whileTrue(drivetrain
         .applyRequest(
