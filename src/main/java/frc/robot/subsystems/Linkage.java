@@ -60,7 +60,7 @@ public class Linkage extends SubsystemBase {
     return encoder.getPosition();
   }
 
-  public void setAngle(int setPoint){
+  public void setAngle(double setPoint){
     pidController.setReference(setPoint, CANSparkBase.ControlType.kPosition);
   }
 

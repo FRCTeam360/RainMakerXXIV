@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
@@ -54,6 +55,11 @@ public class Shooter extends SubsystemBase {
   public void runBoth(double leftSpeed, double rightSpeed) {
     leftMotor.set(leftSpeed);
     rightMotor.set(rightSpeed);
+  }
+
+  public void runBothPID(double speed) {
+    leftPidController.setReference(speed, CANSparkBase.ControlType.kVelocity);
+    rightPidController.setReference(speed, CANSparkBase.ControlType.kVelocity);
   }
 
   public void stopLeft() {

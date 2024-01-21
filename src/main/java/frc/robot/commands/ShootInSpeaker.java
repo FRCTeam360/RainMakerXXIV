@@ -12,12 +12,43 @@ import frc.robot.subsystems.Linkage;
 import frc.robot.subsystems.Shooter;
 
 public class ShootInSpeaker extends Command {
+  private Linkage linkage;
+  private Shooter flywheel;
+  private CommandSwerveDrivetrain drivetrain;
+
   /** Creates a new ShootInSpeaker. */
   public ShootInSpeaker(Linkage linkage, Shooter flywheel,
       CommandSwerveDrivetrain drivetrain, double linkageSetpoint, double flywheelSetpoint) { // Add your commands in the
-                                                                                             // addCommands() call, e.g.
+    // addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addRequirements(linkage, flywheel);
+
+    this.linkage = linkage;
+    this.flywheel = flywheel;
+    this.drivetrain = drivetrain;
+
+  }
+  @Override
+  public void initialize() {
+    state = ShootState.LOADED;
+  }
+
+  @Override
+  public void execute() {
+    switch (state) {
+      case LOADED:
+      linkage.setAngle(linkageSetpoint);
+      boolean isLinkageAtSetpoint = linkage.isAtSetpoint();
+      boolean isFlywheelAtSetpoint = flywheel.isAtSetpoint();
+      boolean isDrivetrainAtSetpoint = drivetrain.isFacingAngle();
+
+    }
+  }
+
+  private ShootState state = ShootState.LOADED;
+
+  private enum ShootState {
+    LOADED, SHOOT
   }
 
   public class ShootInSpeakerParallel extends ParallelCommandGroup {
