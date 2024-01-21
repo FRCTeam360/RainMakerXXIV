@@ -60,20 +60,19 @@ public class RobotContainer {
   private final PowerLinkage powerLinkage = new PowerLinkage();
   private final SetLinkage setLinkage = new SetLinkage();
 
-  final double MaxSpeed = 13.7; // used to be 6 meters per second desired top speed
-  final double MaxAngularRate = Math.PI * 3; // Half a rotation per second max angular velocity
 
+  // public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+  //     .withDeadband(Constants.MAX_SPEED * 0.1).withRotationalDeadband(Constants.MAX_ANGULAR_RATE * 0.1)
+  //     .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
+  // // driving in open loop
+  
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
-  SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-      .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1)
-      .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
-  // driving in open loop
   SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-  Telemetry logger = new Telemetry(MaxSpeed);
+  Telemetry logger = new Telemetry(Constants.MAX_SPEED);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -88,13 +87,14 @@ public class RobotContainer {
     // shooter.setDefaultCommand(runShooter);
     // intake.setDefaultCommand(runIntake);
     linkage.setDefaultCommand(powerLinkage);
-     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(
-            () -> drive.withVelocityX(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1) * MaxSpeed) //drive forward with negative y
-                // negative Y (forward)
-                .withVelocityY(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1) * MaxSpeed) // drive left with negative x
-                .withRotationalRate(MathUtil.applyDeadband(-driverController.getRightX(), 0.1) * MaxAngularRate) // drive counterclockwise with negative x                                                                                                  
-    ));
+    //  drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+    //     drivetrain.applyRequest(
+    //         () -> drive.withVelocityX(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1) * Constants.MAX_SPEED) //drive forward with negative y
+    //             // negative Y (forward)
+    //             .withVelocityY(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1) * Constants.MAX_SPEED) // drive left with negative x
+    //             .withRotationalRate(MathUtil.applyDeadband(-driverController.getRightX(), 0.1) * Constants.MAX_ANGULAR_RATE) // drive counterclockwise with negative x                                                                                                  
+    //     )
+    //   );
   }
 
   /**
