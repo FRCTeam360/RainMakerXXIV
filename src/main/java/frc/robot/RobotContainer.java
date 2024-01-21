@@ -5,67 +5,105 @@
 package frc.robot;
 
 import frc.robot.commands.Autos;
-import frc.robot.commands.RunIntake;
-import frc.robot.commands.RunShooter;
-import frc.robot.commands.RunShooterLinkage;
+import frc.robot.commands.PowerIntake;
+import frc.robot.commands.PowerIntakeReversed;
+import frc.robot.commands.PowerLinkage;
+import frc.robot.commands.PowerShooter;
+import frc.robot.commands.RunExtendIntake;
+import frc.robot.commands.RunLinkage;
+import frc.robot.commands.SetFlywheel;
+import frc.robot.commands.SetIntake;
+import frc.robot.generated.TunerConstants;
 import frc.robot.hardware.IntakeIOSparkMax;
+import frc.robot.hardware.LinkageIOSparkMax;
 import frc.robot.hardware.ShooterIOSparkMax;
-import frc.robot.hardware.ShooterLinkageIOSparkMax;
 import frc.robot.io.IntakeIO;
 import frc.robot.io.ShooterIO;
-import frc.robot.io.ShooterLinkageIO;
-import frc.robot.sim.IntakeIOSim;
 import frc.robot.sim.ShooterIOSim;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Linkage;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.ShooterLinkage;
+
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
+
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private final CommandXboxController operatorController = new CommandXboxController(Constants.OPERATOR_CONTROLLER);
-  private final CommandXboxController driverController = new CommandXboxController(Constants.DRIVER_CONTROLLER);
-
   // declared as final in example code, but gives error in our code
   private Intake intake;
   private Shooter shooter;
-  private ShooterLinkage shooterLinkage;
+  private Linkage linkage;
+  private CommandSwerveDrivetrain commandSwerveDrivetrain;
 
-  private RunIntake runIntake;
-  private RunShooter runShooter;
-  private RunShooterLinkage runShooterLinkage;
+  private PowerIntake powerIntake;
+  private PowerIntakeReversed powerIntakeReversed;
+  private PowerLinkage powerLinkage;
+  private PowerShooter powerShooter;
+  private RunExtendIntake runExtendIntake;
+  private RunLinkage runLinkage;
+  private SetFlywheel setFlywheel;
+  private SetIntake setIntake;
+  // private SetLinkage setLinkage;
+  // private SetpointFlywheel setpointFlywheel;
 
   
   // The robot's subsystems and commands are defined here...
-  //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
+  private final CommandXboxController operatorController = new CommandXboxController(Constants.OPERATOR_CONTROLLER);
+  private final CommandXboxController driverController = new CommandXboxController(Constants.DRIVER_CONTROLLER);
 
+  final double MaxSpeed = 13.7; // used to be 6 meters per second desired top speed
+  final double MaxAngularRate = Math.PI * 3; // Half a rotation per second max angular velocity
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  final Rotation2d setAngle = Rotation2d.fromDegrees(0);
+
+  /* Setting up bindings for necessary control of the swerve drive platform */
+  CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
+  SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+      .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1)
+      .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
+  // driving in open loop
+  SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+  SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+  Telemetry logger = new Telemetry(MaxSpeed);
+
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
         shooter = new Shooter(new ShooterIOSparkMax());
         intake = new Intake(new IntakeIOSparkMax());
-        shooterLinkage = new ShooterLinkage(new ShooterLinkageIOSparkMax());
+        linkage = new Linkage(new LinkageIOSparkMax());
+        // commandSwerveDrivetrain = new CommandSwerveDrivetrain(new CommandSwerveDrivetrainIOSparkMax());
         break;
 
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
         // CHANGE SHOOTER AND SHOOTER LINKAGE TO SIM LATER
-        shooter = new Shooter(new ShooterIOSparkMax());
-        intake = new Intake(new IntakeIOSim());
-        shooterLinkage = new ShooterLinkage(new ShooterLinkageIOSparkMax());
+        // shooter = new Shooter(new ShooterIOSparkMax());
+        // intake = new Intake(new IntakeIOSparkMax());
+        // linkage = new Linkage(new LinkageIOSparkMax());
+        // commandSwerveDrivetrain = new CommandSwerveDrivetrain(new CommandSwerveDrivetrainIOSparkMax());
         break;
 
       default:
@@ -80,38 +118,71 @@ public class RobotContainer {
     configureDefaultCommands();
   }
 
+  private void configureDefaultCommands() {
+    shooter.setDefaultCommand(powerShooter);
+    intake.setDefaultCommand(powerIntake);
+    linkage.setDefaultCommand(powerLinkage);
+     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+        drivetrain.applyRequest(
+            () -> drive.withVelocityX(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1) * MaxSpeed) //drive forward with negative y
+                // negative Y (forward)
+                .withVelocityY(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1) * MaxSpeed) // drive left with negative x
+                .withRotationalRate(MathUtil.applyDeadband(-driverController.getRightX(), 0.1) * MaxAngularRate) // drive counterclockwise with negative x                                                                                                  
+    ));
+  }
+
   /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
+   * Use this method to define your trigger->command mappings. Triggers can be
+   * created via the
+   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
+   * an arbitrary
    * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+   * {@link
+   * CommandXboxController
+   * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+   * PS4} controllers or
+   * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */  
 
 
   private void configureBindings() {
   
-    runIntake = new RunIntake(intake);
-    runShooter = new RunShooter(shooter);
-    runShooterLinkage = new RunShooterLinkage(shooterLinkage);
-
-    operatorController.a().whileTrue(runShooter);
-    operatorController.b().whileTrue(runIntake);
-    operatorController.x().whileTrue(new InstantCommand(() -> shooterLinkage.zero(), shooterLinkage));
+    powerIntake = new PowerIntake(intake);
+    powerIntakeReversed = new PowerIntakeReversed(intake);
+    powerLinkage = new PowerLinkage(linkage);
+    powerShooter = new PowerShooter(shooter);
+    runExtendIntake = new RunExtendIntake(intake);
+    runLinkage = new RunLinkage(linkage);
+    setIntake = new SetIntake(intake);
+    // setLinkage = new SetLinkage(linkage);
+    // not sure whether adding in the speed and velocity parameters will make a difference, but it won't work without them
+    // setpointFlywheel = new SetpointFlywheel(0.0, shooter);
+    setFlywheel = new SetFlywheel(0.0, shooter);
     
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
+    operatorController.rightTrigger(.005).whileTrue(powerIntake);
+    operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
+    // operatorController.leftBumper().whileTrue(runIntake);
+    // operatorController.rightBumper().whileTrue(runIntakeReversed);
+    operatorController.a().whileTrue(powerShooter);
+    operatorController.x().whileTrue(new InstantCommand(() -> linkage.zero(), linkage));
+    
+    // DRIVER CONTROLLER BINDINGS
+    driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    driverController.b().whileTrue(drivetrain
+        .applyRequest(
+            () -> point.withModuleDirection(new Rotation2d(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1),
+                MathUtil.applyDeadband(-driverController.getLeftX(), 0.1)))));
+    driverController.rightBumper().whileTrue(drivetrain.turntoCMD(setAngle, 0.0, 0.0));
+
+    // if (Utils.isSimulation()) {
+    // drivetrain.seedFieldRelative(new Pose2d(new Translation2d(),
+    // Rotation2d.fromDegrees(90)));
+    // }
+    drivetrain.registerTelemetry(logger::telemeterize);
   }
 
-
-  private void configureDefaultCommands() {
-    shooter.setDefaultCommand(runShooter);
-    shooterLinkage.setDefaultCommand(runShooterLinkage);
-    intake.setDefaultCommand(runIntake);
-  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -119,7 +190,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   // public Command getAutonomousCommand() {
-  //   // An example command will be run in autonomous
-  //   return Autos.exampleAuto(null);
+  // // An example command will be run in autonomous
+  // return Autos.exampleAuto(null);
   // }
 }

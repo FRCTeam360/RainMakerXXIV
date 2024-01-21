@@ -4,8 +4,8 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
-
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -24,7 +24,7 @@ import org.littletonrobotics.junction.inputs.LoggableInputs;
 public class Shooter extends SubsystemBase {
   private final ShooterIO io;
   private final ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
-
+  
   /** Creates a new Shooter. */
   public Shooter(ShooterIO io) {
     this.io = io;
@@ -58,11 +58,14 @@ public class Shooter extends SubsystemBase {
 
   public double getLeftSpeed() {
     return io.getLeft();
+
   }
 
   public double getRightSpeed() {
     return io.getRight();
   }
+
+
 
   @Override
   public void periodic() {

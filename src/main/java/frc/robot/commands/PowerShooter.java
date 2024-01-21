@@ -6,17 +6,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
-public class RunIntake extends Command {
-  private Intake intake;
-  private static XboxController operatorCont = new XboxController(1);
-  
-  /** Creates a new Java. */
-  public RunIntake(Intake intake) {
-    this.intake = intake;
+public class PowerShooter extends Command {
+  private final Shooter shooter = Shooter.getInstance();
+  private final XboxController operatorCont = new XboxController(1);
+
+  /** Creates a new RunShooter. */
+  public PowerShooter() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intake);
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -26,13 +25,24 @@ public class RunIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.run(0.5);
-  }
+    // if(Math.abs(operatorCont.getLeftY()) > 0.1) {
+    //   shooter.runLeft(-operatorCont.getLeftY());
+    // } else {
+    //   shooter.stopLeft();
+    // }
 
-  // Called once the command ends or is interrupted.
-  @Override
+    // if(Math.abs(operatorCont.getRightY()) > 0.1) {
+    //   shooter.runRight(-operatorCont.getRightY());
+    // } else {
+    //   shooter.stopRight();
+    // }
+
+    shooter.runBoth(0.73, -0.73); //todo: invert motor
+  }
+    
   public void end(boolean interrupted) {
-    intake.run(0.0);
+    shooter.stopLeft();
+    shooter.stopRight();
   }
 
   // Returns true when the command should end.

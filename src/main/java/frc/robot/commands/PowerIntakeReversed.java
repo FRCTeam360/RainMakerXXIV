@@ -6,17 +6,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ShooterLinkage;
+import frc.robot.subsystems.Intake;
 
-public class RunShooterLinkage extends Command {
-  private ShooterLinkage shooterLinkage;
-  private final XboxController operatorCont = new XboxController(1);
-
-  /** Creates a new RunShooterLinkage. */
-  public RunShooterLinkage(ShooterLinkage shooterLinkage) {
-    this.shooterLinkage = shooterLinkage;
+public class PowerIntakeReversed extends Command {
+  private XboxController operatorCont = new XboxController(1);
+  private Intake intake = Intake.getInstance();
+  /** Creates a new RunIntakeReversed. */
+  public PowerIntakeReversed() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shooterLinkage);
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
@@ -26,17 +24,17 @@ public class RunShooterLinkage extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (operatorCont.getRightTriggerAxis() > 0.1) {
-      shooterLinkage.run(operatorCont.getRightTriggerAxis());
-    } else if (operatorCont.getLeftTriggerAxis() > 0.1) {
-      shooterLinkage.run(-operatorCont.getLeftTriggerAxis());
+    if(operatorCont.getLeftTriggerAxis() > .75) {
+      intake.run(.5);
+    } else {
+      intake.run(.15);
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooterLinkage.run(0.0);
+    intake.stop();
   }
 
   // Returns true when the command should end.
