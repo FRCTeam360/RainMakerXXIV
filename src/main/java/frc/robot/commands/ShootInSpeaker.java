@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -15,8 +16,16 @@ public class ShootInSpeaker extends Command {
   private Linkage linkage;
   private Flywheel flywheel;
   private CommandSwerveDrivetrain drivetrain;
+
   private double linkageSetpoint;
   private double flywheelSetpoint;
+  private Timer timer;
+
+  private ShootState state = ShootState.LOADED;
+
+  private enum ShootState {
+    LOADED, SHOOT
+  }
 
   /** Creates a new ShootInSpeaker. */
   public ShootInSpeaker(Linkage linkage, Flywheel flywheel,
@@ -63,9 +72,12 @@ public class ShootInSpeaker extends Command {
         break;
 
       case SHOOT:
-        boolean isNoteOutToaster = flywheel.isBelowSetpoint();
-        if(isNoteOutToaster){
-          // set a timer for 50-100 ms(?)
+        boolean hasShot = flywheel.isBelowSetpoint(); //check logic in flywheel subsystem (180 rpm gap)
+        if (hasShot) {
+          timer.start();
+          if (timer.hasElapsed(0.2)) { //TUNE!!!
+            isFinished(); //sketch
+          }
         }
         break;
 
@@ -73,10 +85,15 @@ public class ShootInSpeaker extends Command {
 
   }
 
-  private ShootState state = ShootState.LOADED;
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {
+  }
 
-  private enum ShootState {
-    LOADED, SHOOT
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    return true;
   }
 
   public class ShootInSpeakerParallel extends ParallelCommandGroup {
