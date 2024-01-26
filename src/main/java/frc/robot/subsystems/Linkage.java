@@ -87,12 +87,7 @@ public class Linkage extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Linkage Angle", getAngle());
-    SmartDashboard.putNumber("linkage voltage", motor.getAppliedOutput());
-    SmartDashboard.putNumber("angle", drivetrain.getAngle());
-    SmartDashboard.putNumber("left x", driverCont.getLeftX());
-    SmartDashboard.putNumber("left y", driverCont.getLeftY());
-
-    SmartDashboard.putNumber("right x", driverCont.getRightX());
+    SmartDashboard.putNumber("Linkage Voltage", motor.getAppliedOutput());
 
   }
 
