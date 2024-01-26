@@ -123,18 +123,7 @@ public class RobotContainer {
 
     driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     
-    // DRIVER CONTROLLER BINDINGS
-    //driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
-    // driverController.b().whileTrue(drivetrain
-    //     .applyRequest(
-    //         () -> point.withModuleDirection(new Rotation2d(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1),
-    //             MathUtil.applyDeadband(-driverController.getLeftX(), 0.1)))));
-    //driverController.rightBumper().whileTrue(drivetrain.turntoCMD(setAngle, 0.0, 0.0));
-
-    // if (Utils.isSimulation()) {
-    // drivetrain.seedFieldRelative(new Pose2d(new Translation2d(),
-    // Rotation2d.fromDegrees(90)));
-    // }
+    
     drivetrain.registerTelemetry(logger::telemeterize);
   }
 
