@@ -25,13 +25,13 @@ public class SetFlywheel extends Command {
   @Override
   public void execute() {
   
-    flywheel.runBoth(speed *0.8, speed);
+    flywheel.run(speed *0.8);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    flywheel.stopBoth();
+    flywheel.stop();
   }
 
   // Returns true when the command should end.

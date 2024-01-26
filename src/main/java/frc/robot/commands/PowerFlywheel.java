@@ -37,13 +37,12 @@ public class PowerFlywheel extends Command {
     //   flywheel.stopRight();
     // }
 
-    flywheel.runBoth(0.8, 1.0);
+    flywheel.run(0.8);
 
   }
     
   public void end(boolean interrupted) {
-    flywheel.stopLeft();
-    flywheel.stopRight();
+    flywheel.stop();
   }
 
   // Returns true when the command should end.
