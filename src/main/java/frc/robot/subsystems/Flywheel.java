@@ -80,7 +80,7 @@ public class Flywheel extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Left Speed", getLeftSpeed());
-    SmartDashboard.putNumber("Right Speed", getRightSpeed());
+    SmartDashboard.putNumber("Top Speed", getLeftSpeed());
+    SmartDashboard.putNumber("Bottom Speed", getRightSpeed());
   }
 }
