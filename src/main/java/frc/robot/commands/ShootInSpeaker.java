@@ -32,6 +32,7 @@ public class ShootInSpeaker extends Command {
     this.flywheelSetpoint = flywheelSetpoint;
 
   }
+
   @Override
   public void initialize() {
     state = ShootState.LOADED;
@@ -39,27 +40,34 @@ public class ShootInSpeaker extends Command {
 
   @Override
   public void execute() {
+    linkage.setAngle(linkageSetpoint);
+    flywheel.setSpeed(flywheelSetpoint);
+    // drivetrain is rotated in its own command ran in parallel
     switch (state) {
       case LOADED:
-      linkage.setAngle(linkageSetpoint);
-      boolean isLinkageAtSetpoint = linkage.isAtSetpoint();
-      boolean isFlywheelAtSetpoint = flywheel.isAtSetpoint();
-      boolean isDrivetrainAtSetpoint = drivetrain.isFacingAngle();
-      if(isLinkageAtSetpoint){
-        System.out.println("inkage at setpoint");
-      }
-      if(isFlywheelAtSetpoint){
-        System.out.println("flywheel at setpoint");
-      }
-      if(isDrivetrainAtSetpoint){
-        System.out.println("drivetrain at setpoint");
-      }
-      if(isLinkageAtSetpoint && isDrivetrainAtSetpoint && isFlywheelAtSetpoint){
-       this.state = ShootState.SHOOT;
-      }
-      break;
-      
-      
+        boolean isLinkageAtSetpoint = linkage.isAtSetpoint();
+        boolean isFlywheelAtSetpoint = flywheel.isAtSetpoint();
+        boolean isDrivetrainAtSetpoint = drivetrain.isFacingAngle();
+        if (isLinkageAtSetpoint) {
+          System.out.println("inkage at setpoint");
+        }
+        if (isFlywheelAtSetpoint) {
+          System.out.println("flywheel at setpoint");
+        }
+        if (isDrivetrainAtSetpoint) {
+          System.out.println("drivetrain at setpoint");
+        }
+        if (isLinkageAtSetpoint && isDrivetrainAtSetpoint && isFlywheelAtSetpoint) {
+          this.state = ShootState.SHOOT;
+        }
+        break;
+
+      case SHOOT:
+        boolean isNoteOutToaster = flywheel.isBelowSetpoint();
+        if(isNoteOutToaster){
+          // set a timer for 50-100 ms(?)
+        }
+        break;
 
     }
 

@@ -96,11 +96,8 @@ public class Shooter extends SubsystemBase {
   public boolean isAboveSetpoint(){
     return this.getSpeed() >= rpmSetpoint;
   }
-
-  
-
-  public boolean isAtSetpoint() {
-    
+  public boolean isBelowSetpoint(){
+    return this.getSpeed() <= rpmSetpoint - 200.0;
   }
 
   @Override
