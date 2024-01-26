@@ -20,25 +20,25 @@ public class Flywheel extends SubsystemBase {
   private static Flywheel instance;
   // private final CANSparkMax leftMotor = new CANSparkMax(Constants.SHOOTER_LEFT_ID, MotorType.kBrushless);
   // private final CANSparkMax rightMotor = new CANSparkMax(Constants.SHOOTER_RIGHT_ID, MotorType.kBrushless);
-  private final CANSparkFlex leftMotor = new CANSparkFlex(Constants.SHOOTER_TOP_ID, MotorType.kBrushless);
-  private final CANSparkFlex rightMotor = new CANSparkFlex(Constants.SHOOTER_BOTTOM_ID, MotorType.kBrushless);
+  private final CANSparkFlex topMotor = new CANSparkFlex(Constants.SHOOTER_TOP_ID, MotorType.kBrushless);
+  private final CANSparkFlex bottomMotor = new CANSparkFlex(Constants.SHOOTER_BOTTOM_ID, MotorType.kBrushless);
   private double rpmSetpoint = 0.0;
 
-  public final SparkPIDController leftPidController = leftMotor.getPIDController();
-  public final SparkPIDController rightPidController = rightMotor.getPIDController();
+  public final SparkPIDController leftPidController = topMotor.getPIDController();
+  public final SparkPIDController rightPidController = bottomMotor.getPIDController();
   
 
   /** Creates a new Shooter. */
   public Flywheel() {
 
-    leftMotor.restoreFactoryDefaults();
-    leftMotor.setInverted(false);
-    leftMotor.setIdleMode(IdleMode.kBrake);
+    topMotor.restoreFactoryDefaults();
+    topMotor.setInverted(false);
+    topMotor.setIdleMode(IdleMode.kBrake);
 
-    rightMotor.restoreFactoryDefaults();
-    rightMotor.setInverted(true);
-    rightMotor.setIdleMode(IdleMode.kBrake);
-    rightMotor.follow(leftMotor);
+    bottomMotor.restoreFactoryDefaults();
+    bottomMotor.setInverted(true);
+    bottomMotor.setIdleMode(IdleMode.kBrake);
+    bottomMotor.follow(topMotor);
   }
 
   public static Flywheel getInstance() {
@@ -48,61 +48,40 @@ public class Flywheel extends SubsystemBase {
     return instance;
   }
 
-  public void runLeft(double speed) {
-    leftMotor.set(speed);
+  public void run(double speed) {
+    topMotor.set(speed);
   }
 
-  public void runRight(double speed) {
-    rightMotor.set(speed);
-   }
-
-  public void runBoth(double leftSpeed, double rightSpeed) {
-    leftMotor.set(leftSpeed);
-    rightMotor.set(rightSpeed);
+  public void stop() {
+    topMotor.stopMotor();
+  }
+  public double getTopSpeed() {
+    return topMotor.get();
   }
 
-  public void stopLeft() {
-    leftMotor.stopMotor();
-  }
-
-  public void stopRight() {
-     rightMotor.stopMotor();
-  }
-
-  public void stopBoth() {
-    leftMotor.stopMotor();
-  }
-
-  public double getLeftSpeed() {
-    return leftMotor.get();
-  }
-
-  public double getRightSpeed() {
-     return rightMotor.get();
+  public double getBottomSpeed() {
+     return bottomMotor.get();
    }
   public void setSpeed(double rpm){
     leftPidController.setReference(rpm, CANSparkBase.ControlType.kVelocity);
     rpmSetpoint = rpm;
   }
-  public double getSpeed(){
-    return leftMotor.getEncoder().getVelocity();
-  }
 
   public boolean isAtSetpoint(){
-    return Math.abs(this.getSpeed() - rpmSetpoint) < 20.0;
+    return Math.abs(this.getTopSpeed() - rpmSetpoint) < 20.0;
     
   }
   public boolean isAboveSetpoint(){
-    return this.getSpeed() >= rpmSetpoint;
+    return this.getTopSpeed() >= rpmSetpoint;
   }
   public boolean isBelowSetpoint(){
-    return this.getSpeed() <= rpmSetpoint - 200.0;
+    return this.getTopSpeed() <= rpmSetpoint - 200.0;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Left Speed", getLeftSpeed());
-    SmartDashboard.putNumber("Right Speed", getRightSpeed());
+    SmartDashboard.putNumber("Left Speed", getTopSpeed());
+    SmartDashboard.putNumber("Right Speed", getBottomSpeed());
   }
 }

@@ -54,7 +54,7 @@ public class SetpointFlywheel extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    flywheel.stopBoth();
+    flywheel.stop();
   }
 
   // Returns true when the command should end.

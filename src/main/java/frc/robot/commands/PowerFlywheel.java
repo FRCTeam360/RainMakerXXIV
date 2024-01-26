@@ -42,7 +42,7 @@ public class PowerFlywheel extends Command {
   }
     
   public void end(boolean interrupted) {
-    flywheel.stopLeft();
+    flywheel.stop();
     flywheel.stopRight();
   }
 
