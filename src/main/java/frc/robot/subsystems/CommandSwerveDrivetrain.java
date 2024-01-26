@@ -81,6 +81,10 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         this.getPigeon2().reset();
     }
 
+    public void xOut() {
+        this.setControl(new SwerveRequest.SwerveDriveBrake());
+    }
+
     public void fieldOrientedDrive(double leftX, double leftY, double rightX) {
         this.setControl(new SwerveRequest.FieldCentric()
                 .withVelocityX(MathUtil.applyDeadband(leftY, 0.1) * Constants.MAX_SPEED_MPS)

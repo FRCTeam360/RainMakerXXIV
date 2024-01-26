@@ -114,14 +114,14 @@ public class RobotContainer {
   private void configureBindings() {
 
     // OPERATOR CONTROLLER BINDINGS
-    operatorController.rightTrigger(.005).whileTrue(powerIntake);
     operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
-    // operatorController.leftBumper().whileTrue(runIntake);
-    // operatorController.rightBumper().whileTrue(runIntakeReversed);
+    operatorController.rightTrigger(.005).whileTrue(powerIntake);
     operatorController.a().whileTrue(powerFlywheel);
     operatorController.b().whileTrue(runExtendIntake);
 
-    driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
+    // DRIVER CONTROLLER BINDINGS
+    driverController.x().whileTrue(new InstantCommand(() -> drivetrain.xOut(), drivetrain));
+    driverController.a().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     
     
     drivetrain.registerTelemetry(logger::telemeterize);
