@@ -6,7 +6,7 @@ package frc.robot;
 
 import frc.robot.commands.RunExtendIntake;
 import frc.robot.commands.PowerIntakeReversed;
-import frc.robot.commands.PowerShooter;
+import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.PowerIntake;
 import frc.robot.commands.PowerLinkage;
 import frc.robot.commands.SetFlywheel;
@@ -14,7 +14,7 @@ import frc.robot.commands.SetLinkage;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Linkage;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
@@ -46,18 +46,18 @@ public class RobotContainer {
 
   // subsystems
   private final Intake intake = Intake.getInstance();
-  private final Shooter shooter = Shooter.getInstance();
+  private final Flywheel flywheel = Flywheel.getInstance();
   private final Linkage linkage = Linkage.getInstance();
 
   // auto commands
   private final SetFlywheel setFlywheel = new SetFlywheel(0);
 
   // tele commands
-  private final RunExtendIntake runIntake = new RunExtendIntake();
-  private final PowerIntakeReversed manualIntakeReversed = new PowerIntakeReversed();
-  private final PowerIntake manualIntake = new PowerIntake();
-  private final PowerShooter runShooter = new PowerShooter();
-  private final PowerLinkage runShooterLinkage = new PowerLinkage();
+  private final RunExtendIntake runExtendIntake = new RunExtendIntake();
+  private final PowerIntakeReversed powerIntakeReversed = new PowerIntakeReversed();
+  private final PowerIntake powerIntake = new PowerIntake();
+  private final PowerFlywheel powerFlywheel = new PowerFlywheel();
+  private final PowerLinkage powerLinkage = new PowerLinkage();
   private final SetLinkage setLinkage = new SetLinkage();
 
   final double MaxSpeed = 13.7; // used to be 6 meters per second desired top speed
@@ -87,7 +87,7 @@ public class RobotContainer {
   private void configureDefaultCommands() {
     // shooter.setDefaultCommand(runShooter);
     // intake.setDefaultCommand(runIntake);
-    linkage.setDefaultCommand(runShooterLinkage);
+    linkage.setDefaultCommand(powerLinkage);
      drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(
             () -> drive.withVelocityX(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1) * MaxSpeed) //drive forward with negative y
@@ -114,12 +114,12 @@ public class RobotContainer {
   private void configureBindings() {
 
     // OPERATOR CONTROLLER BINDINGS
-    operatorController.rightTrigger(.005).whileTrue(manualIntake);
-    operatorController.leftTrigger(.005).whileTrue(manualIntakeReversed);
+    operatorController.rightTrigger(.005).whileTrue(powerIntake);
+    operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
     // operatorController.leftBumper().whileTrue(runIntake);
     // operatorController.rightBumper().whileTrue(runIntakeReversed);
-    operatorController.a().whileTrue(runShooter);
-    operatorController.b().whileTrue(runIntake);
+    operatorController.a().whileTrue(powerFlywheel);
+    operatorController.b().whileTrue(runExtendIntake);
     operatorController.x().whileTrue(new InstantCommand(() -> linkage.zero(), linkage));
     
     // DRIVER CONTROLLER BINDINGS

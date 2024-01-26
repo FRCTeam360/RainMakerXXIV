@@ -14,6 +14,7 @@ public class PowerIntake extends Command {
   private Intake intake = Intake.getInstance();
   /** Creates a new ManualIntake. */
   public PowerIntake() {
+    addRequirements(intake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

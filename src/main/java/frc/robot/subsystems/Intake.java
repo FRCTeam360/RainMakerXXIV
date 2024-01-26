@@ -59,5 +59,6 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Intake Speed", getSpeed());
     SmartDashboard.putNumber("Amps", getAmps());
+    SmartDashboard.putBoolean("this sensor sucks", getSensor());
   }
 }

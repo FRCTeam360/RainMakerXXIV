@@ -5,16 +5,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Flywheel;
 
 public class SetFlywheel extends Command {
-  private final Shooter shooter = Shooter.getInstance();
+  private final Flywheel flywheel = Flywheel.getInstance();
   private final double speed;
 
   /** Creates a new SetFlywheel. */
   public SetFlywheel(double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shooter);
+    addRequirements(flywheel);
     this.speed = speed;}
 
   // Called when the command is initially scheduled.
@@ -25,13 +25,13 @@ public class SetFlywheel extends Command {
   @Override
   public void execute() {
   
-    shooter.runBoth(speed *0.8, speed);
+    flywheel.runBoth(speed *0.8, speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.stopBoth();
+    flywheel.stopBoth();
   }
 
   // Returns true when the command should end.

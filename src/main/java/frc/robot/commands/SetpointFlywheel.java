@@ -5,20 +5,21 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Flywheel;
 
 
 
 public class SetpointFlywheel extends Command {
+  private double setpoint;
+  private Flywheel flywheel;
 
-  private final Shooter shooter;
   private double setpointRpm;
   
   /** Creates a new SetpointFlywheel. */
-  public SetpointFlywheel(Shooter shooter, double setpointRpm) {
-    this.shooter = shooter;
+  public SetpointFlywheel(Flywheel flywheel, double setpointRpm) {
+    this.flywheel = flywheel;
     this.setpointRpm = setpointRpm;
-    addRequirements(this.shooter);
+    addRequirements(this.flywheel);
     
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -26,25 +27,40 @@ public class SetpointFlywheel extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooter.setSpeed(setpointRpm);
+    flywheel.setSpeed(setpointRpm);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
+    // if ((p != kP)) {
+    //   flywheel.leftPidController.setP(p);
+    //   flywheel.rightPidController.setP(p);
+    //   kP = p;
+    // }
+    // if ((i != kI)) {
+    //   flywheel.leftPidController.setI(i);
+    //   flywheel.rightPidController.setI(i);
+    //   kI = i;
+    // }
+    // if ((d != kD)) {
+    //   flywheel.leftPidController.setD(d);
+    //   flywheel.rightPidController.setD(d);
+    //   kD = d;
+    // }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.stopLeft();
+    flywheel.stopBoth();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    shooter.setSpeed(0.0);
+    flywheel.setSpeed(0.0);
     return false;
   }
 }
