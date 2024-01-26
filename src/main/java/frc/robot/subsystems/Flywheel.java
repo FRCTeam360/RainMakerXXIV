@@ -14,9 +14,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Shooter extends SubsystemBase {
+public class Flywheel extends SubsystemBase {
 
-  private static Shooter instance;
+  private static Flywheel instance;
   // private final CANSparkMax leftMotor = new CANSparkMax(Constants.SHOOTER_LEFT_ID, MotorType.kBrushless);
   // private final CANSparkMax rightMotor = new CANSparkMax(Constants.SHOOTER_RIGHT_ID, MotorType.kBrushless);
   private final CANSparkFlex leftMotor = new CANSparkFlex(Constants.SHOOTER_LEFT_ID, MotorType.kBrushless);
@@ -25,7 +25,7 @@ public class Shooter extends SubsystemBase {
   public final SparkPIDController leftPidController = leftMotor.getPIDController();
   public final SparkPIDController rightPidController = rightMotor.getPIDController();
   /** Creates a new Shooter. */
-  public Shooter() {
+  public Flywheel() {
 
     leftMotor.restoreFactoryDefaults();
     leftMotor.setInverted(false);
@@ -36,9 +36,9 @@ public class Shooter extends SubsystemBase {
     rightMotor.setIdleMode(IdleMode.kBrake);
   }
 
-  public static Shooter getInstance() {
+  public static Flywheel getInstance() {
     if (instance == null) {
-      instance = new Shooter();
+      instance = new Flywheel();
     }
     return instance;
   }

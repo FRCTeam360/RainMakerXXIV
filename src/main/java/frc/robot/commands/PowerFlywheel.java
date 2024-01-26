@@ -6,16 +6,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Flywheel;
 
-public class PowerShooter extends Command {
-  private final Shooter shooter = Shooter.getInstance();
+public class PowerFlywheel extends Command {
+  private final Flywheel flywheel = Flywheel.getInstance();
   private final XboxController operatorCont = new XboxController(1);
 
-  /** Creates a new RunShooter. */
-  public PowerShooter() {
+  /** Creates a new Runflywheel. */
+  public PowerFlywheel() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shooter);
+    addRequirements(flywheel);
   }
 
   // Called when the command is initially scheduled.
@@ -26,24 +26,24 @@ public class PowerShooter extends Command {
   @Override
   public void execute() {
     // if(Math.abs(operatorCont.getLeftY()) > 0.1) {
-    //   shooter.runLeft(-operatorCont.getLeftY());
+    //   flywheel.runLeft(-operatorCont.getLeftY());
     // } else {
-    //   shooter.stopLeft();
+    //   flywheel.stopLeft();
     // }
 
     // if(Math.abs(operatorCont.getRightY()) > 0.1) {
-    //   shooter.runRight(-operatorCont.getRightY());
+    //   flywheel.runRight(-operatorCont.getRightY());
     // } else {
-    //   shooter.stopRight();
+    //   flywheel.stopRight();
     // }
 
-    shooter.runBoth(0.8, 1.0);
+    flywheel.runBoth(0.8, 1.0);
 
   }
     
   public void end(boolean interrupted) {
-    shooter.stopLeft();
-    shooter.stopRight();
+    flywheel.stopLeft();
+    flywheel.stopRight();
   }
 
   // Returns true when the command should end.
