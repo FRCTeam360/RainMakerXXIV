@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.commands.RunExtendIntake;
 import frc.robot.commands.PowerIntakeReversed;
 import frc.robot.commands.PowerShooter;
+import frc.robot.commands.RobotOrientedDrive;
 import frc.robot.commands.PowerIntake;
 import frc.robot.commands.PowerLinkage;
 import frc.robot.commands.SetFlywheel;
@@ -65,6 +66,7 @@ public class RobotContainer {
   private final PowerLinkage powerLinkage = new PowerLinkage();
   private final SetLinkage setLinkage = new SetLinkage();
   private final FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive();
+  private final RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive();
 
 
   // public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()

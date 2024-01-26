@@ -85,6 +85,15 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         this.setControl(new SwerveRequest.FieldCentric()
                 .withVelocityX(MathUtil.applyDeadband(leftY, 0.1) * Constants.MAX_SPEED_MPS)
                 .withVelocityY(MathUtil.applyDeadband(leftX, 0.1) * Constants.MAX_SPEED_MPS)
-                .withRotationalRate(MathUtil.applyDeadband(-rightX, 0.1) * Constants.MAX_ANGULAR_RATE));
+                .withRotationalRate(MathUtil.applyDeadband(-rightX, 0.1) * Constants.MAX_ANGULAR_RATE)
+                );
+    }
+
+    public void robotOrientedDrive(double leftX, double leftY, double rightX) {
+        this.setControl(new SwerveRequest.RobotCentric()
+                .withVelocityX(MathUtil.applyDeadband(leftY, 0.1) * Constants.MAX_SPEED_MPS)
+                .withVelocityY(MathUtil.applyDeadband(leftX, 0.1) * Constants.MAX_SPEED_MPS)
+                .withRotationalRate(MathUtil.applyDeadband(-rightX, 0.1) * Constants.MAX_ANGULAR_RATE)
+                );
     }
 }

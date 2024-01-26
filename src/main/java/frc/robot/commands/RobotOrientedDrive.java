@@ -7,49 +7,41 @@ package frc.robot.commands;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
-public class FieldOrientedDrive extends Command {
-  private final XboxController driverController = new XboxController(0);
+public class RobotOrientedDrive extends Command {
+   private final XboxController driverController = new XboxController(0);
 
   private final CommandSwerveDrivetrain driveTrain = TunerConstants.DriveTrain;
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(Constants.MAX_SPEED_MPS * 0.1).withRotationalDeadband(Constants.MAX_ANGULAR_RATE * 0.1)
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
 
-  /** Creates a new TunerXDrive. */
-  public FieldOrientedDrive() {
+  /** Creates a new RobotOrientedDrive. */
+  public RobotOrientedDrive() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrain);
   }
 
   // Called when the command is initially scheduled.
-
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    driveTrain.fieldOrientedDrive(driverController.getLeftX(), driverController.getLeftY(),
+    driveTrain.robotOrientedDrive(driverController.getLeftX(), driverController.getLeftY(),
         driverController.getRightX());
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
