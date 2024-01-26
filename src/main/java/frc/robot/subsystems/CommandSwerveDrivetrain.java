@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import java.util.function.Supplier;
 
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
@@ -33,6 +34,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             startSimThread();
         }
     }
+
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
         if (Utils.isSimulation()) {
@@ -62,5 +64,19 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     public Command turntoCMD(Rotation2d desiredAngle, double velocityX, double velocityY){
         return this.applyRequest(() -> drive.withTargetDirection(desiredAngle).withVelocityX(velocityX).withVelocityY(velocityY));
     }
+
+
+    public float getAngle() {
+        return (float)this.getPigeon2().getAngle();
+    }
+
+    public Rotation2d getRotation2d() {
+        return this.getPigeon2().getRotation2d();
+    }
+
+    public void zero() {
+        this.getPigeon2().reset();
+      }
+    
     
 }

@@ -11,6 +11,7 @@ import frc.robot.commands.PowerIntake;
 import frc.robot.commands.PowerLinkage;
 import frc.robot.commands.SetFlywheel;
 import frc.robot.commands.SetLinkage;
+import frc.robot.commands.TunerXDrive;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Intake;
@@ -45,9 +46,13 @@ public class RobotContainer {
   private final CommandXboxController driverController = new CommandXboxController(Constants.DRIVER_CONTROLLER);
 
   // subsystems
+  private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
   private final Intake intake = Intake.getInstance();
   private final Shooter shooter = Shooter.getInstance();
   private final Linkage linkage = Linkage.getInstance();
+
+  public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
+
 
   // auto commands
   private final SetFlywheel setFlywheel = new SetFlywheel(0);
@@ -59,6 +64,7 @@ public class RobotContainer {
   private final PowerShooter powerShooter = new PowerShooter();
   private final PowerLinkage powerLinkage = new PowerLinkage();
   private final SetLinkage setLinkage = new SetLinkage();
+  private final TunerXDrive tunerXDrive = new TunerXDrive();
 
 
   // public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -69,10 +75,9 @@ public class RobotContainer {
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
   /* Setting up bindings for necessary control of the swerve drive platform */
-  CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
   SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-  Telemetry logger = new Telemetry(Constants.MAX_SPEED);
+  Telemetry logger = new Telemetry(Constants.MAX_SPEED_MPS);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -87,14 +92,7 @@ public class RobotContainer {
     // shooter.setDefaultCommand(runShooter);
     // intake.setDefaultCommand(runIntake);
     linkage.setDefaultCommand(powerLinkage);
-    //  drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-    //     drivetrain.applyRequest(
-    //         () -> drive.withVelocityX(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1) * Constants.MAX_SPEED) //drive forward with negative y
-    //             // negative Y (forward)
-    //             .withVelocityY(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1) * Constants.MAX_SPEED) // drive left with negative x
-    //             .withRotationalRate(MathUtil.applyDeadband(-driverController.getRightX(), 0.1) * Constants.MAX_ANGULAR_RATE) // drive counterclockwise with negative x                                                                                                  
-    //     )
-    //   );
+    drivetrain.setDefaultCommand(tunerXDrive);
   }
 
   /**
@@ -120,15 +118,16 @@ public class RobotContainer {
     // operatorController.rightBumper().whileTrue(runIntakeReversed);
     operatorController.a().whileTrue(powerShooter);
     operatorController.b().whileTrue(runExtendIntake);
-    operatorController.x().whileTrue(new InstantCommand(() -> linkage.zero(), linkage));
+
+    driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     
     // DRIVER CONTROLLER BINDINGS
-    driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
-    driverController.b().whileTrue(drivetrain
-        .applyRequest(
-            () -> point.withModuleDirection(new Rotation2d(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1),
-                MathUtil.applyDeadband(-driverController.getLeftX(), 0.1)))));
-    driverController.rightBumper().whileTrue(drivetrain.turntoCMD(setAngle, 0.0, 0.0));
+    //driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    // driverController.b().whileTrue(drivetrain
+    //     .applyRequest(
+    //         () -> point.withModuleDirection(new Rotation2d(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1),
+    //             MathUtil.applyDeadband(-driverController.getLeftX(), 0.1)))));
+    //driverController.rightBumper().whileTrue(drivetrain.turntoCMD(setAngle, 0.0, 0.0));
 
     // if (Utils.isSimulation()) {
     // drivetrain.seedFieldRelative(new Pose2d(new Translation2d(),

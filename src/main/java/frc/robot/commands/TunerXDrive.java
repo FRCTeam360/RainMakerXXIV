@@ -8,7 +8,9 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -16,43 +18,38 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class TunerXDrive extends Command {
-  private final XboxController driverCont = new XboxController(0);
-
+  private final XboxController driverController = new XboxController(0);
+  
   private final CommandSwerveDrivetrain driveTrain = TunerConstants.DriveTrain;
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-      .withDeadband(Constants.MAX_SPEED * 0.1).withRotationalDeadband(Constants.MAX_ANGULAR_RATE * 0.1)
+      .withDeadband(Constants.MAX_SPEED_MPS * 0.1).withRotationalDeadband(Constants.MAX_ANGULAR_RATE * 0.1)
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
 
   // driving in open loop
-
+  
   /** Creates a new TunerXDrive. */
   public TunerXDrive() {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(driveTrain);
   }
-
+  
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // SmartDashboard.putNumber("angle", driveTrain.getAngle());
   }
 
-  private double getYWithDeadzone() {
-    if (Math.abs(driverCont.getLeftX()) >= 0.125 || Math.abs(driverCont.getLeftY()) >= 0.125) {
-        return driverCont.getLeftY();
-    } else {
-        return 0.0;
-    }
+public double getWithDeadzone(double value) { // not sure if this is what you wanted me to do but i tried :(
+  if (Math.abs(value) <= 0.125) {
+      return 0.0;
+  } else {
+      return value;
+  }
 }
 
-private double getXWithDeadzone() {
-    if (Math.abs(driverCont.getLeftX()) >= 0.125 || Math.abs(driverCont.getLeftY()) >= 0.125) {
-        return driverCont.getLeftX();
-    } else {
-        return 0.0;
-    }
-}
 
 public double getAlignmentAngularVelocity() {
-    double currentRadians = driveTrain.getGyroscopeRotation().getRadians();
+    double currentRadians = Math.toRadians(driveTrain.getAngle());
     double desiredRadians = (Math.PI / 2) * (double) Math.round(currentRadians / (Math.PI / 2));
     double error = desiredRadians-currentRadians;
     if (Math.abs(error) < 0.01) {
@@ -69,22 +66,22 @@ public double getAlignmentAngularVelocity() {
   @Override
   public void execute() {
 
-    drivetrain.applyRequest(
-        () -> drive.withVelocityX(MathUtil.applyDeadband(-driverCont.getLeftY(), 0.1) * Constants.MAX_SPEED) // drive
-                                                                                                             // forward
-                                                                                                             // with
-                                                                                                             // negative
-                                                                                                             // y
-            // negative Y (forward)
-            .withVelocityY(MathUtil.applyDeadband(-driverCont.getLeftX(), 0.1) * Constants.MAX_SPEED) // drive left with
-                                                                                                      // negative x
-            .withRotationalRate(MathUtil.applyDeadband(-driverCont.getRightX(), 0.1) * Constants.MAX_ANGULAR_RATE) // drive
-                                                                                                                   // counterclockwise
-                                                                                                                   // with
-                                                                                                                   // negative
-                                                                                                                   // x
-    );
-  }
+    //TUNERX DRIVE CODE
+    driveTrain.setDefaultCommand( // Drivetrain will execute this command periodically
+        driveTrain.applyRequest(
+            () -> drive.withVelocityX(MathUtil.applyDeadband(driverController.getLeftY(), 0.1) * Constants.MAX_SPEED_MPS) //drive forward with negative y
+                // negative Y (forward)
+                .withVelocityY(MathUtil.applyDeadband(driverController.getLeftX(), 0.1) * Constants.MAX_SPEED_MPS) // drive left with negative x
+                .withRotationalRate(MathUtil.applyDeadband(-driverController.getRightX(), 0.1) * Constants.MAX_ANGULAR_RATE) // drive counterclockwise with negative x                                                                                                  
+        )
+      );
+
+
+        // if(driverController.getPOV() == 0){
+        //     driveTrain.zero();
+        // }
+    }
+
 
   // Called once the command ends or is interrupted.
   @Override
