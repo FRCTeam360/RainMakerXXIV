@@ -22,11 +22,15 @@ public class Shooter extends SubsystemBase {
   // private final CANSparkMax rightMotor = new CANSparkMax(Constants.SHOOTER_RIGHT_ID, MotorType.kBrushless);
   private final CANSparkFlex leftMotor = new CANSparkFlex(Constants.SHOOTER_LEFT_ID, MotorType.kBrushless);
   private final CANSparkFlex rightMotor = new CANSparkFlex(Constants.SHOOTER_RIGHT_ID, MotorType.kBrushless);
+  private double rpmSetpoint = 0.0;
 
   public final SparkPIDController leftPidController = leftMotor.getPIDController();
   public final SparkPIDController rightPidController = rightMotor.getPIDController();
+  
+
   /** Creates a new Shooter. */
   public Shooter() {
+    
 
     leftMotor.restoreFactoryDefaults();
     leftMotor.setInverted(false);
@@ -35,6 +39,7 @@ public class Shooter extends SubsystemBase {
     rightMotor.restoreFactoryDefaults();
     rightMotor.setInverted(true);
     rightMotor.setIdleMode(IdleMode.kBrake);
+    rightMotor.follow(leftMotor);
   }
 
   public static Shooter getInstance() {
@@ -50,16 +55,11 @@ public class Shooter extends SubsystemBase {
 
   public void runRight(double speed) {
     rightMotor.set(speed);
-  }
+   }
 
   public void runBoth(double leftSpeed, double rightSpeed) {
     leftMotor.set(leftSpeed);
     rightMotor.set(rightSpeed);
-  }
-
-  public void runBothPID(double speed) {
-    leftPidController.setReference(speed, CANSparkBase.ControlType.kVelocity);
-    rightPidController.setReference(speed, CANSparkBase.ControlType.kVelocity);
   }
 
   public void stopLeft() {
@@ -67,12 +67,11 @@ public class Shooter extends SubsystemBase {
   }
 
   public void stopRight() {
-    rightMotor.stopMotor();
+     rightMotor.stopMotor();
   }
 
   public void stopBoth() {
     leftMotor.stopMotor();
-    rightMotor.stopMotor();
   }
 
   public double getLeftSpeed() {
@@ -80,8 +79,25 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getRightSpeed() {
-    return rightMotor.get();
+     return rightMotor.get();
+   }
+  public void setSpeed(double rpm){
+    leftPidController.setReference(rpm, CANSparkBase.ControlType.kVelocity);
+    rpmSetpoint = rpm;
   }
+  public double getSpeed(){
+    return leftMotor.getEncoder().getVelocity();
+  }
+
+  public boolean isAtSetpoint(){
+    return Math.abs(this.getSpeed() - rpmSetpoint) < 20.0;
+    
+  }
+  public boolean isAboveSetpoint(){
+    return this.getSpeed() >= rpmSetpoint;
+  }
+
+  
 
   public boolean isAtSetpoint() {
     
