@@ -8,11 +8,11 @@ import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Flywheel;
 
 public class SetpointFlywheel extends Command {
   private double setpoint;
-  private Shooter shooter = new Shooter();
+  private Flywheel flywheel = new Flywheel();
 
   private double kP = 0.01;
   private double kD = 0.0;
@@ -41,18 +41,18 @@ public class SetpointFlywheel extends Command {
     double ff = SmartDashboard.getNumber("ff", 0);
 
     if ((p != kP)) {
-      shooter.leftPidController.setP(p);
-      shooter.rightPidController.setP(p);
+      flywheel.leftPidController.setP(p);
+      flywheel.rightPidController.setP(p);
       kP = p;
     }
     if ((i != kI)) {
-      shooter.leftPidController.setI(i);
-      shooter.rightPidController.setI(i);
+      flywheel.leftPidController.setI(i);
+      flywheel.rightPidController.setI(i);
       kI = i;
     }
     if ((d != kD)) {
-      shooter.leftPidController.setD(d);
-      shooter.rightPidController.setD(d);
+      flywheel.leftPidController.setD(d);
+      flywheel.rightPidController.setD(d);
       kD = d;
     }
   }

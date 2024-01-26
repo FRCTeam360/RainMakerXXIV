@@ -6,7 +6,7 @@ package frc.robot;
 
 import frc.robot.commands.RunExtendIntake;
 import frc.robot.commands.PowerIntakeReversed;
-import frc.robot.commands.PowerShooter;
+import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.PowerIntake;
 import frc.robot.commands.PowerLinkage;
 import frc.robot.commands.SetFlywheel;
@@ -14,7 +14,7 @@ import frc.robot.commands.SetLinkage;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Linkage;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
@@ -46,7 +46,7 @@ public class RobotContainer {
 
   // subsystems
   private final Intake intake = Intake.getInstance();
-  private final Shooter shooter = Shooter.getInstance();
+  private final Flywheel flywheel = Flywheel.getInstance();
   private final Linkage linkage = Linkage.getInstance();
 
   // auto commands
@@ -56,7 +56,7 @@ public class RobotContainer {
   private final RunExtendIntake runExtendIntake = new RunExtendIntake();
   private final PowerIntakeReversed powerIntakeReversed = new PowerIntakeReversed();
   private final PowerIntake powerIntake = new PowerIntake();
-  private final PowerShooter powerShooter = new PowerShooter();
+  private final PowerFlywheel powerFlywheel = new PowerFlywheel();
   private final PowerLinkage powerLinkage = new PowerLinkage();
   private final SetLinkage setLinkage = new SetLinkage();
 
@@ -118,7 +118,7 @@ public class RobotContainer {
     operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
     // operatorController.leftBumper().whileTrue(runIntake);
     // operatorController.rightBumper().whileTrue(runIntakeReversed);
-    operatorController.a().whileTrue(powerShooter);
+    operatorController.a().whileTrue(powerFlywheel);
     operatorController.b().whileTrue(runExtendIntake);
     operatorController.x().whileTrue(new InstantCommand(() -> linkage.zero(), linkage));
     
