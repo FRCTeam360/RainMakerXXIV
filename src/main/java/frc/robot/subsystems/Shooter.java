@@ -83,6 +83,10 @@ public class Shooter extends SubsystemBase {
     return rightMotor.get();
   }
 
+  public boolean isAtSetpoint() {
+    
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

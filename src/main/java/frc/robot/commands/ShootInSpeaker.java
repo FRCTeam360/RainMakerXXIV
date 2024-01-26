@@ -15,6 +15,8 @@ public class ShootInSpeaker extends Command {
   private Linkage linkage;
   private Shooter flywheel;
   private CommandSwerveDrivetrain drivetrain;
+  private double linkageSetpoint;
+  private double flywheelSetpoint;
 
   /** Creates a new ShootInSpeaker. */
   public ShootInSpeaker(Linkage linkage, Shooter flywheel,
@@ -26,6 +28,8 @@ public class ShootInSpeaker extends Command {
     this.linkage = linkage;
     this.flywheel = flywheel;
     this.drivetrain = drivetrain;
+    this.linkageSetpoint = linkageSetpoint;
+    this.flywheelSetpoint = flywheelSetpoint;
 
   }
   @Override
@@ -41,8 +45,24 @@ public class ShootInSpeaker extends Command {
       boolean isLinkageAtSetpoint = linkage.isAtSetpoint();
       boolean isFlywheelAtSetpoint = flywheel.isAtSetpoint();
       boolean isDrivetrainAtSetpoint = drivetrain.isFacingAngle();
+      if(isLinkageAtSetpoint){
+        System.out.println("inkage at setpoint");
+      }
+      if(isFlywheelAtSetpoint){
+        System.out.println("flywheel at setpoint");
+      }
+      if(isDrivetrainAtSetpoint){
+        System.out.println("drivetrain at setpoint");
+      }
+      if(isLinkageAtSetpoint && isDrivetrainAtSetpoint && isFlywheelAtSetpoint){
+       this.state = ShootState.SHOOT;
+      }
+      break;
+      
+      
 
     }
+
   }
 
   private ShootState state = ShootState.LOADED;
