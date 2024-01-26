@@ -11,7 +11,7 @@ import frc.robot.commands.PowerIntake;
 import frc.robot.commands.PowerLinkage;
 import frc.robot.commands.SetFlywheel;
 import frc.robot.commands.SetLinkage;
-import frc.robot.commands.TunerXDrive;
+import frc.robot.commands.FieldOrientedDrive;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Intake;
@@ -64,7 +64,7 @@ public class RobotContainer {
   private final PowerShooter powerShooter = new PowerShooter();
   private final PowerLinkage powerLinkage = new PowerLinkage();
   private final SetLinkage setLinkage = new SetLinkage();
-  private final TunerXDrive tunerXDrive = new TunerXDrive();
+  private final FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive();
 
 
   // public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -92,7 +92,7 @@ public class RobotContainer {
     // shooter.setDefaultCommand(runShooter);
     // intake.setDefaultCommand(runIntake);
     linkage.setDefaultCommand(powerLinkage);
-    drivetrain.setDefaultCommand(tunerXDrive);
+    drivetrain.setDefaultCommand(fieldOrientedDrive);
   }
 
   /**
