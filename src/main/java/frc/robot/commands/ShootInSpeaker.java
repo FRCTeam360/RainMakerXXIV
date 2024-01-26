@@ -8,18 +8,18 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Linkage;
-import frc.robot.subsystems.Shooter;
 
 public class ShootInSpeaker extends Command {
   private Linkage linkage;
-  private Shooter flywheel;
+  private Flywheel flywheel;
   private CommandSwerveDrivetrain drivetrain;
   private double linkageSetpoint;
   private double flywheelSetpoint;
 
   /** Creates a new ShootInSpeaker. */
-  public ShootInSpeaker(Linkage linkage, Shooter flywheel,
+  public ShootInSpeaker(Linkage linkage, Flywheel flywheel,
       CommandSwerveDrivetrain drivetrain, double linkageSetpoint, double flywheelSetpoint) { // Add your commands in the
     // addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
@@ -80,7 +80,7 @@ public class ShootInSpeaker extends Command {
   }
 
   public class ShootInSpeakerParallel extends ParallelCommandGroup {
-    public ShootInSpeakerParallel(CommandSwerveDrivetrain drivetrain, Linkage linkage, Shooter flywheel,
+    public ShootInSpeakerParallel(CommandSwerveDrivetrain drivetrain, Linkage linkage, Flywheel flywheel,
         double flywheelSetpoint, double linkageSetpoint, double driveAngleSetpoint) {
 
       // convert the drive angle setpoint to a rotation2d
