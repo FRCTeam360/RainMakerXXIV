@@ -22,6 +22,7 @@ public class Linkage extends SubsystemBase {
   private final CANSparkMax motor = new CANSparkMax(Constants.SHOOTER_LINKAGE_ID, MotorType.kBrushless);
   public final RelativeEncoder encoder = motor.getEncoder();
   public final SparkPIDController pidController = motor.getPIDController();
+  private double positionSetpoint;
 
   /** Creates a new ShooterLinkage. */
   public Linkage() {
@@ -36,6 +37,7 @@ public class Linkage extends SubsystemBase {
     motor.setSoftLimit(SoftLimitDirection.kReverse, 50f);
     motor.enableSoftLimit(SoftLimitDirection.kForward, true);
     motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    
 
     motor.setClosedLoopRampRate(1.0);
   }
@@ -61,6 +63,7 @@ public class Linkage extends SubsystemBase {
   }
 
   public void setAngle(double setPoint){
+    positionSetpoint = setPoint;
     pidController.setReference(setPoint, CANSparkBase.ControlType.kPosition);
   }
 
@@ -75,6 +78,13 @@ public class Linkage extends SubsystemBase {
   public void setFFWScaling(double ff) {
     pidController.setFF(ff * Math.cos(getAngle()));
   }
+
+  public boolean isAtSetpoint() {
+    return Math.abs(getAngle() - positionSetpoint) < 1.0;
+    }
+
+
+  
 
   @Override
   public void periodic() {
