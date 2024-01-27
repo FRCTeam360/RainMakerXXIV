@@ -56,7 +56,7 @@ public class RobotContainer {
 
 
   // auto commands
-  private final SetFlywheel setFlywheel = new SetFlywheel(0);
+  private final SetFlywheel setFlywheel = new SetFlywheel();
 
   // tele commands
   private final RunExtendIntake runExtendIntake = new RunExtendIntake();

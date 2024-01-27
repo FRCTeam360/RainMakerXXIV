@@ -7,10 +7,12 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -18,13 +20,16 @@ import frc.robot.Constants;
 public class Flywheel extends SubsystemBase {
 
   private static Flywheel instance;
-  
+
   private final CANSparkFlex topMotor = new CANSparkFlex(Constants.SHOOTER_TOP_ID, MotorType.kBrushless);
   private final CANSparkFlex bottomMotor = new CANSparkFlex(Constants.SHOOTER_BOTTOM_ID, MotorType.kBrushless);
-  private double rpmSetpoint = 0.0;
-
+  
   public final SparkPIDController topPidController = topMotor.getPIDController();
   public final SparkPIDController bottomPidController = bottomMotor.getPIDController();
+
+  public final RelativeEncoder topEncoder = topMotor.getEncoder();
+  
+  private double rpmSetpoint = 0.0;
 
   /** Creates a new Shooter. */
   public Flywheel() {
@@ -36,7 +41,8 @@ public class Flywheel extends SubsystemBase {
     bottomMotor.restoreFactoryDefaults();
     bottomMotor.setInverted(true);
     bottomMotor.setIdleMode(IdleMode.kBrake);
-    //bottomMotor.follow(topMotor);
+    bottomMotor.follow(topMotor, true);
+
   }
 
   public static Flywheel getInstance() {
@@ -48,33 +54,42 @@ public class Flywheel extends SubsystemBase {
 
   public void run(double speed) {
     topMotor.set(speed);
-    bottomMotor.set(-speed);
+    //bottomMotor.set(-speed); uneeded bc of lead/follow systm
   }
 
   public void stop() {
     topMotor.stopMotor();
     bottomMotor.stopMotor();
   }
+
   public double getTopSpeed() {
     return topMotor.get();
   }
 
   public double getBottomSpeed() {
-     return bottomMotor.get();
-   }
-  public void setSpeed(double rpm){
+    return bottomMotor.get();
+  }
+
+  public double getVelocity() {
+    return topEncoder.getVelocity();
+  }
+
+
+  public void setSpeed(double rpm) {
     topPidController.setReference(rpm, CANSparkBase.ControlType.kVelocity);
     rpmSetpoint = rpm;
   }
 
-  public boolean isAtSetpoint(){
+  public boolean isAtSetpoint() {
     return Math.abs(this.getTopSpeed() - rpmSetpoint) < 20.0;
-    
+
   }
-  public boolean isAboveSetpoint(){
+
+  public boolean isAboveSetpoint() {
     return this.getTopSpeed() >= rpmSetpoint;
   }
-  public boolean isBelowSetpoint(){
+
+  public boolean isBelowSetpoint() {
     return this.getTopSpeed() <= rpmSetpoint - 200.0;
 
   }
