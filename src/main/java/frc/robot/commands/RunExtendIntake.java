@@ -29,7 +29,7 @@ public class RunExtendIntake extends Command {
   
   /** Creates a new Java. */
   public RunExtendIntake() {
-    SmartDashboard.putNumber("OVERSHOOT", 0.0);
+    //SmartDashboard.putNumber("OVERSHOOT", 0.0);
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
   }

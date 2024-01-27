@@ -91,7 +91,7 @@ public class RobotContainer {
   }
 
   private void configureDefaultCommands() {
-    //flywheel.setDefaultCommand(powerFlywheel);
+    flywheel.setDefaultCommand(setFlywheel);
     //intake.setDefaultCommand(runIntake);
     //linkage.setDefaultCommand(powerLinkage);
     drivetrain.setDefaultCommand(fieldOrientedDrive);
