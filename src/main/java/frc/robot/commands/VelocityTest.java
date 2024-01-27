@@ -25,12 +25,6 @@ public class VelocityTest extends Command {
   private double kFF = 0.0;
 
   private double setPosition = 0.0;
-
-  private SwerveModule mod1;
-  private SwerveModule mod2;
-  private SwerveModule mod3;
-  private SwerveModule mod4;
-
   
   private Timer time = new Timer();
 
@@ -39,10 +33,6 @@ public class VelocityTest extends Command {
   /** Creates a new VelocityTest. */
   public VelocityTest(CommandSwerveDrivetrain drivetrain) {
     this.drivetrain = drivetrain;
-    mod1 = drivetrain.getModule(0);
-    mod2 = drivetrain.getModule(1);
-    mod3 = drivetrain.getModule(2);
-    mod4 = drivetrain.getModule(3);
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
   }
@@ -93,17 +83,23 @@ public class VelocityTest extends Command {
       setPosition = setPoint;
     }
 
+    if(Math.abs(setPoint - drivetrain.getVelocity()) < .1) {
+      time.stop();
+      isAtTarget = true;
+    } else {
+      isAtTarget = false;
+    }
+
     // if(drivetrain.pidController.atSetpoint()){
     //   time.stop();
     // }
     // processVariable = encoder.getPosition();
 
-    // SmartDashboard.putNumber("SetPoint", setPoint);
-    // SmartDashboard.putNumber("Output", drivetrain.);
-    //SmartDashboard.putNumber("Position", drivetrain.encoder.getPosition());
-    SmartDashboard.putNumber("Error", drivetrain.);
+    SmartDashboard.putNumber("SetPoint", setPoint);
+    SmartDashboard.putNumber("Output", drivetrain.getVelocity());
+    SmartDashboard.putNumber("Error", setPoint - drivetrain.getVelocity());
     SmartDashboard.putNumber("Time elapsed", time.get());
-    SmartDashboard.putBoolean("At target", drivetrain.pidController.atSetpoint());
+    SmartDashboard.putBoolean("At target", isAtTarget);
     //SmartDashboard.putNumber("Process Variable", processVariable);
     
   }
@@ -111,7 +107,10 @@ public class VelocityTest extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    time.stop();
+    time.reset();
+  }
 
   // Returns true when the command should end.
   @Override
