@@ -12,9 +12,12 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.generated.TunerConstants;
 
 public class Linkage extends SubsystemBase {
 
@@ -24,16 +27,20 @@ public class Linkage extends SubsystemBase {
   public final SparkPIDController pidController = motor.getPIDController();
   private double positionSetpoint;
 
+  static XboxController driverCont = new XboxController(0);
+
+  static CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
+
   /** Creates a new ShooterLinkage. */
   public Linkage() {
     motor.restoreFactoryDefaults();
     motor.setInverted(true);
     motor.setIdleMode(IdleMode.kBrake);
 
-    encoder.setPositionConversionFactor(360.0/36.0); //360deg / 36:1 gear ratio
+    encoder.setPositionConversionFactor(360.0 / 36.0); // 360deg / 36:1 gear ratio
     encoder.setPosition(43.0);
 
-    motor.setSoftLimit(SoftLimitDirection.kForward,180f);
+    motor.setSoftLimit(SoftLimitDirection.kForward, 180f);
     motor.setSoftLimit(SoftLimitDirection.kReverse, 50f);
     motor.enableSoftLimit(SoftLimitDirection.kForward, true);
     motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
@@ -49,7 +56,7 @@ public class Linkage extends SubsystemBase {
 
     return instance;
   }
-  
+
   public void run(double speed) {
     motor.set(speed);
   }
@@ -90,8 +97,8 @@ public class Linkage extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Linkage Angle", getAngle());
-    SmartDashboard.putNumber("linkage voltage", motor.getAppliedOutput());
-  }
+    SmartDashboard.putNumber("Linkage Voltage", motor.getAppliedOutput());
 
+  }
 
 }

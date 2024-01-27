@@ -18,15 +18,16 @@ import frc.robot.Constants;
 public class Flywheel extends SubsystemBase {
 
   private static Flywheel instance;
-  // private final CANSparkMax leftMotor = new CANSparkMax(Constants.SHOOTER_LEFT_ID, MotorType.kBrushless);
-  // private final CANSparkMax rightMotor = new CANSparkMax(Constants.SHOOTER_RIGHT_ID, MotorType.kBrushless);
+  
   private final CANSparkFlex topMotor = new CANSparkFlex(Constants.SHOOTER_TOP_ID, MotorType.kBrushless);
   private final CANSparkFlex bottomMotor = new CANSparkFlex(Constants.SHOOTER_BOTTOM_ID, MotorType.kBrushless);
   private double rpmSetpoint = 0.0;
 
+  private final CANSparkFlex topMotor = new CANSparkFlex(Constants.SHOOTER_TOP_ID, MotorType.kBrushless);
+  private final CANSparkFlex bottomMotor = new CANSparkFlex(Constants.SHOOTER_BOTTOM_ID, MotorType.kBrushless);
+
   public final SparkPIDController leftPidController = topMotor.getPIDController();
   public final SparkPIDController rightPidController = bottomMotor.getPIDController();
-  
 
   /** Creates a new Shooter. */
   public Flywheel() {
@@ -76,12 +77,15 @@ public class Flywheel extends SubsystemBase {
   }
   public boolean isBelowSetpoint(){
     return this.getTopSpeed() <= rpmSetpoint - 200.0;
+
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Left Speed", getTopSpeed());
-    SmartDashboard.putNumber("Right Speed", getBottomSpeed());
+
+    SmartDashboard.putNumber("Top Speed", getTopSpeed());
+    SmartDashboard.putNumber("Bottom Speed", getBottomSpeed());
+
   }
 }

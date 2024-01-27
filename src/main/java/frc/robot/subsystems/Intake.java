@@ -58,7 +58,7 @@ public class Intake extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Intake Speed", getSpeed());
-    SmartDashboard.putNumber("Amps", getAmps());
+    SmartDashboard.putNumber("Intake Amps", getAmps());
     SmartDashboard.putBoolean("this sensor sucks", getSensor());
   }
 }
