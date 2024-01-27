@@ -65,4 +65,12 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         return this.applyRequest(() -> drive.withTargetDirection(desiredAngle).withVelocityX(velocityX).withVelocityY(velocityY));
     }
 
+    public double getVelocity() {
+        double avgVelocity = 0;
+        for(int i = 0; i < 4; i++) {
+            avgVelocity += this.getModule(i).getDriveMotor().getVelocity().getValueAsDouble();
+        }
+        return avgVelocity/4;
+    }
+
 }
