@@ -92,7 +92,7 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
     //flywheel.setDefaultCommand(powerFlywheel);
-    // intake.setDefaultCommand(runIntake);
+    //intake.setDefaultCommand(runIntake);
     //linkage.setDefaultCommand(powerLinkage);
     drivetrain.setDefaultCommand(fieldOrientedDrive);
   }
@@ -119,11 +119,11 @@ public class RobotContainer {
     operatorController.a().whileTrue(powerFlywheel);
     operatorController.b().whileTrue(runExtendIntake);
     operatorController.y().whileTrue(powerIntake);
+    operatorController.x().toggleOnTrue(new InstantCommand(() -> linkage.setAngle(100), linkage));
 
     // DRIVER CONTROLLER BINDINGS
     driverController.x().whileTrue(new InstantCommand(() -> drivetrain.xOut(), drivetrain));
     driverController.a().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
-    
     
     drivetrain.registerTelemetry(logger::telemeterize);
   }

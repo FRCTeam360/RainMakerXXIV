@@ -69,16 +69,6 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Intake Speed", getSpeed());
     SmartDashboard.putNumber("Intake Amps", getAmps());
-    // SmartDashboard.putBoolean("this sensor sucks 0", getSensor(sensor));
-    // SmartDashboard.putBoolean("this sensor sucks 1", getSensor(sensor1));
     SmartDashboard.putBoolean("this sensor sucks 2", getSensor());
-    // SmartDashboard.putBoolean("this sensor sucks 3", getSensor(sensor3));
-    // SmartDashboard.putBoolean("this sensor sucks 4", getSensor(sensor4));
-    // SmartDashboard.putBoolean("this sensor sucks 5", getSensor(sensor5));
-    // SmartDashboard.putBoolean("this sensor sucks 6", getSensor(sensor6));
-    // SmartDashboard.putBoolean("this sensor sucks 7", getSensor(sensor7));
-    // SmartDashboard.putBoolean("this sensor sucks 8", getSensor(sensor8));
-    // SmartDashboard.putBoolean("this sensor sucks 9", getSensor(sensor9));
-    // SmartDashboard.putBoolean("this sensor sucks 10", getSensor(sensor10));
   }
 }
