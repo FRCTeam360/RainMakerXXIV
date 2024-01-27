@@ -4,12 +4,38 @@
 
 package frc.robot.subsystems;
 
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
-  private final 
+  private final CANSparkMax Leadmotor = new CANSparkMax(3, MotorType.kBrushless); 
+  private final CANSparkMax Followmotor = new CANSparkMax(4, MotorType.kBrushless);
   /** Creates a new Shooter. */
-  public Shooter() {}
+  private boolean isComp;
+
+  public Shooter() {
+
+    Leadmotor.restoreFactoryDefaults();
+    Leadmotor.setInverted(isComp);
+    Leadmotor.setIdleMode(IdleMode.kBrake);
+    Leadmotor.setSmartCurrentLimit(20);
+  }
+
+  public void run(double speed) {
+    Leadmotor.set(speed);
+    //sets followmotor to invert then follows 
+    Followmotor.setInverted(true);
+    Followmotor.follow(Leadmotor);
+  }
+
+
+  public void stop() {
+    Leadmotor.stopMotor();
+  }
 
   @Override
   public void periodic() {
