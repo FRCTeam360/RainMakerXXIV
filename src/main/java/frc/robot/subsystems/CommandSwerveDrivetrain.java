@@ -28,7 +28,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
     CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
-    static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
+     private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
+     private Rotation2d lastRotationSetpoint;
+    
 
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency,
             SwerveModuleConstants... modules) {
@@ -63,10 +65,20 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         });
         m_simNotifier.startPeriodic(kSimLoopPeriod);
     }
+    
+    public Command turntoCMD(Rotation2d desiredAngle, double velocityX, double velocityY){
+        return this.applyRequest(() -> drive.withTargetDirection(desiredAngle).withVelocityX(velocityX).withVelocityY(velocityY));
+    }
 
-    public Command turntoCMD(Rotation2d desiredAngle, double velocityX, double velocityY) {
-        return this.applyRequest(
-                () -> drive.withTargetDirection(desiredAngle).withVelocityX(velocityX).withVelocityY(velocityY));
+    public boolean isFacingAngle() {
+        if (this.lastRotationSetpoint == null) {
+            return false;
+        }
+        double lastRotationSetpointDegrees = this.lastRotationSetpoint.getDegrees();
+        double currentAngleDegrees = this.m_pigeon2.getAngle();
+        lastRotationSetpointDegrees = lastRotationSetpointDegrees % 360;
+        currentAngleDegrees = currentAngleDegrees % 360;
+        return Math.abs(lastRotationSetpointDegrees - currentAngleDegrees) < 1;
     }
 
     public float getAngle() {

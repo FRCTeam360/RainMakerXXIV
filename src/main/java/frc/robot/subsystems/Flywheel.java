@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
@@ -20,9 +21,14 @@ public class Flywheel extends SubsystemBase {
   
   private final CANSparkFlex topMotor = new CANSparkFlex(Constants.SHOOTER_TOP_ID, MotorType.kBrushless);
   private final CANSparkFlex bottomMotor = new CANSparkFlex(Constants.SHOOTER_BOTTOM_ID, MotorType.kBrushless);
+  private double rpmSetpoint = 0.0;
+
+  private final CANSparkFlex topMotor = new CANSparkFlex(Constants.SHOOTER_TOP_ID, MotorType.kBrushless);
+  private final CANSparkFlex bottomMotor = new CANSparkFlex(Constants.SHOOTER_BOTTOM_ID, MotorType.kBrushless);
 
   public final SparkPIDController leftPidController = topMotor.getPIDController();
   public final SparkPIDController rightPidController = bottomMotor.getPIDController();
+
   /** Creates a new Shooter. */
   public Flywheel() {
 
@@ -50,19 +56,36 @@ public class Flywheel extends SubsystemBase {
   public void stop() {
     topMotor.stopMotor();
   }
-
   public double getTopSpeed() {
     return topMotor.get();
   }
 
   public double getBottomSpeed() {
-    return bottomMotor.get();
+     return bottomMotor.get();
+   }
+  public void setSpeed(double rpm){
+    leftPidController.setReference(rpm, CANSparkBase.ControlType.kVelocity);
+    rpmSetpoint = rpm;
+  }
+
+  public boolean isAtSetpoint(){
+    return Math.abs(this.getTopSpeed() - rpmSetpoint) < 20.0;
+    
+  }
+  public boolean isAboveSetpoint(){
+    return this.getTopSpeed() >= rpmSetpoint;
+  }
+  public boolean isBelowSetpoint(){
+    return this.getTopSpeed() <= rpmSetpoint - 200.0;
+
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
     SmartDashboard.putNumber("Top Speed", getTopSpeed());
     SmartDashboard.putNumber("Bottom Speed", getBottomSpeed());
+
   }
 }
