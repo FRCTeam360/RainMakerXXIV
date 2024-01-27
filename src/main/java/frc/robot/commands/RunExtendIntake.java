@@ -13,7 +13,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
 
 public class RunExtendIntake extends Command {
-  enum IntakeCases {CHECK_ROBOT_EMPTY, EXTEND_INTAKE, WAIT_FOR_SENSOR, REVERSE_TRIGGER, RETRACT_STOP}; 
+  enum IntakeCases {CHECK_ROBOT_EMPTY, EXTEND_INTAKE, WAIT_FOR_SENSOR, UP_TO_SHOOTER, RETRACT_STOP}; 
   private Linkage linkage = Linkage.getInstance();
   //private DigitalInput sensor = new DigitalInput(0);
   
@@ -23,6 +23,7 @@ public class RunExtendIntake extends Command {
   private Timer timer = new Timer();
   private Timer sensorTimer = new Timer();
   private boolean inAuto;
+  private double setPoint;
   
   private IntakeCases state = IntakeCases.CHECK_ROBOT_EMPTY;
 
@@ -49,6 +50,7 @@ public class RunExtendIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println(state);
     switch(state){
       case CHECK_ROBOT_EMPTY:
       if(intake.getSensor()) {
@@ -70,7 +72,8 @@ public class RunExtendIntake extends Command {
           sensorTimer.reset();
         } 
         if(!intake.getSensor()){
-          state = IntakeCases.REVERSE_TRIGGER;
+          setPoint = intake.encoder.getPosition() + 1.28436279297;
+          state = IntakeCases.UP_TO_SHOOTER;
         // } else if(!intake.getSensor()) {
         //   if(inAuto) {
         //     end
@@ -80,11 +83,16 @@ public class RunExtendIntake extends Command {
         //   }
         }
         break;
-      case REVERSE_TRIGGER:
-        intake.run(-.10);
-        if(intake.getSensor()) {
+      case UP_TO_SHOOTER:
+        SmartDashboard.putNumber("THIS IS THE DIFFERENCE BETWEEN THE ENCODER AND SETPOINT (OVERSHOOT)", intake.encoder.getPosition() - setPoint);
+        if(intake.encoder.getPosition() >= setPoint) {
           state = IntakeCases.RETRACT_STOP;
+          System.out.println("WE SHOULD BE AT SHOOTER");
+        } else {
+          intake.run(.32);
+          System.out.println("THE INTAKE SHOULD BE RUNIN GBUT IT SUCKS");
         }
+        break;
       case RETRACT_STOP:
         break;
 
@@ -142,6 +150,7 @@ public class RunExtendIntake extends Command {
   @Override
   public boolean isFinished() {
     if(state == IntakeCases.RETRACT_STOP) {
+      System.out.print("COMMAND ENDED");
       return true;
     }
     return false;
