@@ -18,7 +18,8 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
 
   private static Intake instance;
-  private final DigitalInput sensor = new DigitalInput(2);
+  private final DigitalInput sideSensor = new DigitalInput(2);
+  private final DigitalInput highSensor = new DigitalInput(0);
   private final CANSparkMax motor = new CANSparkMax(Constants.INTAKE_ID, MotorType.kBrushless);
   public final RelativeEncoder encoder = motor.getEncoder();
 
@@ -37,8 +38,12 @@ public class Intake extends SubsystemBase {
     return instance;
   }
 
-  public boolean getSensor() {
-    return sensor.get();
+  public boolean getSideSensor() {
+    return sideSensor.get();
+  }
+
+  public boolean getHighSensor() {
+    return highSensor.get();
   }
 
   public void run(double speed) {
@@ -68,6 +73,5 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Intake Speed", getSpeed());
     SmartDashboard.putNumber("Intake Amps", getAmps());
-    SmartDashboard.putBoolean("this sensor sucks 2", getSensor());
   }
 }

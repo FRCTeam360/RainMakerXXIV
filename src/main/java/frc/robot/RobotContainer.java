@@ -117,7 +117,7 @@ public class RobotContainer {
     operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
     operatorController.rightTrigger(.005).whileTrue(powerIntake);
     operatorController.a().whileTrue(powerFlywheel);
-    operatorController.b().whileTrue(runExtendIntake);
+    operatorController.b().onTrue(runExtendIntake);
     operatorController.y().whileTrue(powerIntake);
     operatorController.x().toggleOnTrue(new InstantCommand(() -> linkage.setAngle(100), linkage));
 
