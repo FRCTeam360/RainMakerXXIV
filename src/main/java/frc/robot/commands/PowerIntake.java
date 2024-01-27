@@ -25,11 +25,13 @@ public class PowerIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(operatorCont.getRightTriggerAxis() > .75) {
-      intake.run(-.5);
-    } else {
-      intake.run(-.15);
-    }
+    // if(operatorCont.getRightTriggerAxis() > .75) {
+    //   intake.run(-.5);
+    // } else {
+    //   intake.run(-.15);
+    // }
+
+    intake.run(1.0);
   }
 
   // Called once the command ends or is interrupted.

@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,6 +15,7 @@ import frc.robot.subsystems.Linkage;
 public class RunExtendIntake extends Command {
   enum IntakeCases {CHECK_ROBOT_EMPTY, EXTEND_INTAKE, WAIT_FOR_SENSOR, REVERSE_TRIGGER, RETRACT_STOP}; 
   private Linkage linkage = Linkage.getInstance();
+  //private DigitalInput sensor = new DigitalInput(0);
   
   private Intake intake = Intake.getInstance();
   private static XboxController operatorCont = new XboxController(1);
@@ -71,7 +73,8 @@ public class RunExtendIntake extends Command {
           state = IntakeCases.REVERSE_TRIGGER;
         // } else if(!intake.getSensor()) {
         //   if(inAuto) {
-        //     end(true);
+        //     end
+              //(true);
         //   } else {
         //     state = IntakeCases.RETRACT_STOP;
         //   }

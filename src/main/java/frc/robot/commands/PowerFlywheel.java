@@ -37,7 +37,7 @@ public class PowerFlywheel extends Command {
     //   flywheel.stopRight();
     // }
 
-    flywheel.run(0.8);
+    flywheel.run(1.0);
 
   }
     

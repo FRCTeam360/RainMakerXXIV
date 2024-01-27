@@ -91,9 +91,9 @@ public class RobotContainer {
   }
 
   private void configureDefaultCommands() {
-    // shooter.setDefaultCommand(runShooter);
+    //flywheel.setDefaultCommand(powerFlywheel);
     // intake.setDefaultCommand(runIntake);
-    linkage.setDefaultCommand(powerLinkage);
+    //linkage.setDefaultCommand(powerLinkage);
     drivetrain.setDefaultCommand(fieldOrientedDrive);
   }
 
@@ -118,6 +118,7 @@ public class RobotContainer {
     operatorController.rightTrigger(.005).whileTrue(powerIntake);
     operatorController.a().whileTrue(powerFlywheel);
     operatorController.b().whileTrue(runExtendIntake);
+    operatorController.y().whileTrue(powerIntake);
 
     // DRIVER CONTROLLER BINDINGS
     driverController.x().whileTrue(new InstantCommand(() -> drivetrain.xOut(), drivetrain));

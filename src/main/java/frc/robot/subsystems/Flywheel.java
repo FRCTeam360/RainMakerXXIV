@@ -30,13 +30,13 @@ public class Flywheel extends SubsystemBase {
   public Flywheel() {
 
     topMotor.restoreFactoryDefaults();
-    topMotor.setInverted(false);
+    topMotor.setInverted(true);
     topMotor.setIdleMode(IdleMode.kBrake);
 
     bottomMotor.restoreFactoryDefaults();
     bottomMotor.setInverted(true);
     bottomMotor.setIdleMode(IdleMode.kBrake);
-    bottomMotor.follow(topMotor);
+    //bottomMotor.follow(topMotor);
   }
 
   public static Flywheel getInstance() {
@@ -48,10 +48,12 @@ public class Flywheel extends SubsystemBase {
 
   public void run(double speed) {
     topMotor.set(speed);
+    bottomMotor.set(-speed);
   }
 
   public void stop() {
     topMotor.stopMotor();
+    bottomMotor.stopMotor();
   }
   public double getTopSpeed() {
     return topMotor.get();

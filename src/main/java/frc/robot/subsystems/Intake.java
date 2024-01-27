@@ -17,6 +17,16 @@ public class Intake extends SubsystemBase {
 
   private static Intake instance;
   private final DigitalInput sensor = new DigitalInput(0); // update port later idk what it is
+   private final DigitalInput sensor1 = new DigitalInput(1);
+    private final DigitalInput sensor2 = new DigitalInput(2);
+     private final DigitalInput sensor3 = new DigitalInput(3);
+      private final DigitalInput sensor4 = new DigitalInput(4);
+       private final DigitalInput sensor5 = new DigitalInput(5);
+        private final DigitalInput sensor6 = new DigitalInput(6);
+         private final DigitalInput sensor7 = new DigitalInput(7);
+          private final DigitalInput sensor8 = new DigitalInput(8);
+           private final DigitalInput sensor9 = new DigitalInput(9);
+            private final DigitalInput sensor10 = new DigitalInput(10);
   private final CANSparkMax motor = new CANSparkMax(Constants.INTAKE_ID, MotorType.kBrushless);
 
   /** Creates a new Intake. */
@@ -35,7 +45,7 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean getSensor() {
-    return sensor.get();
+    return sensor2.get();
   }
 
   public void run(double speed) {
@@ -59,6 +69,16 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Intake Speed", getSpeed());
     SmartDashboard.putNumber("Intake Amps", getAmps());
-    SmartDashboard.putBoolean("this sensor sucks", getSensor());
+    // SmartDashboard.putBoolean("this sensor sucks 0", getSensor(sensor));
+    // SmartDashboard.putBoolean("this sensor sucks 1", getSensor(sensor1));
+    SmartDashboard.putBoolean("this sensor sucks 2", getSensor());
+    // SmartDashboard.putBoolean("this sensor sucks 3", getSensor(sensor3));
+    // SmartDashboard.putBoolean("this sensor sucks 4", getSensor(sensor4));
+    // SmartDashboard.putBoolean("this sensor sucks 5", getSensor(sensor5));
+    // SmartDashboard.putBoolean("this sensor sucks 6", getSensor(sensor6));
+    // SmartDashboard.putBoolean("this sensor sucks 7", getSensor(sensor7));
+    // SmartDashboard.putBoolean("this sensor sucks 8", getSensor(sensor8));
+    // SmartDashboard.putBoolean("this sensor sucks 9", getSensor(sensor9));
+    // SmartDashboard.putBoolean("this sensor sucks 10", getSensor(sensor10));
   }
 }
