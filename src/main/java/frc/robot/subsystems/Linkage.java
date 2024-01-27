@@ -27,6 +27,8 @@ public class Linkage extends SubsystemBase {
   public final SparkPIDController pidController = motor.getPIDController();
   private double positionSetpoint;
 
+  private static final double STARTING_ANGLE = 50.0;
+
   static XboxController driverCont = new XboxController(0);
 
   static CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
@@ -38,7 +40,7 @@ public class Linkage extends SubsystemBase {
     motor.setIdleMode(IdleMode.kBrake);
 
     encoder.setPositionConversionFactor(360.0 / 36.0); // 360deg / 36:1 gear ratio
-    encoder.setPosition(43.0);
+    encoder.setPosition(STARTING_ANGLE);
 
     motor.setSoftLimit(SoftLimitDirection.kForward, 180f);
     motor.setSoftLimit(SoftLimitDirection.kReverse, 50f);
@@ -79,6 +81,10 @@ public class Linkage extends SubsystemBase {
 
   public void zero() {
     encoder.setPosition(0);
+  }
+
+  public void setTo90() {
+    encoder.setPosition(90);
   }
 
   public void setFFWScaling(double ff) {
