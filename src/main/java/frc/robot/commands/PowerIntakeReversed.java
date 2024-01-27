@@ -26,9 +26,9 @@ PowerIntakeReversed extends Command {
   @Override
   public void execute() {
     if(operatorCont.getLeftTriggerAxis() > .75) {
-      intake.run(0.5);
+      intake.run(-0.5);
     } else {
-      intake.run(0.15);
+      intake.run(-0.15);
     }
   }
 
