@@ -57,7 +57,11 @@ public class AlignWithSpeaker extends Command {
         //   state = VisionCases.HAS_TARGET;
         // }
         isFinished();
+<<<<<<< Updated upstream
         break;
+=======
+        break; 
+>>>>>>> Stashed changes
         
       }
     
