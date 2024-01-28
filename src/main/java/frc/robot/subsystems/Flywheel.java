@@ -22,10 +22,7 @@ public class Flywheel extends SubsystemBase {
   private final CANSparkFlex topMotor = new CANSparkFlex(Constants.SHOOTER_TOP_ID, MotorType.kBrushless);
   private final CANSparkFlex bottomMotor = new CANSparkFlex(Constants.SHOOTER_BOTTOM_ID, MotorType.kBrushless);
   private double rpmSetpoint = 0.0;
-
-  private final CANSparkFlex topMotor = new CANSparkFlex(Constants.SHOOTER_TOP_ID, MotorType.kBrushless);
-  private final CANSparkFlex bottomMotor = new CANSparkFlex(Constants.SHOOTER_BOTTOM_ID, MotorType.kBrushless);
-
+  
   public final SparkPIDController leftPidController = topMotor.getPIDController();
   public final SparkPIDController rightPidController = bottomMotor.getPIDController();
 
