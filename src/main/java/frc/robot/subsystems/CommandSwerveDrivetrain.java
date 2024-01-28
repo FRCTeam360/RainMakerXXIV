@@ -178,12 +178,12 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     }
 
      private Pose2d getPose(){
-        double x = this.getState().Pose.getX();
-        double y = this.getState().Pose.getY();
-        Rotation2d rot = this.getState().Pose.getRotation();
+        // double x = this.getState().Pose.getX();
+        // double y = this.getState().Pose.getY();
+        // Rotation2d rot = this.getState().Pose.getRotation();
         //System.out.println("CURRENT POSE X: " + x);
         //System.out.println("CURRENT POSE Y: " + y);
-        System.out.println("CURRENT POSE ROTATION: " + rot);
+        //System.out.println("CURRENT POSE ROTATION: " + rot);
         return this.getState().Pose;
     }
     private void resetPose(Pose2d pose){
