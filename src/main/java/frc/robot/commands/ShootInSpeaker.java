@@ -57,19 +57,19 @@ public class ShootInSpeaker extends Command {
     // drivetrain is rotated in its own command ran in parallel
     switch (state) {
       case LOADED:
-        boolean isLinkageAtSetpoint = linkage.isAtSetpoint();
+        // boolean isLinkageAtSetpoint = linkage.isAtSetpoint();
         boolean isFlywheelAtSetpoint = flywheel.isAtSetpoint();
         boolean isDrivetrainAtSetpoint = drivetrain.isFacingAngle();
-        if (isLinkageAtSetpoint) {
-          System.out.println("inkage at setpoint");
-        }
+        // if (isLinkageAtSetpoint) {
+        //   System.out.println("inkage at setpoint");
+        // }
         if (isFlywheelAtSetpoint) {
           System.out.println("flywheel at setpoint");
         }
         if (isDrivetrainAtSetpoint) {
           System.out.println("drivetrain at setpoint");
         }
-        if (isLinkageAtSetpoint && isDrivetrainAtSetpoint && isFlywheelAtSetpoint) {
+        if (isDrivetrainAtSetpoint && isFlywheelAtSetpoint) {
           this.state = ShootState.SHOOT;
         }
         break;
@@ -81,11 +81,11 @@ public class ShootInSpeaker extends Command {
           timer.start();
           if (timer.hasElapsed(0.2)) { //TUNE!!!
             this.state = ShootState.END;
-          }
+      }
         }
         break;
       
-      }
+          }
 
 
   }
