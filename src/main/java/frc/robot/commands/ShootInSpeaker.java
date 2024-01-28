@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Flywheel;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
 
 public class ShootInSpeaker extends Command {
@@ -20,26 +21,27 @@ public class ShootInSpeaker extends Command {
   private double linkageSetpoint;
   private double flywheelSetpoint;
   private Timer timer;
+  private Intake intake;
 
   private ShootState state = ShootState.LOADED;
 
   private enum ShootState {
-    LOADED, SHOOT
+    LOADED, SHOOT, END
   }
 
   /** Creates a new ShootInSpeaker. */
   public ShootInSpeaker(Linkage linkage, Flywheel flywheel,
-      CommandSwerveDrivetrain drivetrain, double linkageSetpoint, double flywheelSetpoint) { // Add your commands in the
+      CommandSwerveDrivetrain drivetrain, double linkageSetpoint, double flywheelSetpoint, Intake intake) { // Add your commands in the
     // addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addRequirements(linkage, flywheel);
+    addRequirements(linkage, flywheel, intake);
 
     this.linkage = linkage;
     this.flywheel = flywheel;
     this.drivetrain = drivetrain;
     this.linkageSetpoint = linkageSetpoint;
     this.flywheelSetpoint = flywheelSetpoint;
-
+    this.intake = intake;
   }
 
   @Override
@@ -49,6 +51,7 @@ public class ShootInSpeaker extends Command {
 
   @Override
   public void execute() {
+    intake.run(0.0);
     linkage.setAngle(linkageSetpoint);
     flywheel.setSpeed(flywheelSetpoint);
     // drivetrain is rotated in its own command ran in parallel
@@ -72,28 +75,31 @@ public class ShootInSpeaker extends Command {
         break;
 
       case SHOOT:
+        intake.run(1.0);
         boolean hasShot = flywheel.isBelowSetpoint(); //check logic in flywheel subsystem (180 rpm gap)
         if (hasShot) {
           timer.start();
           if (timer.hasElapsed(0.2)) { //TUNE!!!
-            isFinished(); //sketch
+            this.state = ShootState.END;
           }
         }
         break;
+      
+      }
 
-    }
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    intake.run(0.0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return this.state == ShootState.END;
   }
 
   public class ShootInSpeakerParallel extends ParallelCommandGroup {
@@ -103,7 +109,7 @@ public class ShootInSpeaker extends Command {
       // convert the drive angle setpoint to a rotation2d
       Rotation2d driveRotSetpoint = new Rotation2d(driveAngleSetpoint);
       // add the commands to the parallel command group
-      addCommands(new ShootInSpeaker(linkage, flywheel, drivetrain, linkageSetpoint, flywheelSetpoint),
+      addCommands(new ShootInSpeaker(linkage, flywheel, drivetrain, linkageSetpoint, flywheelSetpoint, intake),
           drivetrain.turntoCMD(driveRotSetpoint, flywheelSetpoint, driveAngleSetpoint));
     }
   }
