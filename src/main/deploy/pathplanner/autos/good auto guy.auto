@@ -24,7 +24,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": null
+                  "name": "Wait1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "RunExtendIntake"
                 }
               }
             ]
@@ -34,6 +40,25 @@
           "type": "path",
           "data": {
             "pathName": "Copy of Example Path"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Wait1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot"
+                }
+              }
+            ]
           }
         }
       ]

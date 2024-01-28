@@ -99,7 +99,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     NamedCommands.registerCommand("RunExtendIntake", runExtendIntake);
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
-    NamedCommands.registerCommand("ShootInSpeaker", powerFlywheel);
+    NamedCommands.registerCommand("Shoot", powerFlywheel);
     configureBindings();
     configureDefaultCommands();
   }
