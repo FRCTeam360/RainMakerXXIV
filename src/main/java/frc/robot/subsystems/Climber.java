@@ -30,7 +30,6 @@ public class Climber extends SubsystemBase {
   }
 
   public void stop() {
-    leftMotor.set(0);
     rightMotor.set(0);
   }
 
