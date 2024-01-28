@@ -21,19 +21,12 @@ public class Climber extends SubsystemBase {
     leftMotor.setIdleMode(IdleMode.kBrake);
     rightMotor.setInverted(true);
     leftMotor.setInverted(false);
+
+    leftMotor.follow(rightMotor);
   }
 
-  public void runLeft(double speed) {
-    leftMotor.set(speed);
-  }
-
-  public void runRight(double speed) {
+  public void run(double speed) {
     rightMotor.set(speed);
-  }
-
-  public void runBoth(double leftSpeed, double rightSpeed) {
-    leftMotor.set(leftSpeed);
-    rightMotor.set(rightSpeed);
   }
 
   public void stop() {
