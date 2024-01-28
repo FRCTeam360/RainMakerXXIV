@@ -34,6 +34,7 @@ public class SetFlywheel extends Command {
     topPidController.setP(kP);
     topPidController.setI(kI);
     topPidController.setD(kD);
+    topPidController.setFF(kFF);
 
     SmartDashboard.putNumber("p", kP);
     SmartDashboard.putNumber("i", kI);
@@ -41,9 +42,9 @@ public class SetFlywheel extends Command {
     SmartDashboard.putNumber("ff", kFF);
     SmartDashboard.putNumber("Goal RPM", 0);
     
-    SmartDashboard.putNumber("Velocity", flywheel.getTopVelocity());
+    SmartDashboard.putNumber("Velocity", 0.0);
     SmartDashboard.putNumber("Error", 0.0);
-    SmartDashboard.putNumber("Time Elapsed", time.get());
+    SmartDashboard.putNumber("Time Elapsed", 0.0);
     SmartDashboard.putBoolean("At target", isAtTarget);
     SmartDashboard.putNumber("Top - Bottom Error", 0.0);
   }
