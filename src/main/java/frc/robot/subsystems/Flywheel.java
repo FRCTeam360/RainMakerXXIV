@@ -28,6 +28,7 @@ public class Flywheel extends SubsystemBase {
   public final SparkPIDController bottomPidController = bottomMotor.getPIDController();
 
   public final RelativeEncoder topEncoder = topMotor.getEncoder();
+  public final RelativeEncoder bottomEncoder = bottomMotor.getEncoder();
   
   private double rpmSetpoint = 0.0;
 
@@ -70,8 +71,12 @@ public class Flywheel extends SubsystemBase {
     return bottomMotor.get();
   }
 
-  public double getVelocity() {
+  public double getTopVelocity() {
     return topEncoder.getVelocity();
+  }
+
+  public double getBottomVelocity() {
+    return bottomEncoder.getVelocity();
   }
 
 

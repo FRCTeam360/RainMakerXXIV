@@ -68,10 +68,10 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Encoder Position", encoder.getPosition());
-    SmartDashboard.getNumber("Encoder Position", encoder.getPosition());
-    // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Intake Speed", getSpeed());
-    SmartDashboard.putNumber("Intake Amps", getAmps());
+    // SmartDashboard.putNumber("Encoder Position", encoder.getPosition());
+    // SmartDashboard.getNumber("Encoder Position", encoder.getPosition());
+    // // This method will be called once per scheduler run
+    // SmartDashboard.putNumber("Intake Speed", getSpeed());
+    // SmartDashboard.putNumber("Intake Amps", getAmps());
   }
 }

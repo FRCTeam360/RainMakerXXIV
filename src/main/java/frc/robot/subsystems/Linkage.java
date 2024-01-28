@@ -99,8 +99,8 @@ public class Linkage extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Linkage Angle", getAngle());
-    SmartDashboard.putNumber("Linkage Voltage", motor.getAppliedOutput());
+    // SmartDashboard.putNumber("Linkage Angle", getAngle());
+    // SmartDashboard.putNumber("Linkage Voltage", motor.getAppliedOutput());
 
   }
 

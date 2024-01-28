@@ -19,6 +19,7 @@ public class SetFlywheel extends Command {
   private double kP = 0.0;
   private double kI = 0.0;
   private double kD = 0.0;
+  private double kFF = 0.0;
 
   private double goalRPM = 0.0;
 
@@ -37,12 +38,14 @@ public class SetFlywheel extends Command {
     SmartDashboard.putNumber("p", kP);
     SmartDashboard.putNumber("i", kI);
     SmartDashboard.putNumber("d", kD);
+    SmartDashboard.putNumber("ff", kFF);
     SmartDashboard.putNumber("Goal RPM", 0);
     
-    SmartDashboard.putNumber("Velocity", flywheel.getVelocity());
+    SmartDashboard.putNumber("Velocity", flywheel.getTopVelocity());
     SmartDashboard.putNumber("Error", 0.0);
     SmartDashboard.putNumber("Time Elapsed", time.get());
     SmartDashboard.putBoolean("At target", isAtTarget);
+    SmartDashboard.putNumber("Top - Bottom Error", 0.0);
   }
 
   // Called when the command is initially scheduled.
@@ -58,6 +61,7 @@ public class SetFlywheel extends Command {
     double p = SmartDashboard.getNumber("p", 0.0);
     double i = SmartDashboard.getNumber("i", 0.0);
     double d = SmartDashboard.getNumber("d", 0.0);
+    double ff = SmartDashboard.getNumber("ff", 0.0);
 
     if ((p != kP)) {
       flywheel.topPidController.setP(p);
@@ -72,6 +76,11 @@ public class SetFlywheel extends Command {
       kD = d;
     }
 
+    if (ff != kFF) {
+      flywheel.topPidController.setFF(ff);
+      kFF = ff;
+    }
+
     double updatedGoalRPM = SmartDashboard.getNumber("Goal RPM", 0.0);
 
     if (this.goalRPM != updatedGoalRPM) {
@@ -83,7 +92,7 @@ public class SetFlywheel extends Command {
       goalRPM = updatedGoalRPM;
     }
 
-    if (goalRPM < flywheel.getVelocity() + 70.0 || goalRPM > flywheel.getVelocity() - 70.0) { // 67.0RPM is 1%
+    if (goalRPM < flywheel.getTopVelocity() + 70.0 || goalRPM > flywheel.getTopVelocity() - 70.0) { // 67.0RPM is 1%
       time.stop();
       isAtTarget = true;
     } else {
@@ -91,10 +100,11 @@ public class SetFlywheel extends Command {
     }
     // processVariable = encoder.getPosition();
 
-    SmartDashboard.putNumber("Velocity", flywheel.getVelocity());
-    SmartDashboard.putNumber("Error", updatedGoalRPM - flywheel.getVelocity());
+    SmartDashboard.putNumber("Velocity", flywheel.getTopVelocity());
+    SmartDashboard.putNumber("Error", goalRPM - flywheel.getTopVelocity());
     SmartDashboard.putNumber("Time Elapsed", time.get());
     SmartDashboard.putBoolean("At target", isAtTarget);
+    SmartDashboard.putNumber("Top - Bottom Error", flywheel.getTopVelocity() - flywheel.getBottomVelocity());
   }
 
   // Called once the command ends or is interrupted.
