@@ -27,8 +27,8 @@ public class Shooter extends SubsystemBase {
 
   public void run(double speed) {
     Leadmotor.set(speed);
+    Leadmotor.setInverted(true);
     //sets followmotor to invert then follows 
-    Followmotor.setInverted(true);
     Followmotor.follow(Leadmotor);
   }
 
