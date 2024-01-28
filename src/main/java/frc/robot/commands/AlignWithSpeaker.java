@@ -50,12 +50,14 @@ public class AlignWithSpeaker extends Command {
         }
         break;
       case ALIGNED_WITH_TARGET:
-        if(lime.getTV() == 0) {
-          state = VisionCases.NO_TARGET;
-        } 
-        if(lime.getTX() <= -1 || lime.getTX() >= 1) {
-          state = VisionCases.HAS_TARGET;
-        }
+        // if(lime.getTV() == 0) {
+        //   state = VisionCases.NO_TARGET;
+        // } 
+        // if(lime.getTX() <= -1 || lime.getTX() >= 1) {
+        //   state = VisionCases.HAS_TARGET;
+        // }
+        isFinished();
+        break;
         
       }
     
