@@ -29,7 +29,7 @@ public class SetpointFlywheel extends Command {
   @Override
   public void execute() {
 
-    flywheel.setSpeed(setpointRpm);
+    flywheel.setBothRPM(setpointRpm);
 
     // if ((p != kP)) {
     // flywheel.leftPidController.setP(p);
@@ -57,7 +57,7 @@ public class SetpointFlywheel extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    flywheel.setSpeed(0.0);
+    flywheel.stop();
     return false;
   }
 }

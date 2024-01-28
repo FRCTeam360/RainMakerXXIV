@@ -14,7 +14,7 @@ import frc.robot.subsystems.Flywheel;
 
 public class SetFlywheel extends Command {
   private final Flywheel flywheel = Flywheel.getInstance();
-  private final SparkPIDController topPidController = flywheel.topPidController;
+  private final SparkPIDController topPIDController = flywheel.topPIDController;
 
   private double kP = 0.0;
   private double kI = 0.0;
@@ -31,10 +31,10 @@ public class SetFlywheel extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(flywheel);
 
-    topPidController.setP(kP);
-    topPidController.setI(kI);
-    topPidController.setD(kD);
-    topPidController.setFF(kFF);
+    topPIDController.setP(kP);
+    topPIDController.setI(kI);
+    topPIDController.setD(kD);
+    topPIDController.setFF(kFF);
 
     SmartDashboard.putNumber("p", kP);
     SmartDashboard.putNumber("i", kI);
@@ -65,20 +65,20 @@ public class SetFlywheel extends Command {
     double ff = SmartDashboard.getNumber("ff", 0.0);
 
     if ((p != kP)) {
-      flywheel.topPidController.setP(p);
+      flywheel.topPIDController.setP(p);
       kP = p;
     }
     if ((i != kI)) {
-      flywheel.topPidController.setI(i);
+      flywheel.topPIDController.setI(i);
       kI = i;
     }
     if ((d != kD)) {
-      flywheel.topPidController.setD(d);
+      flywheel.topPIDController.setD(d);
       kD = d;
     }
 
     if (ff != kFF) {
-      flywheel.topPidController.setFF(ff);
+      flywheel.topPIDController.setFF(ff);
       kFF = ff;
     }
 
@@ -89,7 +89,7 @@ public class SetFlywheel extends Command {
       time.reset();
       time.start();
       isAtTarget = false;
-      flywheel.topPidController.setReference(updatedGoalRPM, CANSparkBase.ControlType.kVelocity);
+      flywheel.topPIDController.setReference(updatedGoalRPM, CANSparkBase.ControlType.kVelocity);
       goalRPM = updatedGoalRPM;
     }
 
