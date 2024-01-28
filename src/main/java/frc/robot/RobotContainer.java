@@ -12,6 +12,7 @@ import frc.robot.commands.PowerLinkage;
 import frc.robot.commands.RobotOrientedDrive;
 import frc.robot.commands.SetFlywheel;
 import frc.robot.commands.SetLinkage;
+import frc.robot.commands.ShootInSpeaker;
 import frc.robot.commands.FieldOrientedDrive;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -20,13 +21,19 @@ import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Linkage;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -40,6 +47,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  private final SendableChooser<Command> autoChooser;
   // The robot's subsystems and commands are defined here...
   // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
@@ -67,7 +75,7 @@ public class RobotContainer {
   private final SetLinkage setLinkage = new SetLinkage();
   private final FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive();
   private final RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive();
-  private AutoBuilder autoChooser;
+  
 
 
   // public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -89,6 +97,9 @@ public class RobotContainer {
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
     // Configure the trigger bindings
+    NamedCommands.registerCommand("RunExtendIntake", runExtendIntake);
+    NamedCommands.registerCommand("Wait1", new WaitCommand(1));
+    NamedCommands.registerCommand("ShootInSpeaker", powerFlywheel);
     configureBindings();
     configureDefaultCommands();
   }

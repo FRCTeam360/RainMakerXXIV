@@ -18,9 +18,16 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": null
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": null
+                }
+              }
+            ]
           }
         },
         {

@@ -14,7 +14,12 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
@@ -170,5 +175,38 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                 .withVelocityY(MathUtil.applyDeadband(leftX, 0.1) * Constants.MAX_SPEED_MPS)
                 .withRotationalRate(MathUtil.applyDeadband(-rightX, 0.1) * Constants.MAX_ANGULAR_RATE)
                 );
+    }
+
+     private Pose2d getPose(){
+        double x = this.getState().Pose.getX();
+        double y = this.getState().Pose.getY();
+        Rotation2d rot = this.getState().Pose.getRotation();
+        //System.out.println("CURRENT POSE X: " + x);
+        //System.out.println("CURRENT POSE Y: " + y);
+        System.out.println("CURRENT POSE ROTATION: " + rot);
+        return this.getState().Pose;
+    }
+    private void resetPose(Pose2d pose){
+        seedFieldRelative(pose);
+    }
+    private ChassisSpeeds getRobotRelativeSpeeds(){
+        SwerveModuleState[] states = new SwerveModuleState[4];
+        for (int i = 0; i < 4; i++) {
+            states[i] = this.getModule(i).getCurrentState();
+        }
+        ChassisSpeeds k = this.m_kinematics.toChassisSpeeds(states);
+        double x = k.vxMetersPerSecond;
+        double y = k.vyMetersPerSecond;
+        System.out.println("X VELOCITY: " + x);
+        System.out.println("Y VELOCITY: " + y);
+        return k;
+    }
+
+    private void driveRobotRelative(ChassisSpeeds speed){
+        // print x and y speeds and rotation rate
+        //System.out.println("X VELOCITY: " + speed.vxMetersPerSecond);
+        //System.out.println("Y VELOCITY: " + speed.vyMetersPerSecond);
+        //System.out.println("ROTATION RATE: " + speed.omegaRadiansPerSecond);
+        this.setControl(new SwerveRequest.ApplyChassisSpeeds().withSpeeds(speed));
     }
 }
