@@ -67,6 +67,7 @@ public class RobotContainer {
   private final SetLinkage setLinkage = new SetLinkage();
   private final FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive();
   private final RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive();
+  private AutoBuilder autoChooser;
 
 
   // public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -136,8 +137,8 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  // public Command getAutonomousCommand() {
-  // // An example command will be run in autonomous
-  // return Autos.exampleAuto(null);
-  // }
+  public Command getAutonomousCommand() {
+    return autoChooser.getSelected();
+    // An example command will be run in autonomous
+  }
 }
