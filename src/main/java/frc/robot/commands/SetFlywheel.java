@@ -16,12 +16,12 @@ public class SetFlywheel extends Command {
   private final Flywheel flywheel = Flywheel.getInstance();
   private final SparkPIDController topPidController = flywheel.topPidController;
 
-  private double kP = 0.0;
+  private double kP = 0.00055;
   private double kI = 0.0;
   private double kD = 0.0;
-  private double kFF = 0.0;
+  private double kFF = 0.000152;
 
-  private double goalRPM = 0.0;
+  private double goalRPM = 5500.0;
 
   private Timer time = new Timer();
   private boolean isAtTarget;

@@ -29,6 +29,11 @@ public class Flywheel extends SubsystemBase {
 
   public final RelativeEncoder topEncoder = topMotor.getEncoder();
   public final RelativeEncoder bottomEncoder = bottomMotor.getEncoder();
+
+  private double kP = 0.00055;
+  private double kI = 0.0;
+  private double kD = 0.0;
+  private double kFF = 0.000152;
   
   private double rpmSetpoint = 0.0;
 
@@ -43,6 +48,11 @@ public class Flywheel extends SubsystemBase {
     bottomMotor.setInverted(true);
     bottomMotor.setIdleMode(IdleMode.kBrake);
     bottomMotor.follow(topMotor, true);
+
+    topPidController.setP(kP);
+    topPidController.setI(kI);
+    topPidController.setD(kD);
+    topPidController.setFF(kFF);
 
   }
 
@@ -60,7 +70,6 @@ public class Flywheel extends SubsystemBase {
 
   public void stop() {
     topMotor.stopMotor();
-    bottomMotor.stopMotor();
   }
 
   public double getTopSpeed() {
@@ -79,9 +88,10 @@ public class Flywheel extends SubsystemBase {
     return bottomEncoder.getVelocity();
   }
 
-
   public void setSpeed(double rpm) {
-    topPidController.setReference(rpm, CANSparkBase.ControlType.kVelocity);
+    //print rpm 
+    System.out.println("RPM: " + rpm);
+    topMotor.getPIDController().setReference(rpm, CANSparkBase.ControlType.kVelocity);
     rpmSetpoint = rpm;
   }
 

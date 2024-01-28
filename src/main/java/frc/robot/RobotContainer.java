@@ -91,7 +91,7 @@ public class RobotContainer {
   }
 
   private void configureDefaultCommands() {
-    flywheel.setDefaultCommand(setFlywheel);
+    //flywheel.setDefaultCommand(powerFlywheel);
     //intake.setDefaultCommand(runIntake);
     //linkage.setDefaultCommand(powerLinkage);
     // drivetrain.setDefaultCommand(fieldOrientedDrive);
@@ -114,13 +114,16 @@ public class RobotContainer {
   private void configureBindings() {
 
     // OPERATOR CONTROLLER BINDINGS
-    // operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
-    // operatorController.rightTrigger(.005).whileTrue(powerIntake);
-    // operatorController.a().whileTrue(powerFlywheel);
-    // operatorController.b().onTrue(runExtendIntake);
+    operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
+    operatorController.rightTrigger(.005).whileTrue(powerIntake);
+    // operatorController.a().whileTrue(new SetFlywheel());
+    operatorController.b().toggleOnTrue(runExtendIntake);
     // operatorController.y().whileTrue(powerIntake);
     // //operatorController.x().whileTrue(new InstantCommand(() -> linkage.setTo90(),linkage));
-    // operatorController.x().toggleOnTrue(new InstantCommand(() -> linkage.setAngle(100), linkage));
+
+    //operatorController.a().whileTrue(new InstantCommand(() -> flywheel.setSpeed(5500), flywheel));
+    //operatorController.b().whileTrue(new InstantCommand(() -> linkage.setAngle(85), linkage));
+    //.x().toggleOnTrue(new InstantCommand(() -> linkage.setAngle(100), linkage));
 
     // // DRIVER CONTROLLER BINDINGS
     // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.xOut(), drivetrain));
