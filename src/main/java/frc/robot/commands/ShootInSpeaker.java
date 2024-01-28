@@ -50,7 +50,7 @@ public class ShootInSpeaker extends Command {
   @Override
   public void execute() {
     linkage.setAngle(linkageSetpoint);
-    flywheel.setSpeed(flywheelSetpoint);
+    flywheel.setBothRPM(flywheelSetpoint);
     // drivetrain is rotated in its own command ran in parallel
     switch (state) {
       case LOADED:

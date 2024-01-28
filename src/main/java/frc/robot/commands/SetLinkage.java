@@ -17,7 +17,7 @@ public class SetLinkage extends Command {
   private double kP = 0.01;
   private double kD = 0.0;
   private double kI = 0.0;
-  private double kFF = 0.0;
+  private double kFF = 0.0; //:(
 
   private double setPosition = 0.0;
 
