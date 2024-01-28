@@ -14,7 +14,7 @@ import frc.robot.subsystems.Flywheel;
 public class PowerFlywheel extends Command {
   private final Flywheel flywheel = Flywheel.getInstance();
   private final XboxController operatorCont = new XboxController(1);
-  private final SparkPIDController topPidController = flywheel.topPidController;
+  // private final SparkPIDController topPidController = flywheel.topPidController;
 
   /** Creates a new Runflywheel. */
   public PowerFlywheel() {
@@ -41,16 +41,7 @@ public class PowerFlywheel extends Command {
     //   flywheel.stopRight();
     // }
 
-<<<<<<< HEAD
-    //flywheel.run(1.0);
-    // if(operatorCont.getAButton()) {
-      System.out.println("FLYWHEEL");
-
-      flywheel.setSpeed(5500.0);
-    //}
-=======
     flywheel.runBoth(1.0);
->>>>>>> 195fcb20481335fa17a9bee3bd1da33c93ee93fc
 
   }
     
