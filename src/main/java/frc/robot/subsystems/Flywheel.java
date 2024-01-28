@@ -21,13 +21,13 @@ public class Flywheel extends SubsystemBase {
 
   private final CANSparkFlex topMotor = new CANSparkFlex(Constants.SHOOTER_TOP_ID, MotorType.kBrushless);
   private final RelativeEncoder topEncoder = topMotor.getEncoder();
-  public final SparkPIDController topPIDController = topMotor.getPIDController();
+  private final SparkPIDController topPIDController = topMotor.getPIDController();
 
   private final CANSparkFlex bottomMotor = new CANSparkFlex(Constants.SHOOTER_BOTTOM_ID, MotorType.kBrushless);
   private final RelativeEncoder bottomEncoder = bottomMotor.getEncoder();
-  public final SparkPIDController bottomPIDController = bottomMotor.getPIDController();
+  private final SparkPIDController bottomPIDController = bottomMotor.getPIDController();
 
-  private double kP = 0.0055;
+  private double kP = 0.00055;
   private double kI = 0.0;
   private double kD = 0.0;
   private double kFF = 0.000152;

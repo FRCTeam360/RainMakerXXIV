@@ -10,7 +10,7 @@ import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.PowerIntake;
 import frc.robot.commands.PowerLinkage;
 import frc.robot.commands.RobotOrientedDrive;
-import frc.robot.commands.SetFlywheel;
+//import frc.robot.commands.SetFlywheel;
 import frc.robot.commands.SetLinkage;
 import frc.robot.commands.FieldOrientedDrive;
 import frc.robot.generated.TunerConstants;
@@ -56,7 +56,7 @@ public class RobotContainer {
 
 
   // auto commands
-  private final SetFlywheel setFlywheel = new SetFlywheel();
+  //private final SetFlywheel setFlywheel = new SetFlywheel();
 
   // tele commands
   private final RunExtendIntake runExtendIntake = new RunExtendIntake();
@@ -118,7 +118,10 @@ public class RobotContainer {
 
     operatorController.x().whileTrue(new InstantCommand(() -> flywheel.runBottom(0.8), flywheel));
     operatorController.a().whileTrue(new InstantCommand(() -> flywheel.setBottomRPM((2000))));
+
+    operatorController.pov(0).whileTrue(new InstantCommand(() -> flywheel.setBothRPM(5000)));
     // OPERATOR CONTROLLER BINDINGS
+
     // operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
     // operatorController.rightTrigger(.005).whileTrue(powerIntake);
     // operatorController.a().whileTrue(powerFlywheel);
