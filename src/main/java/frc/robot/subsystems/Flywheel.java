@@ -4,56 +4,57 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkBase;
-import com.revrobotics.CANSparkFlex;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+
+import com.revrobotics.CANSparkFlex;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class Flywheel extends SubsystemBase {
 
   private static Flywheel instance;
 
   private final CANSparkFlex topMotor = new CANSparkFlex(Constants.SHOOTER_TOP_ID, MotorType.kBrushless);
+  private final RelativeEncoder topEncoder = topMotor.getEncoder();
+  public final SparkPIDController topPIDController = topMotor.getPIDController();
+
   private final CANSparkFlex bottomMotor = new CANSparkFlex(Constants.SHOOTER_BOTTOM_ID, MotorType.kBrushless);
-  
-  public final SparkPIDController topPidController = topMotor.getPIDController();
-  public final SparkPIDController bottomPidController = bottomMotor.getPIDController();
+  private final RelativeEncoder bottomEncoder = bottomMotor.getEncoder();
+  public final SparkPIDController bottomPIDController = bottomMotor.getPIDController();
 
-  public final RelativeEncoder topEncoder = topMotor.getEncoder();
-  public final RelativeEncoder bottomEncoder = bottomMotor.getEncoder();
-
-  private double kP = 0.00055;
+  private double kP = 0.0055;
   private double kI = 0.0;
   private double kD = 0.0;
   private double kFF = 0.000152;
-  
+
   private double rpmSetpoint = 0.0;
 
-  /** Creates a new Shooter. */
+  /** Creates a new Flywheel. */
   public Flywheel() {
-
     topMotor.restoreFactoryDefaults();
     topMotor.setInverted(true);
     topMotor.setIdleMode(IdleMode.kBrake);
 
     bottomMotor.restoreFactoryDefaults();
-    bottomMotor.setInverted(true);
+    bottomMotor.setInverted(false);
     bottomMotor.setIdleMode(IdleMode.kBrake);
-    bottomMotor.follow(topMotor, true);
 
-    topPidController.setP(kP);
-    topPidController.setI(kI);
-    topPidController.setD(kD);
-    topPidController.setFF(kFF);
+    topPIDController.setP(kP);
+    topPIDController.setFF(kFF);
+    topPIDController.setI(kI);
+    topPIDController.setD(kD);
 
+    bottomPIDController.setP(kP);
+    bottomPIDController.setFF(kFF);
+    bottomPIDController.setI(kI);
+    bottomPIDController.setD(kD);
+
+    SmartDashboard.putNumber("Top Velocity", topEncoder.getVelocity());
   }
 
   public static Flywheel getInstance() {
@@ -63,9 +64,30 @@ public class Flywheel extends SubsystemBase {
     return instance;
   }
 
-  public void run(double speed) {
+  public void runTop(double speed) {
     topMotor.set(speed);
-    //bottomMotor.set(-speed); uneeded bc of lead/follow systm
+  }
+
+  public void runBottom(double speed) {
+    bottomMotor.set(speed);
+  }
+
+  public void runBoth(double speed) {
+    topMotor.set(speed);
+    bottomMotor.set(speed);
+  }
+
+  public void setTopRPM(double rpm) {
+    topPIDController.setReference(rpm, ControlType.kVelocity);
+  }
+
+  public void setBottomRPM(double rpm) {
+    bottomPIDController.setReference(rpm, ControlType.kVelocity);
+  }
+
+  public void setBothRPM(double rpm) {
+    topPIDController.setReference(rpm, ControlType.kVelocity);
+    bottomPIDController.setReference(rpm, ControlType.kVelocity);
   }
 
   public void stop() {
@@ -88,16 +110,8 @@ public class Flywheel extends SubsystemBase {
     return bottomEncoder.getVelocity();
   }
 
-  public void setSpeed(double rpm) {
-    //print rpm 
-    System.out.println("RPM: " + rpm);
-    topMotor.getPIDController().setReference(rpm, CANSparkBase.ControlType.kVelocity);
-    rpmSetpoint = rpm;
-  }
-
   public boolean isAtSetpoint() {
     return Math.abs(this.getTopSpeed() - rpmSetpoint) < 20.0;
-
   }
 
   public boolean isAboveSetpoint() {
@@ -106,15 +120,13 @@ public class Flywheel extends SubsystemBase {
 
   public boolean isBelowSetpoint() {
     return this.getTopSpeed() <= rpmSetpoint - 200.0;
-
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
-    SmartDashboard.putNumber("Top Speed", getTopSpeed());
-    SmartDashboard.putNumber("Bottom Speed", getBottomSpeed());
+    SmartDashboard.putNumber("Top Velocity", topEncoder.getVelocity());
+    SmartDashboard.putNumber("Bottom Velocity", bottomEncoder.getVelocity());
 
   }
 }

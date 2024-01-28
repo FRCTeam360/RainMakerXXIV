@@ -91,7 +91,11 @@ public class RobotContainer {
   }
 
   private void configureDefaultCommands() {
+<<<<<<< HEAD
     //flywheel.setDefaultCommand(powerFlywheel);
+=======
+    //flywheel.setDefaultCommand(setFlywheel);
+>>>>>>> 195fcb20481335fa17a9bee3bd1da33c93ee93fc
     //intake.setDefaultCommand(runIntake);
     //linkage.setDefaultCommand(powerLinkage);
     // drivetrain.setDefaultCommand(fieldOrientedDrive);
@@ -113,6 +117,11 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
+    operatorController.y().whileTrue(new InstantCommand(() -> flywheel.runTop(0.8), flywheel));
+    operatorController.b().whileTrue(new InstantCommand(() -> flywheel.setTopRPM((2000))));
+
+    operatorController.x().whileTrue(new InstantCommand(() -> flywheel.runBottom(0.8), flywheel));
+    operatorController.a().whileTrue(new InstantCommand(() -> flywheel.setBottomRPM((2000))));
     // OPERATOR CONTROLLER BINDINGS
     operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
     operatorController.rightTrigger(.005).whileTrue(powerIntake);

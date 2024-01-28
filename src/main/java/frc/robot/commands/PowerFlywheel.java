@@ -41,12 +41,16 @@ public class PowerFlywheel extends Command {
     //   flywheel.stopRight();
     // }
 
+<<<<<<< HEAD
     //flywheel.run(1.0);
     // if(operatorCont.getAButton()) {
       System.out.println("FLYWHEEL");
 
       flywheel.setSpeed(5500.0);
     //}
+=======
+    flywheel.runBoth(1.0);
+>>>>>>> 195fcb20481335fa17a9bee3bd1da33c93ee93fc
 
   }
     
