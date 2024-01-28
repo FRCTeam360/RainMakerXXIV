@@ -55,6 +55,7 @@ public class Flywheel extends SubsystemBase {
     bottomPIDController.setD(kD);
 
     SmartDashboard.putNumber("Top Velocity", topEncoder.getVelocity());
+    SmartDashboard.putNumber("Bottom Velocity", bottomEncoder.getVelocity());
   }
 
   public static Flywheel getInstance() {
@@ -92,7 +93,6 @@ public class Flywheel extends SubsystemBase {
 
   public void stop() {
     topMotor.stopMotor();
-    bottomMotor.stopMotor();
   }
 
   public double getTopSpeed() {
