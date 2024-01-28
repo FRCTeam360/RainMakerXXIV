@@ -127,26 +127,13 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    operatorController.y().whileTrue(new InstantCommand(() -> flywheel.runTop(0.8), flywheel));
-    operatorController.b().whileTrue(new InstantCommand(() -> flywheel.setTopRPM((2000))));
-
-    operatorController.x().whileTrue(new InstantCommand(() -> flywheel.runBottom(0.8), flywheel));
-    operatorController.a().whileTrue(new InstantCommand(() -> flywheel.setBottomRPM((2000))));
-
-    operatorController.pov(0).whileTrue(new InstantCommand(() -> flywheel.setBothRPM(5000)));
     // OPERATOR CONTROLLER BINDINGS
     operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
     operatorController.rightTrigger(.005).whileTrue(powerIntake);
-    // operatorController.a().whileTrue(new SetFlywheel());
     operatorController.b().toggleOnTrue(runExtendIntake);
-    // operatorController.y().whileTrue(powerIntake);
-    // //operatorController.x().whileTrue(new InstantCommand(() -> linkage.setTo90(),linkage));
+    operatorController.y().whileTrue(new InstantCommand(() -> flywheel.setBothRPM(5000), flywheel));
 
-    //operatorController.a().whileTrue(new InstantCommand(() -> flywheel.setSpeed(5500), flywheel));
-    //operatorController.b().whileTrue(new InstantCommand(() -> linkage.setAngle(85), linkage));
-    //.x().toggleOnTrue(new InstantCommand(() -> linkage.setAngle(100), linkage));
-
-    // // DRIVER CONTROLLER BINDINGS
+    // DRIVER CONTROLLER BINDINGS
     // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.xOut(), drivetrain));
     // driverController.a().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     
