@@ -10,9 +10,11 @@ public class Constants {
         public static final int SHOOTER_RIGHT_ID = 4;
         public static final int INTAKE_ID = 5;
 
-        public static final double MaxSpeed = 13.7; // used to be 6 meters per second desired top speed
-        public static final double MaxAngularRate = Math.PI * 3; // Half a rotation per second max angular velocity
+        public static final double MAX_SPEED_MPS = 13.7; // used to be 6 meters per second desired top speed (name changed from MAX_SPEED to MAX_SPEED_MPS jan25 kinda sketch)
+        public static final double MAX_ANGULAR_RATE = Math.PI * 3; // Half a rotation per second max angular velocity
 
+        public static final int PIGEON_ID = 13;
+        
  public static final Mode currentMode = Mode.REAL;
  
  public static enum Mode {
