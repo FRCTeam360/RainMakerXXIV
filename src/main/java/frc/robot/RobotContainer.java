@@ -32,6 +32,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -108,7 +109,11 @@ public class RobotContainer {
     //flywheel.setDefaultCommand(setFlywheel);
     //intake.setDefaultCommand(runIntake);
     //linkage.setDefaultCommand(powerLinkage);
-    // drivetrain.setDefaultCommand(fieldOrientedDrive);
+    drivetrain.setDefaultCommand(fieldOrientedDrive);
+  }
+
+  public void onDisable() {
+    drivetrain.robotOrientedDrive(0, 0, 0);
   }
 
   /**
@@ -126,6 +131,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    driverController.a().whileTrue(drivetrain.turntoCMD(180.0, 0.0, 0.0));
+    driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
 
     // OPERATOR CONTROLLER BINDINGS
     operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);

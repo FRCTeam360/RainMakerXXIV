@@ -8,6 +8,9 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentricFacingAngle;
+import com.ctre.phoenix6.mechanisms.swerve.utility.PhoenixPIDController;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -18,11 +21,15 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
@@ -38,9 +45,32 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
     CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
-     private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
-     private Rotation2d lastRotationSetpoint;
+    private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
+    private Rotation2d lastRotationSetpoint;
+    private PhoenixPIDController headingController = new PhoenixPIDController(5.75, 0, 0);
+
+    GenericEntry kPEntry;
+    GenericEntry kIEntry;
+    GenericEntry kDEntry;
     
+
+    private void setupShuffleboard() {
+        // ShuffleboardTab tab = Shuffleboard.getTab("angle");
+        // tab.addNumber("current angle", () -> this.getPigeon2().getAngle());
+        // tab.addNumber("error", () -> this.getHeadingError());
+        // tab.addNumber("last rotation setpoint", () -> {
+        //     if (this.lastRotationSetpoint == null) {
+        //         return 0.0;
+        //     }
+        //     return this.lastRotationSetpoint.getDegrees();
+        // });
+        
+        // kPEntry = tab.add("kP", 0.0).getEntry();
+        // kIEntry = tab.add("kI", 0.0).getEntry();
+        // kDEntry = tab.add("kD", 0.0).getEntry();
+        
+
+    }
 
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency,
             SwerveModuleConstants... modules) {
@@ -54,7 +84,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                 this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
                 this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your
+                                                 // Constants class
                         new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
                         new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
                         4.5, // Max module speed, in m/s
@@ -62,7 +93,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                         new ReplanningConfig() // Default path replanning config. See the API for the options here
                 ),
                 () -> {
-                    // Boolean supplier that controls when the path will be mirrored for the red alliance
+                    // Boolean supplier that controls when the path will be mirrored for the red
+                    // alliance
                     // This will flip the path being followed to the red side of the field.
                     // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
@@ -74,6 +106,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                 },
                 this // Reference to this subsystem to set requirements
         );
+        setupShuffleboard();
     }
 
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
@@ -87,7 +120,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                 this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
                 this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your
+                                                 // Constants class
                         new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
                         new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
                         4.5, // Max module speed, in m/s
@@ -95,7 +129,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                         new ReplanningConfig() // Default path replanning config. See the API for the options here
                 ),
                 () -> {
-                    // Boolean supplier that controls when the path will be mirrored for the red alliance
+                    // Boolean supplier that controls when the path will be mirrored for the red
+                    // alliance
                     // This will flip the path being followed to the red side of the field.
                     // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
@@ -107,9 +142,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                 },
                 this // Reference to this subsystem to set requirements
         );
+        setupShuffleboard();
     }
-
-    
 
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
         return run(() -> this.setControl(requestSupplier.get()));
@@ -129,9 +163,27 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         });
         m_simNotifier.startPeriodic(kSimLoopPeriod);
     }
-    
-    public Command turntoCMD(Rotation2d desiredAngle, double velocityX, double velocityY){
-        return this.applyRequest(() -> drive.withTargetDirection(desiredAngle).withVelocityX(velocityX).withVelocityY(velocityY));
+
+    public Command turntoCMD(Rotation2d desiredAngle, double velocityX, double velocityY) {
+        FieldCentricFacingAngle facingAngleCommand = drive.withTargetDirection(desiredAngle).withVelocityX(velocityX).withVelocityY(velocityY);
+        lastRotationSetpoint = desiredAngle;
+        facingAngleCommand.HeadingController = headingController;
+        return this.applyRequest(() -> facingAngleCommand);
+
+    }
+
+    public Command turntoCMD(double desiredAngle, double velocityX, double velocityY) {
+        Rotation2d rotation = Rotation2d.fromDegrees(desiredAngle);
+        return turntoCMD(rotation, velocityX, velocityY);
+    }
+
+    private double getHeadingError() {
+        if (lastRotationSetpoint == null){
+            return 0.0;
+        }
+        double lastRotationSetpointDegrees = this.lastRotationSetpoint.getDegrees() % 360;
+        double currentAngleDegrees = this.m_pigeon2.getAngle()% 360;
+        return (currentAngleDegrees - lastRotationSetpointDegrees) % 360;
     }
 
     public boolean isFacingAngle() {
@@ -165,31 +217,31 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         this.setControl(new SwerveRequest.FieldCentric()
                 .withVelocityX(MathUtil.applyDeadband(leftY, 0.1) * Constants.MAX_SPEED_MPS)
                 .withVelocityY(MathUtil.applyDeadband(leftX, 0.1) * Constants.MAX_SPEED_MPS)
-                .withRotationalRate(MathUtil.applyDeadband(-rightX, 0.1) * Constants.MAX_ANGULAR_RATE)
-                );
+                .withRotationalRate(MathUtil.applyDeadband(-rightX, 0.1) * Constants.MAX_ANGULAR_RATE));
     }
 
     public void robotOrientedDrive(double leftX, double leftY, double rightX) {
         this.setControl(new SwerveRequest.RobotCentric()
                 .withVelocityX(MathUtil.applyDeadband(leftY, 0.1) * Constants.MAX_SPEED_MPS)
                 .withVelocityY(MathUtil.applyDeadband(leftX, 0.1) * Constants.MAX_SPEED_MPS)
-                .withRotationalRate(MathUtil.applyDeadband(-rightX, 0.1) * Constants.MAX_ANGULAR_RATE)
-                );
+                .withRotationalRate(MathUtil.applyDeadband(-rightX, 0.1) * Constants.MAX_ANGULAR_RATE));
     }
 
-     private Pose2d getPose(){
+    private Pose2d getPose() {
         // double x = this.getState().Pose.getX();
         // double y = this.getState().Pose.getY();
         // Rotation2d rot = this.getState().Pose.getRotation();
-        //System.out.println("CURRENT POSE X: " + x);
-        //System.out.println("CURRENT POSE Y: " + y);
-        //System.out.println("CURRENT POSE ROTATION: " + rot);
+        // System.out.println("CURRENT POSE X: " + x);
+        // System.out.println("CURRENT POSE Y: " + y);
+        // System.out.println("CURRENT POSE ROTATION: " + rot);
         return this.getState().Pose;
     }
-    private void resetPose(Pose2d pose){
+
+    private void resetPose(Pose2d pose) {
         seedFieldRelative(pose);
     }
-    private ChassisSpeeds getRobotRelativeSpeeds(){
+
+    private ChassisSpeeds getRobotRelativeSpeeds() {
         SwerveModuleState[] states = new SwerveModuleState[4];
         for (int i = 0; i < 4; i++) {
             states[i] = this.getModule(i).getCurrentState();
@@ -202,11 +254,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         return k;
     }
 
-    private void driveRobotRelative(ChassisSpeeds speed){
+    private void driveRobotRelative(ChassisSpeeds speed) {
         // print x and y speeds and rotation rate
-        //System.out.println("X VELOCITY: " + speed.vxMetersPerSecond);
-        //System.out.println("Y VELOCITY: " + speed.vyMetersPerSecond);
-        //System.out.println("ROTATION RATE: " + speed.omegaRadiansPerSecond);
+        // System.out.println("X VELOCITY: " + speed.vxMetersPerSecond);
+        // System.out.println("Y VELOCITY: " + speed.vyMetersPerSecond);
+        // System.out.println("ROTATION RATE: " + speed.omegaRadiansPerSecond);
         this.setControl(new SwerveRequest.ApplyChassisSpeeds().withSpeeds(speed));
     }
 }
