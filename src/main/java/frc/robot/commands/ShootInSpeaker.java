@@ -93,7 +93,9 @@ public class ShootInSpeaker extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.run(0.0);
+    intake.stop();
+    flywheel.stop();
+    // linkage.stop();
   }
 
   // Returns true when the command should end.
