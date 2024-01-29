@@ -40,6 +40,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
      private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
      private Rotation2d lastRotationSetpoint;
+     
     
 
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency,
