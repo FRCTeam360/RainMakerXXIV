@@ -23,6 +23,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
@@ -40,6 +42,18 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
      private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
      private Rotation2d lastRotationSetpoint;
+
+    private void setupShuffleboard(){
+        ShuffleboardTab tab = Shuffleboard.getTab("angle");
+        tab.addNumber("current angle", () -> this.getPigeon2().getAngle());
+        tab.addNumber("last rotation setpoint", () -> {
+            if (this.lastRotationSetpoint == null) {
+                return 0.0;
+            }
+            return this.lastRotationSetpoint.getDegrees();
+        });
+
+    }
      
     
 
@@ -133,6 +147,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     
     public Command turntoCMD(Rotation2d desiredAngle, double velocityX, double velocityY){
         return this.applyRequest(() -> drive.withTargetDirection(desiredAngle).withVelocityX(velocityX).withVelocityY(velocityY));
+
     }
     public Command turntoCMD(double desiredAngle, double velocityX, double velocityY){
         Rotation2d rotation = Rotation2d.fromDegrees(desiredAngle);
