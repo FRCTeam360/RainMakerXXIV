@@ -11,10 +11,18 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
@@ -31,22 +39,49 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
     CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
-    private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
-    private Rotation2d lastRotationSetpoint;
+     static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
 
-    public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency,
-            SwerveModuleConstants... modules) {
+
+    public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency, SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
         if (Utils.isSimulation()) {
             startSimThread();
         }
     }
-
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
         if (Utils.isSimulation()) {
             startSimThread();
         }
+
+        AutoBuilder.configureHolonomic(
+                this::getPose, // Robot pose supplier
+                this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+                this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your
+                                                 // Constants class
+                        new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                        new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+                        4.5, // Max module speed, in m/s
+                        0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+                        new ReplanningConfig() // Default path replanning config. See the API for the options here
+                ),
+                () -> {
+                    // Boolean supplier that controls when the path will be mirrored for the red
+                    // alliance
+                    // This will flip the path being followed to the red side of the field.
+                    // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+                    var alliance = DriverStation.getAlliance();
+                    if (alliance.isPresent()) {
+                        return alliance.get() == DriverStation.Alliance.Red;
+                    }
+                    return false;
+                },
+                this // Reference to this subsystem to set requirements
+        );
+        setupShuffleboard();
     }
 
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
@@ -71,58 +106,5 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     public Command turntoCMD(Rotation2d desiredAngle, double velocityX, double velocityY){
         return this.applyRequest(() -> drive.withTargetDirection(desiredAngle).withVelocityX(velocityX).withVelocityY(velocityY));
     }
-
-    public boolean isFacingAngle() {
-        if (this.lastRotationSetpoint == null) {
-            return false;
-        }
-        double lastRotationSetpointDegrees = this.lastRotationSetpoint.getDegrees();
-        double currentAngleDegrees = this.m_pigeon2.getAngle();
-        lastRotationSetpointDegrees = lastRotationSetpointDegrees % 360;
-        currentAngleDegrees = currentAngleDegrees % 360;
-        return Math.abs(lastRotationSetpointDegrees - currentAngleDegrees) < 1;
-    }
-
-    public float getAngle() {
-        return (float) this.getPigeon2().getAngle();
-    }
-
-
-    public Rotation2d getRotation2d() {
-        return this.getPigeon2().getRotation2d();
-    }
-
-    public void zero() {
-        this.getPigeon2().reset();
-    }
-
-    public void xOut() {
-        this.setControl(new SwerveRequest.SwerveDriveBrake());
-    }
-
-    public void fieldOrientedDrive(double leftX, double leftY, double rightX) {
-        this.setControl(new SwerveRequest.FieldCentric()
-                .withVelocityX(MathUtil.applyDeadband(leftY, 0.1) * Constants.MAX_SPEED_MPS)
-                .withVelocityY(MathUtil.applyDeadband(leftX, 0.1) * Constants.MAX_SPEED_MPS)
-                .withRotationalRate(MathUtil.applyDeadband(-rightX, 0.1) * Constants.MAX_ANGULAR_RATE)
-                );
-    }
-
-    public void robotOrientedDrive(double leftX, double leftY, double rightX) {
-        this.setControl(new SwerveRequest.RobotCentric()
-                .withVelocityX(MathUtil.applyDeadband(leftY, 0.1) * Constants.MAX_SPEED_MPS)
-                .withVelocityY(MathUtil.applyDeadband(leftX, 0.1) * Constants.MAX_SPEED_MPS)
-                .withRotationalRate(MathUtil.applyDeadband(-rightX, 0.1) * Constants.MAX_ANGULAR_RATE)
-                );
-    }
-
-    @Override
-    public void periodic() {
-        for(int i = 0;i<4;i++) {
-           Logger.recordOutput("Voltage", this.getModule(i).getDriveMotor().getMotorVoltage().getValueAsDouble());
-           Logger.recordOutput("Current", this.getModule(i).getDriveMotor().getSupplyCurrent().getValueAsDouble());
-           Logger.recordOutput("Position", this.getModule(i).getCANcoder().getPosition().getValueAsDouble());
-        }
-        Logger.recordOutput("Rotation2d", this.getPigeon2().getRotation2d());
-    }
+    
 }

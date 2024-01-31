@@ -4,19 +4,33 @@
 
 package frc.robot.commands;
 
+import com.revrobotics.CANSparkBase;
+import com.revrobotics.SparkPIDController;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Flywheel;
 
+<<<<<<< HEAD:src/main/java/frc/robot/commands/PowerShooter.java
 public class PowerShooter extends Command {
   private final Shooter shooter;
+=======
+public class PowerFlywheel extends Command {
+  private final Flywheel flywheel = Flywheel.getInstance();
+>>>>>>> Woodbot:src/main/java/frc/robot/commands/PowerFlywheel.java
   private final XboxController operatorCont = new XboxController(1);
+  // private final SparkPIDController topPidController = flywheel.topPidController;
 
+<<<<<<< HEAD:src/main/java/frc/robot/commands/PowerShooter.java
   /** Creates a new RunShooter. */
   public PowerShooter(Shooter shooter) {
     this.shooter = shooter;
+=======
+  /** Creates a new Runflywheel. */
+  public PowerFlywheel() {
+>>>>>>> Woodbot:src/main/java/frc/robot/commands/PowerFlywheel.java
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shooter);
+    addRequirements(flywheel);
   }
 
   // Called when the command is initially scheduled.
@@ -27,23 +41,25 @@ public class PowerShooter extends Command {
   @Override
   public void execute() {
     // if(Math.abs(operatorCont.getLeftY()) > 0.1) {
-    //   shooter.runLeft(-operatorCont.getLeftY());
+    //   flywheel.runLeft(-operatorCont.getLeftY());
     // } else {
-    //   shooter.stopLeft();
+    //   flywheel.stopLeft();
     // }
 
     // if(Math.abs(operatorCont.getRightY()) > 0.1) {
-    //   shooter.runRight(-operatorCont.getRightY());
+    //   flywheel.runRight(-operatorCont.getRightY());
     // } else {
-    //   shooter.stopRight();
+    //   flywheel.stopRight();
     // }
 
-    shooter.runBoth(0.73, -0.73); //todo: invert motor
+    flywheel.runBoth(1.0);
+
   }
     
   public void end(boolean interrupted) {
-    shooter.stopLeft();
-    shooter.stopRight();
+    // print when it runs
+    System.out.println("ENDING");
+    flywheel.stop();
   }
 
   // Returns true when the command should end.
