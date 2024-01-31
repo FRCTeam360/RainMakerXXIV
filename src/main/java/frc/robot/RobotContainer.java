@@ -65,7 +65,7 @@ public class RobotContainer {
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
   // Create new ShootInSpeaker command
   private final Command shootRoutine =
-  ShootInSpeaker.WithDrivetrain(drivetrain, linkage, flywheel, 180.0, 90.0, 4000.0);
+  ShootInSpeaker.WithDrivetrain(drivetrain, linkage, flywheel, intake, 180.0, 90.0, 4000.0);
   // auto commands
   //private final SetFlywheel setFlywheel = new SetFlywheel();
 
@@ -136,7 +136,7 @@ public class RobotContainer {
     driverController.a().whileTrue(drivetrain.turntoCMD(180.0, 0.0, 0.0));
     driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
 
-    operatorController.a().whileTrue(ShootInSpeaker.WithDrivetrain(drivetrain, linkage, flywheel, intake, 180., 90.0, 4000.0));
+    operatorController.a().whileTrue(shootRoutine);
 
     // driverController.a().whileTrue(drivetrain.turntoCMD(180.0, 0.0, 0.0));
     // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
