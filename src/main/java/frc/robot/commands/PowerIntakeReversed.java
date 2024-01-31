@@ -8,7 +8,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 
-public class PowerIntakeReversed extends Command {
+public class 
+PowerIntakeReversed extends Command {
   private XboxController operatorCont = new XboxController(1);
   private Intake intake = Intake.getInstance();
   /** Creates a new RunIntakeReversed. */
@@ -25,9 +26,9 @@ public class PowerIntakeReversed extends Command {
   @Override
   public void execute() {
     if(operatorCont.getLeftTriggerAxis() > .75) {
-      intake.run(.5);
+      intake.run(-0.5);
     } else {
-      intake.run(.15);
+      intake.run(-0.15);
     }
   }
 

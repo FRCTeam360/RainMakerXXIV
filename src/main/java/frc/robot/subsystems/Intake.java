@@ -5,7 +5,9 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkBase.IdleMode;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -16,8 +18,10 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
 
   private static Intake instance;
-  private final DigitalInput sensor = new DigitalInput(0); // update port later idk what it is
+  private final DigitalInput sideSensor = new DigitalInput(2);
+  private final DigitalInput highSensor = new DigitalInput(0);
   private final CANSparkMax motor = new CANSparkMax(Constants.INTAKE_ID, MotorType.kBrushless);
+  public final RelativeEncoder encoder = motor.getEncoder();
 
   /** Creates a new Intake. */
   public Intake() {
@@ -34,8 +38,12 @@ public class Intake extends SubsystemBase {
     return instance;
   }
 
-  public boolean getSensor() {
-    return sensor.get();
+  public boolean getSideSensor() {
+    return sideSensor.get();
+  }
+
+  public boolean getHighSensor() {
+    return highSensor.get();
   }
 
   public void run(double speed) {
@@ -54,11 +62,16 @@ public class Intake extends SubsystemBase {
     return motor.get();
   }
 
+  // public void setEncoder() {
+  //   encoder.setPosition(encoder.getPosition() + 1.28436279297);
+  // }
+
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Intake Speed", getSpeed());
-    SmartDashboard.putNumber("Intake Amps", getAmps());
-    SmartDashboard.putBoolean("this sensor sucks", getSensor());
+    // SmartDashboard.putNumber("Encoder Position", encoder.getPosition());
+    // SmartDashboard.getNumber("Encoder Position", encoder.getPosition());
+    // // This method will be called once per scheduler run
+    // SmartDashboard.putNumber("Intake Speed", getSpeed());
+    // SmartDashboard.putNumber("Intake Amps", getAmps());
   }
 }

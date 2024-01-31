@@ -27,9 +27,16 @@ public class Linkage extends SubsystemBase {
   public final SparkPIDController pidController = motor.getPIDController();
   private double positionSetpoint;
 
+  private static final double STARTING_ANGLE = 50.0;
+
   static XboxController driverCont = new XboxController(0);
 
   static CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
+
+  private double kP = 0.1;
+  private double kD = 0.0;
+  private double kI = 0.0;
+  private double kFF = 0.0; // :(
 
   /** Creates a new ShooterLinkage. */
   public Linkage() {
@@ -38,15 +45,20 @@ public class Linkage extends SubsystemBase {
     motor.setIdleMode(IdleMode.kBrake);
 
     encoder.setPositionConversionFactor(360.0 / 36.0); // 360deg / 36:1 gear ratio
-    encoder.setPosition(43.0);
+    encoder.setPosition(STARTING_ANGLE);
 
     motor.setSoftLimit(SoftLimitDirection.kForward, 180f);
     motor.setSoftLimit(SoftLimitDirection.kReverse, 50f);
     motor.enableSoftLimit(SoftLimitDirection.kForward, true);
     motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    
 
     motor.setClosedLoopRampRate(1.0);
+
+    pidController.setP(kP);
+    pidController.setD(kD);
+    pidController.setI(kI);
+    pidController.setFF(kFF);
+
   }
 
   public static Linkage getInstance() {
@@ -69,7 +81,7 @@ public class Linkage extends SubsystemBase {
     return encoder.getPosition();
   }
 
-  public void setAngle(double setPoint){
+  public void setAngle(double setPoint) {
     positionSetpoint = setPoint;
     pidController.setReference(setPoint, CANSparkBase.ControlType.kPosition);
   }
@@ -82,22 +94,24 @@ public class Linkage extends SubsystemBase {
     encoder.setPosition(0);
   }
 
+  public void setEncoderTo90() {
+    encoder.setPosition(90);
+  }
+
   public void setFFWScaling(double ff) {
     pidController.setFF(ff * Math.cos(getAngle()));
   }
 
   public boolean isAtSetpoint() {
     return Math.abs(getAngle() - positionSetpoint) < 1.0;
-    }
-
-
-  
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Linkage Angle", getAngle());
     SmartDashboard.putNumber("Linkage Voltage", motor.getAppliedOutput());
+    SmartDashboard.putNumber("Linkage Error", 85-getAngle());
 
   }
 

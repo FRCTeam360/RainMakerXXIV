@@ -4,6 +4,9 @@
 
 package frc.robot.commands;
 
+import com.revrobotics.CANSparkBase;
+import com.revrobotics.SparkPIDController;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Flywheel;
@@ -11,6 +14,7 @@ import frc.robot.subsystems.Flywheel;
 public class PowerFlywheel extends Command {
   private final Flywheel flywheel = Flywheel.getInstance();
   private final XboxController operatorCont = new XboxController(1);
+  // private final SparkPIDController topPidController = flywheel.topPidController;
 
   /** Creates a new Runflywheel. */
   public PowerFlywheel() {
@@ -37,11 +41,13 @@ public class PowerFlywheel extends Command {
     //   flywheel.stopRight();
     // }
 
-    flywheel.run(0.8);
+    flywheel.runBoth(1.0);
 
   }
     
   public void end(boolean interrupted) {
+    // print when it runs
+    System.out.println("ENDING");
     flywheel.stop();
   }
 

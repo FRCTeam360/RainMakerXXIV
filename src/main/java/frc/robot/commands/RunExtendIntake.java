@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,15 +13,15 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
 
 public class RunExtendIntake extends Command {
-  enum IntakeCases {CHECK_ROBOT_EMPTY, EXTEND_INTAKE, WAIT_FOR_SENSOR, REVERSE_TRIGGER, RETRACT_STOP}; 
+  enum IntakeCases {CHECK_ROBOT_EMPTY, EXTEND_INTAKE, WAIT_FOR_SENSOR, UP_TO_SHOOTER_P1, UP_TO_SHOOTER_P2, RETRACT_STOP}; 
   private Linkage linkage = Linkage.getInstance();
+  //private DigitalInput sensor = new DigitalInput(0);
   
   private Intake intake = Intake.getInstance();
   private static XboxController operatorCont = new XboxController(1);
-  private boolean hasPiece = false;
   private Timer timer = new Timer();
   private Timer sensorTimer = new Timer();
-  private boolean inAuto;
+  private double setPoint;
   
   private IntakeCases state = IntakeCases.CHECK_ROBOT_EMPTY;
 
@@ -28,6 +29,7 @@ public class RunExtendIntake extends Command {
   
   /** Creates a new Java. */
   public RunExtendIntake() {
+    //SmartDashboard.putNumber("OVERSHOOT", 0.0);
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
   }
@@ -47,12 +49,13 @@ public class RunExtendIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println(state);
     switch(state){
       case CHECK_ROBOT_EMPTY:
-      if(intake.getSensor()) {
-        state = IntakeCases.EXTEND_INTAKE;
+        if(intake.getSideSensor()) {
+          state = IntakeCases.EXTEND_INTAKE;
+        }
         break;
-      }
       case EXTEND_INTAKE:
         intake.run(.5); // we should extend too but idk how we should implement this
         //linkage.setAngle(180);
@@ -62,26 +65,31 @@ public class RunExtendIntake extends Command {
         }
         break;
       case WAIT_FOR_SENSOR:
-        intake.run(.25);
+        intake.run(.5);
         if(sensorTimer.get() > 1) {
           state = IntakeCases.EXTEND_INTAKE;
           sensorTimer.reset();
         } 
-        if(!intake.getSensor()){
-          state = IntakeCases.REVERSE_TRIGGER;
-        // } else if(!intake.getSensor()) {
-        //   if(inAuto) {
-        //     end(true);
-        //   } else {
-        //     state = IntakeCases.RETRACT_STOP;
-        //   }
+        if(!intake.getSideSensor()){
+         // setPoint = intake.encoder.getPosition() + 1.28436279297;
+          state = IntakeCases.UP_TO_SHOOTER_P1;
+
         }
         break;
-      case REVERSE_TRIGGER:
-        intake.run(-.10);
-        if(intake.getSensor()) {
-          state = IntakeCases.RETRACT_STOP;
+      case UP_TO_SHOOTER_P1:
+        if(!intake.getHighSensor()) {
+          state = IntakeCases.UP_TO_SHOOTER_P2;
+        } else {
+          intake.run(.25);
         }
+      
+        break;
+      case UP_TO_SHOOTER_P2:
+          if(intake.getHighSensor()) {
+            state = IntakeCases.RETRACT_STOP;
+          } else {
+            intake.run(.14);
+          }
       case RETRACT_STOP:
         break;
 
@@ -139,6 +147,7 @@ public class RunExtendIntake extends Command {
   @Override
   public boolean isFinished() {
     if(state == IntakeCases.RETRACT_STOP) {
+      System.out.print("COMMAND ENDED");
       return true;
     }
     return false;
