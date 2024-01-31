@@ -50,7 +50,7 @@ public class Intake extends SubsystemBase {
     return motor.getOutputCurrent();
   }
 
-  public double getSpeed() {
+  public double getPower() {
     return motor.get();
   }
 

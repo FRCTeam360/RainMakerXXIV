@@ -52,7 +52,7 @@ public class ShootInSpeaker extends Command {
   @Override
   public void execute() {
     intake.run(0.0);
-    linkage.setAngle(linkageSetpoint);
+    // linkage.setAngle(linkageSetpoint);
     flywheel.setSpeed(flywheelSetpoint);
     // drivetrain is rotated in its own command ran in parallel
     switch (state) {
@@ -104,16 +104,10 @@ public class ShootInSpeaker extends Command {
     return this.state == ShootState.END;
   }
 
-  public class ShootInSpeakerParallel extends ParallelCommandGroup {
-    public ShootInSpeakerParallel(CommandSwerveDrivetrain drivetrain, Linkage linkage, Flywheel flywheel,
-        double flywheelSetpoint, double linkageSetpoint, double driveAngleSetpoint) {
-
-      // convert the drive angle setpoint to a rotation2d
-      Rotation2d driveRotSetpoint = new Rotation2d(driveAngleSetpoint);
-      // add the commands to the parallel command group
-      addCommands(new ShootInSpeaker(linkage, flywheel, drivetrain, linkageSetpoint, flywheelSetpoint, intake),
-          drivetrain.turntoCMD(driveRotSetpoint, flywheelSetpoint, driveAngleSetpoint));
-    }
+  public static Command WithDrivetrain(CommandSwerveDrivetrain drivetrain, Linkage linkage,
+      Flywheel flywheel, Intake intake, double driveAngleSetpoint, double linkageSetpoint, double flywheelSetpoint) {
+    return new ShootInSpeaker(linkage, flywheel, drivetrain, flywheelSetpoint, linkageSetpoint, intake).alongWith(
+        drivetrain.turntoCMD(new Rotation2d(driveAngleSetpoint), flywheelSetpoint, driveAngleSetpoint)
+    );
   }
-
 }

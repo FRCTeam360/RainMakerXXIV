@@ -53,36 +53,41 @@ public class Flywheel extends SubsystemBase {
   public void stop() {
     topMotor.stopMotor();
   }
-  public double getTopSpeed() {
+
+  public double getTopPower() {
     return topMotor.get();
   }
 
-  public double getBottomSpeed() {
-     return bottomMotor.get();
-   }
-  public void setSpeed(double rpm){
-    leftPidController.setReference(rpm, CANSparkBase.ControlType.kVelocity);
-    rpmSetpoint = rpm;
+  public double getBottomPower() {
+    return bottomMotor.get();
   }
 
-  public boolean isAtSetpoint(){
-    return Math.abs(this.getTopSpeed() - rpmSetpoint) < 20.0;
-    
+  public double getTopVelocity() {
+    return topMotor.getEncoder().getVelocity();
   }
-  public boolean isAboveSetpoint(){
-    return this.getTopSpeed() >= rpmSetpoint;
-  }
-  public boolean isBelowSetpoint(){
-    return this.getTopSpeed() <= rpmSetpoint - 200.0;
 
+  public double getBottomVelocity() {
+    return bottomMotor.getEncoder().getVelocity();
+  }
+
+  public boolean isAtSetpoint() {
+    return Math.abs(this.getTopPower() - rpmSetpoint) < 20.0;
+  }
+
+  public boolean isAboveSetpoint() {
+    return this.getTopPower() >= rpmSetpoint;
+  }
+
+  public boolean isBelowSetpoint() {
+    return this.getTopPower() <= rpmSetpoint - 200.0;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
 
-    SmartDashboard.putNumber("Top Speed", getTopSpeed());
-    SmartDashboard.putNumber("Bottom Speed", getBottomSpeed());
+    // SmartDashboard.putNumber("Top Speed", getTopSpeed());
+    // SmartDashboard.putNumber("Bottom Speed", getBottomSpeed());
 
   }
 }

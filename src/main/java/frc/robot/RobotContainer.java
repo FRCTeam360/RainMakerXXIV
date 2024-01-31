@@ -12,6 +12,7 @@ import frc.robot.commands.PowerLinkage;
 import frc.robot.commands.RobotOrientedDrive;
 import frc.robot.commands.SetFlywheel;
 import frc.robot.commands.SetLinkage;
+import frc.robot.commands.ShootInSpeaker;
 import frc.robot.commands.FieldOrientedDrive;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -52,9 +53,11 @@ public class RobotContainer {
   private final Flywheel flywheel = Flywheel.getInstance();
   private final Linkage linkage = Linkage.getInstance();
 
+
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
-
-
+  // Create new ShootInSpeaker command
+  private final Command shootRoutine =
+  ShootInSpeaker.WithDrivetrain(drivetrain, linkage, flywheel, 180.0, 90.0, 4000.0);
   // auto commands
   private final SetFlywheel setFlywheel = new SetFlywheel(0);
 
@@ -113,16 +116,33 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    // OPERATOR CONTROLLER BINDINGS
-    operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
-    operatorController.rightTrigger(.005).whileTrue(powerIntake);
-    operatorController.a().whileTrue(powerFlywheel);
-    operatorController.b().whileTrue(runExtendIntake);
+    operatorController.a().whileTrue(ShootInSpeaker.WithDrivetrain(drivetrain, linkage, flywheel, intake, 180., 90.0, 4000.0));
 
-    // DRIVER CONTROLLER BINDINGS
-    driverController.x().whileTrue(new InstantCommand(() -> drivetrain.xOut(), drivetrain));
-    driverController.a().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
-    
+    // driverController.a().whileTrue(drivetrain.turntoCMD(180.0, 0.0, 0.0));
+    // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
+
+    // operatorController.y().whileTrue(new InstantCommand(() -> flywheel.runTop(0.8), flywheel));
+    // operatorController.b().whileTrue(new InstantCommand(() -> flywheel.setTopRPM((2000))));
+
+    // operatorController.x().whileTrue(new InstantCommand(() -> flywheel.runBottom(0.8), flywheel));
+    // operatorController.a().whileTrue(new InstantCommand(() -> flywheel.setBottomRPM((2000))));
+
+    // operatorController.pov(0).whileTrue(new InstantCommand(() -> flywheel.setBothRPM(5000)));
+    // // OPERATOR CONTROLLER BINDINGS
+    // operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
+    // operatorController.rightTrigger(.005).whileTrue(powerIntake);
+    // // operatorController.a().whileTrue(new SetFlywheel());
+    operatorController.b().toggleOnTrue(runExtendIntake);
+    // operatorController.y().whileTrue(powerIntake);
+    // //operatorController.x().whileTrue(new InstantCommand(() -> linkage.setTo90(),linkage));
+
+    //operatorController.a().whileTrue(new InstantCommand(() -> flywheel.setSpeed(5500), flywheel));
+    //operatorController.b().whileTrue(new InstantCommand(() -> linkage.setAngle(85), linkage));
+    //.x().toggleOnTrue(new InstantCommand(() -> linkage.setAngle(100), linkage));
+
+    // // DRIVER CONTROLLER BINDINGS
+    // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.xOut(), drivetrain));
+    // driverController.a().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     
     drivetrain.registerTelemetry(logger::telemeterize);
   }
