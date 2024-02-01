@@ -112,9 +112,6 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(fieldOrientedDrive);
   }
 
-  public void onDisable() {
-    drivetrain.robotOrientedDrive(0, 0, 0);
-  }
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be
@@ -137,8 +134,9 @@ public class RobotContainer {
     // OPERATOR CONTROLLER BINDINGS
     operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
     operatorController.rightTrigger(.005).whileTrue(powerIntake);
-    operatorController.b().toggleOnTrue(runExtendIntake);
-    operatorController.y().whileTrue(new InstantCommand(() -> flywheel.setBothRPM(5000), flywheel));
+    operatorController.a().toggleOnTrue(runExtendIntake);
+    operatorController.b().whileTrue(powerIntake);
+    operatorController.y().toggleOnTrue(new InstantCommand(() -> flywheel.setBothRPM(5000), flywheel));
 
     // DRIVER CONTROLLER BINDINGS
     // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.xOut(), drivetrain));
@@ -147,6 +145,12 @@ public class RobotContainer {
     drivetrain.registerTelemetry(logger::telemeterize);
   }
 
+  public void onDisable() {
+    flywheel.stop();
+        drivetrain.robotOrientedDrive(0, 0, 0);
+
+  }
+  
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

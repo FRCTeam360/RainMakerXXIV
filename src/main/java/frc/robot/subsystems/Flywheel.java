@@ -27,10 +27,15 @@ public class Flywheel extends SubsystemBase {
   private final RelativeEncoder bottomEncoder = bottomMotor.getEncoder();
   private final SparkPIDController bottomPIDController = bottomMotor.getPIDController();
 
-  private double kP = 0.00055;
-  private double kI = 0.0;
-  private double kD = 0.0;
-  private double kFF = 0.000152;
+  private double topP = 0.00055;
+  private double topI = 0.0;
+  private double topD = 0.0;
+  private double topFF = 0.000158;
+
+  private double bottomP = 0.00055;
+  private double bottomI = 0.0;
+  private double bottomD = 0.0;
+  private double bottomFF = 0.000155;
 
   private double rpmSetpoint = 0.0;
 
@@ -44,18 +49,20 @@ public class Flywheel extends SubsystemBase {
     bottomMotor.setInverted(false);
     bottomMotor.setIdleMode(IdleMode.kBrake);
 
-    topPIDController.setP(kP);
-    topPIDController.setFF(kFF);
-    topPIDController.setI(kI);
-    topPIDController.setD(kD);
+    topPIDController.setP(topP);
+    topPIDController.setFF(topFF);
+    topPIDController.setI(topI);
+    topPIDController.setD(topD);
 
-    bottomPIDController.setP(kP);
-    bottomPIDController.setFF(kFF);
-    bottomPIDController.setI(kI);
-    bottomPIDController.setD(kD);
+    bottomPIDController.setP(bottomP);
+    bottomPIDController.setFF(bottomFF);
+    bottomPIDController.setI(bottomI);
+    bottomPIDController.setD(bottomD);
 
     SmartDashboard.putNumber("Top Velocity", topEncoder.getVelocity());
     SmartDashboard.putNumber("Bottom Velocity", bottomEncoder.getVelocity());
+    SmartDashboard.putNumber("Top - Bottom Error", 0.0);
+
   }
 
   public static Flywheel getInstance() {
@@ -93,6 +100,7 @@ public class Flywheel extends SubsystemBase {
 
   public void stop() {
     topMotor.stopMotor();
+    bottomMotor.stopMotor();
   }
 
   public double getTopSpeed() {
@@ -128,6 +136,6 @@ public class Flywheel extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Top Velocity", topEncoder.getVelocity());
     SmartDashboard.putNumber("Bottom Velocity", bottomEncoder.getVelocity());
-
+    SmartDashboard.putNumber("Top - Bottom Error", topEncoder.getVelocity() - bottomEncoder.getVelocity());
   }
 }
