@@ -101,6 +101,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("RunExtendIntake", runExtendIntake);
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     NamedCommands.registerCommand("Shoot", powerFlywheel);
+    NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(45.0, 0, 0));
     configureBindings();
     configureDefaultCommands();
   }
