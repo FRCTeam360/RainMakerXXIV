@@ -81,7 +81,7 @@ public class FlywheelIOSparkMax implements FlywheelIO {
     bottomMotor.stopMotor();
   }
 
-  public double getTop() {
+  public void getTop() {
     topMotor.get();
   }
 
@@ -91,7 +91,7 @@ public class FlywheelIOSparkMax implements FlywheelIO {
   }
 
   @Override
-  public double getTopVelocity() {
+  public void getTopVelocity() {
     topEncoder.getVelocity();
   }
 

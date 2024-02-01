@@ -12,9 +12,6 @@ public class Constants {
 
         public static final double MAX_SPEED_MPS = 13.7; // used to be 6 meters per second desired top speed (name changed from MAX_SPEED to MAX_SPEED_MPS jan25 kinda sketch)
         public static final double MAX_ANGULAR_RATE = Math.PI * 3; // Half a rotation per second max angular velocity
-<<<<<<< HEAD
-
-        public static final int PIGEON_ID = 13;
         
  public static final Mode currentMode = Mode.REAL;
  
@@ -29,8 +26,6 @@ public class Constants {
     REPLAY
   }
 
-=======
->>>>>>> Woodbot
 
         public static final int PIGEON_ID = 13;
 }

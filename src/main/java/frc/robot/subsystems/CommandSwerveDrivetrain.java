@@ -104,7 +104,14 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     }
     
     public Command turntoCMD(Rotation2d desiredAngle, double velocityX, double velocityY){
-        return this.applyRequest(() -> drive.withTargetDirection(desiredAngle).withVelocityX(velocityX).withVelocityY(velocityY));
+        return io.getRequest(() -> drive.withTargetDirection(desiredAngle).withVelocityX(velocityX).withVelocityY(velocityY));
     }
+	public void fieldOrientedDrive(double leftX, double leftY, double rightX) {
+	}
+	public void robotOrientedDrive(double leftX, double leftY, double rightX) {
+	}
+	public boolean isFacingAngle() {
+		return false;
+	}
     
 }

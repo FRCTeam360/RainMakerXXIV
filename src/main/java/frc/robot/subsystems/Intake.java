@@ -23,7 +23,6 @@ import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
 
-<<<<<<< HEAD
 public class Intake extends SubsystemBase {
   private final IntakeIO io;
   private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
@@ -31,35 +30,16 @@ public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
   public Intake(IntakeIO io) {
     this.io = io;
-=======
-  private static Intake instance;
-  private final DigitalInput sideSensor = new DigitalInput(2);
-  private final DigitalInput highSensor = new DigitalInput(0);
-  private final CANSparkMax motor = new CANSparkMax(Constants.INTAKE_ID, MotorType.kBrushless);
-  public final RelativeEncoder encoder = motor.getEncoder();
+  }
 
   /** Creates a new Intake. */
-  public Intake() {
-    motor.restoreFactoryDefaults();
-    motor.setInverted(false);
-    motor.setIdleMode(IdleMode.kCoast);
-  }
-
-  public static Intake getInstance() {
-    if (instance == null) {
-      instance = new Intake();
-    }
-
-    return instance;
-  }
 
   public boolean getSideSensor() {
-    return sideSensor.get();
+    return io.getSideSensor();
   }
 
   public boolean getHighSensor() {
-    return highSensor.get();
->>>>>>> Woodbot
+    return io.getHighSensor();
   }
 
   public void run(double speed) {
@@ -74,10 +54,6 @@ public class Intake extends SubsystemBase {
     return io.get();
   }
 
-  public boolean getSensor() {
-    return io.getSensor();
-  }
-
   public double getAmps() {
     return io.getOutputCurrent();
   }
@@ -88,19 +64,17 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-<<<<<<< HEAD
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("Intake", inputs);
     SmartDashboard.putNumber("Intake Speed", getSpeed());
     SmartDashboard.putNumber("Amps", getAmps());
-    SmartDashboard.putBoolean("this sensor sucks", getSensor());
-=======
+    SmartDashboard.putBoolean("this sensor sucks", getSideSensor());
+    SmartDashboard.putBoolean("this sensor sucks", getHighSensor());
     // SmartDashboard.putNumber("Encoder Position", encoder.getPosition());
     // SmartDashboard.getNumber("Encoder Position", encoder.getPosition());
     // // This method will be called once per scheduler run
     // SmartDashboard.putNumber("Intake Speed", getSpeed());
     // SmartDashboard.putNumber("Intake Amps", getAmps());
->>>>>>> Woodbot
   }
 }

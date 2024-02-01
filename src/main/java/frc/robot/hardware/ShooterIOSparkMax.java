@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.hardware;
+/*package frc.robot.hardware;
 
 import org.littletonrobotics.junction.AutoLog;
 
@@ -18,7 +18,7 @@ import frc.robot.io.ShooterIO;
 import frc.robot.Constants;
 
 public class ShooterIOSparkMax implements ShooterIO {
-  /** Creates a new IntakeIOSparkMax. */
+  /** Creates a new IntakeIOSparkMax. 
     private final CANSparkMax left = new CANSparkMax (3, MotorType.kBrushless);
     private final CANSparkMax right = new CANSparkMax (4, MotorType.kBrushless);
     private final RelativeEncoder encoder = left.getEncoder();
@@ -77,4 +77,4 @@ public class ShooterIOSparkMax implements ShooterIO {
     return right.get();
   }
 }
-
+*/

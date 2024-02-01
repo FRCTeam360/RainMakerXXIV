@@ -37,8 +37,8 @@ public double getTop();
 
 public double getBottom();
 
-public double getTopVelocity();
+public double getTopVelocity(ControlType kveloctity);
 
-public double getBottomVelocity();
+public double getBottomVelocity(ControlType kvelocity);
 
 }

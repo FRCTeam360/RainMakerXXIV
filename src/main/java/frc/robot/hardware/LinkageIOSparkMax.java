@@ -43,6 +43,12 @@ public class LinkageIOSparkMax implements LinkageIO {
     sparkMax.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
     sparkMax.setClosedLoopRampRate(1.0);
+
+    pidController.setP(kP);
+    pidController.setD(kD);
+    pidController.setI(kI);
+    pidController.setFF(kFF);
+
   }
 
   @Override 
