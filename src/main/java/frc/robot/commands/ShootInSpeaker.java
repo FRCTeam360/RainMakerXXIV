@@ -53,7 +53,6 @@ public class ShootInSpeaker extends Command {
   public void execute() {
     intake.run(0.0);
     // linkage.setAngle(linkageSetpoint);
-    linkage.setAngle(linkageSetpoint);
     flywheel.setBothRPM(flywheelSetpoint);
     // drivetrain is rotated in its own command ran in parallel
     switch (state) {
