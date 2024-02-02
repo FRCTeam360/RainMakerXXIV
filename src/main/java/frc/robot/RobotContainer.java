@@ -4,45 +4,28 @@
 
 package frc.robot;
 
-<<<<<<< HEAD
 import frc.robot.commands.Autos;
-=======
 import frc.robot.commands.RunExtendIntake;
 import frc.robot.commands.PowerIntakeReversed;
-import frc.robot.commands.PowerFlywheel;
->>>>>>> Woodbot
 import frc.robot.commands.PowerIntake;
-import frc.robot.commands.PowerIntakeReversed;
 import frc.robot.commands.PowerLinkage;
-<<<<<<< HEAD
 import frc.robot.commands.PowerShooter;
-import frc.robot.commands.RunExtendIntake;
 import frc.robot.commands.RunLinkage;
 import frc.robot.commands.SetFlywheel;
 import frc.robot.commands.SetIntake;
-=======
 import frc.robot.commands.RobotOrientedDrive;
-//import frc.robot.commands.SetFlywheel;
-import frc.robot.commands.SetLinkage;
-import frc.robot.commands.ShootInSpeaker;
 import frc.robot.commands.FieldOrientedDrive;
->>>>>>> Woodbot
 import frc.robot.generated.TunerConstants;
 import frc.robot.hardware.IntakeIOSparkMax;
 import frc.robot.hardware.LinkageIOSparkMax;
-import frc.robot.hardware.ShooterIOSparkMax;
 import frc.robot.io.IntakeIO;
 import frc.robot.io.ShooterIO;
 import frc.robot.sim.ShooterIOSim;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Intake;
-<<<<<<< HEAD
-=======
-import frc.robot.subsystems.Flywheel;
->>>>>>> Woodbot
-import frc.robot.subsystems.Linkage;
-import frc.robot.subsystems.Shooter;
 
+import frc.robot.subsystems.Flywheel;
+import frc.robot.subsystems.Linkage;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -50,15 +33,11 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
-<<<<<<< HEAD
 import edu.wpi.first.wpilibj2.command.Command;
-=======
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
->>>>>>> Woodbot
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -74,43 +53,36 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-<<<<<<< HEAD
   // declared as final in example code, but gives error in our code
-  private Intake intake;
-  private Shooter shooter;
-  private Linkage linkage;
+  private Intake intake2;
+  private Flywheel flywheel2;
+  private Linkage linkage2;
   private CommandSwerveDrivetrain commandSwerveDrivetrain;
 
-  private PowerIntake powerIntake;
-  private PowerIntakeReversed powerIntakeReversed;
-  private PowerLinkage powerLinkage;
-  private PowerShooter powerShooter;
-  private RunExtendIntake runExtendIntake;
+  private PowerIntake powerIntake2;
+  private PowerIntakeReversed powerIntakeReversed2;
+  private PowerLinkage powerLinkage2;
+  private PowerShooter Flywheel;
+  private RunExtendIntake runExtendIntake2;
   private RunLinkage runLinkage;
   private SetFlywheel setFlywheel;
   private SetIntake setIntake;
   // private SetLinkage setLinkage;
   // private SetpointFlywheel setpointFlywheel;
-
-  
-=======
-  private final SendableChooser<Command> autoChooser;
->>>>>>> Woodbot
+    }
   // The robot's subsystems and commands are defined here...
   // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-
+    private SendableChooser<Command> autoChooser;
   private final CommandXboxController operatorController = new CommandXboxController(Constants.OPERATOR_CONTROLLER);
   private final CommandXboxController driverController = new CommandXboxController(Constants.DRIVER_CONTROLLER);
 
-<<<<<<< HEAD
   final double MaxSpeed = 13.7; // used to be 6 meters per second desired top speed
   final double MaxAngularRate = Math.PI * 3; // Half a rotation per second max angular velocity
-=======
   // subsystems
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
-  private final Intake intake = Intake.getInstance();
-  private final Flywheel flywheel = Flywheel.getInstance();
-  private final Linkage linkage = Linkage.getInstance();
+  private final Intake intake = new Intake(null);
+  private final Flywheel flywheel = new Flywheel(null);
+  private final Linkage linkage = new Linkage(null);
 
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
 
@@ -120,7 +92,7 @@ public class RobotContainer {
 
   // tele commands
   private final RunExtendIntake runExtendIntake = new RunExtendIntake();
-  private final PowerIntakeReversed powerIntakeReversed = new PowerIntakeReversed();
+  private final PowerIntakeReversed powerIntakeReversed = new PowerIntake();
   private final PowerIntake powerIntake = new PowerIntake();
   private final PowerFlywheel powerFlywheel = new PowerFlywheel();
   private final PowerLinkage powerLinkage = new PowerLinkage();
@@ -129,7 +101,6 @@ public class RobotContainer {
   private final RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive();
   
 
->>>>>>> Woodbot
 
   // public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
   //     .withDeadband(Constants.MAX_SPEED * 0.1).withRotationalDeadband(Constants.MAX_ANGULAR_RATE * 0.1)

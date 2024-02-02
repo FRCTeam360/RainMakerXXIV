@@ -17,6 +17,8 @@ public class SetpointFlywheel extends Command {
 >>>>>>> Woodbot
 
   /** Creates a new SetpointFlywheel. */
+
+  /** 
   public SetpointFlywheel(Flywheel flywheel, double setpointRpm) {
     this.flywheel = flywheel;
     this.setpointRpm = setpointRpm;

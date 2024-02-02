@@ -26,39 +26,17 @@ import frc.robot.io.LinkageIOInputsAutoLogged;
 public class Linkage extends SubsystemBase {
   private final LinkageIO io;
   private final LinkageIOInputsAutoLogged inputs = new LinkageIOInputsAutoLogged();
-
+  private double positionSetpoint;
+  private static final double STARTING_ANGLE = 50.0;
+  static XboxController driverCont = new XboxController(0);
+  
   /** Creates a new ShooterLinkage. */
   public Linkage(LinkageIO io) {
     this.io = io;
-
-
-public void run(double) {
-}
-public void setAngle(double linkageSetpoint) {
-}
-public boolean isAtSetpoint() {
-	return false;
-}import frc.robot.generated.TunerConstants;
-
-  private static Linkage instance;
-  private final CANSparkMax motor = new CANSparkMax(Constants.SHOOTER_LINKAGE_ID, MotorType.kBrushless);
-  public final RelativeEncoder encoder = motor.getEncoder();
-  public final SparkPIDController pidController = motor.getPIDController();
-  private double positionSetpoint;
-
-  private static final double STARTING_ANGLE = 50.0;
-
-  static XboxController driverCont = new XboxController(0);
-
-  static CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
   }
 
-  public static Linkage getInstance() {
-    if (instance == null) {
-      instance = new Linkage();
-    }
-
-    return instance;
+  public boolean isAtSetpoint() {
+	  return false;
   }
 
   public void run(double speed) {
@@ -76,7 +54,7 @@ public boolean isAtSetpoint() {
   public void setAngle(int setPoint){
     io.setReference(setPoint, CANSparkBase.ControlType.kPosition);
     positionSetpoint = setPoint;
-    pidController.setReference(setPoint, CANSparkBase.ControlType.kPosition);
+    io.setReference(setPoint, CANSparkBase.ControlType.kPosition);
   }
 
   public double getSpeed() {
@@ -88,13 +66,12 @@ public boolean isAtSetpoint() {
   }
 
   public void setEncoderTo90() {
-    encoder.setPosition(90);
+    io.setPosition(90);
   }
 
   public void setFFWScaling(double ff) {
     io.setFF(ff * Math.cos(getAngle()));
   }
-
 
   @Override
   public void periodic() {
@@ -103,9 +80,12 @@ public boolean isAtSetpoint() {
     Logger.processInputs("Linkage", inputs);
     SmartDashboard.putNumber("Linkage Angle", getAngle());
     SmartDashboard.putNumber("linkage voltage", io.getAppliedOutput());
-    SmartDashboard.putNumber("Linkage Voltage", motor.getAppliedOutput());
+    SmartDashboard.putNumber("Linkage Voltage", io.getAppliedOutput());
     SmartDashboard.putNumber("Linkage Error", 85-getAngle());
-
   }
 
+  public static Linkage getInstance() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getInstance'");
+  }
 }

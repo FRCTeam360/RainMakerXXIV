@@ -12,7 +12,8 @@ import frc.robot.io.IntakeIO.IntakeIOInputs;
 public interface FlywheelIO {
   /** Creates a new FlywheelIO. */
   public static class FlywheelIOInputs {
-
+    public double topSpeed = 0.0;
+    public double bottomSpeed = 0.0;
   }
   
   public default void updateInputs(IntakeIOInputs inputs) {}
@@ -37,8 +38,12 @@ public double getTop();
 
 public double getBottom();
 
-public double getTopVelocity(ControlType kveloctity);
+public double getTopVelocity();
 
-public double getBottomVelocity(ControlType kvelocity);
+public double getBottomVelocity();
+
+public double getBottom(double rpmSetpoint);
+
+public double getPosition();
 
 }

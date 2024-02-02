@@ -73,8 +73,9 @@ public class Flywheel extends SubsystemBase {
   public double getBottomVelocity() {
     return io.getBottomVelocity();
   }
+
   public void isAtSetpoint() {
-    return Math.abs(io.getPosition() - rpmSetpoint) < 20.0;
+    return Math.abs(this.getPosition() - rpmSetpoint) < 20.0;
   }
 
   public boolean isAboveSetpoint() {

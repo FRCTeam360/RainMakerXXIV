@@ -14,6 +14,7 @@ import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.io.FlywheelIO;
+import frc.robot.io.IntakeIO.IntakeIOInputs;
 
 public class FlywheelIOSparkMax implements FlywheelIO {
   /** Creates a new FlywheelIOSparkMax. */
@@ -81,22 +82,29 @@ public class FlywheelIOSparkMax implements FlywheelIO {
     bottomMotor.stopMotor();
   }
 
-  public void getTop() {
-    topMotor.get();
+  public double getTop() {
+   return topMotor.get();
   }
 
   @Override
   public double getBottom() {
-    bottomMotor.get();
+    return bottomMotor.get();
   }
 
   @Override
-  public void getTopVelocity() {
-    topEncoder.getVelocity();
+  public double getTopVelocity() {
+    return topEncoder.getVelocity();
   }
 
   @Override
   public double getBottomVelocity() {
-    bottomEncoder.getVelocity();
+    return bottomEncoder.getVelocity();
   }
+
+  @Override
+  public void updateInputs(IntakeIOInputs inputs) {
+    inputs.topSpeed = topMotor.getTop();
+    inputs.bottomSpeed = bottomMotor.getBottom();
+  }
+
 }
