@@ -46,35 +46,38 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private double m_lastSimTime;
     CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
     private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
-    private Rotation2d lastRotationSetpoint;
     private PhoenixPIDController headingController = new PhoenixPIDController(5.75, 0, 0);
 
     GenericEntry kPEntry;
     GenericEntry kIEntry;
     GenericEntry kDEntry;
-    
+
+    private double headingKP = 5.75;
+    private double headingKI = 0.0;
+    private double headingKD = 0.0;
 
     private void setupShuffleboard() {
         ShuffleboardTab tab = Shuffleboard.getTab("angle");
         tab.addNumber("current angle", () -> this.getPigeon2().getAngle());
         tab.addNumber("error", () -> this.getAngleError());
-        tab.addNumber("last rotation setpoint", () -> {
-            if (this.lastRotationSetpoint == null) {
-                return 0.0;
-            }
-            return this.lastRotationSetpoint.getDegrees();
-        });
-        
+        tab.addNumber("setpoint", () -> this.headingController.getSetpoint());
+
         // kPEntry = tab.add("kP", 0.0).getEntry();
         // kIEntry = tab.add("kI", 0.0).getEntry();
         // kDEntry = tab.add("kD", 0.0).getEntry();
-        
 
+    }
+
+    private void configurePID() {
+        headingController = new PhoenixPIDController(headingKP, headingKI, headingKD);
+        headingController.enableContinuousInput(-Math.PI, Math.PI);
+        headingController.setTolerance(Math.toRadians(5));
     }
 
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency,
             SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
+        configurePID();
         if (Utils.isSimulation()) {
             startSimThread();
         }
@@ -111,6 +114,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
+        configurePID();
         if (Utils.isSimulation()) {
             startSimThread();
         }
@@ -164,38 +168,35 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         m_simNotifier.startPeriodic(kSimLoopPeriod);
     }
 
-    public Command turntoCMD(Rotation2d desiredAngle, double velocityX, double velocityY) {
-        FieldCentricFacingAngle facingAngleCommand = drive.withTargetDirection(desiredAngle).withVelocityX(velocityX).withVelocityY(velocityY);
-        lastRotationSetpoint = desiredAngle;
+    public Command turntoCMD(boolean shouldEnd, Rotation2d desiredAngle, double velocityX, double velocityY) {
+        FieldCentricFacingAngle facingAngleCommand = drive.withTargetDirection(desiredAngle).withVelocityX(velocityX)
+                .withVelocityY(velocityY);
         facingAngleCommand.HeadingController = headingController;
+
+        if(shouldEnd) {
+            return this.applyRequest(() -> facingAngleCommand)
+                    .raceWith(new EndWhenFacingAngle(headingController));
+
+
+        }
+
         return this.applyRequest(() -> facingAngleCommand);
 
     }
 
-    public Command turntoCMD(double desiredAngle, double velocityX, double velocityY) {
+    public Command turntoCMD(boolean shouldEnd, double desiredAngle, double velocityX, double velocityY) {
         Rotation2d rotation = Rotation2d.fromDegrees(desiredAngle);
-        return turntoCMD(rotation, velocityX, velocityY);
+        return turntoCMD(shouldEnd, rotation, velocityX, velocityY);
+
     }
 
     private double getAngleError() {
-        if (lastRotationSetpoint == null){
-            return 0.0;
-        }
-        System.out.println("this.lastRotationSetpoint.getDegrees" + this.lastRotationSetpoint.getDegrees() % 360);
-        System.out.println("this.m_pigeon2.getAngle()" + this.m_pigeon2.getAngle()% 360);
-        double lastRotationSetpointDegrees = this.lastRotationSetpoint.getDegrees() % 360;
-        double currentAngleDegrees = this.m_pigeon2.getAngle() % 360;
-        return (currentAngleDegrees - lastRotationSetpointDegrees) % 360;
+        return headingController.getPositionError();
     }
 
     public boolean isFacingAngle() {
-        if (this.lastRotationSetpoint == null) {
-            return false;
-        }
-
-        return Math.abs(getAngleError()) < 2.0;
+        return headingController.atSetpoint();
     }
-       
 
     public float getAngle() {
         return (float) this.getPigeon2().getAngle();
@@ -261,4 +262,18 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         // System.out.println("ROTATION RATE: " + speed.omegaRadiansPerSecond);
         this.setControl(new SwerveRequest.ApplyChassisSpeeds().withSpeeds(speed));
     }
+
+    private class EndWhenFacingAngle extends Command {
+        PhoenixPIDController headingController;
+
+        public EndWhenFacingAngle(PhoenixPIDController headingController) {
+            this.headingController = headingController;
+        }
+
+        @Override
+        public boolean isFinished() {
+            return headingController.atSetpoint();
+        }
+    }
+
 }

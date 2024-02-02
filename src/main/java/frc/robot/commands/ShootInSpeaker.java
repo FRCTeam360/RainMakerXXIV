@@ -107,7 +107,7 @@ public class ShootInSpeaker extends Command {
   public static Command WithDrivetrain(CommandSwerveDrivetrain drivetrain, Linkage linkage,
       Flywheel flywheel, Intake intake, double driveAngleSetpoint, double linkageSetpoint, double flywheelSetpoint) {
     return new ShootInSpeaker(linkage, flywheel, drivetrain, flywheelSetpoint, linkageSetpoint, intake).alongWith(
-        drivetrain.turntoCMD(new Rotation2d(driveAngleSetpoint), flywheelSetpoint, driveAngleSetpoint)
+        drivetrain.turntoCMD(true, Rotation2d.fromDegrees(driveAngleSetpoint), flywheelSetpoint, driveAngleSetpoint)
     );
   }
 }

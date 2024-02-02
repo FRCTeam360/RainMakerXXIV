@@ -103,7 +103,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("RunExtendIntake", runExtendIntake);
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     NamedCommands.registerCommand("Shoot", powerFlywheel);
-    NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(45.0, 0, 0));
+    NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0, 0));
     configureBindings();
     configureDefaultCommands();
   }
@@ -131,11 +131,11 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    driverController.y().whileTrue(drivetrain.turntoCMD(90.0, 0.0, 0.0));
+    driverController.y().whileTrue(drivetrain.turntoCMD(false, .0, 0.0, 0.0));
     driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
 
     operatorController.a().whileTrue(shootRoutine);
-    operatorController.y().whileTrue(drivetrain.turntoCMD(90.0, 0.0, 0.0));
+    operatorController.y().whileTrue(drivetrain.turntoCMD(false, 90.0, 0.0, 0.0));
 
 
 
