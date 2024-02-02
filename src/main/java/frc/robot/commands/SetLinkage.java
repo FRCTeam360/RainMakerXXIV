@@ -41,11 +41,11 @@ public class SetLinkage extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putNumber("p", kP);
-    SmartDashboard.putNumber("i", kI);
-    SmartDashboard.putNumber("d", kD);
-    SmartDashboard.putNumber("ff", kFF);
-    SmartDashboard.putNumber("Set Position", 0);
+    // SmartDashboard.putNumber("p", kP);
+    // SmartDashboard.putNumber("i", kI);
+    // SmartDashboard.putNumber("d", kD);
+    // SmartDashboard.putNumber("ff", kFF);
+    // SmartDashboard.putNumber("Set Position", 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

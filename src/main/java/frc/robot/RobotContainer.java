@@ -103,6 +103,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("RunExtendIntake", runExtendIntake);
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     NamedCommands.registerCommand("Shoot", powerFlywheel);
+    NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(45.0, 0, 0));
     configureBindings();
     configureDefaultCommands();
   }
@@ -114,9 +115,6 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(fieldOrientedDrive);
   }
 
-  public void onDisable() {
-    drivetrain.robotOrientedDrive(0, 0, 0);
-  }
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be
@@ -158,18 +156,26 @@ public class RobotContainer {
     operatorController.b().toggleOnTrue(runExtendIntake);
     // operatorController.y().whileTrue(powerIntake);
     // //operatorController.x().whileTrue(new InstantCommand(() -> linkage.setTo90(),linkage));
+    // OPERATOR CONTROLLER BINDINGS
+    // operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
+    // operatorController.rightTrigger(.005).whileTrue(powerIntake);
+    // operatorController.a().toggleOnTrue(runExtendIntake);
+    // operatorController.b().whileTrue(powerIntake);
+    // operatorController.y().toggleOnTrue(new InstantCommand(() -> flywheel.setBothRPM(5000), flywheel));
 
-    //operatorController.a().whileTrue(new InstantCommand(() -> flywheel.setSpeed(5500), flywheel));
-    //operatorController.b().whileTrue(new InstantCommand(() -> linkage.setAngle(85), linkage));
-    //.x().toggleOnTrue(new InstantCommand(() -> linkage.setAngle(100), linkage));
-
-    // // DRIVER CONTROLLER BINDINGS
+    // DRIVER CONTROLLER BINDINGS
     // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.xOut(), drivetrain));
     // driverController.a().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     
     drivetrain.registerTelemetry(logger::telemeterize);
   }
 
+  public void onDisable() {
+    flywheel.stop();
+        drivetrain.robotOrientedDrive(0, 0, 0);
+
+  }
+  
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
