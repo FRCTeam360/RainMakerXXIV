@@ -55,15 +55,15 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     
 
     private void setupShuffleboard() {
-        // ShuffleboardTab tab = Shuffleboard.getTab("angle");
-        // tab.addNumber("current angle", () -> this.getPigeon2().getAngle());
-        // tab.addNumber("error", () -> this.getHeadingError());
-        // tab.addNumber("last rotation setpoint", () -> {
-        //     if (this.lastRotationSetpoint == null) {
-        //         return 0.0;
-        //     }
-        //     return this.lastRotationSetpoint.getDegrees();
-        // });
+        ShuffleboardTab tab = Shuffleboard.getTab("angle");
+        tab.addNumber("current angle", () -> this.getPigeon2().getAngle());
+        tab.addNumber("error", () -> this.getAngleError());
+        tab.addNumber("last rotation setpoint", () -> {
+            if (this.lastRotationSetpoint == null) {
+                return 0.0;
+            }
+            return this.lastRotationSetpoint.getDegrees();
+        });
         
         // kPEntry = tab.add("kP", 0.0).getEntry();
         // kIEntry = tab.add("kI", 0.0).getEntry();
@@ -177,12 +177,14 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         return turntoCMD(rotation, velocityX, velocityY);
     }
 
-    private double getHeadingError() {
+    private double getAngleError() {
         if (lastRotationSetpoint == null){
             return 0.0;
         }
+        System.out.println("this.lastRotationSetpoint.getDegrees" + this.lastRotationSetpoint.getDegrees() % 360);
+        System.out.println("this.m_pigeon2.getAngle()" + this.m_pigeon2.getAngle()% 360);
         double lastRotationSetpointDegrees = this.lastRotationSetpoint.getDegrees() % 360;
-        double currentAngleDegrees = this.m_pigeon2.getAngle()% 360;
+        double currentAngleDegrees = this.m_pigeon2.getAngle() % 360;
         return (currentAngleDegrees - lastRotationSetpointDegrees) % 360;
     }
 
@@ -190,12 +192,10 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         if (this.lastRotationSetpoint == null) {
             return false;
         }
-        double lastRotationSetpointDegrees = this.lastRotationSetpoint.getDegrees();
-        double currentAngleDegrees = this.m_pigeon2.getAngle();
-        lastRotationSetpointDegrees = lastRotationSetpointDegrees % 360;
-        currentAngleDegrees = currentAngleDegrees % 360;
-        return Math.abs(lastRotationSetpointDegrees - currentAngleDegrees) < 1;
+
+        return Math.abs(getAngleError()) < 2.0;
     }
+       
 
     public float getAngle() {
         return (float) this.getPigeon2().getAngle();

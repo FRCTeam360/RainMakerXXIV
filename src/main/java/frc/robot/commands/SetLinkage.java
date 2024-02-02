@@ -96,11 +96,11 @@ public class SetLinkage extends Command {
     // processVariable = encoder.getPosition();
 
     // SmartDashboard.putNumber("SetPoint", setPoint);
-    // SmartDashboard.putNumber("Output", linkage.getSpeed());
-    // SmartDashboard.putNumber("Position", linkage.encoder.getPosition());
-    // SmartDashboard.putNumber("Error", setPoint - linkage.encoder.getPosition());
-    // SmartDashboard.putNumber("Time elapsed", time.get());
-    // SmartDashboard.putBoolean("At target", isAtTarget);
+    SmartDashboard.putNumber("Output", linkage.getPower());
+    SmartDashboard.putNumber("Position", linkage.encoder.getPosition());
+    SmartDashboard.putNumber("Error", setPoint - linkage.encoder.getPosition());
+    SmartDashboard.putNumber("Time elapsed", time.get());
+    SmartDashboard.putBoolean("At target", isAtTarget);
     //SmartDashboard.putNumber("Process Variable", processVariable);
   }
 

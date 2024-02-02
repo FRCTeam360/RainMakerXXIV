@@ -103,32 +103,32 @@ public class Flywheel extends SubsystemBase {
     bottomMotor.stopMotor();
   }
 
-  public double getTopSpeed() {
+  public double getTopPower() {
     return topMotor.get();
   }
 
-  public double getBottomSpeed() {
+  public double getBottomPower() {
     return bottomMotor.get();
   }
 
   public double getTopVelocity() {
-    return topEncoder.getVelocity();
+    return topMotor.getEncoder().getVelocity();
   }
 
   public double getBottomVelocity() {
-    return bottomEncoder.getVelocity();
+    return bottomMotor.getEncoder().getVelocity();
   }
 
   public boolean isAtSetpoint() {
-    return Math.abs(this.getTopSpeed() - rpmSetpoint) < 20.0;
+    return Math.abs(this.getTopVelocity() - rpmSetpoint) < 30.0;
   }
 
   public boolean isAboveSetpoint() {
-    return this.getTopSpeed() >= rpmSetpoint;
+    return this.getTopVelocity() >= rpmSetpoint;
   }
 
   public boolean isBelowSetpoint() {
-    return this.getTopSpeed() <= rpmSetpoint - 200.0;
+    return this.getTopVelocity() <= rpmSetpoint - 30.0;
   }
 
   @Override
