@@ -137,6 +137,9 @@ public class RobotContainer {
     driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
 
     operatorController.a().whileTrue(shootRoutine);
+    operatorController.y().whileTrue(drivetrain.turntoCMD(90.0, 0.0, 0.0));
+
+
 
     // driverController.a().whileTrue(drivetrain.turntoCMD(180.0, 0.0, 0.0));
     // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));

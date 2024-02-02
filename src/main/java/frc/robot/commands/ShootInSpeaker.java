@@ -79,7 +79,7 @@ public class ShootInSpeaker extends Command {
         boolean hasShot = flywheel.isBelowSetpoint(); //check logic in flywheel subsystem (180 rpm gap)
         if (hasShot) {
           timer.start();
-          if (timer.hasElapsed(0.2)) { //TUNE!!!
+          if (timer.hasElapsed(0.3)) { //TUNE!!!
             this.state = ShootState.END;
       }
         }
