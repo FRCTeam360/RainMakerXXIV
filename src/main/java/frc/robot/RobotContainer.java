@@ -14,7 +14,7 @@ import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.RobotOrientedDrive;
 import frc.robot.commands.FieldOrientedDrive;
 import frc.robot.generated.TunerConstants;
-import frc.robot.hardware.ClimberIOSparkMax;
+// import frc.robot.hardware.ClimberIOSparkMax;
 import frc.robot.hardware.FlywheelIOSparkMax;
 import frc.robot.hardware.IntakeIOSparkMax;
 import frc.robot.hardware.LinkageIOSparkMax;
@@ -83,7 +83,7 @@ public class RobotContainer {
   private final Flywheel flywheel = new Flywheel(new FlywheelIOSparkMax());
   private final Linkage linkage = new Linkage(new LinkageIOSparkMax());
   private final Intake intake = new Intake(new IntakeIOSparkMax());
-  private final Climber climber = new Climber(new ClimberIOSparkMax());
+  // private final Climber climber = new Climber(new ClimberIOSparkMax());
 
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
 
@@ -155,10 +155,10 @@ public class RobotContainer {
   }
 
   private void configureDefaultCommands() {
-    flywheel.setDefaultCommand(powerFlywheel);
-    intake.setDefaultCommand(powerIntake);
-    linkage.setDefaultCommand(powerLinkage);
-    // climber.setDefaultCommand();
+    // flywheel.setDefaultCommand(powerFlywheel);
+    // intake.setDefaultCommand(powerIntake);
+    // linkage.setDefaultCommand(powerLinkage);
+    // // climber.setDefaultCommand();
     //  drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
     //     drivetrain.applyRequest(
     //         () -> drive.withVelocityX(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1) * MaxSpeed) //drive forward with negative y
@@ -217,15 +217,15 @@ public class RobotContainer {
     operatorController.y().whileTrue(new InstantCommand(() -> flywheel.runTop(0.8), flywheel));
     operatorController.b().whileTrue(new InstantCommand(() -> flywheel.setTopRPM((2000))));
 
-    operatorController.x().whileTrue(new InstantCommand(() -> flywheel.runBottom(0.8), flywheel));
-    operatorController.a().whileTrue(new InstantCommand(() -> flywheel.setBottomRPM((2000))));
+    // operatorController.x().whileTrue(new InstantCommand(() -> flywheel.runBottom(0.8), flywheel));
+    // operatorController.a().whileTrue(new InstantCommand(() -> flywheel.setBottomRPM((2000))));
 
     operatorController.pov(0).whileTrue(new InstantCommand(() -> flywheel.setBothRPM(5000)));
     // OPERATOR CONTROLLER BINDINGS
-    operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
-    operatorController.rightTrigger(.005).whileTrue(powerIntake);
+    // operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
+    // operatorController.rightTrigger(.005).whileTrue(powerIntake);
     // operatorController.a().whileTrue(new SetFlywheel());
-    operatorController.b().toggleOnTrue(runExtendIntake);
+    // operatorController.b().toggleOnTrue(runExtendIntake);
     // operatorController.y().whileTrue(powerIntake);
     // //operatorController.x().whileTrue(new InstantCommand(() -> linkage.setTo90(),linkage));
 

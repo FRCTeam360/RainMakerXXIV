@@ -15,7 +15,7 @@ import frc.robot.subsystems.Linkage;
 
 public class RunExtendIntake extends Command {
   enum IntakeCases {CHECK_ROBOT_EMPTY, EXTEND_INTAKE, WAIT_FOR_SENSOR, UP_TO_SHOOTER_P1, UP_TO_SHOOTER_P2, RETRACT_STOP}; 
-  private Linkage linkage = new Linkage(new LinkageIOSparkMax());
+  private Linkage linkage;
   //private DigitalInput sensor = new DigitalInput(0);
   
   private Intake intake;

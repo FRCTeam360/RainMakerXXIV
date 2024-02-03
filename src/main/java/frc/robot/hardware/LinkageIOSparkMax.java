@@ -15,11 +15,12 @@ import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.io.LinkageIO;
 
 public class LinkageIOSparkMax implements LinkageIO {
   /** Creates a new IntakeIOSparkMax. */
-    private final CANSparkMax sparkMax = new CANSparkMax (2, MotorType.kBrushless);
+    private final CANSparkMax sparkMax = new CANSparkMax (Constants.SHOOTER_LINKAGE_ID, MotorType.kBrushless);
     private final RelativeEncoder encoder = sparkMax.getEncoder();
     private final SparkPIDController pidController = sparkMax.getPIDController();
 
