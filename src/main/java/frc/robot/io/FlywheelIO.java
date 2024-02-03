@@ -33,9 +33,9 @@ public void stopTopMotor();
 
 public void stopBottomMotor();
 
-public double getTop();
+public double getTopPower();
 
-public double getBottom();
+public double getBottomPower();
 
 public double getTopVelocity();
 

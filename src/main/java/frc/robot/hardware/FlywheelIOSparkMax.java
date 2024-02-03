@@ -82,12 +82,12 @@ public class FlywheelIOSparkMax implements FlywheelIO {
     bottomMotor.stopMotor();
   }
 
-  public double getTop() {
+  public double getTopPower() {
    return topMotor.get();
   }
 
   @Override
-  public double getBottom() {
+  public double getBottomPower() {
     return bottomMotor.get();
   }
 

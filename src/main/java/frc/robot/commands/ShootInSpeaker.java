@@ -1,7 +1,6 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-/** 
 
 package frc.robot.commands;
 
@@ -30,7 +29,7 @@ public class ShootInSpeaker extends Command {
     LOADED, SHOOT, END
   }
 
-  /** Creates a new ShootInSpeaker. 
+  // Creates a new ShootInSpeaker. 
   public ShootInSpeaker(Linkage linkage, Flywheel flywheel,
       CommandSwerveDrivetrain drivetrain, double linkageSetpoint, double flywheelSetpoint, Intake intake) { // Add your commands in the
     // addCommands() call, e.g.
@@ -112,4 +111,3 @@ public class ShootInSpeaker extends Command {
     );
   }
 }
-*/

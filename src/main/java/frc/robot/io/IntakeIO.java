@@ -26,7 +26,7 @@ public interface IntakeIO {
 
   public void stopMotor();
 
-  public double get();
+  public double getPower();
 
   public double getOutputCurrent();
 

@@ -53,7 +53,7 @@ public class IntakeIOSparkMax implements IntakeIO {
   }
 
   @Override
-  public double get() {
+  public double getPower() {
     return sparkMax.get();
   }
 
