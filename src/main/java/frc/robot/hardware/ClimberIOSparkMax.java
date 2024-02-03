@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.io.ClimberIO;
+import frc.robot.io.IntakeIO.IntakeIOInputs;
 
 public class ClimberIOSparkMax implements ClimberIO {
    private CANSparkMax leftMotor = new CANSparkMax(325, MotorType.kBrushless); // change to proper id
@@ -35,5 +36,11 @@ public class ClimberIOSparkMax implements ClimberIO {
   @Override
   public void setRight(double speed) {
     rightMotor.set(speed);
+  }
+
+  @Override
+  public void updateInputs(ClimberIOInputs inputs) {
+    inputs.speedLeft = leftMotor.get();
+    inputs.speedRight = rightMotor.get();
   }
 }

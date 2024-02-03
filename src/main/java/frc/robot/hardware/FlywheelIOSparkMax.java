@@ -101,10 +101,8 @@ public class FlywheelIOSparkMax implements FlywheelIO {
     return bottomEncoder.getVelocity();
   }
 
-  @Override
-  public void updateInputs(IntakeIOInputs inputs) {
-    inputs.topSpeed = topMotor.getTop();
-    inputs.bottomSpeed = bottomMotor.getBottom();
+  public void updateInputs(FlywheelIOInputs inputs) {
+    inputs.topSpeed = topMotor.get();
+    inputs.bottomSpeed = bottomMotor.get();
   }
-
 }

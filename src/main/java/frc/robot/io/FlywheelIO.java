@@ -4,6 +4,8 @@
 
 package frc.robot.io;
 
+import org.littletonrobotics.junction.AutoLog;
+
 import com.revrobotics.CANSparkBase.ControlType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -11,20 +13,17 @@ import frc.robot.io.IntakeIO.IntakeIOInputs;
 
 public interface FlywheelIO {
   /** Creates a new FlywheelIO. */
+  @AutoLog
   public static class FlywheelIOInputs {
     public double topSpeed = 0.0;
     public double bottomSpeed = 0.0;
   }
   
-  public default void updateInputs(IntakeIOInputs inputs) {}
-
-public void set(double speed);
+  public default void updateInputs(FlywheelIOInputs inputs) {}
 
 public void setTop(double speed);
 
 public void setBottom(double speed);
-
-public void setReference(double rpm, ControlType kvelocity);
 
 public void setTopReference(double rpm, ControlType kvelocity);
 
@@ -41,9 +40,5 @@ public double getBottom();
 public double getTopVelocity();
 
 public double getBottomVelocity();
-
-public double getBottom(double rpmSetpoint);
-
-public double getPosition();
 
 }

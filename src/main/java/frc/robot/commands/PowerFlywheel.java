@@ -11,24 +11,14 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Flywheel;
 
-<<<<<<< HEAD:src/main/java/frc/robot/commands/PowerShooter.java
-public class PowerShooter extends Command {
-  private final Shooter shooter;
-=======
 public class PowerFlywheel extends Command {
-  private final Flywheel flywheel = Flywheel.getInstance();
->>>>>>> Woodbot:src/main/java/frc/robot/commands/PowerFlywheel.java
+  private final Flywheel flywheel;
   private final XboxController operatorCont = new XboxController(1);
   // private final SparkPIDController topPidController = flywheel.topPidController;
 
-<<<<<<< HEAD:src/main/java/frc/robot/commands/PowerShooter.java
   /** Creates a new RunShooter. */
-  public PowerShooter(Shooter shooter) {
-    this.shooter = shooter;
-=======
-  /** Creates a new Runflywheel. */
-  public PowerFlywheel() {
->>>>>>> Woodbot:src/main/java/frc/robot/commands/PowerFlywheel.java
+  public PowerFlywheel(Flywheel flywheel) {
+    this.flywheel = flywheel;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(flywheel);
   }

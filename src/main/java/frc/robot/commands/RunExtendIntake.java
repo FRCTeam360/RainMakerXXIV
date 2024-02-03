@@ -9,18 +9,14 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.hardware.LinkageIOSparkMax;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
 
 public class RunExtendIntake extends Command {
-<<<<<<< HEAD
-  enum IntakeCases {CHECK_ROBOT_EMPTY, EXTEND_INTAKE, WAIT_FOR_SENSOR, REVERSE_TRIGGER, RETRACT_STOP}; 
-  private Linkage linkage;
-=======
   enum IntakeCases {CHECK_ROBOT_EMPTY, EXTEND_INTAKE, WAIT_FOR_SENSOR, UP_TO_SHOOTER_P1, UP_TO_SHOOTER_P2, RETRACT_STOP}; 
-  private Linkage linkage = Linkage.getInstance();
+  private Linkage linkage = new Linkage(new LinkageIOSparkMax());
   //private DigitalInput sensor = new DigitalInput(0);
->>>>>>> Woodbot
   
   private Intake intake;
   private static XboxController operatorCont = new XboxController(1);
@@ -33,13 +29,8 @@ public class RunExtendIntake extends Command {
  
   
   /** Creates a new Java. */
-<<<<<<< HEAD
   public RunExtendIntake(Intake intake) {
     this.intake = intake;
-=======
-  public RunExtendIntake() {
-    //SmartDashboard.putNumber("OVERSHOOT", 0.0);
->>>>>>> Woodbot
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
   }

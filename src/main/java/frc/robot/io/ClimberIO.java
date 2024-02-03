@@ -4,12 +4,16 @@
 
 package frc.robot.io;
 
+import org.littletonrobotics.junction.AutoLog;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public interface ClimberIO {
   /** Creates a new ClimberIO. */
+  @AutoLog
   public static class ClimberIOInputs {
-
+    public double speedLeft = 0.0;
+    public double speedRight = 0.0;
   }
 
   public default void updateInputs(ClimberIOInputs inputs) {}

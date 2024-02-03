@@ -9,18 +9,19 @@ import frc.robot.commands.RunExtendIntake;
 import frc.robot.commands.PowerIntakeReversed;
 import frc.robot.commands.PowerIntake;
 import frc.robot.commands.PowerLinkage;
-import frc.robot.commands.PowerShooter;
-import frc.robot.commands.RunLinkage;
-import frc.robot.commands.SetFlywheel;
 import frc.robot.commands.SetIntake;
+import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.RobotOrientedDrive;
 import frc.robot.commands.FieldOrientedDrive;
 import frc.robot.generated.TunerConstants;
+import frc.robot.hardware.ClimberIOSparkMax;
+import frc.robot.hardware.FlywheelIOSparkMax;
 import frc.robot.hardware.IntakeIOSparkMax;
 import frc.robot.hardware.LinkageIOSparkMax;
 import frc.robot.io.IntakeIO;
 import frc.robot.io.ShooterIO;
 import frc.robot.sim.ShooterIOSim;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Intake;
 
@@ -54,22 +55,21 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // declared as final in example code, but gives error in our code
-  private Intake intake2;
-  private Flywheel flywheel2;
-  private Linkage linkage2;
-  private CommandSwerveDrivetrain commandSwerveDrivetrain;
+  // private Intake intake2;
+  // private Flywheel flywheel2;
+  // private Linkage linkage2;
+  // private CommandSwerveDrivetrain commandSwerveDrivetrain;
 
-  private PowerIntake powerIntake2;
-  private PowerIntakeReversed powerIntakeReversed2;
-  private PowerLinkage powerLinkage2;
-  private PowerShooter Flywheel;
-  private RunExtendIntake runExtendIntake2;
-  private RunLinkage runLinkage;
-  private SetFlywheel setFlywheel;
-  private SetIntake setIntake;
+  // private PowerIntake powerIntake2;
+  // private PowerIntakeReversed powerIntakeReversed2;
+  // private PowerLinkage powerLinkage2;
+  // private PowerFlywheel Flywheel;
+  // private RunExtendIntake RunExtendIntake= new 
+  // private RunLinkage runLinkage;
+  // // private SetFlywheel setFlywheel;
+  // private SetIntake setIntake;
   // private SetLinkage setLinkage;
   // private SetpointFlywheel setpointFlywheel;
-    }
   // The robot's subsystems and commands are defined here...
   // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
     private SendableChooser<Command> autoChooser;
@@ -80,9 +80,10 @@ public class RobotContainer {
   final double MaxAngularRate = Math.PI * 3; // Half a rotation per second max angular velocity
   // subsystems
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
-  private final Intake intake = new Intake(null);
-  private final Flywheel flywheel = new Flywheel(null);
-  private final Linkage linkage = new Linkage(null);
+  private final Flywheel flywheel = new Flywheel(new FlywheelIOSparkMax());
+  private final Linkage linkage = new Linkage(new LinkageIOSparkMax());
+  private final Intake intake = new Intake(new IntakeIOSparkMax());
+  private final Climber climber = new Climber(new ClimberIOSparkMax());
 
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
 
@@ -91,14 +92,14 @@ public class RobotContainer {
   //private final SetFlywheel setFlywheel = new SetFlywheel();
 
   // tele commands
-  private final RunExtendIntake runExtendIntake = new RunExtendIntake();
-  private final PowerIntakeReversed powerIntakeReversed = new PowerIntake();
-  private final PowerIntake powerIntake = new PowerIntake();
-  private final PowerFlywheel powerFlywheel = new PowerFlywheel();
-  private final PowerLinkage powerLinkage = new PowerLinkage();
-  private final SetLinkage setLinkage = new SetLinkage();
-  private final FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive();
-  private final RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive();
+  private RunExtendIntake runExtendIntake = new RunExtendIntake(intake);
+  private PowerIntakeReversed powerIntakeReversed = new PowerIntakeReversed(intake);
+  private PowerIntake powerIntake = new PowerIntake(intake);
+  private PowerFlywheel powerFlywheel = new PowerFlywheel(flywheel);
+  private PowerLinkage powerLinkage = new PowerLinkage(linkage);
+  private FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive();
+  private RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive();
+
   
 
 
@@ -118,36 +119,33 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-<<<<<<< HEAD
-    switch (Constants.currentMode) {
-      case REAL:
-        // Real robot, instantiate hardware IO implementations
-        shooter = new Shooter(new ShooterIOSparkMax());
-        intake = new Intake(new IntakeIOSparkMax());
-        linkage = new Linkage(new LinkageIOSparkMax());
-        // commandSwerveDrivetrain = new CommandSwerveDrivetrain(new CommandSwerveDrivetrainIOSparkMax());
-        break;
+    // switch (Constants.currentMode) {
+    //   case REAL:
+    //     // Real robot, instantiate hardware IO implementations
+    //     flywheel = new Shooter(new ShooterIOSparkMax());
+    //     intake = new Intake(new IntakeIOSparkMax());
+    //     linkage = new Linkage(new LinkageIOSparkMax());
+    //     // commandSwerveDrivetrain = new CommandSwerveDrivetrain(new CommandSwerveDrivetrainIOSparkMax());
+    //     break;
 
-      case SIM:
-        // Sim robot, instantiate physics sim IO implementations
-        // CHANGE SHOOTER AND SHOOTER LINKAGE TO SIM LATER
-        // shooter = new Shooter(new ShooterIOSparkMax());
-        // intake = new Intake(new IntakeIOSparkMax());
-        // linkage = new Linkage(new LinkageIOSparkMax());
-        // commandSwerveDrivetrain = new CommandSwerveDrivetrain(new CommandSwerveDrivetrainIOSparkMax());
-        break;
+    //   case SIM:
+    //     // Sim robot, instantiate physics sim IO implementations
+    //     // CHANGE SHOOTER AND SHOOTER LINKAGE TO SIM LATER
+    //     // shooter = new Shooter(new ShooterIOSparkMax());
+    //     // intake = new Intake(new IntakeIOSparkMax());
+    //     // linkage = new Linkage(new LinkageIOSparkMax());
+    //     // commandSwerveDrivetrain = new CommandSwerveDrivetrain(new CommandSwerveDrivetrainIOSparkMax());
+    //     break;
 
-      default:
-        // Replayed robot, disable IO implementations
-        // shooter = new Shooter(new ShooterIO() {});
-        // intake = new Intake(new IntakeIO() {});
-        // shooterLinkage = new ShooterLinkage(new ShooterLinkageIO() {});
-        break;
-    }
-=======
+    //   default:
+    //     // Replayed robot, disable IO implementations
+    //     // shooter = new Shooter(new ShooterIO() {});
+    //     // intake = new Intake(new IntakeIO() {});
+    //     // shooterLinkage = new ShooterLinkage(new ShooterLinkageIO() {});
+    //     break;
+    // }
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
->>>>>>> Woodbot
     // Configure the trigger bindings
     NamedCommands.registerCommand("RunExtendIntake", runExtendIntake);
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
@@ -157,18 +155,16 @@ public class RobotContainer {
   }
 
   private void configureDefaultCommands() {
-<<<<<<< HEAD
-    shooter.setDefaultCommand(powerShooter);
+    flywheel.setDefaultCommand(powerFlywheel);
     intake.setDefaultCommand(powerIntake);
     linkage.setDefaultCommand(powerLinkage);
-     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(
-            () -> drive.withVelocityX(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1) * MaxSpeed) //drive forward with negative y
-                // negative Y (forward)
-                .withVelocityY(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1) * MaxSpeed) // drive left with negative x
-                .withRotationalRate(MathUtil.applyDeadband(-driverController.getRightX(), 0.1) * MaxAngularRate) // drive counterclockwise with negative x                                                                                                  
-    ));
-=======
+    // climber.setDefaultCommand();
+    //  drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+    //     drivetrain.applyRequest(
+    //         () -> drive.withVelocityX(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1) * MaxSpeed) //drive forward with negative y
+    //             // negative Y (forward)
+    //             .withVelocityY(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1) * MaxSpeed) // drive left with negative x
+    //             .withRotationalRate(MathUtil.applyDeadband(-driverController.getRightX(), 0.1) * MaxAngularRate) // drive counterclockwise with negative x                                                                                                  
     //flywheel.setDefaultCommand(setFlywheel);
     //intake.setDefaultCommand(runIntake);
     //linkage.setDefaultCommand(powerLinkage);
@@ -177,7 +173,6 @@ public class RobotContainer {
 
   public void onDisable() {
     drivetrain.robotOrientedDrive(0, 0, 0);
->>>>>>> Woodbot
   }
 
   /**
@@ -193,7 +188,6 @@ public class RobotContainer {
    * PS4} controllers or
    * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
-<<<<<<< HEAD
    */  
 
 
@@ -202,25 +196,22 @@ public class RobotContainer {
     powerIntake = new PowerIntake(intake);
     powerIntakeReversed = new PowerIntakeReversed(intake);
     powerLinkage = new PowerLinkage(linkage);
-    powerShooter = new PowerShooter(shooter);
+    powerFlywheel = new PowerFlywheel(flywheel);
     runExtendIntake = new RunExtendIntake(intake);
-    runLinkage = new RunLinkage(linkage);
-    setIntake = new SetIntake(intake);
+    powerLinkage = new PowerLinkage(linkage);
     // setLinkage = new SetLinkage(linkage);
     // not sure whether adding in the speed and velocity parameters will make a difference, but it won't work without them
     // setpointFlywheel = new SetpointFlywheel(0.0, shooter);
-    setFlywheel = new SetFlywheel(0.0, shooter);
+    // setFlywheel = new SetFlywheel(0.0, shooter);
     
     operatorController.rightTrigger(.005).whileTrue(powerIntake);
     operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
     // operatorController.leftBumper().whileTrue(runIntake);
     // operatorController.rightBumper().whileTrue(runIntakeReversed);
-    operatorController.a().whileTrue(powerShooter);
+    operatorController.a().whileTrue(powerFlywheel);
     operatorController.x().whileTrue(new InstantCommand(() -> linkage.zero(), linkage));
-=======
-   */
-  private void configureBindings() {
-    driverController.a().whileTrue(drivetrain.turntoCMD(180.0, 0.0, 0.0));
+    
+    driverController.a().whileTrue(drivetrain.turntoCMD(false, 180.0, 0.0, 0.0));
     driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
 
     operatorController.y().whileTrue(new InstantCommand(() -> flywheel.runTop(0.8), flywheel));
@@ -245,7 +236,6 @@ public class RobotContainer {
     // // DRIVER CONTROLLER BINDINGS
     // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.xOut(), drivetrain));
     // driverController.a().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
->>>>>>> Woodbot
     
     drivetrain.registerTelemetry(logger::telemeterize);
   }

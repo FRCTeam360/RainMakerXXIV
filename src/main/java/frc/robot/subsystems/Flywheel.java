@@ -8,17 +8,22 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.io.FlywheelIO;
+import frc.robot.io.FlywheelIOInputsAutoLogged;
+import frc.robot.io.IntakeIOInputsAutoLogged;
 
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class Flywheel extends SubsystemBase {
-
-  public final FlywheelIO io;
+  private final FlywheelIO io;
+  private final FlywheelIOInputsAutoLogged inputs = new FlywheelIOInputsAutoLogged();
 
   double rpmSetpoint = 0.0;
 
@@ -50,7 +55,7 @@ public class Flywheel extends SubsystemBase {
 
   public void setBothRPM(double rpm) {
     io.setTopReference(rpm, ControlType.kVelocity);
-    io.setReference(rpm, ControlType.kVelocity);
+    io.setBottomReference(rpm, ControlType.kVelocity);
   }
 
   public void stop() {
@@ -74,12 +79,12 @@ public class Flywheel extends SubsystemBase {
     return io.getBottomVelocity();
   }
 
-  public void isAtSetpoint() {
-    return Math.abs(this.getPosition() - rpmSetpoint) < 20.0;
-  }
+  // public void isAtSetpoint() {
+  //   return Math.abs(this.getPosition() - rpmSetpoint) < 20.0;
+  // }
 
   public boolean isAboveSetpoint() {
-    return io.getBottom(rpmSetpoint) >= rpmSetpoint;
+    return io.getBottom() >= rpmSetpoint;
   }
 
   public boolean isBelowSetpoint() {
@@ -89,8 +94,9 @@ public class Flywheel extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    io.updateInputs(inputs);
+    Logger.processInputs("Flywheel", inputs);
     SmartDashboard.putNumber("Top Velocity", io.getTopVelocity());
     SmartDashboard.putNumber("Bottom Velocity", io.getBottomVelocity());
-
   }
 }

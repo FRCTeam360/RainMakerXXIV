@@ -7,18 +7,6 @@
 // import com.revrobotics.CANSparkBase;
 // import com.revrobotics.SparkPIDController;
 
-<<<<<<< HEAD
-public class SetFlywheel extends Command {
-  private final Shooter shooter;
-  private final double speed;
-
-  /** Creates a new SetFlywheel. */
-  public SetFlywheel(double speed, Shooter shooter) {
-    this.shooter = shooter;
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shooter);
-    this.speed = speed;}
-=======
 // import edu.wpi.first.wpilibj.Timer;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj2.command.Command;
@@ -27,7 +15,6 @@ public class SetFlywheel extends Command {
 // public class SetFlywheel extends Command {
 //   private final Flywheel flywheel = Flywheel.getInstance();
 //   private final SparkPIDController topPIDController = flywheel.topPIDController;
->>>>>>> Woodbot
 
 //   private double kP = 0.0;
 //   private double kI = 0.0;
