@@ -61,9 +61,11 @@ public class RobotContainer {
   private final Flywheel flywheel = Flywheel.getInstance();
   private final Linkage linkage = Linkage.getInstance();
 
+
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
-
-
+  // Create new ShootInSpeaker command
+  private final Command shootRoutine =
+  ShootInSpeaker.WithDrivetrain(drivetrain, linkage, flywheel, intake, 0.0, 90.0, 4000.0);
   // auto commands
   //private final SetFlywheel setFlywheel = new SetFlywheel();
 
@@ -101,7 +103,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("RunExtendIntake", runExtendIntake);
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     NamedCommands.registerCommand("Shoot", powerFlywheel);
-    NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(45.0, 0, 0));
+    NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0, 0));
     configureBindings();
     configureDefaultCommands();
   }
@@ -129,15 +131,37 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    driverController.a().whileTrue(drivetrain.turntoCMD(180.0, 0.0, 0.0));
+    driverController.y().whileTrue(drivetrain.turntoCMD(false, .0, 0.0, 0.0));
     driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
 
+    operatorController.a().whileTrue(shootRoutine);
+    operatorController.y().whileTrue(drivetrain.turntoCMD(false, 90.0, 0.0, 0.0));
+
+
+
+    // driverController.a().whileTrue(drivetrain.turntoCMD(180.0, 0.0, 0.0));
+    // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
+
+    // operatorController.y().whileTrue(new InstantCommand(() -> flywheel.runTop(0.8), flywheel));
+    // operatorController.b().whileTrue(new InstantCommand(() -> flywheel.setTopRPM((2000))));
+
+    // operatorController.x().whileTrue(new InstantCommand(() -> flywheel.runBottom(0.8), flywheel));
+    // operatorController.a().whileTrue(new InstantCommand(() -> flywheel.setBottomRPM((2000))));
+
+    // operatorController.pov(0).whileTrue(new InstantCommand(() -> flywheel.setBothRPM(5000)));
+    // // OPERATOR CONTROLLER BINDINGS
+    // operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
+    // operatorController.rightTrigger(.005).whileTrue(powerIntake);
+    // // operatorController.a().whileTrue(new SetFlywheel());
+    operatorController.b().toggleOnTrue(runExtendIntake);
+    // operatorController.y().whileTrue(powerIntake);
+    // //operatorController.x().whileTrue(new InstantCommand(() -> linkage.setTo90(),linkage));
     // OPERATOR CONTROLLER BINDINGS
-    operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
-    operatorController.rightTrigger(.005).whileTrue(powerIntake);
-    operatorController.a().toggleOnTrue(runExtendIntake);
-    operatorController.b().whileTrue(powerIntake);
-    operatorController.y().toggleOnTrue(new InstantCommand(() -> flywheel.setBothRPM(5000), flywheel));
+    // operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
+    // operatorController.rightTrigger(.005).whileTrue(powerIntake);
+    // operatorController.a().toggleOnTrue(runExtendIntake);
+    // operatorController.b().whileTrue(powerIntake);
+    // operatorController.y().toggleOnTrue(new InstantCommand(() -> flywheel.setBothRPM(5000), flywheel));
 
     // DRIVER CONTROLLER BINDINGS
     // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.xOut(), drivetrain));

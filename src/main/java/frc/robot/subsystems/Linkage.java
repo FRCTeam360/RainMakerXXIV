@@ -86,7 +86,7 @@ public class Linkage extends SubsystemBase {
     pidController.setReference(setPoint, CANSparkBase.ControlType.kPosition);
   }
 
-  public double getSpeed() {
+  public double getPower() {
     return motor.get();
   }
 
