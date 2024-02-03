@@ -1,0 +1,55 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.4551755469306675,
+      "y": 1.559961314696977
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Shoot Preload"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Wait1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Travel to Center Middle Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Wait1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Returns from center middle note to shoot note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Wait1"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

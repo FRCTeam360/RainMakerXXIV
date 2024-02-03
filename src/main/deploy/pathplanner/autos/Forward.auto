@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Fforward1"
+            "pathName": "Forward1"
           }
         },
         {
@@ -26,7 +26,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Fforward2"
+            "pathName": "Forward2"
           }
         }
       ]

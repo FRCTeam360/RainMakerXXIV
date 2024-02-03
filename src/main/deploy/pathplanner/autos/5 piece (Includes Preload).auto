@@ -1,0 +1,85 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.3479282065452507,
+      "y": 4.572636603705512
+    },
+    "rotation": 178.11181199325907
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Fire Preload + pickup bottom blue note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Wait1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Wait1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Shoot bottom blue note, pickup middle blue note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Wait1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Shoot blue middle note, pickup top blue note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Wait1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Shoot top blue note, travel to center top note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Wait1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Return from center top note to shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Wait1"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
