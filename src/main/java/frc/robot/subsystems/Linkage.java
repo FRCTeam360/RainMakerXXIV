@@ -57,7 +57,7 @@ public class Linkage extends SubsystemBase {
     io.setReference(setPoint, CANSparkBase.ControlType.kPosition);
   }
 
-  public double getSpeed() {
+  public double getPower() {
     return io.get();
   }
 

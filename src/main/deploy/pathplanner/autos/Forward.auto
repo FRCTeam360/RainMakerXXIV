@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.4408703461281565,
+      "y": 1.6371816219415916
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Forward1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Rotate"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Forward2"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

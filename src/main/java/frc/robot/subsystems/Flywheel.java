@@ -63,12 +63,12 @@ public class Flywheel extends SubsystemBase {
     io.stopBottomMotor();
   }
 
-  public double getTopSpeed() {
-    return io.getTop();
+  public double getTopPower() {
+    return io.getTopPower();
   }
 
-  public double getBottomSpeed() {
-    return io.getBottom();
+  public double getBottomPower() {
+    return io.getBottomPower();
   }
 
   public double getTopVelocity() {
@@ -79,16 +79,16 @@ public class Flywheel extends SubsystemBase {
     return io.getBottomVelocity();
   }
 
-  // public void isAtSetpoint() {
-  //   return Math.abs(this.getPosition() - rpmSetpoint) < 20.0;
-  // }
+  public boolean isAtSetpoint() {
+    return Math.abs(this.getTopVelocity() - rpmSetpoint) < 30.0;
+  }
 
   public boolean isAboveSetpoint() {
-    return io.getBottom() >= rpmSetpoint;
+    return this.getTopVelocity() >= rpmSetpoint;
   }
 
   public boolean isBelowSetpoint() {
-    return io.getTop() <= rpmSetpoint - 200.0;
+    return this.getTopVelocity() <= rpmSetpoint - 30.0;
   }
 
   @Override

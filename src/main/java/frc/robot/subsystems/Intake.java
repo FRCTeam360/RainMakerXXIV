@@ -50,8 +50,8 @@ public class Intake extends SubsystemBase {
     io.stopMotor();
   }
 
-  public double getSpeed() {
-    return io.get();
+  public double getPower() {
+    return io.getPower();
   }
 
   public double getAmps() {
@@ -67,7 +67,7 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("Intake", inputs);
-    SmartDashboard.putNumber("Intake Speed", getSpeed());
+    SmartDashboard.putNumber("Intake Speed", io.getPower());
     SmartDashboard.putNumber("Amps", getAmps());
     SmartDashboard.putBoolean("this sensor sucks", getSideSensor());
     SmartDashboard.putBoolean("this sensor sucks", getHighSensor());
