@@ -14,7 +14,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
 
 public class ShootInSpeaker extends Command {
-  private Linkage linkage;
+  // private Linkage linkage;
   private Flywheel flywheel;
   private CommandSwerveDrivetrain drivetrain;
 
@@ -37,9 +37,10 @@ public class ShootInSpeaker extends Command {
       double linkageSetpoint, double flywheelSetpoint, double driveSetpoint) { // Add your commands in the
     // addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addRequirements(linkage, flywheel, intake);
+    // removed linkage
+    addRequirements(flywheel, intake);
 
-    this.linkage = linkage;
+    // this.linkage = linkage;
     this.flywheel = flywheel;
     this.drivetrain = drivetrain;
     this.linkageSetpoint = linkageSetpoint;

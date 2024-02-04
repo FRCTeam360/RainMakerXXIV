@@ -12,12 +12,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Flywheel;
 
 public class PowerFlywheel extends Command {
-  private final Flywheel flywheel = Flywheel.getInstance();
+  private final Flywheel flywheel;
   private final XboxController operatorCont = new XboxController(1);
   // private final SparkPIDController topPidController = flywheel.topPidController;
 
-  /** Creates a new Runflywheel. */
-  public PowerFlywheel() {
+  /** Creates a new RunShooter. */
+  public PowerFlywheel(Flywheel flywheel) {
+    this.flywheel = flywheel;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(flywheel);
   }
