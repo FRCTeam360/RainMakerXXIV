@@ -14,7 +14,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
 
 public class ShootInSpeaker extends Command {
-  // private Linkage linkage;
+  private Linkage linkage;
   private Flywheel flywheel;
   private CommandSwerveDrivetrain drivetrain;
 
@@ -37,10 +37,9 @@ public class ShootInSpeaker extends Command {
       double linkageSetpoint, double flywheelSetpoint, double driveSetpoint) { // Add your commands in the
     // addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    // removed linkage
-    addRequirements(flywheel, intake);
+    addRequirements(linkage, flywheel, intake);
 
-    // this.linkage = linkage;
+    this.linkage = linkage;
     this.flywheel = flywheel;
     this.drivetrain = drivetrain;
     this.linkageSetpoint = linkageSetpoint;
@@ -55,7 +54,7 @@ public class ShootInSpeaker extends Command {
 
   @Override
   public void execute() {
-    drivetrain.driveFieldCentricFacingAngle(0.0, 0.0, 0.0, driveAngleSetpoint); // drivetrain is rotated in its own command ran in parallel
+    drivetrain.driveFieldCentricFacingAngle(0.0, 0.0, 0.0, driveAngleSetpoint); // drivetrain is rotated in its own command ran in // parallel
     // linkage.setAngle(linkageSetpoint);
     flywheel.setBothRPM(flywheelSetpoint);
     switch (state) {
