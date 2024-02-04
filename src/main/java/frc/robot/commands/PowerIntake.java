@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 
-
 public class PowerIntake extends Command {
   private XboxController operatorCont = new XboxController(1);
-  private Intake intake = Intake.getInstance();
+  private Intake intake;
   /** Creates a new ManualIntake. */
-  public PowerIntake() {
+  public PowerIntake(Intake intake) {
     addRequirements(intake);
+    this.intake = intake;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

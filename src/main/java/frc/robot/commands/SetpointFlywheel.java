@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+/* package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Flywheel;
@@ -12,11 +12,16 @@ public class SetpointFlywheel extends Command {
   private double setpointRpm;
 
   /** Creates a new SetpointFlywheel. */
+
+  /** 
   public SetpointFlywheel(Flywheel flywheel, double setpointRpm) {
     this.flywheel = flywheel;
     this.setpointRpm = setpointRpm;
     addRequirements(this.flywheel);
 
+  public SetpointFlywheel(double setpointVelocity, Shooter shooter) {
+    this.shooter = shooter;
+    setpoint = setpointVelocity;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -61,3 +66,4 @@ public class SetpointFlywheel extends Command {
     return false;
   }
 }
+*/

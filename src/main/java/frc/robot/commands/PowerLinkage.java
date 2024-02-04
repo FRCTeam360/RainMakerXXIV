@@ -10,11 +10,12 @@ import frc.robot.subsystems.Linkage;
 
 public class PowerLinkage extends Command {
 
-  private final Linkage shooterLinkage = Linkage.getInstance();
+  private final Linkage shooterLinkage;
   private final XboxController operatorCont = new XboxController(1);
 
   /** Creates a new RunShooterLinkage. */
-  public PowerLinkage() {
+  public PowerLinkage(Linkage shooterLinkage) {
+    this.shooterLinkage = shooterLinkage;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooterLinkage);
   }

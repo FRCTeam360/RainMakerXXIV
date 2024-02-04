@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import java.util.function.Supplier;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
@@ -274,6 +276,16 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         public boolean isFinished() {
             return headingController.atSetpoint();
         }
+    }
+
+    @Override
+    public void periodic() {
+        for(int i = 0;i<4;i++) {
+           Logger.recordOutput("Voltage", this.getModule(i).getDriveMotor().getMotorVoltage().getValueAsDouble());
+           Logger.recordOutput("Current", this.getModule(i).getDriveMotor().getSupplyCurrent().getValueAsDouble());
+           Logger.recordOutput("Position", this.getModule(i).getCANcoder().getPosition().getValueAsDouble());
+        }
+        Logger.recordOutput("Rotation2d", this.getPigeon2().getRotation2d());
     }
 
 }
