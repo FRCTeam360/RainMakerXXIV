@@ -20,6 +20,8 @@ public class ShootInSpeaker extends Command {
 
   private double linkageSetpoint;
   private double flywheelSetpoint;
+  private double driveAngleSetpoint;
+
   private Timer timer;
   private Intake intake;
 
@@ -31,7 +33,8 @@ public class ShootInSpeaker extends Command {
 
   /** Creates a new ShootInSpeaker. */
   public ShootInSpeaker(Linkage linkage, Flywheel flywheel,
-      CommandSwerveDrivetrain drivetrain, double linkageSetpoint, double flywheelSetpoint, Intake intake) { // Add your commands in the
+      CommandSwerveDrivetrain drivetrain, Intake intake,
+      double linkageSetpoint, double flywheelSetpoint, double driveSetpoint) { // Add your commands in the
     // addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addRequirements(linkage, flywheel, intake);
@@ -51,42 +54,43 @@ public class ShootInSpeaker extends Command {
 
   @Override
   public void execute() {
-    intake.run(0.0);
+    drivetrain.driveFieldCentricFacingAngle(0.0, 0.0, 0.0, driveAngleSetpoint); // drivetrain is rotated in its own command ran in // parallel
     // linkage.setAngle(linkageSetpoint);
     flywheel.setBothRPM(flywheelSetpoint);
-    // drivetrain is rotated in its own command ran in parallel
     switch (state) {
       case LOADED:
+        intake.run(0.0);
         // boolean isLinkageAtSetpoint = linkage.isAtSetpoint();
         boolean isFlywheelAtSetpoint = flywheel.isAtSetpoint();
         boolean isDrivetrainAtSetpoint = drivetrain.isFacingAngle();
         // if (isLinkageAtSetpoint) {
-        //   System.out.println("inkage at setpoint");
+        // System.out.println("inkage at setpoint");
         // }
         if (isFlywheelAtSetpoint) {
           System.out.println("flywheel at setpoint");
         }
+
         if (isDrivetrainAtSetpoint) {
           System.out.println("drivetrain at setpoint");
         }
-        if (isDrivetrainAtSetpoint && isFlywheelAtSetpoint) {
+        if (isDrivetrainAtSetpoint && isFlywheelAtSetpoint) { // && isLinkageAtSetpoint
           this.state = ShootState.SHOOT;
+          System.out.println(state);
         }
         break;
 
       case SHOOT:
         intake.run(1.0);
-        boolean hasShot = flywheel.isBelowSetpoint(); //check logic in flywheel subsystem (180 rpm gap)
+        boolean hasShot = flywheel.isBelowSetpoint(); // check logic in flywheel subsystem (180 rpm gap)
         if (hasShot) {
           timer.start();
-          if (timer.hasElapsed(0.3)) { //TUNE!!!
+          if (timer.hasElapsed(0.3)) { // TUNE!!!
             this.state = ShootState.END;
-      }
+          }
         }
         break;
-      
-          }
 
+    }
 
   }
 
@@ -102,12 +106,5 @@ public class ShootInSpeaker extends Command {
   @Override
   public boolean isFinished() {
     return this.state == ShootState.END;
-  }
-
-  public static Command WithDrivetrain(CommandSwerveDrivetrain drivetrain, Linkage linkage,
-      Flywheel flywheel, Intake intake, double driveAngleSetpoint, double linkageSetpoint, double flywheelSetpoint) {
-    return new ShootInSpeaker(linkage, flywheel, drivetrain, flywheelSetpoint, linkageSetpoint, intake).alongWith(
-        drivetrain.turntoCMD(true, Rotation2d.fromDegrees(driveAngleSetpoint), flywheelSetpoint, driveAngleSetpoint)
-    );
   }
 }
