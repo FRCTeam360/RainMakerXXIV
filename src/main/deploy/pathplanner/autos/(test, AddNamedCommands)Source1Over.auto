@@ -2,15 +2,21 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4408703461281565,
-      "y": 1.6371816219415916
+      "x": 15.111336889340441,
+      "y": 1.508545923074753
     },
-    "rotation": 0
+    "rotation": 178.25595581875078
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Spit"
+          }
+        },
         {
           "type": "parallel",
           "data": {
@@ -18,28 +24,22 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Rotate"
+                  "name": "ShootSubwoofer"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Forward1"
+                  "pathName": "One Under Bottom Center Note"
                 }
               }
             ]
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Rotate"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "Forward2"
+            "pathName": "return C"
           }
         }
       ]

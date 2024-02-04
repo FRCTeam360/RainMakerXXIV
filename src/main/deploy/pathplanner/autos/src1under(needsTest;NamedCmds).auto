@@ -2,15 +2,21 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4408703461281565,
-      "y": 1.6371816219415916
+      "x": 15.114586808746065,
+      "y": 7.3220684208589315
     },
-    "rotation": 0
+    "rotation": -178.95837332399017
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Spit"
+          }
+        },
         {
           "type": "parallel",
           "data": {
@@ -18,28 +24,22 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Rotate"
+                  "name": "Intake"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Forward1"
+                  "pathName": "Top Center Note"
                 }
               }
             ]
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Rotate"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "Forward2"
+            "pathName": "Return d"
           }
         }
       ]
