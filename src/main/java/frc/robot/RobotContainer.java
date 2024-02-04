@@ -176,19 +176,19 @@ public class RobotContainer {
   private void configureBindings() {
     driverController.a().whileTrue(drivetrain.turntoCMD(false, 90.0, 0.0, 0.0));
   
-    powerIntake = new PowerIntake(intake);
-    powerIntakeReversed = new PowerIntakeReversed(intake);
-    // powerLinkage = new PowerLinkage(linkage);
-    powerFlywheel = new PowerFlywheel(flywheel);
-    runExtendIntake = new RunExtendIntake(intake);
+    // powerIntake = new PowerIntake(intake);
+    // powerIntakeReversed = new PowerIntakeReversed(intake);
+    // // powerLinkage = new PowerLinkage(linkage);
+    // powerFlywheel = new PowerFlywheel(flywheel);
+    // runExtendIntake = new RunExtendIntake(intake);
     // powerLinkage = new PowerLinkage(linkage);
     // setLinkage = new SetLinkage(linkage);
     // not sure whether adding in the speed and velocity parameters will make a difference, but it won't work without them
     // setpointFlywheel = new SetpointFlywheel(0.0, shooter);
     // setFlywheel = new SetFlywheel(0.0, shooter);
     
-    operatorController.rightTrigger(.005).whileTrue(powerIntake);
-    operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
+    // operatorController.rightTrigger(.005).whileTrue(powerIntake);
+    // operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
     // operatorController.leftBumper().whileTrue(runIntake);
     // operatorController.rightBumper().whileTrue(runIntakeReversed);
     // operatorController.a().whileTrue(powerFlywheel);
@@ -196,15 +196,15 @@ public class RobotContainer {
     
     driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
 
-    operatorController.a().whileTrue(shootRoutine);
-    // operatorController.y().whileTrue(drivetrain.turntoCMD(false, 90.0, 0.0, 0.0));
+    // operatorController.a().whileTrue(shootRoutine);
+    operatorController.a().whileTrue(drivetrain.turntoCMD(false, 90.0, 0.0, 0.0));
 
     
 
     // operatorController.x().whileTrue(new InstantCommand(() -> flywheel.runBottom(0.8), flywheel));
     // operatorController.a().whileTrue(new InstantCommand(() -> flywheel.setBottomRPM((2000))));
 
-    operatorController.pov(0).whileTrue(new InstantCommand(() -> flywheel.setBothRPM(5000)));
+    // operatorController.pov(0).whileTrue(new InstantCommand(() -> flywheel.setBothRPM(5000)));
     // OPERATOR CONTROLLER BINDINGS
     // operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
     // operatorController.rightTrigger(.005).whileTrue(powerIntake);

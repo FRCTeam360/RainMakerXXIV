@@ -35,7 +35,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
-import frc.robot.commands.SetpointFlywheel;
 import frc.robot.generated.TunerConstants;
 
 /**
@@ -56,14 +55,15 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     GenericEntry kDEntry;
 
     private double headingKP = 2.5;
-    private double headingKI = 0.0;
+    private double headingKI = 0.2;
+    private double headingIZone = 0.17;
     private double headingKD = 0.0;
 
     private void setupShuffleboard() {
         ShuffleboardTab tab = Shuffleboard.getTab("angle");
         tab.addNumber("current angle", () -> this.getPigeon2().getAngle());
         tab.addNumber("error", () -> this.getAngleError());
-        tab.addNumber("setpoint", () -> this.headingController.getSetpoint());
+        tab.addNumber("setpoint", () -> Math.toDegrees(this.headingController.getSetpoint()));
 
         // kPEntry = tab.add("kP", 0.0).getEntry();
         // kIEntry = tab.add("kI", 0.0).getEntry();
@@ -75,6 +75,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         headingController = new PhoenixPIDController(headingKP, headingKI, headingKD);
         headingController.enableContinuousInput(-Math.PI, Math.PI);
         headingController.setTolerance(Math.toRadians(5));
+        headingController.setIntegratorRange(-headingIZone, headingIZone);
     }
 
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency,
@@ -195,7 +196,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     }
 
     private double getAngleError() {
-        return headingController.getPositionError();
+        return Math.toDegrees(headingController.getPositionError());
     }
 
     public boolean isFacingAngle() {
