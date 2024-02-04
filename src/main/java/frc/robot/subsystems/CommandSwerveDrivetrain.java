@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
@@ -49,6 +50,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
     private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
     private PhoenixPIDController headingController;
+    private Orchestra sounds = new Orchestra( "test chrp.chrp" );
+    //sounds.addInstrument(ParentDevice ???,0);
+    
 
     GenericEntry kPEntry;
     GenericEntry kIEntry;
@@ -77,7 +81,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         headingController.setTolerance(Math.toRadians(5));
         headingController.setIntegratorRange(-headingIZone, headingIZone);
     }
-
+   
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency,
             SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
