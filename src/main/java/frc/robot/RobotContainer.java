@@ -60,12 +60,12 @@ public class RobotContainer {
   private final Intake intake = Intake.getInstance();
   private final Flywheel flywheel = Flywheel.getInstance();
   private final Linkage linkage = Linkage.getInstance();
-
-
+  
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
   // Create new ShootInSpeaker command
-  private final Command shootRoutine =
-  ShootInSpeaker.WithDrivetrain(drivetrain, linkage, flywheel, intake, 0.0, 90.0, 4000.0);
+  private final Command shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 90.0, 4000.0);
+  // does this work?
+
   // auto commands
   //private final SetFlywheel setFlywheel = new SetFlywheel();
 
@@ -131,18 +131,21 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    driverController.y().whileTrue(drivetrain.turntoCMD(false, .0, 0.0, 0.0));
+    driverController.a().whileTrue(drivetrain.turntoCMD(false, 90.0, 0.0, 0.0));
     driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
 
     operatorController.a().whileTrue(shootRoutine);
-    operatorController.y().whileTrue(drivetrain.turntoCMD(false, 90.0, 0.0, 0.0));
+    // operatorController.y().whileTrue(drivetrain.turntoCMD(false, 90.0, 0.0, 0.0));
+
+    
 
 
 
-    // driverController.a().whileTrue(drivetrain.turntoCMD(180.0, 0.0, 0.0));
+    // driverController.a().whileTrue(drivetrain.turntoCMD(true, 180.0, 0.0, 0.0));
     // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
-
-    // operatorController.y().whileTrue(new InstantCommand(() -> flywheel.runTop(0.8), flywheel));
+    
+    // operatorController.y().whileTrue(new InstantCommand(() -> flywheel.runBoth(0.8), flywheel));
+    // operatorController.a().whileTrue(new InstantCommand(() -> flywheel.setBothRPM((4000)), flywheel));
     // operatorController.b().whileTrue(new InstantCommand(() -> flywheel.setTopRPM((2000))));
 
     // operatorController.x().whileTrue(new InstantCommand(() -> flywheel.runBottom(0.8), flywheel));
@@ -172,7 +175,7 @@ public class RobotContainer {
 
   public void onDisable() {
     flywheel.stop();
-        drivetrain.robotOrientedDrive(0, 0, 0);
+        drivetrain.robotCentricDrive(0, 0, 0);
 
   }
   

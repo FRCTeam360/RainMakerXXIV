@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
+import frc.robot.commands.SetpointFlywheel;
 import frc.robot.generated.TunerConstants;
 
 /**
@@ -46,13 +47,13 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private double m_lastSimTime;
     CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
     private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
-    private PhoenixPIDController headingController = new PhoenixPIDController(5.75, 0, 0);
+    private PhoenixPIDController headingController;
 
     GenericEntry kPEntry;
     GenericEntry kIEntry;
     GenericEntry kDEntry;
 
-    private double headingKP = 5.75;
+    private double headingKP = 2.5;
     private double headingKI = 0.0;
     private double headingKD = 0.0;
 
@@ -172,6 +173,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         FieldCentricFacingAngle facingAngleCommand = drive.withTargetDirection(desiredAngle).withVelocityX(velocityX)
                 .withVelocityY(velocityY);
         facingAngleCommand.HeadingController = headingController;
+        System.out.println("turntoCMD");
 
         if(shouldEnd) {
             return this.applyRequest(() -> facingAngleCommand)
@@ -214,18 +216,26 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         this.setControl(new SwerveRequest.SwerveDriveBrake());
     }
 
-    public void fieldOrientedDrive(double leftX, double leftY, double rightX) {
+    public void fieldCentricDrive(double leftX, double leftY, double rightX) {
         this.setControl(new SwerveRequest.FieldCentric()
                 .withVelocityX(MathUtil.applyDeadband(leftY, 0.1) * Constants.MAX_SPEED_MPS)
                 .withVelocityY(MathUtil.applyDeadband(leftX, 0.1) * Constants.MAX_SPEED_MPS)
                 .withRotationalRate(MathUtil.applyDeadband(-rightX, 0.1) * Constants.MAX_ANGULAR_RATE));
     }
 
-    public void robotOrientedDrive(double leftX, double leftY, double rightX) {
+    public void robotCentricDrive(double leftX, double leftY, double rightX) {
         this.setControl(new SwerveRequest.RobotCentric()
                 .withVelocityX(MathUtil.applyDeadband(leftY, 0.1) * Constants.MAX_SPEED_MPS)
                 .withVelocityY(MathUtil.applyDeadband(leftX, 0.1) * Constants.MAX_SPEED_MPS)
                 .withRotationalRate(MathUtil.applyDeadband(-rightX, 0.1) * Constants.MAX_ANGULAR_RATE));
+    }
+
+    // drive robot with field centric angle
+    public void driveFieldCentricFacingAngle(double x, double y, double angle, double desiredAngle) {
+        FieldCentricFacingAngle request = new SwerveRequest.FieldCentricFacingAngle().withVelocityX(x).withVelocityY(y)
+                .withTargetDirection(Rotation2d.fromDegrees(desiredAngle));
+                request.HeadingController = headingController;
+        this.setControl(request);
     }
 
     private Pose2d getPose() {
