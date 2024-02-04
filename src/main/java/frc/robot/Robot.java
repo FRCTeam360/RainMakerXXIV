@@ -67,10 +67,6 @@ public class Robot extends LoggedRobot {
 
   }
 
-  // private void setUseTiming(boolean b) {
-    // TODO Auto-generated method stub
-    //throw new UnsupportedOperationException("Unimplemented method 'setUseTiming'");
-  // }
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items

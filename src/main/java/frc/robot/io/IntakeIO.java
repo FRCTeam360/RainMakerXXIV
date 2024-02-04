@@ -30,7 +30,7 @@ public interface IntakeIO {
 
   public double getOutputCurrent();
 
-public boolean getSideSensor();
+  public boolean getSideSensor();
 
-public boolean getHighSensor();
+  public boolean getHighSensor();
 }

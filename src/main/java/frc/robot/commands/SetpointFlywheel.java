@@ -8,13 +8,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Flywheel;
 
 public class SetpointFlywheel extends Command {
-<<<<<<< HEAD
-  private double setpoint;
-  private Shooter shooter;
-=======
   private Flywheel flywheel;
   private double setpointRpm;
->>>>>>> Woodbot
 
   /** Creates a new SetpointFlywheel. */
 
@@ -24,13 +19,10 @@ public class SetpointFlywheel extends Command {
     this.setpointRpm = setpointRpm;
     addRequirements(this.flywheel);
 
-<<<<<<< HEAD
   public SetpointFlywheel(double setpointVelocity, Shooter shooter) {
     this.shooter = shooter;
     setpoint = setpointVelocity;
-=======
     // Use addRequirements() here to declare subsystem dependencies.
->>>>>>> Woodbot
   }
 
   // Called when the command is initially scheduled.

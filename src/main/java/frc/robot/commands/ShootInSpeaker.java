@@ -14,7 +14,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
 
 public class ShootInSpeaker extends Command {
-  private Linkage linkage;
+  // private Linkage linkage;
   private Flywheel flywheel;
   private CommandSwerveDrivetrain drivetrain;
 
@@ -30,13 +30,15 @@ public class ShootInSpeaker extends Command {
   }
 
   // Creates a new ShootInSpeaker. 
-  public ShootInSpeaker(Linkage linkage, Flywheel flywheel,
+  // removed linkage
+  public ShootInSpeaker(Flywheel flywheel,
       CommandSwerveDrivetrain drivetrain, double linkageSetpoint, double flywheelSetpoint, Intake intake) { // Add your commands in the
     // addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addRequirements(linkage, flywheel, intake);
+    // removed linkage
+    addRequirements(flywheel, intake);
 
-    this.linkage = linkage;
+    // this.linkage = linkage;
     this.flywheel = flywheel;
     this.drivetrain = drivetrain;
     this.linkageSetpoint = linkageSetpoint;
@@ -104,9 +106,9 @@ public class ShootInSpeaker extends Command {
     return this.state == ShootState.END;
   }
 
-  public static Command WithDrivetrain(CommandSwerveDrivetrain drivetrain, Linkage linkage,
+  public static Command WithDrivetrain(CommandSwerveDrivetrain drivetrain,
       Flywheel flywheel, Intake intake, double driveAngleSetpoint, double linkageSetpoint, double flywheelSetpoint) {
-    return new ShootInSpeaker(linkage, flywheel, drivetrain, flywheelSetpoint, linkageSetpoint, intake).alongWith(
+    return new ShootInSpeaker(flywheel, drivetrain, flywheelSetpoint, linkageSetpoint, intake).alongWith(
         drivetrain.turntoCMD(true, Rotation2d.fromDegrees(driveAngleSetpoint), flywheelSetpoint, driveAngleSetpoint)
     );
   }

@@ -16,7 +16,7 @@ import frc.robot.Constants;
 import frc.robot.io.FlywheelIO;
 import frc.robot.io.IntakeIO.IntakeIOInputs;
 
-public class FlywheelIOSparkMax implements FlywheelIO {
+public class FlywheelIOSparkFlex implements FlywheelIO {
   /** Creates a new FlywheelIOSparkMax. */
   private final CANSparkFlex topMotor = new CANSparkFlex(Constants.SHOOTER_TOP_ID, MotorType.kBrushless);
     private final RelativeEncoder topEncoder = topMotor.getEncoder();
@@ -26,7 +26,7 @@ public class FlywheelIOSparkMax implements FlywheelIO {
     private final RelativeEncoder bottomEncoder = bottomMotor.getEncoder();
     private final SparkPIDController bottomPIDController = bottomMotor.getPIDController();
 
-  public FlywheelIOSparkMax() {
+  public FlywheelIOSparkFlex() {
     double kP = 0.00055;
     double kI = 0.0;
     double kD = 0.0;

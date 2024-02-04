@@ -67,14 +67,5 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("Intake", inputs);
-    SmartDashboard.putNumber("Intake Speed", io.getPower());
-    SmartDashboard.putNumber("Amps", getAmps());
-    SmartDashboard.putBoolean("this sensor sucks", getSideSensor());
-    SmartDashboard.putBoolean("this sensor sucks", getHighSensor());
-    // SmartDashboard.putNumber("Encoder Position", encoder.getPosition());
-    // SmartDashboard.getNumber("Encoder Position", encoder.getPosition());
-    // // This method will be called once per scheduler run
-    // SmartDashboard.putNumber("Intake Speed", getSpeed());
-    // SmartDashboard.putNumber("Intake Amps", getAmps());
   }
 }

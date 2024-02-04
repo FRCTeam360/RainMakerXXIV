@@ -78,14 +78,5 @@ public class Linkage extends SubsystemBase {
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("Linkage", inputs);
-    SmartDashboard.putNumber("Linkage Angle", getAngle());
-    SmartDashboard.putNumber("linkage voltage", io.getAppliedOutput());
-    SmartDashboard.putNumber("Linkage Voltage", io.getAppliedOutput());
-    SmartDashboard.putNumber("Linkage Error", 85-getAngle());
-  }
-
-  public static Linkage getInstance() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getInstance'");
   }
 }

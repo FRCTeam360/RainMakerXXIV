@@ -15,12 +15,10 @@ import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.RobotOrientedDrive;
 import frc.robot.commands.FieldOrientedDrive;
 import frc.robot.generated.TunerConstants;
-// import frc.robot.hardware.ClimberIOSparkMax;
-import frc.robot.hardware.FlywheelIOSparkMax;
+import frc.robot.hardware.FlywheelIOSparkFlex;
 import frc.robot.hardware.IntakeIOSparkMax;
 import frc.robot.hardware.LinkageIOSparkMax;
 import frc.robot.io.IntakeIO;
-import frc.robot.io.ShooterIO;
 import frc.robot.sim.ShooterIOSim;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -56,21 +54,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // declared as final in example code, but gives error in our code
-  // private Intake intake2;
-  // private Flywheel flywheel2;
-  // private Linkage linkage2;
-  // private CommandSwerveDrivetrain commandSwerveDrivetrain;
-
-  // private PowerIntake powerIntake2;
-  // private PowerIntakeReversed powerIntakeReversed2;
-  // private PowerLinkage powerLinkage2;
-  // private PowerFlywheel Flywheel;
-  // private RunExtendIntake RunExtendIntake= new 
-  // private RunLinkage runLinkage;
-  // // private SetFlywheel setFlywheel;
-  // private SetIntake setIntake;
-  // private SetLinkage setLinkage;
-  // private SetpointFlywheel setpointFlywheel;
   // The robot's subsystems and commands are defined here...
   // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
     private SendableChooser<Command> autoChooser;
@@ -81,8 +64,8 @@ public class RobotContainer {
   final double MaxAngularRate = Math.PI * 3; // Half a rotation per second max angular velocity
   // subsystems
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
-  private final Flywheel flywheel = new Flywheel(new FlywheelIOSparkMax());
-  private final Linkage linkage = new Linkage(new LinkageIOSparkMax());
+  private final Flywheel flywheel = new Flywheel(new FlywheelIOSparkFlex());
+  // private final Linkage linkage = new Linkage(new LinkageIOSparkMax());
   private final Intake intake = new Intake(new IntakeIOSparkMax());
   // private final Climber climber = new Climber(new ClimberIOSparkMax());
 
@@ -90,7 +73,7 @@ public class RobotContainer {
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
   // Create new ShootInSpeaker command
   private final Command shootRoutine =
-  ShootInSpeaker.WithDrivetrain(drivetrain, linkage, flywheel, intake, 0.0, 90.0, 4000.0);
+  ShootInSpeaker.WithDrivetrain(drivetrain, flywheel, intake, 0.0, 90.0, 4000.0);
   // auto commands
   //private final SetFlywheel setFlywheel = new SetFlywheel();
 
@@ -99,10 +82,10 @@ public class RobotContainer {
   private PowerIntakeReversed powerIntakeReversed = new PowerIntakeReversed(intake);
   private PowerIntake powerIntake = new PowerIntake(intake);
   private PowerFlywheel powerFlywheel = new PowerFlywheel(flywheel);
-  private PowerLinkage powerLinkage = new PowerLinkage(linkage);
+  // private PowerLinkage powerLinkage = new PowerLinkage(linkage);
   private FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive();
   private RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive();
-  private ShootInSpeaker shootInSpeaker = new ShootInSpeaker(linkage, flywheel, drivetrain, MaxAngularRate, MaxAngularRate, intake);
+  private ShootInSpeaker shootInSpeaker = new ShootInSpeaker(flywheel, drivetrain, MaxAngularRate, MaxAngularRate, intake);
 
   
 
@@ -197,10 +180,10 @@ public class RobotContainer {
   
     powerIntake = new PowerIntake(intake);
     powerIntakeReversed = new PowerIntakeReversed(intake);
-    powerLinkage = new PowerLinkage(linkage);
+    // powerLinkage = new PowerLinkage(linkage);
     powerFlywheel = new PowerFlywheel(flywheel);
     runExtendIntake = new RunExtendIntake(intake);
-    powerLinkage = new PowerLinkage(linkage);
+    // powerLinkage = new PowerLinkage(linkage);
     // setLinkage = new SetLinkage(linkage);
     // not sure whether adding in the speed and velocity parameters will make a difference, but it won't work without them
     // setpointFlywheel = new SetpointFlywheel(0.0, shooter);
