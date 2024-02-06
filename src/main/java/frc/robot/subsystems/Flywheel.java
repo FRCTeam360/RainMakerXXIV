@@ -19,11 +19,11 @@ public class Flywheel extends SubsystemBase {
 
   private static Flywheel instance;
 
-  private final CANSparkFlex topMotor = new CANSparkFlex(Constants.SHOOTER_TOP_ID, MotorType.kBrushless);
+  private final CANSparkFlex topMotor = new CANSparkFlex(Constants.FLYWHEEL_LEFT_ID, MotorType.kBrushless);
   private final RelativeEncoder topEncoder = topMotor.getEncoder();
   private final SparkPIDController topPIDController = topMotor.getPIDController();
 
-  private final CANSparkFlex bottomMotor = new CANSparkFlex(Constants.SHOOTER_BOTTOM_ID, MotorType.kBrushless);
+  private final CANSparkFlex bottomMotor = new CANSparkFlex(Constants.FLYWHEEL_RIGHT_ID, MotorType.kBrushless);
   private final RelativeEncoder bottomEncoder = bottomMotor.getEncoder();
   private final SparkPIDController bottomPIDController = bottomMotor.getPIDController();
 

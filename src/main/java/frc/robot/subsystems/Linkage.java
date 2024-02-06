@@ -22,7 +22,7 @@ import frc.robot.generated.TunerConstants;
 public class Linkage extends SubsystemBase {
 
   private static Linkage instance;
-  private final CANSparkMax motor = new CANSparkMax(Constants.SHOOTER_LINKAGE_ID, MotorType.kBrushless);
+  private final CANSparkMax motor = new CANSparkMax(Constants.LINKAGE_ID, MotorType.kBrushless);
   public final RelativeEncoder encoder = motor.getEncoder();
   public final SparkPIDController pidController = motor.getPIDController();
   private double positionSetpoint;
@@ -31,7 +31,7 @@ public class Linkage extends SubsystemBase {
 
   static XboxController driverCont = new XboxController(0);
 
-  static CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
+  static CommandSwerveDrivetrain drivetrain = TunerConstants.Woodbot.woodbot;
 
   private double kP = 0.1;
   private double kD = 0.0;

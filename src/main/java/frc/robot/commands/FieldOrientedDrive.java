@@ -16,7 +16,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 public class FieldOrientedDrive extends Command {
   private final XboxController driverController = new XboxController(0);
 
-  private final CommandSwerveDrivetrain driveTrain = TunerConstants.DriveTrain;
+  private final CommandSwerveDrivetrain driveTrain = TunerConstants.drivetrain;
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(Constants.MAX_SPEED_MPS * 0.1).withRotationalDeadband(Constants.MAX_ANGULAR_RATE * 0.1)
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
@@ -37,8 +37,8 @@ public class FieldOrientedDrive extends Command {
   @Override
   public void execute() {
 
-    driveTrain.fieldOrientedDrive(driverController.getLeftX(), driverController.getLeftY(),
-        driverController.getRightX());
+    driveTrain.fieldOrientedDrive(driverController.getLeftX() * 0.1, driverController.getLeftY() * 0.1,
+        driverController.getRightX() * 0.1);
 
   }
 

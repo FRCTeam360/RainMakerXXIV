@@ -56,10 +56,10 @@ public class RobotContainer {
   private final CommandXboxController driverController = new CommandXboxController(Constants.DRIVER_CONTROLLER);
 
   // subsystems
-  private final CommandSwerveDrivetrain drivetrain = TunerConstants.Woodbot.woodbot; // My drivetrain
-  private final Intake intake = Intake.getInstance();
-  private final Flywheel flywheel = Flywheel.getInstance();
-  private final Linkage linkage = Linkage.getInstance();
+  private final CommandSwerveDrivetrain drivetrain = TunerConstants.drivetrain; // My drivetrain
+  // private final Intake intake = Intake.getInstance();
+  // private final Flywheel flywheel = Flywheel.getInstance();
+  // private final Linkage linkage = Linkage.getInstance();
 
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
 
@@ -68,14 +68,14 @@ public class RobotContainer {
   //private final SetFlywheel setFlywheel = new SetFlywheel();
 
   // tele commands
-  private final RunExtendIntake runExtendIntake = new RunExtendIntake();
-  private final PowerIntakeReversed powerIntakeReversed = new PowerIntakeReversed();
-  private final PowerIntake powerIntake = new PowerIntake();
-  private final PowerFlywheel powerFlywheel = new PowerFlywheel();
-  private final PowerLinkage powerLinkage = new PowerLinkage();
-  private final SetLinkage setLinkage = new SetLinkage();
+  // private final RunExtendIntake runExtendIntake = new RunExtendIntake();
+  // private final PowerIntakeReversed powerIntakeReversed = new PowerIntakeReversed();
+  // private final PowerIntake powerIntake = new PowerIntake();
+  // private final PowerFlywheel powerFlywheel = new PowerFlywheel();
+  // private final PowerLinkage powerLinkage = new PowerLinkage();
+  // private final SetLinkage setLinkage = new SetLinkage();
   private final FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive();
-  private final RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive();
+  // private final RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive();
   
 
 
@@ -96,11 +96,11 @@ public class RobotContainer {
    */
   public RobotContainer() {
     autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Auto Chooser", autoChooser);
-    // Configure the trigger bindings
-    NamedCommands.registerCommand("RunExtendIntake", runExtendIntake);
-    NamedCommands.registerCommand("Wait1", new WaitCommand(1));
-    NamedCommands.registerCommand("Shoot", powerFlywheel);
+    // SmartDashboard.putData("Auto Chooser", autoChooser);
+    // // Configure the trigger bindings
+    // NamedCommands.registerCommand("RunExtendIntake", runExtendIntake);
+    // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
+    // NamedCommands.registerCommand("Shoot", powerFlywheel);
     configureBindings();
     configureDefaultCommands();
   }
@@ -132,11 +132,11 @@ public class RobotContainer {
     driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
 
     // OPERATOR CONTROLLER BINDINGS
-    operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
-    operatorController.rightTrigger(.005).whileTrue(powerIntake);
-    operatorController.a().toggleOnTrue(runExtendIntake);
-    operatorController.b().whileTrue(powerIntake);
-    operatorController.y().toggleOnTrue(new InstantCommand(() -> flywheel.setBothRPM(5000), flywheel));
+    // operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
+    // operatorController.rightTrigger(.005).whileTrue(powerIntake);
+    // operatorController.a().toggleOnTrue(runExtendIntake);
+    // operatorController.b().whileTrue(powerIntake);
+    // operatorController.y().toggleOnTrue(new InstantCommand(() -> flywheel.setBothRPM(5000), flywheel));
 
     // DRIVER CONTROLLER BINDINGS
     // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.xOut(), drivetrain));
@@ -146,7 +146,7 @@ public class RobotContainer {
   }
 
   public void onDisable() {
-    flywheel.stop();
+    //flywheel.stop();
         drivetrain.robotOrientedDrive(0, 0, 0);
 
   }
