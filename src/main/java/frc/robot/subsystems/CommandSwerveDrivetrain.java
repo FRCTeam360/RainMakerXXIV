@@ -200,6 +200,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         snd.addInstrument(this.getModule(1).getDriveMotor());
     }
     public Command turntoCMD(boolean shouldEnd, double desiredAngle, double velocityX, double velocityY) {
+        snd.play();
         Rotation2d rotation = Rotation2d.fromDegrees(desiredAngle);
         return turntoCMD(shouldEnd, rotation, velocityX, velocityY);
 
