@@ -51,7 +51,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
     private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
     private PhoenixPIDController headingController;
-    public Orchestra snd = new Orchestra( "test chrp.chrp" );
+    private Orchestra snd = new Orchestra( "test chrp.chrp" );
   
     
     
