@@ -34,7 +34,7 @@ public class RobotOrientedDrive extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveTrain.robotOrientedDrive(driverController.getLeftX(), driverController.getLeftY(),
+    driveTrain.robotCentricDrive(driverController.getLeftX(), driverController.getLeftY(),
         driverController.getRightX());
 
   }

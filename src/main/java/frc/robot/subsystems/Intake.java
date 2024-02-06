@@ -3,6 +3,9 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
+import frc.robot.io.IntakeIO;
+import frc.robot.io.IntakeIOInputsAutoLogged;
+import frc.robot.io.IntakeIO.IntakeIOInputs;
 
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -15,51 +18,44 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Intake extends SubsystemBase {
+import org.littletonrobotics.junction.AutoLog;
+import org.littletonrobotics.junction.AutoLogOutput;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.inputs.LoggableInputs;
 
-  private static Intake instance;
-  private final DigitalInput sideSensor = new DigitalInput(2);
-  private final DigitalInput highSensor = new DigitalInput(0);
-  private final CANSparkMax motor = new CANSparkMax(Constants.INTAKE_ID, MotorType.kBrushless);
-  public final RelativeEncoder encoder = motor.getEncoder();
+public class Intake extends SubsystemBase {
+  private final IntakeIO io;
+  private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
 
   /** Creates a new Intake. */
-  public Intake() {
-    motor.restoreFactoryDefaults();
-    motor.setInverted(false);
-    motor.setIdleMode(IdleMode.kCoast);
+  public Intake(IntakeIO io) {
+    this.io = io;
   }
 
-  public static Intake getInstance() {
-    if (instance == null) {
-      instance = new Intake();
-    }
-
-    return instance;
-  }
+  /** Creates a new Intake. */
 
   public boolean getSideSensor() {
-    return sideSensor.get();
+    return io.getSideSensor();
   }
 
   public boolean getHighSensor() {
-    return highSensor.get();
+    return io.getHighSensor();
   }
 
   public void run(double speed) {
-    motor.set(speed);
+    io.set(speed);
   }
-  
+
   public void stop() {
-    motor.stopMotor();
+    io.stopMotor();
+  }
+
+  public double getPower() {
+    return io.getPower();
   }
 
   public double getAmps() {
-    return motor.getOutputCurrent();
-  }
-
-  public double getSpeed() {
-    return motor.get();
+    return io.getOutputCurrent();
   }
 
   // public void setEncoder() {
@@ -68,10 +64,8 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // SmartDashboard.putNumber("Encoder Position", encoder.getPosition());
-    // SmartDashboard.getNumber("Encoder Position", encoder.getPosition());
-    // // This method will be called once per scheduler run
-    // SmartDashboard.putNumber("Intake Speed", getSpeed());
-    // SmartDashboard.putNumber("Intake Amps", getAmps());
+    // This method will be called once per scheduler run
+    io.updateInputs(inputs);
+    Logger.processInputs("Intake", inputs);
   }
 }
