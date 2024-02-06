@@ -51,7 +51,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
     private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
     private PhoenixPIDController headingController;
-    private Orchestra snd = new Orchestra( "test chrp.chrp" );
+    public Orchestra snd = new Orchestra( "test chrp.chrp" );
   
     
     
@@ -185,7 +185,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                 .withVelocityY(velocityY);
         facingAngleCommand.HeadingController = headingController;
         System.out.println("turntoCMD");
-
+        snd.play();
         if(shouldEnd) {
             return this.applyRequest(() -> facingAngleCommand)
                     .raceWith(new EndWhenFacingAngle(headingController));
@@ -197,11 +197,10 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     }
     public void setSound(CommandSwerveDrivetrain drivetrain){
-        snd.addInstrument(this.m_pigeon2);
+        snd.addInstrument(this.getModule(1).getDriveMotor());
     }
     public Command turntoCMD(boolean shouldEnd, double desiredAngle, double velocityX, double velocityY) {
         Rotation2d rotation = Rotation2d.fromDegrees(desiredAngle);
-        snd.play();
         return turntoCMD(shouldEnd, rotation, velocityX, velocityY);
 
     }
@@ -224,6 +223,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     public void zero() {
         this.getPigeon2().reset();
+        snd.stop();
     }
 
     public void xOut() {
