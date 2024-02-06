@@ -8,9 +8,11 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
 
 import edu.wpi.first.math.util.Units;
-import frc.robot.CommandSwerveDrivetrain;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class TunerConstants {
+
+
     // Both sets of gains need to be tuned to your individual robot.
 
     // The steer motor uses any SwerveModule.SteerRequestType control request with the
@@ -45,7 +47,7 @@ public class TunerConstants {
 
     private static final double kDriveGearRatio = 8.142857142857142;
     private static final double kSteerGearRatio = 21.428571428571427;
-    private static final double kWheelRadiusInches = 2;
+    private static final double kWheelRadiusInches = 2.0;
 
     private static final boolean kSteerMotorReversed = true;
     private static final boolean kInvertLeftSide = false;
@@ -87,9 +89,10 @@ public class TunerConstants {
 
     // Front Left
     private static final int kFrontLeftDriveMotorId = 12;
+
     private static final int kFrontLeftSteerMotorId = 10;
     private static final int kFrontLeftEncoderId = 11;
-    private static final double kFrontLeftEncoderOffset = -0.37255859375;
+    private static final double kFrontLeftEncoderOffset = 0.446533203125; //-0.37255859375;
 
     private static final double kFrontLeftXPosInches = 9.5;
     private static final double kFrontLeftYPosInches = 9.5;
@@ -98,7 +101,7 @@ public class TunerConstants {
     private static final int kFrontRightDriveMotorId = 3;
     private static final int kFrontRightSteerMotorId = 1;
     private static final int kFrontRightEncoderId = 2;
-    private static final double kFrontRightEncoderOffset = 0.431396484375;
+    private static final double kFrontRightEncoderOffset =  -0.3916015625; //0.385986328125; //0.431396484375;
 
     private static final double kFrontRightXPosInches = 9.5;
     private static final double kFrontRightYPosInches = -9.5;
