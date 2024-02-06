@@ -22,8 +22,7 @@ import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Linkage;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 
 import edu.wpi.first.math.MathUtil;
@@ -59,10 +58,10 @@ public class RobotContainer {
   private final CommandSwerveDrivetrain woodbot = WoodbotConstants.woodbot; 
   private final CommandSwerveDrivetrain practicebot = PracticebotConstants.practicebot;
 
-  private final CommandSwerveDrivetrain drivetrain = woodbot;
+  private final CommandSwerveDrivetrain drivetrain = practicebot;
 
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
-  
+
   // private final Intake intake = Intake.getInstance();
   // private final Flywheel flywheel = Flywheel.getInstance();
   // private final Linkage linkage = Linkage.getInstance();
@@ -99,7 +98,7 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    autoChooser = AutoBuilder.buildAutoChooser();
+  autoChooser = null;
     // SmartDashboard.putData("Auto Chooser", autoChooser);
     // // Configure the trigger bindings
     // NamedCommands.registerCommand("RunExtendIntake", runExtendIntake);
@@ -113,7 +112,7 @@ public class RobotContainer {
     //flywheel.setDefaultCommand(setFlywheel);
     //intake.setDefaultCommand(runIntake);
     //linkage.setDefaultCommand(powerLinkage);
-    woodbot.setDefaultCommand(fieldOrientedDrive);
+    drivetrain.setDefaultCommand(new InstantCommand(() -> drivetrain.fieldOrientedDrive(driverController.getLeftX(), driverController.getLeftY(), driverController.getRightX()), drivetrain));
   }
 
 
@@ -132,8 +131,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    driverController.a().whileTrue(woodbot.turntoCMD(180.0, 0.0, 0.0));
-    driverController.x().whileTrue(new InstantCommand(() -> woodbot.zero(), woodbot));
+    driverController.a().whileTrue(drivetrain.turntoCMD(180.0, 0.0, 0.0));
+    driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
 
     // OPERATOR CONTROLLER BINDINGS
     // operatorController.leftTrigger(.005).whileTrue(powerIntakeReversed);
@@ -146,12 +145,12 @@ public class RobotContainer {
     // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.xOut(), drivetrain));
     // driverController.a().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     
-    woodbot.registerTelemetry(logger::telemeterize);
+    drivetrain.registerTelemetry(logger::telemeterize);
   }
 
   public void onDisable() {
     //flywheel.stop();
-        woodbot.robotOrientedDrive(0, 0, 0);
+        drivetrain.robotOrientedDrive(0, 0, 0);
 
   }
   
