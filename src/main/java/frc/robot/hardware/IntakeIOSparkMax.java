@@ -26,7 +26,7 @@ public class IntakeIOSparkMax implements IntakeIO {
     private final SparkPIDController pid = sparkMax.getPIDController();
     // new hardware class for sensor?
     private final DigitalInput sideSensor = new DigitalInput(2); // update port later idk what it is
-        private final DigitalInput highSensor = new DigitalInput(0); // update port later idk what it is
+    private final DigitalInput highSensor = new DigitalInput(0); // update port later idk what it is
 
   public IntakeIOSparkMax() {
     sparkMax.restoreFactoryDefaults();
@@ -76,5 +76,4 @@ public class IntakeIOSparkMax implements IntakeIO {
   public boolean getHighSensor() {
     return highSensor.get();
   }
-  
 }

@@ -178,10 +178,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         facingAngleCommand.HeadingController = headingController;
         System.out.println("turntoCMD");
 
-        if(shouldEnd) {
+        if (shouldEnd) {
             return this.applyRequest(() -> facingAngleCommand)
                     .raceWith(new EndWhenFacingAngle(headingController));
-
 
         }
 
@@ -291,12 +290,31 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     @Override
     public void periodic() {
-        for(int i = 0;i<4;i++) {
-           Logger.recordOutput("Voltage", this.getModule(i).getDriveMotor().getMotorVoltage().getValueAsDouble());
-           Logger.recordOutput("Current", this.getModule(i).getDriveMotor().getSupplyCurrent().getValueAsDouble());
-           Logger.recordOutput("Position", this.getModule(i).getCANcoder().getPosition().getValueAsDouble());
+        String moduleName = "null";
+        for (int i = 0; i < 4; i++) {
+            switch (i) {
+                case 0:
+                    moduleName = "Front Left: ";
+                    break;
+                case 1:
+                    moduleName = "Front Right: ";
+                    break;
+                case 2:
+                    moduleName = "Back Left: ";
+                    break;
+                case 3:
+                    moduleName = "Back Right: ";
+                    break;
+            }
+            Logger.recordOutput(moduleName + "Drive Voltage", this.getModule(i).getDriveMotor().getMotorVoltage().getValueAsDouble());
+            Logger.recordOutput(moduleName + "Drive Current", this.getModule(i).getDriveMotor().getSupplyCurrent().getValueAsDouble());
+            Logger.recordOutput(moduleName + "CANCoder Position", this.getModule(i).getCANcoder().getPosition().getValueAsDouble());
+            Logger.recordOutput(moduleName + "Steer Voltage", this.getModule(i).getSteerMotor().getMotorVoltage().getValueAsDouble());
+            Logger.recordOutput(moduleName + "Steer Current", this.getModule(i).getSteerMotor().getSupplyCurrent().getValueAsDouble());
+           
         }
         Logger.recordOutput("Rotation2d", this.getPigeon2().getRotation2d());
+
     }
 
 }
