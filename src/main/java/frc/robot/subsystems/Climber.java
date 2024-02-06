@@ -4,15 +4,19 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
-  private CANSparkMax leftMotor = new CANSparkMax(325, MotorType.kBrushless); // change to proper id
-  private CANSparkMax rightMotor = new CANSparkMax(326, MotorType.kBrushless); // change to proper id
+  private CANSparkMax leftMotor = new CANSparkMax(Constants.CLIMBER_LEFT_ID, MotorType.kBrushless); // change to proper id
+  private CANSparkMax rightMotor = new CANSparkMax(Constants.CLIMBER_RIGHT_ID, MotorType.kBrushless); // change to proper id
+  
   /** Creates a new Climber. */
   public Climber() {
     rightMotor.restoreFactoryDefaults();
@@ -31,6 +35,7 @@ public class Climber extends SubsystemBase {
 
   public void stop() {
     rightMotor.set(0);
+    
   }
 
   @Override

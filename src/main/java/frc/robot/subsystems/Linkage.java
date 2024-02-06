@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -17,7 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.generated.TunerConstants;
+import frc.robot.generated.WoodbotConstants;
 
 public class Linkage extends SubsystemBase {
 
@@ -31,7 +32,7 @@ public class Linkage extends SubsystemBase {
 
   static XboxController driverCont = new XboxController(0);
 
-  static CommandSwerveDrivetrain drivetrain = TunerConstants.Woodbot.woodbot;
+  static CommandSwerveDrivetrain drivetrain = WoodbotConstants.woodbot;
 
   private double kP = 0.1;
   private double kD = 0.0;

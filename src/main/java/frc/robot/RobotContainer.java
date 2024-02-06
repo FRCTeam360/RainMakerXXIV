@@ -14,7 +14,7 @@ import frc.robot.commands.RobotOrientedDrive;
 import frc.robot.commands.SetLinkage;
 import frc.robot.commands.ShootInSpeaker;
 import frc.robot.commands.FieldOrientedDrive;
-import frc.robot.generated.TunerConstants;
+import frc.robot.generated.WoodbotConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Flywheel;
@@ -56,7 +56,7 @@ public class RobotContainer {
   private final CommandXboxController driverController = new CommandXboxController(Constants.DRIVER_CONTROLLER);
 
   // subsystems
-  private final CommandSwerveDrivetrain drivetrain = TunerConstants.drivetrain; // My drivetrain
+  private final CommandSwerveDrivetrain drivetrain = WoodbotConstants.woodbot; // My drivetrain
   // private final Intake intake = Intake.getInstance();
   // private final Flywheel flywheel = Flywheel.getInstance();
   // private final Linkage linkage = Linkage.getInstance();

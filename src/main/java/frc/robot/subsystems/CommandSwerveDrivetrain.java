@@ -33,7 +33,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
-import frc.robot.generated.TunerConstants;
+import frc.robot.generated.PracticebotConstants;
+import frc.robot.generated.WoodbotConstants;
 
 /**
  * Class that extends the Phoenix SwerveDrivetrain class and implements
@@ -44,7 +45,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
-    CommandSwerveDrivetrain drivetrain = TunerConstants.drivetrain;
+    CommandSwerveDrivetrain woodbot = WoodbotConstants.woodbot;
+    CommandSwerveDrivetrain practicebot = PracticebotConstants.practicebot;
     private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
     private Rotation2d lastRotationSetpoint;
     private PhoenixPIDController headingController = new PhoenixPIDController(5.75, 0, 0);
@@ -68,8 +70,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         // kPEntry = tab.add("kP", 0.0).getEntry();
         // kIEntry = tab.add("kI", 0.0).getEntry();
         // kDEntry = tab.add("kD", 0.0).getEntry();
-        
-
+    
     }
 
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency,
