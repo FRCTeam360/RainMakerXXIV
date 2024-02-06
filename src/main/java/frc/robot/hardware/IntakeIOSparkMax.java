@@ -14,6 +14,8 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.io.IntakeIO;
 
@@ -31,6 +33,10 @@ public class IntakeIOSparkMax implements IntakeIO {
     sparkMax.setInverted(false);
     sparkMax.setIdleMode(IdleMode.kBrake);
     final double GEAR_RATIO = 2.0;
+    // get shuffleboard tab intake
+    ShuffleboardTab tab = Shuffleboard.getTab("intake");
+    tab.addBoolean("sensor 1", () -> this.getSideSensor());
+    tab.addBoolean("sensor 2", () -> this.getHighSensor());
   }
 
   @Override
