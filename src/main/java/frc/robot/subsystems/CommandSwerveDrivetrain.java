@@ -7,6 +7,7 @@ import org.littletonrobotics.junction.Logger;
 import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
@@ -50,8 +51,10 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
     private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
     private PhoenixPIDController headingController;
-    private Orchestra sounds = new Orchestra( "test chrp.chrp" );
-    //sounds.addInstrument(ParentDevice ???,0);
+    private Orchestra snd = new Orchestra( "test chrp.chrp" );
+  
+    
+    
     
 
     GenericEntry kPEntry;
@@ -85,6 +88,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency,
             SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
+        setSound(drivetrain);
         configurePID();
         if (Utils.isSimulation()) {
             startSimThread();
@@ -192,9 +196,12 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         return this.applyRequest(() -> facingAngleCommand);
 
     }
-
+    public void setSound(CommandSwerveDrivetrain drivetrain){
+        snd.addInstrument(this.m_pigeon2);
+    }
     public Command turntoCMD(boolean shouldEnd, double desiredAngle, double velocityX, double velocityY) {
         Rotation2d rotation = Rotation2d.fromDegrees(desiredAngle);
+        snd.play();
         return turntoCMD(shouldEnd, rotation, velocityX, velocityY);
 
     }
