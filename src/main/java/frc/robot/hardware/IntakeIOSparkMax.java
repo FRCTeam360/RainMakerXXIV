@@ -27,6 +27,7 @@ public class IntakeIOSparkMax implements IntakeIO {
     // new hardware class for sensor?
     private final DigitalInput sideSensor = new DigitalInput(2); // update port later idk what it is
     private final DigitalInput highSensor = new DigitalInput(0); // update port later idk what it is
+    private final DigitalInput button = new DigitalInput(3);
 
   public IntakeIOSparkMax() {
     sparkMax.restoreFactoryDefaults();
@@ -37,6 +38,11 @@ public class IntakeIOSparkMax implements IntakeIO {
     ShuffleboardTab tab = Shuffleboard.getTab("intake");
     tab.addBoolean("sensor 1", () -> this.getSideSensor());
     tab.addBoolean("sensor 2", () -> this.getHighSensor());
+  }
+
+  @Override
+  public boolean getButton() {
+    return button.get();
   }
 
   @Override
