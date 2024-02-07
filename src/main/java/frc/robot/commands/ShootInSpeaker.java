@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.util.Objects;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,10 +24,15 @@ public class ShootInSpeaker extends Command {
   private double flywheelSetpoint;
   private double driveAngleSetpoint;
 
+  private boolean isDriveReady;
+  
+
   private Timer timer = new Timer();
   private Intake intake;
 
   private ShootState state = ShootState.LOADED;
+
+  private boolean withDriveTrain;
 
   private enum ShootState {
     LOADED, SHOOT, TIMER, END
@@ -37,7 +44,7 @@ public class ShootInSpeaker extends Command {
       double linkageSetpoint, double flywheelSetpoint, double driveSetpoint) { // Add your commands in the
     // addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addRequirements(linkage, flywheel, intake);
+    addRequirements(linkage, flywheel, intake, drivetrain);
 
     this.linkage = linkage;
     this.flywheel = flywheel;
@@ -45,6 +52,8 @@ public class ShootInSpeaker extends Command {
     this.linkageSetpoint = linkageSetpoint;
     this.flywheelSetpoint = flywheelSetpoint;
     this.intake = intake;
+
+    withDriveTrain = true;
   }
 
   @Override
@@ -53,6 +62,23 @@ public class ShootInSpeaker extends Command {
     timer.stop();
     timer.reset();
   }
+
+  public ShootInSpeaker(Linkage linkage, Flywheel flywheel, Intake intake,
+      double linkageSetpoint, double flywheelSetpoint) { // Add your commands in the
+    // addCommands() call, e.g.
+    // addCommands(new FooCommand(), new BarCommand());
+    
+    addRequirements(linkage, flywheel, intake);
+
+    this.linkage = linkage;
+    this.flywheel = flywheel;
+    this.linkageSetpoint = linkageSetpoint;
+    this.flywheelSetpoint = flywheelSetpoint;
+    this.intake = intake;
+
+    withDriveTrain = false;
+  }
+
 
   @Override
   public void execute() {
@@ -66,18 +92,17 @@ public class ShootInSpeaker extends Command {
         intake.stop();
         // boolean isLinkageAtSetpoint = linkage.isAtSetpoint();
         boolean isFlywheelAtSetpoint = flywheel.isAboveSetpoint(4000);
-        boolean isDrivetrainAtSetpoint = drivetrain.isFacingAngle();
+        isDriveReady = Objects.isNull(drivetrain) || drivetrain.isFacingAngle();
         // if (isLinkageAtSetpoint) {
         // System.out.println("inkage at setpoint");
         // }
-        if (isFlywheelAtSetpoint) {
-          System.out.println("flywheel at setpoint");
-        }
-
-        if (isDrivetrainAtSetpoint) {
-          System.out.println("drivetrain at setpoint");
-        }
-        if (isFlywheelAtSetpoint) { // && isLinkageAtSetpoint
+        // if (isFlywheelAtSetpoint) {
+        //   System.out.println("flywheel at setpoint");
+        // }
+        // if (isDrivetrainAtSetpoint && withDriveTrain) {
+        //   System.out.println("drivetrain at setpoint");
+        // }
+        if (isFlywheelAtSetpoint && isDriveReady) { // && isLinkageAtSetpoint
           this.state = ShootState.SHOOT;
           System.out.println(state);
         }
@@ -95,7 +120,7 @@ public class ShootInSpeaker extends Command {
           }
         break;
       case TIMER:
-        if(timer.hasElapsed(.3)) {
+        if(timer.hasElapsed(.2)) {
           this.state = ShootState.END;
         }
         break;
