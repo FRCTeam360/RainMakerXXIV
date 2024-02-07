@@ -5,6 +5,9 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.inputs.LoggableInputs;
+
 import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -19,17 +22,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.generated.WoodbotConstants;
+import frc.robot.io.LinkageIO;
+import frc.robot.io.LinkageIOInputsAutoLogged;
 
 public class Linkage extends SubsystemBase {
-
-  private static Linkage instance;
-  private final CANSparkMax motor = new CANSparkMax(Constants.LINKAGE_ID, MotorType.kBrushless);
-  public final RelativeEncoder encoder = motor.getEncoder();
-  public final SparkPIDController pidController = motor.getPIDController();
+  private final LinkageIO io;
+  private final LinkageIOInputsAutoLogged inputs = new LinkageIOInputsAutoLogged();
   private double positionSetpoint;
-
   private static final double STARTING_ANGLE = 50.0;
-
   static XboxController driverCont = new XboxController(0);
 
   static CommandSwerveDrivetrain drivetrain = WoodbotConstants.woodbot;
@@ -39,81 +39,54 @@ public class Linkage extends SubsystemBase {
   private double kI = 0.0;
   private double kFF = 0.0; // :(
 
+  
   /** Creates a new ShooterLinkage. */
-  public Linkage() {
-    motor.restoreFactoryDefaults();
-    motor.setInverted(true);
-    motor.setIdleMode(IdleMode.kBrake);
-
-    encoder.setPositionConversionFactor(360.0 / 36.0); // 360deg / 36:1 gear ratio
-    encoder.setPosition(STARTING_ANGLE);
-
-    motor.setSoftLimit(SoftLimitDirection.kForward, 180f);
-    motor.setSoftLimit(SoftLimitDirection.kReverse, 50f);
-    motor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-
-    motor.setClosedLoopRampRate(1.0);
-
-    pidController.setP(kP);
-    pidController.setD(kD);
-    pidController.setI(kI);
-    pidController.setFF(kFF);
-
-  }
-
-  public static Linkage getInstance() {
-    if (instance == null) {
-      instance = new Linkage();
-    }
-
-    return instance;
-  }
-
-  public void run(double speed) {
-    motor.set(speed);
-  }
-
-  public void stop() {
-    motor.stopMotor();
-  }
-
-  public double getAngle() {
-    return encoder.getPosition();
-  }
-
-  public void setAngle(double setPoint) {
-    positionSetpoint = setPoint;
-    pidController.setReference(setPoint, CANSparkBase.ControlType.kPosition);
-  }
-
-  public double getSpeed() {
-    return motor.get();
-  }
-
-  public void zero() {
-    encoder.setPosition(0);
-  }
-
-  public void setEncoderTo90() {
-    encoder.setPosition(90);
-  }
-
-  public void setFFWScaling(double ff) {
-    pidController.setFF(ff * Math.cos(getAngle()));
+  public Linkage(LinkageIO io) {
+    this.io = io;
   }
 
   public boolean isAtSetpoint() {
-    return Math.abs(getAngle() - positionSetpoint) < 1.0;
+	  return false;
+  }
+
+  public void run(double speed) {
+    io.set(speed);
+  }
+
+  public void stop() {
+    io.stopMotor();
+  }
+
+  public double getAngle() {
+    return io.getPosition();
+  }
+
+  public void setAngle(int setPoint){
+    io.setReference(setPoint, CANSparkBase.ControlType.kPosition);
+    positionSetpoint = setPoint;
+    io.setReference(setPoint, CANSparkBase.ControlType.kPosition);
+  }
+
+  public double getPower() {
+    return io.get();
+  }
+
+  public void zero() {
+    io.setPosition(0);
+  }
+
+  public void setEncoderTo90() {
+    io.setPosition(90);
+  }
+
+  public void setFFWScaling(double ff) {
+    io.setFF(ff * Math.cos(getAngle()));
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Linkage Angle", getAngle());
-    SmartDashboard.putNumber("Linkage Voltage", motor.getAppliedOutput());
-    SmartDashboard.putNumber("Linkage Error", 85-getAngle());
-
+    io.updateInputs(inputs);
+    Logger.processInputs("Linkage", inputs);
   }
-
 }

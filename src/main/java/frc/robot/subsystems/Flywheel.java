@@ -7,15 +7,23 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.io.FlywheelIO;
+import frc.robot.io.FlywheelIOInputsAutoLogged;
+import frc.robot.io.IntakeIOInputsAutoLogged;
 
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class Flywheel extends SubsystemBase {
+  private final FlywheelIO io;
+  private final FlywheelIOInputsAutoLogged inputs = new FlywheelIOInputsAutoLogged();
 
   private static Flywheel instance;
 
@@ -40,102 +48,73 @@ public class Flywheel extends SubsystemBase {
   private double rpmSetpoint = 0.0;
 
   /** Creates a new Flywheel. */
-  public Flywheel() {
-    topMotor.restoreFactoryDefaults();
-    topMotor.setInverted(true);
-    topMotor.setIdleMode(IdleMode.kBrake);
-
-    bottomMotor.restoreFactoryDefaults();
-    bottomMotor.setInverted(false);
-    bottomMotor.setIdleMode(IdleMode.kBrake);
-
-    topPIDController.setP(topP);
-    topPIDController.setFF(topFF);
-    topPIDController.setI(topI);
-    topPIDController.setD(topD);
-
-    bottomPIDController.setP(bottomP);
-    bottomPIDController.setFF(bottomFF);
-    bottomPIDController.setI(bottomI);
-    bottomPIDController.setD(bottomD);
-
-    SmartDashboard.putNumber("Top Velocity", topEncoder.getVelocity());
-    SmartDashboard.putNumber("Bottom Velocity", bottomEncoder.getVelocity());
-    SmartDashboard.putNumber("Top - Bottom Error", 0.0);
-
-  }
-
-  public static Flywheel getInstance() {
-    if (instance == null) {
-      instance = new Flywheel();
-    }
-    return instance;
+  public Flywheel(FlywheelIO io) {
+    this.io = io;
   }
 
   public void runTop(double speed) {
-    topMotor.set(speed);
+    io.setTop(speed);
   }
 
   public void runBottom(double speed) {
-    bottomMotor.set(speed);
+    io.setBottom(speed);
   }
 
   public void runBoth(double speed) {
-    topMotor.set(speed);
-    bottomMotor.set(speed);
+    io.setTop(speed);
+    io.setBottom(speed);
   }
 
   public void setTopRPM(double rpm) {
-    topPIDController.setReference(rpm, ControlType.kVelocity);
+    io.setTopReference(rpm, ControlType.kVelocity);
   }
 
   public void setBottomRPM(double rpm) {
-    bottomPIDController.setReference(rpm, ControlType.kVelocity);
+    io.setBottomReference(rpm, ControlType.kVelocity);
   }
 
   public void setBothRPM(double rpm) {
-    topPIDController.setReference(rpm, ControlType.kVelocity);
-    bottomPIDController.setReference(rpm, ControlType.kVelocity);
+    io.setTopReference(rpm, ControlType.kVelocity);
+    io.setBottomReference(rpm, ControlType.kVelocity);
   }
 
   public void stop() {
-    topMotor.stopMotor();
-    bottomMotor.stopMotor();
+    io.stopTopMotor();
+    io.stopBottomMotor();
   }
 
-  public double getTopSpeed() {
-    return topMotor.get();
+  public double getTopPower() {
+    return io.getTopPower();
   }
 
-  public double getBottomSpeed() {
-    return bottomMotor.get();
+  public double getBottomPower() {
+    return io.getBottomPower();
   }
 
   public double getTopVelocity() {
-    return topEncoder.getVelocity();
+    return io.getTopVelocity();
   }
 
   public double getBottomVelocity() {
-    return bottomEncoder.getVelocity();
+    return io.getBottomVelocity();
   }
 
   public boolean isAtSetpoint() {
-    return Math.abs(this.getTopSpeed() - rpmSetpoint) < 20.0;
+    return Math.abs(this.getTopVelocity() - rpmSetpoint) < 30.0;
   }
 
-  public boolean isAboveSetpoint() {
-    return this.getTopSpeed() >= rpmSetpoint;
+  public boolean isAboveSetpoint(double setpoint) {
+    return this.getTopVelocity() >= setpoint;
   }
 
   public boolean isBelowSetpoint() {
-    return this.getTopSpeed() <= rpmSetpoint - 200.0;
+    return this.getTopVelocity() <= rpmSetpoint - 30.0;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Top Velocity", topEncoder.getVelocity());
-    SmartDashboard.putNumber("Bottom Velocity", bottomEncoder.getVelocity());
-    SmartDashboard.putNumber("Top - Bottom Error", topEncoder.getVelocity() - bottomEncoder.getVelocity());
+    io.updateInputs(inputs);
+    Logger.processInputs("Flywheel", inputs);
   }
 }
