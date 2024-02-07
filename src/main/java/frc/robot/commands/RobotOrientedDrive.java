@@ -10,13 +10,13 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.generated.TunerConstants;
+import frc.robot.generated.WoodbotConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class RobotOrientedDrive extends Command {
    private final XboxController driverController = new XboxController(0);
 
-  private final CommandSwerveDrivetrain driveTrain = TunerConstants.Woodbot.woodbot;
+  private final CommandSwerveDrivetrain driveTrain = WoodbotConstants.woodbot;
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(Constants.MAX_SPEED_MPS * 0.1).withRotationalDeadband(Constants.MAX_ANGULAR_RATE * 0.1)
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric

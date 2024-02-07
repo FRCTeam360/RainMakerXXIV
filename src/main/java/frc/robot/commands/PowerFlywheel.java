@@ -14,6 +14,7 @@ import frc.robot.subsystems.Flywheel;
 public class PowerFlywheel extends Command {
   private final Flywheel flywheel;
   private final XboxController operatorCont = new XboxController(1);
+
   // private final SparkPIDController topPidController = flywheel.topPidController;
 
   /** Creates a new RunShooter. */

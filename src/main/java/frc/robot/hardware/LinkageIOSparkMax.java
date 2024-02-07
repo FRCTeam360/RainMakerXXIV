@@ -20,7 +20,7 @@ import frc.robot.io.LinkageIO;
 
 public class LinkageIOSparkMax implements LinkageIO {
   /** Creates a new IntakeIOSparkMax. */
-    private final CANSparkMax sparkMax = new CANSparkMax (Constants.SHOOTER_LINKAGE_ID, MotorType.kBrushless);
+    private final CANSparkMax sparkMax = new CANSparkMax (Constants.LINKAGE_ID, MotorType.kBrushless);
     private final RelativeEncoder encoder = sparkMax.getEncoder();
     private final SparkPIDController pidController = sparkMax.getPIDController();
 

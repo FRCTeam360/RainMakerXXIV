@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
 
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.generated.WoodbotConstants;
 import frc.robot.io.LinkageIO;
 import frc.robot.io.LinkageIOInputsAutoLogged;
 
@@ -29,6 +31,14 @@ public class Linkage extends SubsystemBase {
   private double positionSetpoint;
   private static final double STARTING_ANGLE = 50.0;
   static XboxController driverCont = new XboxController(0);
+
+  static CommandSwerveDrivetrain drivetrain = WoodbotConstants.woodbot;
+
+  private double kP = 0.1;
+  private double kD = 0.0;
+  private double kI = 0.0;
+  private double kFF = 0.0; // :(
+
   
   /** Creates a new ShooterLinkage. */
   public Linkage(LinkageIO io) {
