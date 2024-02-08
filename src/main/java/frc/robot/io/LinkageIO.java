@@ -6,6 +6,7 @@ package frc.robot.io;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
@@ -34,7 +35,7 @@ public interface LinkageIO {
 
   public double getAppliedOutput();
 
-  public void setReference(int setPoint, ControlType kposition);
+  public void setReference(double setPoint);
 
   public void setPosition(double angle);
 }

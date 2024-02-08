@@ -33,12 +33,6 @@ public class Linkage extends SubsystemBase {
   static XboxController driverCont = new XboxController(0);
 
   static CommandSwerveDrivetrain drivetrain = WoodbotConstants.woodbot;
-
-  private double kP = 0.1;
-  private double kD = 0.0;
-  private double kI = 0.0;
-  private double kFF = 0.0; // :(
-
   
   /** Creates a new ShooterLinkage. */
   public Linkage(LinkageIO io) {
@@ -61,10 +55,10 @@ public class Linkage extends SubsystemBase {
     return io.getPosition();
   }
 
-  public void setAngle(int setPoint){
-    io.setReference(setPoint, CANSparkBase.ControlType.kPosition);
+  public void setAngle(double setPoint){
+    io.setReference(setPoint);
     positionSetpoint = setPoint;
-    io.setReference(setPoint, CANSparkBase.ControlType.kPosition);
+    io.setReference(setPoint);
   }
 
   public double getPower() {

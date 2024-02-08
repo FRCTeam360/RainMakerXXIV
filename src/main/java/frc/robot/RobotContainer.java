@@ -18,7 +18,7 @@ import frc.robot.generated.PracticebotConstants;
 import frc.robot.generated.WoodbotConstants;
 import frc.robot.hardware.FlywheelIOSparkFlex;
 import frc.robot.hardware.IntakeIOSparkMax;
-import frc.robot.hardware.LinkageIOFalconFX;
+import frc.robot.hardware.LinkageIOTalonFX;
 import frc.robot.io.IntakeIO;
 import frc.robot.sim.ShooterIOSim;
 import frc.robot.subsystems.Climber;
@@ -66,7 +66,7 @@ public class RobotContainer {
   // subsystems
   private final CommandSwerveDrivetrain drivetrain = WoodbotConstants.woodbot; // My drivetrain
   private final Flywheel flywheel = new Flywheel(new FlywheelIOSparkFlex());
-  private final Linkage linkage = new Linkage(new LinkageIOFalconFX());
+  private final Linkage linkage = new Linkage(new LinkageIOTalonFX());
   private final Intake intake = new Intake(new IntakeIOSparkMax());
   // private final Climber climber = new Climber(new ClimberIOSparkMax());
 
