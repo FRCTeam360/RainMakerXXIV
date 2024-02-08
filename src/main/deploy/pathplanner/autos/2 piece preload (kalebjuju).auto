@@ -24,13 +24,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Shoot without drivetrain"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Wait1"
+                  "name": "Shoot"
                 }
               }
             ]
@@ -68,7 +62,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Shoot without drivetrain"
+                  "name": "Shoot"
                 }
               },
               {
@@ -112,7 +106,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Shoot without drivetrain"
+                  "name": "Shoot"
                 }
               },
               {
@@ -156,7 +150,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Shoot without drivetrain"
+                  "name": "Shoot"
                 }
               },
               {
