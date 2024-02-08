@@ -174,7 +174,7 @@ public class RobotContainer {
 
 
   private void configureBindings() {
-    driverController.a().whileTrue(drivetrain.turntoCMD(false, 90.0, 0.0, 0.0));
+    driverController.a().whileTrue(new InstantCommand(()->drivetrain.playSound()));
   
     // powerIntake = new PowerIntake(intake);
     // powerIntakeReversed = new PowerIntakeReversed(intake);
