@@ -30,9 +30,15 @@ public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
   public Intake(IntakeIO io) {
     this.io = io;
+
+    SmartDashboard.putBoolean("button", false);
   }
 
   /** Creates a new Intake. */
+
+  public boolean getButton() {
+    return io.getButton();
+  }
 
   public boolean getSideSensor() {
     return io.getSideSensor();
@@ -67,5 +73,6 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("Intake", inputs);
+    SmartDashboard.putBoolean("button", getButton());
   }
 }
