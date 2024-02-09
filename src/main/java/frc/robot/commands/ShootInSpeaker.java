@@ -22,13 +22,13 @@ public class ShootInSpeaker extends Command {
   private double flywheelSetpoint;
   private double driveAngleSetpoint;
 
-  private Timer timer;
+  private Timer timer = new Timer();
   private Intake intake;
 
   private ShootState state = ShootState.LOADED;
 
   private enum ShootState {
-    LOADED, SHOOT, END
+    LOADED, SHOOT, TIMER, END
   }
 
   /** Creates a new ShootInSpeaker. */
@@ -50,18 +50,22 @@ public class ShootInSpeaker extends Command {
   @Override
   public void initialize() {
     state = ShootState.LOADED;
+    timer.stop();
+    timer.reset();
   }
 
   @Override
   public void execute() {
-    drivetrain.driveFieldCentricFacingAngle(0.0, 0.0, 0.0, driveAngleSetpoint); // drivetrain is rotated in its own command ran in // parallel
+    //drivetrain.driveFieldCentricFacingAngle(0.0, 0.0, 0.0, driveAngleSetpoint); // drivetrain is rotated in its own command ran in // parallel
     // linkage.setAngle(linkageSetpoint);
     flywheel.setBothRPM(flywheelSetpoint);
+    System.out.println("top velocity: " + flywheel.getTopVelocity());
+    System.out.println("is above setpoint " + flywheel.isAboveSetpoint(4000));
     switch (state) {
       case LOADED:
-        intake.run(0.0);
+        intake.stop();
         // boolean isLinkageAtSetpoint = linkage.isAtSetpoint();
-        boolean isFlywheelAtSetpoint = flywheel.isAtSetpoint();
+        boolean isFlywheelAtSetpoint = flywheel.isAboveSetpoint(4000);
         boolean isDrivetrainAtSetpoint = drivetrain.isFacingAngle();
         // if (isLinkageAtSetpoint) {
         // System.out.println("inkage at setpoint");
@@ -73,7 +77,7 @@ public class ShootInSpeaker extends Command {
         if (isDrivetrainAtSetpoint) {
           System.out.println("drivetrain at setpoint");
         }
-        if (isDrivetrainAtSetpoint && isFlywheelAtSetpoint) { // && isLinkageAtSetpoint
+        if (isFlywheelAtSetpoint) { // && isLinkageAtSetpoint
           this.state = ShootState.SHOOT;
           System.out.println(state);
         }
@@ -84,15 +88,20 @@ public class ShootInSpeaker extends Command {
         boolean hasShot = flywheel.isBelowSetpoint(); // check logic in flywheel subsystem (180 rpm gap)
         if (hasShot) {
           timer.start();
-          if (timer.hasElapsed(0.3)) { // TUNE!!!
-            this.state = ShootState.END;
+          state = ShootState.TIMER;
+          // timer.start();
+          // if (timer.hasElapsed(0.3)) { // TUNE!!!
+          //   this.state = ShootState.END;
           }
+        break;
+      case TIMER:
+        if(timer.hasElapsed(.3)) {
+          this.state = ShootState.END;
         }
         break;
+      }
+  } 
 
-    }
-
-  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -105,6 +114,10 @@ public class ShootInSpeaker extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return this.state == ShootState.END;
+    if(state == ShootState.END) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

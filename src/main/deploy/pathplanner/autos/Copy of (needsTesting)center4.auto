@@ -12,9 +12,22 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "Shoot"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Wait1"
+                }
+              }
+            ]
           }
         },
         {
@@ -40,54 +53,6 @@
           "type": "path",
           "data": {
             "pathName": "2Tri"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "3Tri"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Wait1"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "4Tri"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Wait1"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "5Tri"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Intake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "6Tri"
           }
         },
         {
