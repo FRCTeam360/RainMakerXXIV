@@ -23,9 +23,11 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.io.LinkageIO;
+
 
 public class LinkageIOTalonFX implements LinkageIO {
   /** Creates a new IntakeIOtalonFX. */
@@ -34,8 +36,10 @@ public class LinkageIOTalonFX implements LinkageIO {
   // private final SparkPIDController pidController = talonFX.getPIDController();
 
   private Slot0Configs slot0Configs = new Slot0Configs();
+  // TODO test code
 
   private PositionVoltage positionVoltage;
+  DigitalInput button = new DigitalInput(0);
 
   public LinkageIOTalonFX() {
     final double GEAR_RATIO = 360.0 / 36.0; // TODO: FIX LMAOO!! was 6.0??
@@ -68,6 +72,14 @@ public class LinkageIOTalonFX implements LinkageIO {
     slot0Configs.kD = kD;
     slot0Configs.kV = kFF; // lol was kF phoneix 6 silly name change
   }
+
+  public boolean getButton(){
+  return this.button.get();
+
+  }
+
+
+
 
   @Override
   public void updateInputs(LinkageIOInputs inputs) {

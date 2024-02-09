@@ -38,4 +38,6 @@ public interface LinkageIO {
   public void setReference(double setPoint);
 
   public void setPosition(double angle);
+
+  public boolean getButton();
 }
