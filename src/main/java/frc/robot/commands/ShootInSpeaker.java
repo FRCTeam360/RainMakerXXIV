@@ -22,7 +22,7 @@ public class ShootInSpeaker extends Command {
 
   private double linkageSetpoint;
   private double flywheelSetpoint;
-  private double driveAngleSetpoint;  
+  private double driveAngleSetpoint;
 
   private Timer timer = new Timer();
   private Intake intake;
@@ -46,6 +46,7 @@ public class ShootInSpeaker extends Command {
     this.drivetrain = drivetrain;
     this.linkageSetpoint = linkageSetpoint;
     this.flywheelSetpoint = flywheelSetpoint;
+    this.driveAngleSetpoint = driveSetpoint;
     this.intake = intake;
 
     // withDriveTrain = true;
@@ -77,8 +78,9 @@ public class ShootInSpeaker extends Command {
 
   @Override
   public void execute() {
-    //drivetrain.driveFieldCentricFacingAngle(0.0, 0.0, 0.0, driveAngleSetpoint); // drivetrain is rotated in its own command ran in // parallel
-    // linkage.setAngle(linkageSetpoint);
+    if (!Objects.isNull(drivetrain)) {
+    drivetrain.driveFieldCentricFacingAngle(0.0, 0.0, 0.0, driveAngleSetpoint); // drivetrain is rotated in its own command ran in // parallel
+      }// linkage.setAngle(linkageSetpoint);
     System.out.println("this is the robot state: " + this.state);
     flywheel.setBothRPM(flywheelSetpoint);
     // System.out.println("top velocity: " + flywheel.getTopVelocity());
@@ -117,6 +119,7 @@ public class ShootInSpeaker extends Command {
           }
         break;
       case TIMER:
+          intake.run(1.0);
           if(timer.hasElapsed(0.3)) {
           this.state = ShootState.END;
         }

@@ -12,22 +12,28 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "2 piece preload 1"
-          }
-        },
-        {
           "type": "race",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "Shoot without drivetrain"
+                  "name": "Spinny"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "2 piece preload 1"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot without drivetrain"
           }
         },
         {
@@ -50,15 +56,28 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "2 piece preload 3"
-          }
-        },
-        {
-          "type": "race",
+          "type": "sequential",
           "data": {
             "commands": [
+              {
+                "type": "race",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "2 piece preload 3"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Spinny"
+                      }
+                    }
+                  ]
+                }
+              },
               {
                 "type": "named",
                 "data": {
@@ -88,19 +107,32 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "2 piece preload 5"
-          }
-        },
-        {
-          "type": "race",
+          "type": "sequential",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "Shoot without drivetrain"
+                  "name": "Spinny"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "2 piece preload 5"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Shoot without drivetrain"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -126,19 +158,32 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Copy of 2 piece preload 6"
-          }
-        },
-        {
-          "type": "race",
+          "type": "sequential",
           "data": {
             "commands": [
               {
+                "type": "race",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Copy of 2 piece preload 6"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Spinny"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
                 "type": "named",
                 "data": {
-                  "name": "Shoot without drivetrain"
+                  "name": "Shoot"
                 }
               }
             ]

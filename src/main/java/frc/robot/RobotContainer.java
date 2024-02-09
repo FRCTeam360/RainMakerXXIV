@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.commands.Autos;
 import frc.robot.commands.RunExtendIntake;
+import frc.robot.commands.SetFlywheelSetpoint;
 import frc.robot.commands.PowerIntakeReversed;
 import frc.robot.commands.PowerIntake;
 import frc.robot.commands.PowerLinkage;
@@ -72,7 +73,7 @@ public class RobotContainer {
 
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
   // Create new ShootInSpeaker command
-  private final Command shootRoutineWithDrivetrain = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
+  private final Command shootRoutineWithDrivetrain = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 0.0);
   private final Command shootRoutine = new ShootInSpeaker(linkage, flywheel, intake, 0.0, 5000.0);
   // auto commands
   //private final SetFlywheel setFlywheel = new SetFlywheel();
@@ -85,6 +86,7 @@ public class RobotContainer {
   // private PowerLinkage powerLinkage = new PowerLinkage(linkage);
   private FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive();
   private RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive();
+  private SetFlywheelSetpoint setFlywheelSetpoint = new SetFlywheelSetpoint(flywheel);
   
 
 
@@ -135,6 +137,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Shoot", shootRoutineWithDrivetrain);
     NamedCommands.registerCommand("Shoot without drivetrain", shootRoutine);
     NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0, 0));
+    NamedCommands.registerCommand("Spinny", setFlywheelSetpoint);
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
     configureBindings();
