@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.hardware.LinkageIOSparkMax;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
+import frc.robot.util.CommandLogger;
 
 public class RunExtendIntake extends Command {
   enum IntakeCases {CHECK_ROBOT_EMPTY, EXTEND_INTAKE, WAIT_FOR_SENSOR, UP_TO_SHOOTER_P1, UP_TO_SHOOTER_P2, RETRACT_STOP}; 
@@ -45,6 +46,7 @@ public class RunExtendIntake extends Command {
   @Override
   public void initialize() {
     timer.start();
+    CommandLogger.logCommandStart(this);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -136,6 +138,7 @@ public class RunExtendIntake extends Command {
       
     //   System.out.println(operatorCont.getRightTriggerAxis());
     //   SmartDashboard.putNumber("Trigger val: ", operatorCont.getRightTriggerAxis());
+    CommandLogger.logCommandRunning(this);
   }
 
   // Called once the command ends or is interrupted.
@@ -149,7 +152,7 @@ public class RunExtendIntake extends Command {
     intake.stop();
     state = IntakeCases.CHECK_ROBOT_EMPTY;
     //linkage.setAngle(43);
-
+    CommandLogger.logCommandEnd(this);
   }
 
   // Returns true when the command should end.

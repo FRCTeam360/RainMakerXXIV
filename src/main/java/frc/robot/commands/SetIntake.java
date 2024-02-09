@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
+import frc.robot.util.CommandLogger;
 
 public class SetIntake extends Command {
   private final Intake intake;
@@ -20,18 +21,22 @@ public class SetIntake extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    CommandLogger.logCommandStart(this);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     intake.run(0.5);
+    CommandLogger.logCommandRunning(this);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     intake.stop();
+    CommandLogger.logCommandEnd(this);
   }
 
   // Returns true when the command should end.
