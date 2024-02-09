@@ -10,7 +10,7 @@ import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Flywheel;
-import frc.robot.util.CommandLogger;
+import frc.robot.utils.CommandLogger;
 
 public class PowerFlywheel extends Command {
   private final Flywheel flywheel;

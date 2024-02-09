@@ -12,7 +12,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
-import frc.robot.util.CommandLogger;
+import frc.robot.utils.CommandLogger;
 
 public class ShootInSpeaker extends Command {
   private Linkage linkage;

@@ -7,7 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
-import frc.robot.util.CommandLogger;
+import frc.robot.utils.CommandLogger;
 
 public class SetIntake extends Command {
   private final Intake intake;

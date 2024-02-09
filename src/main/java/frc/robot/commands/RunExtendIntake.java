@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.hardware.LinkageIOSparkMax;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
-import frc.robot.util.CommandLogger;
+import frc.robot.utils.CommandLogger;
 
 public class RunExtendIntake extends Command {
   enum IntakeCases {CHECK_ROBOT_EMPTY, EXTEND_INTAKE, WAIT_FOR_SENSOR, UP_TO_SHOOTER_P1, UP_TO_SHOOTER_P2, RETRACT_STOP}; 
