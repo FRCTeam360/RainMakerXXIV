@@ -49,7 +49,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
 
-  // private RobotContainer m_robotContainer;
+  private RobotContainer m_robotContainer;
   
   static { 
     String serialAddress = HALUtil.getSerialNumber();
@@ -157,29 +157,29 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotInit() {
-    // String serialAddress = getRoboRIOSerialNumber();
-    // System.out.println(getRoboRIOSerialNumber());
-    // System.out.println("Robot Serial Address found:" + getRoboRIOSerialNumber());
-    // SmartDashboard.putString("Test Serial Address", serialAddress);
-    //  Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
+    String serialAddress = getRoboRIOSerialNumber();
+    System.out.println(getRoboRIOSerialNumber());
+    System.out.println("Robot Serial Address found:" + getRoboRIOSerialNumber());
+    SmartDashboard.putString("Test Serial Address", serialAddress);
+     Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
 
-    // if (isReal()) {
-    //     Logger.addDataReceiver(new WPILOGWriter("/U")); // Log to a USB stick
-    //     Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-    //     new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
-    // } else {
-    //     setUseTiming(false); // Run as fast as possible
-    //     String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
-    //     Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
-    //     Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
-    // }
+    if (isReal()) {
+        Logger.addDataReceiver(new WPILOGWriter("/U")); // Log to a USB stick
+        Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+        new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
+    } else {
+        setUseTiming(false); // Run as fast as possible
+        String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
+        Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
+        Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
+    }
 
-    // // Logger.disableDeterministicTimestamps() // See "Deterministic Timestamps" in the "Understanding Data Flow" page
-    // Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
-    // SignalLogger.start();
-    // // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // // autonomous chooser on the dashboard.
-    // m_robotContainer = new RobotContainer();
+    // Logger.disableDeterministicTimestamps() // See "Deterministic Timestamps" in the "Understanding Data Flow" page
+    Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
+    SignalLogger.start();
+    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+    // autonomous chooser on the dashboard.
+    m_robotContainer = new RobotContainer();
 
   }
 
@@ -232,7 +232,7 @@ public class Robot extends LoggedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    // m_robotContainer.onDisable();
+    m_robotContainer.onDisable();
   }
 
   @Override
@@ -245,12 +245,12 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void autonomousInit() {
-    // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
-    // // schedule the autonomous command (example)
-    // if (m_autonomousCommand != null) {
-    // m_autonomousCommand.schedule();
-    // }
+    // schedule the autonomous command (example)
+    if (m_autonomousCommand != null) {
+    m_autonomousCommand.schedule();
+    }
   }
 
   /** This function is called periodically during autonomous. */
