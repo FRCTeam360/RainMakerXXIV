@@ -76,7 +76,7 @@ public class RobotContainer {
 
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
   // Create new ShootInSpeaker command
-  private final Command shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 90.0, 4000.0);
+  private final Command shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
    // auto commands
   //private final SetFlywheel setFlywheel = new SetFlywheel();
 
@@ -146,6 +146,10 @@ public class RobotContainer {
         break;
     }
     initializeCommands();
+    NamedCommands.registerCommand("Intake", runExtendIntake);
+    NamedCommands.registerCommand("Wait1", new WaitCommand(1));
+    NamedCommands.registerCommand("Shoot", shootRoutine);
+    NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0, 0));
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
     diagnosticTab = Shuffleboard.getTab("Diagnostics");
@@ -153,11 +157,6 @@ public class RobotContainer {
     diagnosticTab.addBoolean("Wood Bot", () -> Constants.isWoodBot());
     diagnosticTab.addBoolean("Practice Bot", () -> Constants.isPracticeBot());
     diagnosticTab.addBoolean("Comp Bot", () -> Constants.isCompBot());
-    // Configure the trigger bindings
-    NamedCommands.registerCommand("RunExtendIntake", runExtendIntake);
-    NamedCommands.registerCommand("Wait1", new WaitCommand(1));
-    NamedCommands.registerCommand("Shoot", powerFlywheel);
-    NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0, 0));
     configureBindings();
     configureDefaultCommands();
   }
@@ -228,10 +227,10 @@ public class RobotContainer {
     // operatorController.a().whileTrue(powerFlywheel);
     // operatorController.x().whileTrue(new InstantCommand(() -> linkage.zero(), linkage));
     
-    driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
+    // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
 
-    // operatorController.a().whileTrue(shootRoutine);
-    operatorController.a().whileTrue(drivetrain.turntoCMD(false, 90.0, 0.0, 0.0));
+    operatorController.a().whileTrue(shootRoutine);
+    // operatorController.a().whileTrue(drivetrain.turntoCMD(false, 90.0, 0.0, 0.0));
 
     
 
