@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.Constants.RobotType;
 import frc.robot.commands.Autos;
 import frc.robot.commands.RunExtendIntake;
 import frc.robot.commands.PowerIntakeReversed;
@@ -19,7 +20,12 @@ import frc.robot.generated.PracticebotConstants;
 import frc.robot.generated.WoodbotConstants;
 import frc.robot.hardware.FlywheelIOSparkFlex;
 import frc.robot.hardware.IntakeIOSparkMax;
+<<<<<<< HEAD
 import frc.robot.hardware.LinkageIOTalonFX;
+=======
+import frc.robot.hardware.LinkageIOSparkMax;
+import frc.robot.io.FlywheelIO;
+>>>>>>> main
 import frc.robot.io.IntakeIO;
 import frc.robot.sim.ShooterIOSim;
 import frc.robot.subsystems.Climber;
@@ -67,16 +73,24 @@ public class RobotContainer {
   final double MaxSpeed = 13.7; // used to be 6 meters per second desired top speed
   final double MaxAngularRate = Math.PI * 3; // Half a rotation per second max angular velocity
   // subsystems
+<<<<<<< HEAD
   private final CommandSwerveDrivetrain drivetrain = WoodbotConstants.DriveTrain; // My drivetrain
   private final Flywheel flywheel = new Flywheel(new FlywheelIOSparkFlex());
   private final Linkage linkage = new Linkage(new LinkageIOTalonFX());
   private final Intake intake = new Intake(new IntakeIOSparkMax());
+=======
+  private CommandSwerveDrivetrain drivetrain; // My drivetrain
+  private Flywheel flywheel;
+  private Linkage linkage;
+  private Intake intake;
+>>>>>>> main
   // private final Climber climber = new Climber(new ClimberIOSparkMax());
 
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
   private final Command shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
 
   // tele commands
+<<<<<<< HEAD
   private RunExtendIntake runExtendIntake = new RunExtendIntake(intake);
   private PowerIntakeReversed powerIntakeReversed = new PowerIntakeReversed(intake);
   private PowerIntake powerIntake = new PowerIntake(intake);
@@ -84,6 +98,17 @@ public class RobotContainer {
   private PowerLinkage powerLinkage = new PowerLinkage(linkage);
   private FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
   private RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive(drivetrain);
+=======
+  private RunExtendIntake runExtendIntake;
+  private PowerIntakeReversed powerIntakeReversed;
+  private PowerIntake powerIntake;
+  private PowerFlywheel powerFlywheel;
+  // private PowerLinkage powerLinkage = new PowerLinkage(linkage);
+  private FieldOrientedDrive fieldOrientedDrive;
+  private RobotOrientedDrive robotOrientedDrive;
+  private ShuffleboardTab diagnosticTab;
+  
+>>>>>>> main
 
   private SetLinkageTalon setLinkageTalon = new SetLinkageTalon(linkage);
 
@@ -98,6 +123,7 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+<<<<<<< HEAD
     // switch (Constants.currentMode) {
     // case REAL:
     // // Real robot, instantiate hardware IO implementations
@@ -126,6 +152,46 @@ public class RobotContainer {
     // break;
     // }
     // Configure the trigger bindings
+=======
+    switch (Constants.getRobotType()) {
+      case WOODBOT:
+        // Real robot, instantiate hardware IO implementations
+        flywheel = new Flywheel(new FlywheelIOSparkFlex());
+        intake = new Intake(new IntakeIOSparkMax());
+        linkage = new Linkage(new LinkageIOSparkMax());
+        drivetrain = TunerConstants.DriveTrain; // My drivetrain
+        // commandSwerveDrivetrain = new CommandSwerveDrivetrain(new CommandSwerveDrivetrainIOSparkMax());
+        break;
+      case PRACTICE:
+
+        break;
+      case COMPETITION:
+
+        break; 
+      case TEST:
+
+        break; 
+      case SIM:
+        // Sim robot, instantiate physics sim IO implementations
+        // CHANGE SHOOTER AND SHOOTER LINKAGE TO SIM LATER
+        // shooter = new Shooter(new ShooterIOSparkMax());
+        // intake = new Intake(new IntakeIOSparkMax());
+        // linkage = new Linkage(new LinkageIOSparkMax());
+        // commandSwerveDrivetrain = new CommandSwerveDrivetrain(new CommandSwerveDrivetrainIOSparkMax());
+        break;
+      case REPLAY:
+
+        break;
+
+      default:
+        // Replayed robot, disable IO implementations
+        // shooter = new Shooter(new ShooterIO() {});
+        // intake = new Intake(new IntakeIO() {});
+        // shooterLinkage = new ShooterLinkage(new ShooterLinkageIO() {});
+        break;
+    }
+    initializeCommands();
+>>>>>>> main
     NamedCommands.registerCommand("Intake", runExtendIntake);
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     NamedCommands.registerCommand("Wait", new WaitCommand(2));
@@ -133,8 +199,24 @@ public class RobotContainer {
     NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0, 0));
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
+    diagnosticTab = Shuffleboard.getTab("Diagnostics");
+    diagnosticTab.addBoolean("Test Bot", () -> Constants.isTestBot());
+    diagnosticTab.addBoolean("Wood Bot", () -> Constants.isWoodBot());
+    diagnosticTab.addBoolean("Practice Bot", () -> Constants.isPracticeBot());
+    diagnosticTab.addBoolean("Comp Bot", () -> Constants.isCompBot());
     configureBindings();
     configureDefaultCommands();
+  }
+
+  private final void initializeCommands() {
+    runExtendIntake = new RunExtendIntake(intake);
+    powerIntakeReversed = new PowerIntakeReversed(intake);
+    powerIntake = new PowerIntake(intake);
+    powerFlywheel = new PowerFlywheel(flywheel);
+    // private PowerLinkage powerLinkage = new PowerLinkage(linkage);
+    // fieldOrientedDrive = new FieldOrientedDrive();
+    // robotOrientedDrive = new RobotOrientedDrive();
+    // drivetrain = TunerConstants.DriveTrain; // My drivetrain
   }
 
   private void configureDefaultCommands() {

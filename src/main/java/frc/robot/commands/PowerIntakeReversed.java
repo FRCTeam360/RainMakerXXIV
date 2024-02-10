@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
+import frc.robot.utils.CommandLogger;
 
 public class 
 PowerIntakeReversed extends Command {
@@ -21,23 +22,35 @@ PowerIntakeReversed extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    CommandLogger.logCommandStart(this);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+<<<<<<< HEAD
     // if(operatorCont.getLeftTriggerAxis() > .75) {
     //   intake.run(-0.5);
     // } else {
     //   intake.run(-0.15);
     // }\
     intake.run(-0.3);
+=======
+    if(operatorCont.getLeftTriggerAxis() > .75) {
+      intake.run(-0.5);
+    } else {
+      intake.run(-0.15);
+    }
+    CommandLogger.logCommandRunning(this);
+>>>>>>> main
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     intake.stop();
+    CommandLogger.logCommandEnd(this);
   }
 
   // Returns true when the command should end.

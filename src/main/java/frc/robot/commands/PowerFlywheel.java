@@ -10,6 +10,7 @@ import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Flywheel;
+import frc.robot.utils.CommandLogger;
 
 public class PowerFlywheel extends Command {
   private final Flywheel flywheel;
@@ -26,7 +27,9 @@ public class PowerFlywheel extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    CommandLogger.logCommandStart(this);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -43,14 +46,18 @@ public class PowerFlywheel extends Command {
     //   flywheel.stopRight();
     // }
 
+<<<<<<< HEAD
     flywheel.runBoth(1.0, 0.9);
 
+=======
+    flywheel.runBoth(1.0);
+    CommandLogger.logCommandRunning(this);
+>>>>>>> main
   }
     
   public void end(boolean interrupted) {
-    // print when it runs
-    System.out.println("ENDING");
     flywheel.stop();
+    CommandLogger.logCommandEnd(this);
   }
 
   // Returns true when the command should end.
