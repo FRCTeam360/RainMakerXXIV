@@ -4,7 +4,8 @@ package frc.robot;
 public class Constants {
         public static final int DRIVER_CONTROLLER = 0;
         public static final int OPERATOR_CONTROLLER = 1;
-
+        
+        public static final int WOOD_BOT_LINKAGE_ID = 2;
         public static final int LINKAGE_ID = 14;
 
         public static final int FLYWHEEL_LEFT_ID = 4; //LEFT & RIGHT CONFIG FOR PRACTICE & COMP BOT, NO LONGER TOP & BOTTOM
