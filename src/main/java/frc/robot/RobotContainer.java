@@ -28,6 +28,8 @@ import frc.robot.subsystems.Intake;
 
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Linkage;
+import frc.robot.subsystems.Photon;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
@@ -72,6 +74,9 @@ public class RobotContainer {
   private final Linkage linkage = new Linkage(new LinkageIOTalonFX());
   private final Intake intake = new Intake(new IntakeIOSparkMax());
   // private final Climber climber = new Climber(new ClimberIOSparkMax());
+   private final Photon photon = new Photon();
+
+
 
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
   private final Command shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
