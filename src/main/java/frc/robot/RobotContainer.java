@@ -67,7 +67,7 @@ public class RobotContainer {
   final double MaxSpeed = 13.7; // used to be 6 meters per second desired top speed
   final double MaxAngularRate = Math.PI * 3; // Half a rotation per second max angular velocity
   // subsystems
-  private final CommandSwerveDrivetrain drivetrain = WoodbotConstants.DriveTrain; // My drivetrain
+  private final CommandSwerveDrivetrain drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
   private final Flywheel flywheel = new Flywheel(new FlywheelIOSparkFlex());
   private final Linkage linkage = new Linkage(new LinkageIOTalonFX());
   private final Intake intake = new Intake(new IntakeIOSparkMax());
@@ -140,6 +140,7 @@ public class RobotContainer {
   private void configureDefaultCommands() {
     // linkage.setDefaultCommand(powerLinkage);
     //flywheel.setDefaultCommand(powerFlywheel);
+    drivetrain.setDefaultCommand(fieldOrientedDrive);
   }
 
   /**
@@ -172,8 +173,7 @@ public class RobotContainer {
     // flywheel.setBothRPM(5000), flywheel));
 
     // // DRIVER CONTROLLER BINDINGS
-    // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(),
-    // drivetrain));
+    driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(),drivetrain));
 
     // drivetrain.registerTelemetry(logger::telemeterize);
   }
