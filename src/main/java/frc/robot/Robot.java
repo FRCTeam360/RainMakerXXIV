@@ -4,15 +4,6 @@
 
 package frc.robot;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.NetworkInterface;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.List;
-
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -22,10 +13,7 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 import com.ctre.phoenix6.SignalLogger;
 
-import edu.wpi.first.hal.HAL;
-import edu.wpi.first.hal.HALUtil;
 import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import org.littletonrobotics.junction.LoggedRobot;
 
@@ -35,7 +23,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -50,105 +37,6 @@ public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-  
-  static { 
-    String serialAddress = HALUtil.getSerialNumber();
-    System.out.println("Serial Address Found: " + serialAddress);
-    if(serialAddress == Constants.SerialAddressConstants.TEST_SERIAL_ADDRESS){
-      Constants.isTestBot = true; 
-    }
-    else{
-      Constants.isCompBot = false; 
-      Constants.isTestBot = false; 
-    }
-    if(!Constants.isCompBot && !Constants.isTestBot){
-      SmartDashboard.putString("Serial Address", serialAddress);
-      SmartDashboard.putString("Test Serial Address", Constants.SerialAddressConstants.TEST_SERIAL_ADDRESS);
-    }
-    // if serial address doesn't work at comp
-			// Constants.isCompBot = true;
-  }
-
-  static {
-		List<byte[]> macAddresses;
-		try {
-			macAddresses = getMacAddresses();
-		} catch (IOException e) {
-			System.out.println("Mac Address attempt unsuccessful");
-			System.out.println(e);
-			macAddresses = List.of();
-		}
-    System.out.println("Mac Address found: " + macAddresses);
-
-		for (byte[] macAddress : macAddresses) {
-			// first check if we are comp
-      
-			if (Arrays.compare(Constants.MacAddressConstants.TEST_ADDRESS, macAddress) == 0){
-				Constants.isTestBot = true; 
-				break;
-			}
-			// if neither is true
-			else {
-				Constants.isCompBot = false;
-				Constants.isTestBot = false;
-				System.out.println("New Mac Address Discovered!");
-			}
-		}
-                if (!Constants.isCompBot && !Constants.isTestBot) {
-			// array
-			String[] macAddressStrings = macAddresses.stream()
-					.map(Robot::macToString)
-					.toArray(String[]::new);
-
-			SmartDashboard.putStringArray("MAC Addresses", macAddressStrings);
-      for(String addresses : macAddressStrings){
-        System.out.println(addresses);  
-      }
-			 //adds MAC addresses to the dashboard
-			SmartDashboard.putString("Test MAC Address", macToString(Constants.MacAddressConstants.TEST_ADDRESS));
-      // SmartDashboard.putString("Wood MAC Address");
-      
-			// if mac address doesn't work at comp
-			// Constants.isCompBot = true;
-		}
-    SmartDashboard.putBoolean("Test Bot", Constants.isTestBot);
-    SmartDashboard.putBoolean("Wood Bot", Constants.isWoodBot);
-    SmartDashboard.putBoolean("Practice Bot", Constants.isPracticeBot);
-    SmartDashboard.putBoolean("Comp Bot", Constants.isCompBot);
-
-  }
-
-    private static List<byte[]> getMacAddresses() throws IOException {
-      List<byte[]> macAddresses = new ArrayList<>();
-  
-      Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
-      // connect to network
-      NetworkInterface networkInterface;
-      while (networkInterfaces.hasMoreElements()) {
-        networkInterface = networkInterfaces.nextElement();
-  
-        byte[] address = networkInterface.getHardwareAddress();
-        if (address == null) {
-          continue;
-        }
-  
-        macAddresses.add(address);
-      }
-      return macAddresses;
-    }
-     
-    
-    private static String macToString(byte[] address) {
-      // changes string characters
-      StringBuilder builder = new StringBuilder();
-      for (int i = 0; i < address.length; i++) {
-        if (i != 0) {
-          builder.append(':');
-        }
-        builder.append(String.format("%02X", address[i]));
-      }
-      return builder.toString();
-    }
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -157,10 +45,6 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotInit() {
-    String serialAddress = getRoboRIOSerialNumber();
-    System.out.println(getRoboRIOSerialNumber());
-    System.out.println("Robot Serial Address found:" + getRoboRIOSerialNumber());
-    SmartDashboard.putString("Test Serial Address", serialAddress);
      Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
 
     if (isReal()) {
@@ -182,29 +66,6 @@ public class Robot extends LoggedRobot {
     m_robotContainer = new RobotContainer();
 
   }
-
-  public static String getRoboRIOSerialNumber() {
-    try {
-        // Command to get the serial number of the RoboRIO
-        String command = "udevadm info --query=property --name=/dev/ttyACM0 | grep SERIAL";
-        Process process = Runtime.getRuntime().exec(command);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-        String line;
-        while ((line = reader.readLine()) != null) {
-            if (line.contains("SERIAL")) {
-                // Extracting the serial number
-                return line.split("=")[1];
-            }
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    return null; // Serial number could not be read
-}
-
-
-  
 
 
   /**
