@@ -39,5 +39,7 @@ public interface LinkageIO {
 
   public void setPosition(double angle);
 
-  public boolean getButton();
+  public boolean getZeroButton();
+
+  public boolean getBrakeButton();
 }

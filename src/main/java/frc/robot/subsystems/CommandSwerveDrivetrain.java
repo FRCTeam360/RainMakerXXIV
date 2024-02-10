@@ -47,8 +47,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
-    CommandSwerveDrivetrain woodbot = WoodbotConstants.woodbot;
-    CommandSwerveDrivetrain practicebot = PracticebotConstants.practicebot;
     private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
     private PhoenixPIDController headingController;
 

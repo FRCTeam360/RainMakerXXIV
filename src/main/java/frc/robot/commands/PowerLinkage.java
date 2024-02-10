@@ -28,7 +28,7 @@ public class PowerLinkage extends Command {
   @Override
   public void execute() {
  
-    shooterLinkage.run(operatorCont.getLeftY() * 0.2);
+    shooterLinkage.run(operatorCont.getLeftY() * 0.3);
   }
 
   // Called once the command ends or is interrupted.

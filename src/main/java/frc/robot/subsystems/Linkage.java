@@ -18,11 +18,11 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.generated.WoodbotConstants;
 import frc.robot.io.LinkageIO;
 import frc.robot.io.LinkageIOInputsAutoLogged;
 
@@ -33,12 +33,13 @@ public class Linkage extends SubsystemBase {
   private static final double STARTING_ANGLE = 50.0;
   static XboxController driverCont = new XboxController(0);
 
-  static CommandSwerveDrivetrain drivetrain = WoodbotConstants.woodbot;
   
   /** Creates a new ShooterLinkage. */
   public Linkage(LinkageIO io) {
-    this.io = io;
-    SmartDashboard.putBoolean("button", io.getButton());
+  this.io = io;
+    ShuffleboardTab tab = Shuffleboard.getTab("Linkage");
+    tab.addBoolean("Zero Button", () -> io.getZeroButton());
+    tab.addBoolean("Brake Button", () -> io.getBrakeButton());
   }
 
   public boolean isAtSetpoint() {
@@ -46,6 +47,7 @@ public class Linkage extends SubsystemBase {
   }
 
   public void run(double speed) {
+    System.out.println("linkage speed is " + speed);
     io.set(speed);
   }
 
@@ -78,6 +80,7 @@ public class Linkage extends SubsystemBase {
   public void setFFWScaling(double ff) {
     io.setFF(ff * Math.cos(getAngle()));
   }
+
 
   @Override
   public void periodic() {

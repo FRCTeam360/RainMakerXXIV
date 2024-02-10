@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.io.IntakeIO;
+import frc.robot.Constants;
 
 public class IntakeIOSparkMax implements IntakeIO {
   /** Creates a new IntakeIOSparkMax. */
@@ -25,9 +26,8 @@ public class IntakeIOSparkMax implements IntakeIO {
     private final RelativeEncoder encoder = sparkMax.getEncoder();
     private final SparkPIDController pid = sparkMax.getPIDController();
     // new hardware class for sensor?
-    private final DigitalInput sideSensor = new DigitalInput(2); // update port later idk what it is
-    private final DigitalInput highSensor = new DigitalInput(0); // update port later idk what it is
-    private final DigitalInput button = new DigitalInput(3);
+    private final DigitalInput sideSensor = new DigitalInput(Constants.INTAKE_SIDE_SENSOR_PORT); // update port later idk what it is
+    private final DigitalInput highSensor = new DigitalInput(Constants.INTAKE_HIGH_SENSOR_PORT); // update port later idk what it is
 
   public IntakeIOSparkMax() {
     sparkMax.restoreFactoryDefaults();
@@ -38,11 +38,6 @@ public class IntakeIOSparkMax implements IntakeIO {
     ShuffleboardTab tab = Shuffleboard.getTab("intake");
     tab.addBoolean("sensor 1", () -> this.getSideSensor());
     tab.addBoolean("sensor 2", () -> this.getHighSensor());
-  }
-
-  @Override
-  public boolean getButton() {
-    return button.get();
   }
 
   @Override

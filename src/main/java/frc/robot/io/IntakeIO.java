@@ -22,7 +22,6 @@ public interface IntakeIO {
   
   public default void updateInputs(IntakeIOInputs inputs) {}
 
-  public boolean getButton();
   
   public void set(double speed);
 

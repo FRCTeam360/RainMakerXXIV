@@ -25,15 +25,6 @@ public class Flywheel extends SubsystemBase {
   private final FlywheelIO io;
   private final FlywheelIOInputsAutoLogged inputs = new FlywheelIOInputsAutoLogged();
 
-  private static Flywheel instance;
-
-  private final CANSparkFlex topMotor = new CANSparkFlex(Constants.FLYWHEEL_LEFT_ID, MotorType.kBrushless);
-  private final RelativeEncoder topEncoder = topMotor.getEncoder();
-  private final SparkPIDController topPIDController = topMotor.getPIDController();
-
-  private final CANSparkFlex bottomMotor = new CANSparkFlex(Constants.FLYWHEEL_RIGHT_ID, MotorType.kBrushless);
-  private final RelativeEncoder bottomEncoder = bottomMotor.getEncoder();
-  private final SparkPIDController bottomPIDController = bottomMotor.getPIDController();
 
   private double topP = 0.00055;
   private double topI = 0.0;
@@ -50,6 +41,7 @@ public class Flywheel extends SubsystemBase {
   /** Creates a new Flywheel. */
   public Flywheel(FlywheelIO io) {
     this.io = io;
+    SmartDashboard.putNumber("error", 0);
   }
 
   public void runTop(double speed) {
@@ -60,9 +52,9 @@ public class Flywheel extends SubsystemBase {
     io.setBottom(speed);
   }
 
-  public void runBoth(double speed) {
-    io.setTop(speed);
-    io.setBottom(speed);
+  public void runBoth(double leftSpeed, double rightSpeed) { 
+    io.setTop(leftSpeed);
+    io.setBottom(rightSpeed);
   }
 
   public void setTopRPM(double rpm) {

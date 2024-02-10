@@ -10,6 +10,7 @@ import frc.robot.commands.PowerIntakeReversed;
 import frc.robot.commands.PowerIntake;
 import frc.robot.commands.PowerLinkage;
 import frc.robot.commands.SetIntake;
+import frc.robot.commands.SetLinkageTalon;
 import frc.robot.commands.ShootInSpeaker;
 import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.RobotOrientedDrive;
@@ -37,6 +38,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -64,7 +67,7 @@ public class RobotContainer {
   final double MaxSpeed = 13.7; // used to be 6 meters per second desired top speed
   final double MaxAngularRate = Math.PI * 3; // Half a rotation per second max angular velocity
   // subsystems
-  private final CommandSwerveDrivetrain drivetrain = WoodbotConstants.woodbot; // My drivetrain
+  private final CommandSwerveDrivetrain drivetrain = WoodbotConstants.DriveTrain; // My drivetrain
   private final Flywheel flywheel = new Flywheel(new FlywheelIOSparkFlex());
   private final Linkage linkage = new Linkage(new LinkageIOTalonFX());
   private final Intake intake = new Intake(new IntakeIOSparkMax());
@@ -72,16 +75,17 @@ public class RobotContainer {
 
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
   private final Command shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
-  
+
   // tele commands
   private RunExtendIntake runExtendIntake = new RunExtendIntake(intake);
   private PowerIntakeReversed powerIntakeReversed = new PowerIntakeReversed(intake);
   private PowerIntake powerIntake = new PowerIntake(intake);
   private PowerFlywheel powerFlywheel = new PowerFlywheel(flywheel);
-  // private PowerLinkage powerLinkage = new PowerLinkage(linkage);
-  private FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive();
-  private RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive();
+  private PowerLinkage powerLinkage = new PowerLinkage(linkage);
+  private FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
+  private RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive(drivetrain);
 
+  private SetLinkageTalon setLinkageTalon = new SetLinkageTalon(linkage);
 
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
@@ -124,6 +128,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     NamedCommands.registerCommand("Intake", runExtendIntake);
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
+    NamedCommands.registerCommand("Wait", new WaitCommand(2));
     NamedCommands.registerCommand("Shoot", shootRoutine);
     NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0, 0));
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -133,25 +138,8 @@ public class RobotContainer {
   }
 
   private void configureDefaultCommands() {
-    // flywheel.setDefaultCommand(powerFlywheel);
-    // intake.setDefaultCommand(powerIntake);
     // linkage.setDefaultCommand(powerLinkage);
-    // // climber.setDefaultCommand();
-    // drivetrain.setDefaultCommand( // Drivetrain will execute this command
-    // periodically
-    // drivetrain.applyRequest(
-    // () ->
-    // drive.withVelocityX(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1)
-    // * MaxSpeed) //drive forward with negative y
-    // // negative Y (forward)
-    // .withVelocityY(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1) *
-    // MaxSpeed) // drive left with negative x
-    // .withRotationalRate(MathUtil.applyDeadband(-driverController.getRightX(),
-    // 0.1) * MaxAngularRate) // drive counterclockwise with negative x
-    // flywheel.setDefaultCommand(setFlywheel);
-    // intake.setDefaultCommand(runIntake);
-    // linkage.setDefaultCommand(powerLinkage);
-    drivetrain.setDefaultCommand(fieldOrientedDrive);
+    //flywheel.setDefaultCommand(powerFlywheel);
   }
 
   /**
@@ -171,15 +159,23 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    // OPERATOR CONTROLLER BINDINGS
-    operatorController.a().toggleOnTrue(runExtendIntake);
-    operatorController.b().whileTrue(powerIntake);
-    operatorController.y().toggleOnTrue(new InstantCommand(() -> flywheel.setBothRPM(5000), flywheel));
+    operatorController.a().whileTrue(setLinkageTalon);
 
-    // DRIVER CONTROLLER BINDINGS
-    driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
+    // operatorController.leftBumper().whileTrue(powerIntakeReversed);
+    // operatorController.rightBumper().whileTrue(powerIntake);
 
-    drivetrain.registerTelemetry(logger::telemeterize);
+    // operatorController.y().whileTrue(powerFlywheel);
+    // // OPERATOR CONTROLLER BINDINGS
+    // operatorController.a().toggleOnTrue(runExtendIntake);
+    // operatorController.b().whileTrue(powerIntake);
+    // operatorController.y().toggleOnTrue(new InstantCommand(() ->
+    // flywheel.setBothRPM(5000), flywheel));
+
+    // // DRIVER CONTROLLER BINDINGS
+    // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(),
+    // drivetrain));
+
+    // drivetrain.registerTelemetry(logger::telemeterize);
   }
 
   public void onDisable() {

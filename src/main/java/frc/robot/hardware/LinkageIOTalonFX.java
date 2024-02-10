@@ -11,6 +11,7 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.ControlRequest;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ControlModeValue;
@@ -18,12 +19,13 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.hardware.core.CoreTalonFX;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.io.LinkageIO;
@@ -31,15 +33,17 @@ import frc.robot.io.LinkageIO;
 
 public class LinkageIOTalonFX implements LinkageIO {
   /** Creates a new IntakeIOtalonFX. */
-  private final TalonFX talonFX = new TalonFX(Constants.LINKAGE_ID);
+  private final TalonFX talonFX = new TalonFX(Constants.LINKAGE_ID, "Default Name");
   // private final RelativeEncoder encoder = talonFX.getEncoder();
   // private final SparkPIDController pidController = talonFX.getPIDController();
 
   private Slot0Configs slot0Configs = new Slot0Configs();
+  private DutyCycleOut dutyCycleOut = new DutyCycleOut(0);
   // TODO test code
 
-  private PositionVoltage positionVoltage;
-  DigitalInput button = new DigitalInput(0);
+  private PositionVoltage positionVoltage = new PositionVoltage(0);
+  DigitalInput zeroButton = new DigitalInput(Constants.LINKAGE_ZERO_BUTTON_PORT);
+  DigitalInput brakeButton = new DigitalInput(Constants.LINKAGE_BRAKE_TOGGLE_BUTTON_PORT);
 
   public LinkageIOTalonFX() {
     final double GEAR_RATIO = 360.0 / 36.0; // TODO: FIX LMAOO!! was 6.0??
@@ -48,8 +52,8 @@ public class LinkageIOTalonFX implements LinkageIO {
     final double kI = 0.0;
     final double kFF = 0.0;
 
-    final double forwardLimit = 180.0f; // TODO: make sure these are correct for prac bot
-    final double reverseLimit = 50.0f;
+    final double forwardLimit = 0.0; // TODO: make sure these are correct for prac bot
+    final double reverseLimit = 0.0;
 
     talonFX.getConfigurator().apply(new TalonFXConfiguration());
     talonFX.setInverted(false);
@@ -57,11 +61,11 @@ public class LinkageIOTalonFX implements LinkageIO {
 
     // need to add offset??? 43.0 rn
 
-    talonFX.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
-        .withForwardSoftLimitThreshold(forwardLimit)
-        .withReverseSoftLimitThreshold(reverseLimit)
-        .withForwardSoftLimitEnable(true)
-        .withReverseSoftLimitEnable(true)); // TODO: dont enable robot past soft limits
+    // talonFX.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
+    //     .withForwardSoftLimitThreshold(forwardLimit)
+    //     .withReverseSoftLimitThreshold(reverseLimit)
+    //     .withForwardSoftLimitEnable(true)
+    //     .withReverseSoftLimitEnable(true)); // TODO: dont enable robot past soft limits
 
     // translated into talonfx from sparkmax, probalby unnecessary
     // talonFX.getConfigurator().apply(new
@@ -70,16 +74,15 @@ public class LinkageIOTalonFX implements LinkageIO {
     slot0Configs.kP = kP;
     slot0Configs.kI = kI;
     slot0Configs.kD = kD;
-    slot0Configs.kV = kFF; // lol was kF phoneix 6 silly name change
   }
 
-  public boolean getButton(){
-  return this.button.get();
-
+  public boolean getZeroButton(){
+    return this.zeroButton.get();
   }
 
-
-
+  public boolean getBrakeButton(){
+    return this.brakeButton.get();
+  }
 
   @Override
   public void updateInputs(LinkageIOInputs inputs) {
@@ -88,7 +91,8 @@ public class LinkageIOTalonFX implements LinkageIO {
   }
 
   public void set(double speed) {
-    talonFX.set(speed);
+    System.out.println("hardware speed " + speed);
+    talonFX.setControl(dutyCycleOut.withOutput(speed));
   }
 
   public void stopMotor() {

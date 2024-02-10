@@ -16,15 +16,16 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 public class RobotOrientedDrive extends Command {
    private final XboxController driverController = new XboxController(0);
 
-  private final CommandSwerveDrivetrain driveTrain = WoodbotConstants.woodbot;
+  private final CommandSwerveDrivetrain driveTrain;
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(Constants.MAX_SPEED_MPS * 0.1).withRotationalDeadband(Constants.MAX_ANGULAR_RATE * 0.1)
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
 
   /** Creates a new RobotOrientedDrive. */
-  public RobotOrientedDrive() {
+  public RobotOrientedDrive(CommandSwerveDrivetrain driveTrain) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrain);
+    this.driveTrain = driveTrain;
   }
 
   // Called when the command is initially scheduled.

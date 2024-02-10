@@ -35,11 +35,11 @@ public class FlywheelIOSparkFlex implements FlywheelIO {
     
     topMotor.restoreFactoryDefaults();
     topMotor.setInverted(true);
-    topMotor.setIdleMode(IdleMode.kBrake);
+    topMotor.setIdleMode(IdleMode.kCoast);
 
     bottomMotor.restoreFactoryDefaults();
     bottomMotor.setInverted(false);
-    bottomMotor.setIdleMode(IdleMode.kBrake);
+    bottomMotor.setIdleMode(IdleMode.kCoast);
 
     topPIDController.setP(kP);
     topPIDController.setFF(kFF);
