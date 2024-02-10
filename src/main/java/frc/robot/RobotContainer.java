@@ -37,6 +37,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -86,6 +88,7 @@ public class RobotContainer {
   // private PowerLinkage powerLinkage = new PowerLinkage(linkage);
   private FieldOrientedDrive fieldOrientedDrive;
   private RobotOrientedDrive robotOrientedDrive;
+  private ShuffleboardTab diagnosticTab;
   
 
 
@@ -145,6 +148,11 @@ public class RobotContainer {
     initializeCommands();
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
+    diagnosticTab = Shuffleboard.getTab("Diagnostics");
+    diagnosticTab.addBoolean("Test Bot", () -> Constants.isTestBot());
+    diagnosticTab.addBoolean("Wood Bot", () -> Constants.isWoodBot());
+    diagnosticTab.addBoolean("Practice Bot", () -> Constants.isPracticeBot());
+    diagnosticTab.addBoolean("Comp Bot", () -> Constants.isCompBot());
     // Configure the trigger bindings
     NamedCommands.registerCommand("RunExtendIntake", runExtendIntake);
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
@@ -160,9 +168,9 @@ public class RobotContainer {
     powerIntake = new PowerIntake(intake);
     powerFlywheel = new PowerFlywheel(flywheel);
     // private PowerLinkage powerLinkage = new PowerLinkage(linkage);
-    fieldOrientedDrive = new FieldOrientedDrive();
-    robotOrientedDrive = new RobotOrientedDrive();
-    drivetrain = TunerConstants.DriveTrain; // My drivetrain
+    // fieldOrientedDrive = new FieldOrientedDrive();
+    // robotOrientedDrive = new RobotOrientedDrive();
+    // drivetrain = TunerConstants.DriveTrain; // My drivetrain
   }
 
   private void configureDefaultCommands() {

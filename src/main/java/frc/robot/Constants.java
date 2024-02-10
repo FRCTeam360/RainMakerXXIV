@@ -34,24 +34,36 @@ public class Constants {
         
         public static RobotType robot = getRobotType();
 
-	// toggle constants between comp bot, practice bot, wood bot, and test bot. 
-        public static boolean isWoodBot;
-        public static boolean isPracticeBot;
-        public static boolean isCompBot;
-	public static boolean isTestBot; 
+	
 
         public static boolean isWoodBot(){
-                return isWoodBot;
+                if(getRobotType() == Constants.RobotType.WOODBOT){
+                        return true;
+                }else{
+                        return false; 
+                }
         }
         public static boolean isPracticeBot(){
-                return isPracticeBot; 
+                if(getRobotType() == Constants.RobotType.PRACTICE){
+                        return true;
+                }else{
+                        return false;
+                }
         }
         public static boolean isCompBot(){
-                return isCompBot; 
+                if(getRobotType() == Constants.RobotType.COMPETITION){
+                        return true; 
+                } else{
+                        return false; 
+                }
         }
-		public static boolean isTestBot(){
-			return isTestBot; 
-		}
+	public static boolean isTestBot(){
+		if(getRobotType() == Constants.RobotType.TEST){
+                        return true; 
+                } else{
+                        return false; 
+                }
+	}
 public static enum RobotType {
     /** Running on a real robot. */
     REAL,
@@ -71,24 +83,26 @@ public static enum RobotType {
     /* Running on a Competition Robot */
     COMPETITION, 
 
-        /* Running on a Test Robot */
-        TEST
+    /* Running on a Test Robot */
+    TEST
  }
  
   public static RobotType getRobotType (){
         String serialAddress = HALUtil.getSerialNumber();
-        if(serialAddress == SerialAddressConstants.TEST_SERIAL_ADDRESS){
+        SmartDashboard.putString("serial address", serialAddress);
+        SmartDashboard.putString("Test Serial Address", SerialAddressConstants.TEST_SERIAL_ADDRESS);
+
+        if(serialAddress.equals(SerialAddressConstants.TEST_SERIAL_ADDRESS)){
                 return Constants.RobotType.TEST;
+                
         }
-        if(serialAddress == SerialAddressConstants.WOOD_SERIAL_ADDRESS){
+        else if(serialAddress.equals(SerialAddressConstants.WOOD_SERIAL_ADDRESS)){
                 return Constants.RobotType.WOODBOT; 
         }
-        // if(isPracticeBot == true){           
+        // else if(serialAddress.equals(SerialAddressConstants.PRACTICE_SERIAL_ADDRESS)){           
         //         return Constants.RobotType.PRACTICE;
         // }
         else{
-                SmartDashboard.putString("Serial Address", serialAddress);
-                SmartDashboard.putString("Test Serial Address", Constants.SerialAddressConstants.TEST_SERIAL_ADDRESS);
                 return Constants.RobotType.COMPETITION; 
 
         }
