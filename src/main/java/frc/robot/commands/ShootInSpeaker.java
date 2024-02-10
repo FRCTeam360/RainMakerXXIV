@@ -102,7 +102,7 @@ public class ShootInSpeaker extends Command {
         }
         if (isFlywheelAtSetpoint && isDriveReady) { // && isLinkageAtSetpoint
           this.state = ShootState.SHOOT;
-          System.out.println(state);
+          System.out.println("this is the robot state: " + state);
         }
         break;
 
@@ -120,7 +120,7 @@ public class ShootInSpeaker extends Command {
         break;
       case TIMER:
           intake.run(1.0);
-          if(timer.hasElapsed(0.3)) {
+          if(timer.hasElapsed(0.24)) {
           this.state = ShootState.END;
         }
         break;

@@ -58,7 +58,7 @@ public class RunExtendIntake extends Command {
         }
         break;
       case EXTEND_INTAKE:
-        intake.run(.45); // we should extend too but idk how we should implement this
+        intake.run(.65); // we should extend too but idk how we should implement this
         //linkage.setAngle(180);
         if(intake.getAmps() > 20 && timer.get() > .25) {
           sensorTimer.start();
@@ -66,9 +66,10 @@ public class RunExtendIntake extends Command {
         }
         break;
       case WAIT_FOR_SENSOR:
-        intake.run(.225);
+        intake.run(.5);
         if(!intake.getHighSensor()) {
-          state = IntakeCases.UP_TO_SHOOTER_P1;
+          state = IntakeCases.RETRACT_STOP;
+          // state = IntakeCases.UP_TO_SHOOTER_P1;
         }
         // if(sensorTimer.get() > 1) {
         //   state = IntakeCases.EXTEND_INTAKE;

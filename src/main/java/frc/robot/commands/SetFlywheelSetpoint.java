@@ -24,7 +24,7 @@ public class SetFlywheelSetpoint extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    flywheel.setBothRPM(5000.0);
+    flywheel.setBothRPM(4000.0);
   }
 
   // Called once the command ends or is interrupted.
