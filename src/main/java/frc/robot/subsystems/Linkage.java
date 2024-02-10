@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
 
@@ -16,6 +17,8 @@ import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -29,10 +32,14 @@ public class Linkage extends SubsystemBase {
   private double positionSetpoint;
   private static final double STARTING_ANGLE = 50.0;
   static XboxController driverCont = new XboxController(0);
+
   
   /** Creates a new ShooterLinkage. */
   public Linkage(LinkageIO io) {
-    this.io = io;
+  this.io = io;
+    ShuffleboardTab tab = Shuffleboard.getTab("Linkage");
+    tab.addBoolean("Zero Button", () -> io.getZeroButton());
+    tab.addBoolean("Brake Button", () -> io.getBrakeButton());
   }
 
   public boolean isAtSetpoint() {
@@ -40,6 +47,7 @@ public class Linkage extends SubsystemBase {
   }
 
   public void run(double speed) {
+    System.out.println("linkage speed is " + speed);
     io.set(speed);
   }
 
@@ -51,10 +59,10 @@ public class Linkage extends SubsystemBase {
     return io.getPosition();
   }
 
-  public void setAngle(int setPoint){
-    io.setReference(setPoint, CANSparkBase.ControlType.kPosition);
+  public void setAngle(double setPoint){
+    io.setReference(setPoint);
     positionSetpoint = setPoint;
-    io.setReference(setPoint, CANSparkBase.ControlType.kPosition);
+    io.setReference(setPoint);
   }
 
   public double getPower() {
@@ -72,6 +80,7 @@ public class Linkage extends SubsystemBase {
   public void setFFWScaling(double ff) {
     io.setFF(ff * Math.cos(getAngle()));
   }
+
 
   @Override
   public void periodic() {

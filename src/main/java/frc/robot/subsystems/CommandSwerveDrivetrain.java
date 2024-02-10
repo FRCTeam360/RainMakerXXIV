@@ -17,6 +17,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
+import frc.robot.subsystems.Photon;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -35,7 +36,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
-import frc.robot.generated.TunerConstants;
+import frc.robot.generated.PracticebotConstants;
+import frc.robot.generated.WoodbotConstants;
 
 /**
  * Class that extends the Phoenix SwerveDrivetrain class and implements
@@ -46,7 +48,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
-    CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
     private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
     private PhoenixPIDController headingController;
 
@@ -68,7 +69,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         // kPEntry = tab.add("kP", 0.0).getEntry();
         // kIEntry = tab.add("kI", 0.0).getEntry();
         // kDEntry = tab.add("kD", 0.0).getEntry();
-
     }
 
     private void configurePID() {
@@ -85,6 +85,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         if (Utils.isSimulation()) {
             startSimThread();
         }
+    
 
         AutoBuilder.configureHolonomic(
                 this::getPose, // Robot pose supplier
@@ -113,8 +114,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                 },
                 this // Reference to this subsystem to set requirements
         );
-        setupShuffleboard();
+        // setupShuffleboard();
     }
+
 
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);

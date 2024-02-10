@@ -31,6 +31,7 @@ public class Flywheel extends SubsystemBase {
   /** Creates a new Flywheel. */
   public Flywheel(FlywheelIO io) {
     this.io = io;
+    SmartDashboard.putNumber("error", 0);
   }
 
   public void runTop(double speed) {
@@ -41,9 +42,9 @@ public class Flywheel extends SubsystemBase {
     io.setBottom(speed);
   }
 
-  public void runBoth(double speed) {
-    io.setTop(speed);
-    io.setBottom(speed);
+  public void runBoth(double leftSpeed, double rightSpeed) { 
+    io.setTop(leftSpeed);
+    io.setBottom(rightSpeed);
   }
 
   public void setTopRPM(double rpm) {

@@ -10,8 +10,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackTy
 import edu.wpi.first.math.util.Units;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
-public class TunerConstants {
-
+public class WoodbotConstants {
 
     // Both sets of gains need to be tuned to your individual robot.
 
@@ -53,7 +52,7 @@ public class TunerConstants {
     private static final boolean kInvertLeftSide = false;
     private static final boolean kInvertRightSide = true;
 
-    private static final String kCANbusName = "Test 2";
+    private static final String kCANbusName = "Default Name"; //"Test 2";
     private static final int kPigeonId = 13;
 
 
@@ -136,4 +135,6 @@ public class TunerConstants {
 
     public static final CommandSwerveDrivetrain DriveTrain = new CommandSwerveDrivetrain(DrivetrainConstants, FrontLeft,
             FrontRight, BackLeft, BackRight);
+
 }
+
