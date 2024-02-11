@@ -4,6 +4,12 @@ import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import org.littletonrobotics.junction.Logger;
+
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.Volts;
+import static edu.wpi.first.units.MutableMeasure.mutable;
+
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
@@ -17,6 +23,9 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
+import com.revrobotics.CANSparkFlex;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -28,6 +37,10 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.units.Distance;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.MutableMeasure;
+import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -35,6 +48,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
+import frc.robot.Telemetry;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.generated.TunerConstants;
 
 /**
@@ -46,6 +61,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
+    final double MaxSpeed = 13.7;
+
     CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
     private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
     private PhoenixPIDController headingController;
@@ -53,6 +70,28 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     GenericEntry kPEntry;
     GenericEntry kIEntry;
     GenericEntry kDEntry;
+    // Create a new SysId Routine for characterizing the drive 
+    public SysIdRoutine sysIdRoutine = new SysIdRoutine(
+        new SysIdRoutine.Config(
+        null, null, null, // Use default config
+        (state) -> Logger.recordOutput("SysIdTestState", state.toString())
+        ),
+        new SysIdRoutine.Mechanism(
+        (voltage) -> this.runCharacterizationVolts(voltage.in(Volts)),
+        null, // No log consumer, since data is recorded by AdvantageKit
+        this
+        )
+    );
+  
+    // See Robot Container: The methods below return Command objects
+
+    public void runCharacterizationVolts (double voltage) {
+        double velocityX = voltage / 12.0 * MaxSpeed; 
+        this.setControl(new SwerveRequest.RobotCentric()
+            .withVelocityX(velocityX)
+            .withVelocityY(0.0)
+            .withRotationalRate(0.0));
+    }
 
     private double headingKP = 2.5;
     private double headingKI = 0.2;
@@ -155,6 +194,14 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
         return run(() -> this.setControl(requestSupplier.get()));
+    }
+
+    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+        return sysIdRoutine.quasistatic(direction);
+      }
+      
+    public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+        return sysIdRoutine.dynamic(direction);
     }
 
     private void startSimThread() {

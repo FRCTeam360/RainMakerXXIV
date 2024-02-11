@@ -43,6 +43,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -247,6 +248,17 @@ public class RobotContainer {
     // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.xOut(), drivetrain));
     // driverController.a().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     
+    // The methods below return Command objects
+    driverController.rightTrigger().whileTrue(drivetrain.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward));
+    driverController.leftTrigger().whileTrue(drivetrain.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse));
+    driverController.x().whileTrue(drivetrain.sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward));
+    driverController.y().whileTrue(drivetrain.sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
+    
+
+    // if (Utils.isSimulation()) {
+    // drivetrain.seedFieldRelative(new Pose2d(new Translation2d(),
+    // Rotation2d.fromDegrees(90)));
+    // }
     drivetrain.registerTelemetry(logger::telemeterize);
   }
 
