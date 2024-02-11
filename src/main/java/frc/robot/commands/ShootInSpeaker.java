@@ -59,7 +59,7 @@ public class ShootInSpeaker extends Command {
     //drivetrain.driveFieldCentricFacingAngle(0.0, 0.0, 0.0, driveAngleSetpoint); // drivetrain is rotated in its own command ran in // parallel
     // linkage.setAngle(linkageSetpoint);
     flywheel.setBothRPM(flywheelSetpoint);
-    System.out.println("top velocity: " + flywheel.getTopVelocity());
+    System.out.println("top velocity: " + flywheel.getLeftVelocity());
     System.out.println("is above setpoint " + flywheel.isAboveSetpoint(4000));
     switch (state) {
       case LOADED:
