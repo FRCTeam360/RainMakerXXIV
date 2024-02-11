@@ -35,7 +35,6 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
  */
 public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
-
   private RobotContainer m_robotContainer;
 
   /**

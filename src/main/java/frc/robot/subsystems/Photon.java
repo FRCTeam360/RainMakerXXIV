@@ -10,6 +10,7 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Photon extends SubsystemBase {
@@ -28,26 +29,47 @@ public class Photon extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {
 
-  public PhotonPipelineResult getLatestResult() {
-    return camera.getLatestResult();
+  }
+ // TODO the VAR  TYPE IS IMPORTANT idk why but this getPipeline neds TESTING
+  public PhotonPipelineResult getPipeline() {
+
+    PhotonPipelineResult pipelineResult = camera.getLatestResult();
+    return pipelineResult ;
+
   }
 
-  public void getRange() {
-    var result = camera.getLatestResult();
-    if (result.hasTargets()) {
-      // First calculate range
-      double range =
-        PhotonUtils.calculateDistanceToTargetMeters(
-          CAMERA_HEIGHT_METERS,
-          TARGET_HEIGHT_METERS,
-          CAMERA_PITCH_RADIANS,
-          Units.degreesToRadians(result.getBestTarget().getPitch())); 
-    }
+  
+  public boolean getDirectTargetVar() {
+  var result = camera.getLatestResult();
+  Boolean hasTar = result.hasTargets();
+return hasTar ;
   }
 
-  public double getAngle() {
-    return getLatestResult().getBestTarget().getYaw();
-  }
+
+
+  // public void getRange() {
+  //   var result = camera.getLatestResult();
+  //   if (result.hasTargets()) {
+  //     // First calculate range
+  //     double range =
+  //       PhotonUtils.calculateDistanceToTargetMeters(
+  //         CAMERA_HEIGHT_METERS,
+  //         TARGET_HEIGHT_METERS,
+  //         CAMERA_PITCH_RADIANS,
+  //         Units.degreesToRadians(result.getBestTarget().getPitch())); 
+  //   }
+  // }
+
+ public double getAngle() {
+
+  var result = camera.getLatestResult();
+  Double angle = result.getBestTarget().getPitch();
+
+return angle ;
+
+ }
+
 }
+

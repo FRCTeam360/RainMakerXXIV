@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import org.photonvision.PhotonCamera;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Photon;
@@ -14,7 +15,7 @@ public class pointToSpeakerPhoton extends Command {
   /** Creates a new pointToSpeakerPhoton. */
   Photon photon;
   CommandSwerveDrivetrain drive; 
-
+  
   public pointToSpeakerPhoton(Photon photon, CommandSwerveDrivetrain drive) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.photon = photon;
@@ -29,14 +30,24 @@ public class pointToSpeakerPhoton extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double currentDriveAngle ; 
+    System.out.println("RUNNING");
+
+    double currentDriveAngle; 
     double differenceAngle; 
-    boolean hasTarget = photon.getLatestResult().hasTargets();
+    
+    boolean hasTarget = photon.getDirectTargetVar();
+        System.out.println("Command Target"  + hasTarget);
+
     if (hasTarget) {
       double angleCamera = photon.getAngle(); //  TODO IS RADAIAnS? ; 
-      currentDriveAngle = drive.getRotation2d().getRadians() ;
-      differenceAngle = currentDriveAngle + angleCamera;
-      drive.turntoCMD(true, differenceAngle, .5, .5); // TODO: TEST VELCOITY SPEED WAT THEY DO
+     // currentDriveAngle = drive.getRotation2d().getDegrees() ;
+
+     // double anglff = angleCamera -currentDriveAngle;
+  // TODO we should try putting in a rotation2D. maybe easier//       System.out.println("Command Target"  + currentDriveAngle);
+            //  System.out.println("Command Target"  + anglff);
+
+     // drive.driveFieldCentricFacingAngle(1, 1, currentDriveAngle, angleCamera);// TODO: TEST VELCOITY SPEED WAT THEY DO
+      
     } else if (!hasTarget)  {
       System.out.println("no target available") ;
     }
@@ -45,7 +56,10 @@ public class pointToSpeakerPhoton extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+
+
+  }
 
   // Returns true when the command should end.
   @Override

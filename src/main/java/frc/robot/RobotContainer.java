@@ -13,6 +13,7 @@ import frc.robot.commands.PowerLinkage;
 import frc.robot.commands.SetIntake;
 import frc.robot.commands.SetLinkageTalon;
 import frc.robot.commands.ShootInSpeaker;
+import frc.robot.commands.pointToSpeakerPhoton;
 import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.RobotOrientedDrive;
 import frc.robot.commands.FieldOrientedDrive;
@@ -95,6 +96,7 @@ public class RobotContainer {
   // private FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive();
   // private RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive();
   private SetFlywheelSetpoint setFlywheelSetpoint = new SetFlywheelSetpoint(flywheel);
+  private pointToSpeakerPhoton pointToSpeaker = new pointToSpeakerPhoton(photon, drivetrain);
   
 
   private SetLinkageTalon setLinkageTalon = new SetLinkageTalon(linkage);
@@ -172,6 +174,8 @@ public class RobotContainer {
    */
 
   private void configureBindings() {
+
+    operatorController.y().toggleOnTrue(pointToSpeaker);
 
     operatorController.a().whileTrue(shootRoutineWithDrivetrain);
     // operatorController.a().whileTrue(drivetrain.turntoCMD(false, 90.0, 0.0, 0.0));
