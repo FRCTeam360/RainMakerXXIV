@@ -78,6 +78,7 @@ public class ShootInSpeaker extends Command {
 
   @Override
   public void execute() {
+    System.out.println("SHOOTING SHOOTNIG SHOOTING");
     if (!Objects.isNull(drivetrain)) {
     drivetrain.driveFieldCentricFacingAngle(0.0, 0.0, 0.0, driveAngleSetpoint); // drivetrain is rotated in its own command ran in // parallel
       }// linkage.setAngle(linkageSetpoint);
