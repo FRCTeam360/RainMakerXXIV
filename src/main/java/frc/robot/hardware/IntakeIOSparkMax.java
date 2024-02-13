@@ -35,7 +35,7 @@ public class IntakeIOSparkMax implements IntakeIO {
     final double GEAR_RATIO = 2.0;
     // get shuffleboard tab intake
     ShuffleboardTab tab = Shuffleboard.getTab("intake");
-    tab.addBoolean("sensor 1", () -> this.getSideSensor());
+    tab.addBoolean("sensor 0", () -> this.getSideSensor());
     tab.addBoolean("sensor 2", () -> this.getHighSensor());
   }
 
