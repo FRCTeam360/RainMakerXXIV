@@ -87,5 +87,9 @@ public class Linkage extends SubsystemBase {
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("Linkage", inputs);
+
+    if (!io.getZeroButton()) {
+      this.zero();
+    }
   }
 }
