@@ -70,7 +70,7 @@ public class Linkage extends SubsystemBase {
   }
 
   public void zero() {
-    io.setPosition(0);
+    io.setPosition(0.0); //-10.5 when resting on hard stops
   }
 
   public void setEncoderTo90() {

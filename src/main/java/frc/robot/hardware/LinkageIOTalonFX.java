@@ -47,14 +47,20 @@ public class LinkageIOTalonFX implements LinkageIO {
 
   public LinkageIOTalonFX() {
     final double GEAR_RATIO = 360.0 / 60.0; // flip
-    final double kP = 0.049951;
+    final double kA = 0.0;
     final double kD = 0.0;
+    final double kG = 0.0;
     final double kI = 0.0;
-    final double kV = 0.005341416226783969;
+    final double kP = 2.5;
+    final double kS = 0.25;
+    final double kV = 0.0;
+
+    final double motionMagicAcceleration = 400.0;
+    final double motionMagicCruiseVelocity = 85.0;
+    final double motionMagicCruiseJerk = 1750.0;
 
     final double forwardLimit = 29.0; // TODO: make sure these are correct for prac bot
     final double reverseLimit = 0.0; // 29.5
-
 
     talonFX.getConfigurator().apply(new TalonFXConfiguration());
     talonFX.setInverted(false);
@@ -73,16 +79,20 @@ public class LinkageIOTalonFX implements LinkageIO {
     // ClosedLoopRampsConfigs().withDutyCycleClosedLoopRampPeriod(1.0));
 
     Slot0Configs slot0Configs = talonFXConfiguration.Slot0;
-    slot0Configs.kP = kP;
-    slot0Configs.kI = kI;
+    slot0Configs.kA = kA;
     slot0Configs.kD = kD;
+    slot0Configs.kG = kG;
+    slot0Configs.kI = kI;
+    slot0Configs.kP = kP;
+    slot0Configs.kS = kS;
     slot0Configs.kV = kV;
 
     MotionMagicConfigs motionMagicConfigs = talonFXConfiguration.MotionMagic;
-    motionMagicConfigs.MotionMagicCruiseVelocity = 10;
-    motionMagicConfigs.MotionMagicAcceleration = 20;
-    motionMagicConfigs.MotionMagicJerk = 0;
+    motionMagicConfigs.MotionMagicCruiseVelocity = motionMagicCruiseVelocity;
+    motionMagicConfigs.MotionMagicAcceleration = motionMagicAcceleration;
+    motionMagicConfigs.MotionMagicJerk = motionMagicCruiseJerk;
 
+    talonFX.getConfigurator().apply(talonFXConfiguration, 0.050);
   }
 
   public boolean getZeroButton(){
