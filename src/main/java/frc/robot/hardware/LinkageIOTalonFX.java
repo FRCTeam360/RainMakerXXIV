@@ -52,7 +52,7 @@ public class LinkageIOTalonFX implements LinkageIO {
     final double kI = 0.0;
     final double kFF = 0.0;
 
-    final double forwardLimit = 0.0; // TODO: make sure these are correct for prac bot
+    final double forwardLimit = 29.0; // TODO: make sure these are correct for prac bot
     final double reverseLimit = 0.0;
 
     talonFX.getConfigurator().apply(new TalonFXConfiguration());
@@ -61,11 +61,11 @@ public class LinkageIOTalonFX implements LinkageIO {
 
     // need to add offset??? 43.0 rn
 
-    // talonFX.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
-    //     .withForwardSoftLimitThreshold(forwardLimit)
-    //     .withReverseSoftLimitThreshold(reverseLimit)
-    //     .withForwardSoftLimitEnable(true)
-    //     .withReverseSoftLimitEnable(true)); // TODO: dont enable robot past soft limits
+    talonFX.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
+        .withForwardSoftLimitThreshold(forwardLimit)
+        .withReverseSoftLimitThreshold(reverseLimit)
+        .withForwardSoftLimitEnable(true)
+        .withReverseSoftLimitEnable(true)); // TODO: dont enable robot past soft limits
 
     // translated into talonfx from sparkmax, probalby unnecessary
     // talonFX.getConfigurator().apply(new
