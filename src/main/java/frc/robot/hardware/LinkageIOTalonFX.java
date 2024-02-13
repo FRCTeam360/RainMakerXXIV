@@ -7,6 +7,7 @@ package frc.robot.hardware;
 import org.littletonrobotics.junction.AutoLog;
 
 import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -37,23 +38,23 @@ public class LinkageIOTalonFX implements LinkageIO {
   // private final RelativeEncoder encoder = talonFX.getEncoder();
   // private final SparkPIDController pidController = talonFX.getPIDController();
 
-  private Slot0Configs slot0Configs = new Slot0Configs();
   private DutyCycleOut dutyCycleOut = new DutyCycleOut(0);
-  // TODO test code
+  private TalonFXConfiguration talonFXConfiguration = new TalonFXConfiguration();
 
   private PositionVoltage positionVoltage = new PositionVoltage(0);
   DigitalInput zeroButton = new DigitalInput(Constants.LINKAGE_ZERO_BUTTON_PORT);
   DigitalInput brakeButton = new DigitalInput(Constants.LINKAGE_BRAKE_TOGGLE_BUTTON_PORT);
 
   public LinkageIOTalonFX() {
-    final double GEAR_RATIO = 360.0 / 36.0; // TODO: FIX LMAOO!! was 6.0??
-    final double kP = 0.01;
+    final double GEAR_RATIO = 360.0 / 60.0; // flip
+    final double kP = 0.049951;
     final double kD = 0.0;
     final double kI = 0.0;
-    final double kFF = 0.0;
+    final double kV = 0.005341416226783969;
 
     final double forwardLimit = 29.0; // TODO: make sure these are correct for prac bot
-    final double reverseLimit = 0.0;
+    final double reverseLimit = 0.0; // 29.5
+
 
     talonFX.getConfigurator().apply(new TalonFXConfiguration());
     talonFX.setInverted(false);
@@ -71,9 +72,17 @@ public class LinkageIOTalonFX implements LinkageIO {
     // talonFX.getConfigurator().apply(new
     // ClosedLoopRampsConfigs().withDutyCycleClosedLoopRampPeriod(1.0));
 
+    Slot0Configs slot0Configs = talonFXConfiguration.Slot0;
     slot0Configs.kP = kP;
     slot0Configs.kI = kI;
     slot0Configs.kD = kD;
+    slot0Configs.kV = kV;
+
+    MotionMagicConfigs motionMagicConfigs = talonFXConfiguration.MotionMagic;
+    motionMagicConfigs.MotionMagicCruiseVelocity = 10;
+    motionMagicConfigs.MotionMagicAcceleration = 20;
+    motionMagicConfigs.MotionMagicJerk = 0;
+
   }
 
   public boolean getZeroButton(){
@@ -107,8 +116,9 @@ public class LinkageIOTalonFX implements LinkageIO {
     return talonFX.get();
   }
 
-  public void setFF(double ff) {
-    slot0Configs.kV = ff;
+  public void setFF(double ff) { 
+    ///uhhh doesnt work rn will fix later - lauren
+    //slot0Configs.kV = ff;
   }
 
   public double getAppliedOutput() {
