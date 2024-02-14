@@ -45,8 +45,9 @@ public class LinkageIOTalonFX implements LinkageIO {
   DigitalInput zeroButton = new DigitalInput(Constants.LINKAGE_ZERO_BUTTON_PORT);
   DigitalInput brakeButton = new DigitalInput(Constants.LINKAGE_BRAKE_TOGGLE_BUTTON_PORT);
 
+  private final double GEAR_RATIO = 360.0 / 60.0; // flip
+
   public LinkageIOTalonFX() {
-    final double GEAR_RATIO = 360.0 / 60.0; // flip
     final double kA = 0.0;
     final double kD = 0.0;
     final double kG = 0.0;
@@ -92,6 +93,9 @@ public class LinkageIOTalonFX implements LinkageIO {
     motionMagicConfigs.MotionMagicAcceleration = motionMagicAcceleration;
     motionMagicConfigs.MotionMagicJerk = motionMagicCruiseJerk;
 
+    talonFXConfiguration.Voltage.PeakForwardVoltage = 12.0;
+    talonFXConfiguration.Voltage.PeakReverseVoltage = 12.0;
+
     talonFX.getConfigurator().apply(talonFXConfiguration, 0.050);
   }
 
@@ -110,6 +114,7 @@ public class LinkageIOTalonFX implements LinkageIO {
   }
 
   public void set(double speed) {
+    speed = speed / GEAR_RATIO;
     System.out.println("hardware speed " + speed);
     talonFX.setControl(dutyCycleOut.withOutput(speed));
   }
@@ -136,11 +141,14 @@ public class LinkageIOTalonFX implements LinkageIO {
   }
 
   public void setPosition(double angle) {
+    angle = angle / GEAR_RATIO;
     talonFX.setPosition(angle);
   }
 
   @Override
   public void setReference(double setPoint) { //TODO: TEST???
+    setPoint = setPoint / GEAR_RATIO;
+
     this.positionVoltage.Position = setPoint;
 
     talonFX.setControl(this.positionVoltage);
