@@ -58,7 +58,7 @@ public class RunExtendIntake extends Command {
         }
         break;
       case EXTEND_INTAKE:
-        intake.run(.45); // we should extend too but idk how we should implement this
+        intake.run(.65); // we should extend too but idk how we should implement this
         //linkage.setAngle(180);
         if(intake.getAmps() > 20 && timer.get() > .25) {
           sensorTimer.start();
@@ -66,32 +66,30 @@ public class RunExtendIntake extends Command {
         }
         break;
       case WAIT_FOR_SENSOR:
-        intake.run(.225);
-        if(!intake.getHighSensor()) {
+        intake.run(.3);
+        // if(!intake.getHighSensor()) {
+        //   state = IntakeCases.UP_TO_SHOOTER_P1;
+        // }
+        if(sensorTimer.get() > 1) {
+          state = IntakeCases.EXTEND_INTAKE;
+          sensorTimer.reset();
+        } 
+        if(!intake.getSideSensor()){
+         // setPoint = intake.encoder.getPosition() + 1.28436279297;
           state = IntakeCases.UP_TO_SHOOTER_P1;
         }
-        // if(sensorTimer.get() > 1) {
-        //   state = IntakeCases.EXTEND_INTAKE;
-        //   sensorTimer.reset();
-        // } 
-        // if(!intake.getSideSensor()){
-        //  // setPoint = intake.encoder.getPosition() + 1.28436279297;
-        //   state = IntakeCases.RETRACT_STOP;
-        // }
         break;
       case UP_TO_SHOOTER_P1:
-        // if(!intake.getHighSensor()) {
-        //   state = IntakeCases.UP_TO_SHOOTER_P2;
-        // } else {
-        //   intake.run(.25);
-        // }
+        if(!intake.getHighSensor()) {
+          state = IntakeCases.RETRACT_STOP;
+        }
+        intake.run(.25);
         // if(intake.getSideSensor()) {
         //   state = IntakeCases.RETRACT_STOP;
         // }
-        if(intake.getHighSensor()) {
-          state = IntakeCases.UP_TO_SHOOTER_P2;
-        }
-      
+        // if(intake.getHighSensor()) {
+        //   state = IntakeCases.UP_TO_SHOOTER_P2;
+        // }
         break;
       case UP_TO_SHOOTER_P2:
           if(!intake.getHighSensor()) {

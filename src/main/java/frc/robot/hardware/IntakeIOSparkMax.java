@@ -31,7 +31,7 @@ public class IntakeIOSparkMax implements IntakeIO {
 
   public IntakeIOSparkMax() {
     sparkMax.restoreFactoryDefaults();
-    sparkMax.setInverted(false);
+    sparkMax.setInverted(true);
     sparkMax.setIdleMode(IdleMode.kBrake);
     final double GEAR_RATIO = 2.0;
     // get shuffleboard tab intake

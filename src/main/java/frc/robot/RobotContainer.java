@@ -161,6 +161,8 @@ public class RobotContainer {
 
   private void configureBindings() {
 
+    operatorController.a().toggleOnTrue(runExtendIntake);
+
     // operatorController.a().whileTrue(setLinkageTalon);
 
     // operatorController.leftBumper().whileTrue(powerIntakeReversed);
