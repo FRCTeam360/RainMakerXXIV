@@ -27,13 +27,25 @@ public class Climber extends SubsystemBase {
     this.io = io;
   }
 
-  public void run(double speed) {
-    io.setRight(speed);
+  public void runBoth(double leftSpeed, double rightSpeed) {
+    io.runBoth(leftSpeed, rightSpeed);
+  }
+
+  public void runLeft(double speed) {
+    io.runLeft(speed);
+  }
+
+  public void runRight(double speed) {
+    io.runRight(speed);
   }
 
   public void stop() {
-    io.setLeft(0);
-    io.setRight(0);
+    io.runLeft(0);
+    io.runRight(0);
+  }
+
+  public void level() {
+    io.level();
   }
 
   @Override

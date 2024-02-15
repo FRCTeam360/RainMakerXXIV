@@ -57,6 +57,7 @@ public class FlywheelIOSparkFlex implements FlywheelIO {
     leftMotor.set(speed);
   }
 
+
   @Override
   public void setRight(double speed) {
    rightMotor.set(speed);

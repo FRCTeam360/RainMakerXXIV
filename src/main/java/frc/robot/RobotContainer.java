@@ -15,8 +15,10 @@ import frc.robot.commands.ShootInSpeaker;
 import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.RobotOrientedDrive;
 import frc.robot.commands.FieldOrientedDrive;
+import frc.robot.commands.PowerClimber;
 import frc.robot.generated.PracticebotConstants;
 import frc.robot.generated.WoodbotConstants;
+import frc.robot.hardware.ClimberIOSparkMax;
 import frc.robot.hardware.FlywheelIOSparkFlex;
 import frc.robot.hardware.IntakeIOSparkMax;
 import frc.robot.hardware.LinkageIOTalonFX;
@@ -67,12 +69,13 @@ public class RobotContainer {
 
   final double MaxSpeed = 13.7; // used to be 6 meters per second desired top speed
   final double MaxAngularRate = Math.PI * 3; // Half a rotation per second max angular velocity
+
   // subsystems
   private final CommandSwerveDrivetrain drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
   private final Flywheel flywheel = new Flywheel(new FlywheelIOSparkFlex());
   private final Linkage linkage = new Linkage(new LinkageIOTalonFX());
   private final Intake intake = new Intake(new IntakeIOSparkMax());
-  // private final Climber climber = new Climber(new ClimberIOSparkMax());
+  private final Climber climber = new Climber(new ClimberIOSparkMax());
 
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
   private final Command shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
@@ -83,6 +86,8 @@ public class RobotContainer {
   private PowerIntake powerIntake = new PowerIntake(intake);
   private PowerFlywheel powerFlywheel = new PowerFlywheel(flywheel);
   private PowerLinkage powerLinkage = new PowerLinkage(linkage);
+  private PowerClimber powerClimber = new PowerClimber(climber);
+
   private FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
   private RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive(drivetrain);
 
@@ -142,6 +147,7 @@ public class RobotContainer {
     // linkage.setDefaultCommand(powerLinkage);
     //flywheel.setDefaultCommand(powerFlywheel);
     // drivetrain.setDefaultCommand(fieldOrientedDrive);
+    //climber.setDefaultCommand(powerClimber);
   }
 
   /**
