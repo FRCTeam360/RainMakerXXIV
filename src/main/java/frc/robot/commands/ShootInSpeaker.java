@@ -121,7 +121,7 @@ public class ShootInSpeaker extends Command {
         break;
       case TIMER:
           intake.run(1.0);
-          if(timer.hasElapsed(0.24)) {
+          if(timer.hasElapsed(0.3)) {
           this.state = ShootState.END;
         }
         break;

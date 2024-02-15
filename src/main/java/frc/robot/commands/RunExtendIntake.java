@@ -50,6 +50,7 @@ public class RunExtendIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println("ME IS EXTEND");
     System.out.println(state);
     switch(state){
       case CHECK_ROBOT_EMPTY:
@@ -66,7 +67,7 @@ public class RunExtendIntake extends Command {
         }
         break;
       case WAIT_FOR_SENSOR:
-        intake.run(.4);
+        intake.run(.3);
         if(!intake.getSideSensor()) {
           state = IntakeCases.UP_TO_SHOOTER_P1;
         }
@@ -81,16 +82,16 @@ public class RunExtendIntake extends Command {
         break;
       case UP_TO_SHOOTER_P1:
         if(!intake.getHighSensor()) {
-          state = IntakeCases.RETRACT_STOP;
+          state = IntakeCases.UP_TO_SHOOTER_P2;
         }
-        intake.run(.25);
+        intake.run(.2);
         break;
-      // case UP_TO_SHOOTER_P2:
-      //     if(!intake.getHighSensor()) {
-      //       state = IntakeCases.RETRACT_STOP;
-      //     } else {
-      //       intake.run(-.14);
-      //     }
+      case UP_TO_SHOOTER_P2:
+          if(intake.getHighSensor()) {
+            state = IntakeCases.RETRACT_STOP;
+          } else {
+            intake.run(.15);
+          }
       case RETRACT_STOP:
         break;
 
