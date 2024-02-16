@@ -24,15 +24,10 @@ public class ShootInSpeaker extends Command {
   private double flywheelSetpoint;
   private double driveAngleSetpoint;
 
-  private boolean isDriveReady;
-  
-
   private Timer timer = new Timer();
   private Intake intake;
 
   private ShootState state = ShootState.LOADED;
-
-  private boolean withDriveTrain;
 
   private enum ShootState {
     LOADED, SHOOT, TIMER, END
@@ -51,9 +46,10 @@ public class ShootInSpeaker extends Command {
     this.drivetrain = drivetrain;
     this.linkageSetpoint = linkageSetpoint;
     this.flywheelSetpoint = flywheelSetpoint;
+    this.driveAngleSetpoint = driveSetpoint;
     this.intake = intake;
 
-    withDriveTrain = true;
+    // withDriveTrain = true;
   }
 
   @Override
@@ -76,35 +72,38 @@ public class ShootInSpeaker extends Command {
     this.flywheelSetpoint = flywheelSetpoint;
     this.intake = intake;
 
-    withDriveTrain = false;
+    // withDriveTrain = false;
   }
 
 
   @Override
   public void execute() {
-    //drivetrain.driveFieldCentricFacingAngle(0.0, 0.0, 0.0, driveAngleSetpoint); // drivetrain is rotated in its own command ran in // parallel
-    // linkage.setAngle(linkageSetpoint);
+    System.out.println("SHOOTING SHOOTNIG SHOOTING");
+    if (!Objects.isNull(drivetrain)) {
+    drivetrain.driveFieldCentricFacingAngle(0.0, 0.0, 0.0, driveAngleSetpoint); // drivetrain is rotated in its own command ran in // parallel
+      }// linkage.setAngle(linkageSetpoint);
+    System.out.println("this is the robot state: " + this.state);
     flywheel.setBothRPM(flywheelSetpoint);
-    System.out.println("top velocity: " + flywheel.getTopVelocity());
-    System.out.println("is above setpoint " + flywheel.isAboveSetpoint(4000));
+    // System.out.println("top velocity: " + flywheel.getTopVelocity());
+    // System.out.println("is above setpoint " + flywheel.isAboveSetpoint());
     switch (state) {
       case LOADED:
         intake.stop();
         // boolean isLinkageAtSetpoint = linkage.isAtSetpoint();
-        boolean isFlywheelAtSetpoint = flywheel.isAboveSetpoint(4000);
-        isDriveReady = Objects.isNull(drivetrain) || drivetrain.isFacingAngle();
+        boolean isFlywheelAtSetpoint = flywheel.areBothAtSetpoint();
+        boolean isDriveReady = Objects.isNull(drivetrain) || drivetrain.isFacingAngle();
         // if (isLinkageAtSetpoint) {
         // System.out.println("inkage at setpoint");
         // }
-        // if (isFlywheelAtSetpoint) {
-        //   System.out.println("flywheel at setpoint");
-        // }
-        // if (isDrivetrainAtSetpoint && withDriveTrain) {
-        //   System.out.println("drivetrain at setpoint");
-        // }
+        if (isFlywheelAtSetpoint) {
+          System.out.println("flywheel at setpoint");
+        }
+        if (isDriveReady) {
+          System.out.println("drivetrain at setpoint");
+        }
         if (isFlywheelAtSetpoint && isDriveReady) { // && isLinkageAtSetpoint
           this.state = ShootState.SHOOT;
-          System.out.println(state);
+          System.out.println("this is the robot state: " + state);
         }
         break;
 
@@ -114,13 +113,15 @@ public class ShootInSpeaker extends Command {
         if (hasShot) {
           timer.start();
           state = ShootState.TIMER;
+          System.out.println(state);
           // timer.start();
           // if (timer.hasElapsed(0.3)) { // TUNE!!!
           //   this.state = ShootState.END;
           }
         break;
       case TIMER:
-        if(timer.hasElapsed(.2)) {
+          intake.run(1.0);
+          if(timer.hasElapsed(0.3)) {
           this.state = ShootState.END;
         }
         break;

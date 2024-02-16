@@ -16,12 +16,24 @@
           "data": {
             "commands": [
               {
+                "type": "named",
+                "data": {
+                  "name": "Rotate"
+                }
+              },
+              {
                 "type": "path",
                 "data": {
                   "pathName": "Forward1"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Rotate"
           }
         },
         {
