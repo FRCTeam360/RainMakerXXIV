@@ -137,7 +137,6 @@ public class RobotContainer {
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     NamedCommands.registerCommand("Shoot", shootRoutineWithDrivetrain);
     NamedCommands.registerCommand("Shoot without drivetrain", shootRoutine);
-    NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0, 0));
     NamedCommands.registerCommand("Spinny", setFlywheelSetpoint);
     NamedCommands.registerCommand("inf intake", powerIntake);
     autoChooser = AutoBuilder.buildAutoChooser();

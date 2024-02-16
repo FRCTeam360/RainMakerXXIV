@@ -90,7 +90,7 @@ public class ShootInSpeaker extends Command {
       case LOADED:
         intake.stop();
         // boolean isLinkageAtSetpoint = linkage.isAtSetpoint();
-        boolean isFlywheelAtSetpoint = flywheel.isAboveSetpoint();
+        boolean isFlywheelAtSetpoint = flywheel.areBothAtSetpoint();
         boolean isDriveReady = Objects.isNull(drivetrain) || drivetrain.isFacingAngle();
         // if (isLinkageAtSetpoint) {
         // System.out.println("inkage at setpoint");

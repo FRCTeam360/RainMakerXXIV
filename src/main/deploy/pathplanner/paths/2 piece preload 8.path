@@ -3,47 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/purple return.path
-        "x": 8.855242033524448,
-        "y": 0.7994801737822012
-      },
-      "prevControl": null,
-      "nextControl": {
-        "x": 8.562749287018764,
-        "y": 4.514138054404375
-========
         "x": 14.52,
-        "y": 5.572630034148957
+        "y": 5.57
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.526994457967346,
-        "y": 5.575260471384773
->>>>>>>> 743c1b2e2e90910945810c5724d3026890136fd2:src/main/deploy/pathplanner/paths/2 piece preload 8.path
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/purple return.path
-        "x": 14.656348172553828,
-        "y": 5.5086133925236975
-      },
-      "prevControl": {
-        "x": 13.886117273422194,
-        "y": 5.099123547415742
-========
-        "x": 11.49,
-        "y": 4.36
-      },
-      "prevControl": {
-        "x": 12.189625490362092,
-        "y": 5.0310445065334575
-      },
-      "nextControl": {
-        "x": 10.756342051666156,
-        "y": 3.656313323790941
+        "x": 14.520815059407896,
+        "y": 5.572630034148957
       },
       "isLocked": false,
       "linkedName": null
@@ -54,9 +20,8 @@
         "y": 4.12
       },
       "prevControl": {
-        "x": 8.51,
-        "y": 4.105747749273276
->>>>>>>> 743c1b2e2e90910945810c5724d3026890136fd2:src/main/deploy/pathplanner/paths/2 piece preload 8.path
+        "x": 8.988569977139953,
+        "y": 3.1371239885336917
       },
       "nextControl": null,
       "isLocked": false,
@@ -80,7 +45,7 @@
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": 180.0,
+    "rotation": -179.20248232604064,
     "velocity": 0
   },
   "useDefaultConstraints": false
