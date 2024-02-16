@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.util.Objects;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -37,14 +39,17 @@ public class ShootInSpeaker extends Command {
       double linkageSetpoint, double flywheelSetpoint, double driveSetpoint) { // Add your commands in the
     // addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addRequirements(linkage, flywheel, intake);
+    addRequirements(linkage, flywheel, intake, drivetrain);
 
     this.linkage = linkage;
     this.flywheel = flywheel;
     this.drivetrain = drivetrain;
     this.linkageSetpoint = linkageSetpoint;
     this.flywheelSetpoint = flywheelSetpoint;
+    this.driveAngleSetpoint = driveSetpoint;
     this.intake = intake;
+
+    // withDriveTrain = true;
   }
 
   @Override
@@ -54,32 +59,51 @@ public class ShootInSpeaker extends Command {
     timer.reset();
   }
 
+  public ShootInSpeaker(Linkage linkage, Flywheel flywheel, Intake intake,
+      double linkageSetpoint, double flywheelSetpoint) { // Add your commands in the
+    // addCommands() call, e.g.
+    // addCommands(new FooCommand(), new BarCommand());
+    
+    addRequirements(linkage, flywheel, intake);
+
+    this.linkage = linkage;
+    this.flywheel = flywheel;
+    this.linkageSetpoint = linkageSetpoint;
+    this.flywheelSetpoint = flywheelSetpoint;
+    this.intake = intake;
+
+    // withDriveTrain = false;
+  }
+
+
   @Override
   public void execute() {
-    //drivetrain.driveFieldCentricFacingAngle(0.0, 0.0, 0.0, driveAngleSetpoint); // drivetrain is rotated in its own command ran in // parallel
-    // linkage.setAngle(linkageSetpoint);
+    System.out.println("SHOOTING SHOOTNIG SHOOTING");
+    if (!Objects.isNull(drivetrain)) {
+    drivetrain.driveFieldCentricFacingAngle(0.0, 0.0, 0.0, driveAngleSetpoint); // drivetrain is rotated in its own command ran in // parallel
+      }// linkage.setAngle(linkageSetpoint);
+    System.out.println("this is the robot state: " + this.state);
     flywheel.setBothRPM(flywheelSetpoint);
-    System.out.println("top velocity: " + flywheel.getTopVelocity());
-    System.out.println("is above setpoint " + flywheel.isAboveSetpoint(4000));
+    // System.out.println("top velocity: " + flywheel.getTopVelocity());
+    // System.out.println("is above setpoint " + flywheel.isAboveSetpoint());
     switch (state) {
       case LOADED:
         intake.stop();
         // boolean isLinkageAtSetpoint = linkage.isAtSetpoint();
-        boolean isFlywheelAtSetpoint = flywheel.isAboveSetpoint(4000);
-        boolean isDrivetrainAtSetpoint = drivetrain.isFacingAngle();
+        boolean isFlywheelAtSetpoint = flywheel.isAboveSetpoint();
+        boolean isDriveReady = Objects.isNull(drivetrain) || drivetrain.isFacingAngle();
         // if (isLinkageAtSetpoint) {
         // System.out.println("inkage at setpoint");
         // }
         if (isFlywheelAtSetpoint) {
           System.out.println("flywheel at setpoint");
         }
-
-        if (isDrivetrainAtSetpoint) {
+        if (isDriveReady) {
           System.out.println("drivetrain at setpoint");
         }
-        if (isFlywheelAtSetpoint) { // && isLinkageAtSetpoint
+        if (isFlywheelAtSetpoint && isDriveReady) { // && isLinkageAtSetpoint
           this.state = ShootState.SHOOT;
-          System.out.println(state);
+          System.out.println("this is the robot state: " + state);
         }
         break;
 
@@ -89,13 +113,15 @@ public class ShootInSpeaker extends Command {
         if (hasShot) {
           timer.start();
           state = ShootState.TIMER;
+          System.out.println(state);
           // timer.start();
           // if (timer.hasElapsed(0.3)) { // TUNE!!!
           //   this.state = ShootState.END;
           }
         break;
       case TIMER:
-        if(timer.hasElapsed(.3)) {
+          intake.run(1.0);
+          if(timer.hasElapsed(0.3)) {
           this.state = ShootState.END;
         }
         break;

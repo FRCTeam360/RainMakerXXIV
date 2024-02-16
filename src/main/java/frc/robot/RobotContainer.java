@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.commands.Autos;
 import frc.robot.commands.RunExtendIntake;
+import frc.robot.commands.SetFlywheelSetpoint;
 import frc.robot.commands.PowerIntakeReversed;
 import frc.robot.commands.PowerIntake;
 import frc.robot.commands.PowerLinkage;
@@ -42,6 +43,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -72,8 +74,9 @@ public class RobotContainer {
 
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
   // Create new ShootInSpeaker command
-  private final Command shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
-   // auto commands
+  private final Command shootRoutineWithDrivetrain = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 0.0);
+  private final Command shootRoutine = new ShootInSpeaker(linkage, flywheel, intake, 0.0, 4000.0);
+  // auto commands
   //private final SetFlywheel setFlywheel = new SetFlywheel();
 
   // tele commands
@@ -84,6 +87,7 @@ public class RobotContainer {
   // private PowerLinkage powerLinkage = new PowerLinkage(linkage);
   private FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive();
   private RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive();
+  private SetFlywheelSetpoint setFlywheelSetpoint = new SetFlywheelSetpoint(flywheel);
   
 
 
@@ -131,8 +135,11 @@ public class RobotContainer {
     // Configure the trigger bindings
     NamedCommands.registerCommand("Intake", runExtendIntake);
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
-    NamedCommands.registerCommand("Shoot", shootRoutine);
+    NamedCommands.registerCommand("Shoot", shootRoutineWithDrivetrain);
+    NamedCommands.registerCommand("Shoot without drivetrain", shootRoutine);
     NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0, 0));
+    NamedCommands.registerCommand("Spinny", setFlywheelSetpoint);
+    NamedCommands.registerCommand("inf intake", powerIntake);
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
     configureBindings();
@@ -196,7 +203,7 @@ public class RobotContainer {
     
     // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
 
-    operatorController.a().whileTrue(shootRoutine);
+    operatorController.a().whileTrue(shootRoutineWithDrivetrain);
     // operatorController.a().whileTrue(drivetrain.turntoCMD(false, 90.0, 0.0, 0.0));
 
     
@@ -241,6 +248,17 @@ public class RobotContainer {
     // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.xOut(), drivetrain));
     // driverController.a().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     
+    // The methods below return Command objects
+    driverController.rightTrigger().whileTrue(drivetrain.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward));
+    driverController.leftTrigger().whileTrue(drivetrain.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse));
+    driverController.x().whileTrue(drivetrain.sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward));
+    driverController.y().whileTrue(drivetrain.sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
+    
+
+    // if (Utils.isSimulation()) {
+    // drivetrain.seedFieldRelative(new Pose2d(new Translation2d(),
+    // Rotation2d.fromDegrees(90)));
+    // }
     drivetrain.registerTelemetry(logger::telemeterize);
   }
 
