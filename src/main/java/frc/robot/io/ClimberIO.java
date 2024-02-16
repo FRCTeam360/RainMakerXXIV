@@ -6,7 +6,6 @@ package frc.robot.io;
 
 import org.littletonrobotics.junction.AutoLog;
 
-
 public interface ClimberIO {
   /** Creates a new ClimberIO. */
   @AutoLog
@@ -15,16 +14,25 @@ public interface ClimberIO {
     public double speedRight = 0.0;
   }
 
-  public default void updateInputs(ClimberIOInputs inputs) {}
+  public default void updateInputs(ClimberIOInputs inputs) {
+  }
 
   public void runLeft(double speed);
 
   public void runRight(double speed);
-  
+
   public void runBoth(double leftSpeed, double rightSpeed);
 
   public void stop();
 
   public void level();
+
+  public boolean leftAboveMinHeight();
+
+  public boolean rightAboveMinHeight();
+
+  public double getLeftPosition();
+
+  public double getRightPosition();
 
 }

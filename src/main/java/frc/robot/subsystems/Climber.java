@@ -13,6 +13,7 @@ import org.littletonrobotics.junction.Logger;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.io.ClimberIO;
 import frc.robot.io.ClimberIOInputsAutoLogged;
@@ -25,6 +26,9 @@ public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
   public Climber(ClimberIO io) {
     this.io = io;
+
+    SmartDashboard.putNumber("Left Height", 0);
+    SmartDashboard.putNumber("Right Height", 0);
   }
 
   public void runBoth(double leftSpeed, double rightSpeed) {
@@ -48,10 +52,29 @@ public class Climber extends SubsystemBase {
     io.level();
   }
 
+  public boolean leftAboveMinHeight() {
+    return io.leftAboveMinHeight();
+  }
+
+  public boolean rightAboveMinHeight() {
+    return io.rightAboveMinHeight();
+  }
+
+  public double getLeftPosition() {
+    return io.getLeftPosition();
+  }
+
+  public double getRightPosition() {
+    return io.getRightPosition();
+  } 
+
   @Override
   public void periodic() {
+    // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("Climber", inputs);
-    // This method will be called once per scheduler run
+
+    SmartDashboard.putNumber("Left Height", getLeftPosition());
+    SmartDashboard.putNumber("Right Height", getRightPosition());
   }
 }

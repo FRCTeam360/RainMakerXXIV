@@ -147,7 +147,7 @@ public class RobotContainer {
     // linkage.setDefaultCommand(powerLinkage);
     //flywheel.setDefaultCommand(powerFlywheel);
     // drivetrain.setDefaultCommand(fieldOrientedDrive);
-    //climber.setDefaultCommand(powerClimber);
+    climber.setDefaultCommand(powerClimber);
   }
 
   /**
@@ -169,22 +169,9 @@ public class RobotContainer {
 
     operatorController.a().toggleOnTrue(runExtendIntake);
 
-    // operatorController.a().whileTrue(setLinkageTalon);
+    driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(),drivetrain));
 
-    // operatorController.leftBumper().whileTrue(powerIntakeReversed);
-    // operatorController.rightBumper().whileTrue(powerIntake);
-
-    // operatorController.y().whileTrue(powerFlywheel);
-    // // OPERATOR CONTROLLER BINDINGS
-    // operatorController.a().toggleOnTrue(runExtendIntake);
-    // operatorController.b().whileTrue(powerIntake);
-    // operatorController.y().toggleOnTrue(new InstantCommand(() ->
-    // flywheel.setBothRPM(5000), flywheel));
-
-    // // DRIVER CONTROLLER BINDINGS
-    // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(),drivetrain));
-
-    // drivetrain.registerTelemetry(logger::telemeterize);
+    drivetrain.registerTelemetry(logger::telemeterize);
   }
 
   public void onDisable() {

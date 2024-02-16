@@ -26,7 +26,7 @@ public class PowerClimber extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climber.runBoth(operatorCont.getLeftY(), operatorCont.getLeftY());
+    climber.runBoth(operatorCont.getLeftY(), operatorCont.getRightY());
   }
 
   // Called once the command ends or is interrupted.
