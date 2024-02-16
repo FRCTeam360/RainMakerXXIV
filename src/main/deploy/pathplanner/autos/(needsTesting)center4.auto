@@ -14,26 +14,19 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "Wait1"
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "1Tri"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              }
-            ]
+            "pathName": "1Tri"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Wait1"
           }
         },
         {
@@ -45,7 +38,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "Wait1"
           }
         },
         {
@@ -81,7 +74,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Intake"
+            "name": "Wait1"
           }
         },
         {
@@ -91,9 +84,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "Shoot"
+            "commands": [
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": []
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Spit"
+                }
+              }
+            ]
           }
         }
       ]

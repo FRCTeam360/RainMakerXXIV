@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
@@ -361,7 +362,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
            
         }
         Logger.recordOutput("Rotation2d", this.getPigeon2().getRotation2d());
-
+        Logger.recordOutput("Drive Command", Objects.isNull(getCurrentCommand()) ? "null" : getCurrentCommand().getName());
     }
 
 }
