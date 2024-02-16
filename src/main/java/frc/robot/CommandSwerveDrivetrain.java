@@ -37,13 +37,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             startSimThread();
         }
     }
-    public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, Limelight lime, SwerveModuleConstants... modules) {
-        super(driveTrainConstants, modules);
-        this.lime = lime;
-        if (Utils.isSimulation()) {
-            startSimThread();
-        }
-    }
 
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
         return run(() -> this.setControl(requestSupplier.get()));

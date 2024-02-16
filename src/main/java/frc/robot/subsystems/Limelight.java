@@ -18,21 +18,22 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Limelight extends SubsystemBase {
+  private final VisionIO[] io;
   //NetworkTable lime = NetworkTableInstance.getDefault().getTable("limelight");
   private static final double LOWEST_DISTANCE = Units.feetToMeters(10.0);
-  private final VisionIO[] cameras;
   private final VisionIOInputsAutoLogged[] inputs;
 
   private int acceptableID;
   private boolean useSingleTag = false;
 
+
   private final List<Limelight.PoseAndTimestamp> results = new ArrayList<>();
   /** Creates a new Limelight. */
-  public Limelight(VisionIO[] cameras) {
-    this.cameras = cameras;
-    inputs = new VisionIOInputsAutoLogged[cameras.length];
+  public Limelight(VisionIO[] io) {
+    this.io = io;
+    inputs = new VisionIOInputsAutoLogged[io.length];
 
-    for (int i = 0; i < cameras.length; i++) {
+    for (int i = 0; i < io.length; i++) {
         inputs[i] = new VisionIOInputsAutoLogged();
     }
   }
@@ -54,8 +55,8 @@ public class Limelight extends SubsystemBase {
     Logger.recordOutput("useSingleTag", useSingleTag);
     results.clear();
     for(int i = 0; i < inputs.length; i++) {
-      cameras[i].updateInputs(inputs[i]);
-      Logger.processInputs("Vision/" + cameras[i].getName() + "/Inputs", inputs[i]);
+      io[i].updateInputs(inputs[i]);
+      Logger.processInputs("Vision/" + io[i].getName() + "/Inputs", inputs[i]);
 
       if (inputs[i].hasTarget
               && inputs[i].isNew
@@ -106,7 +107,7 @@ public class Limelight extends SubsystemBase {
   }
 
   public void setReferencePose(Pose2d pose) {
-    for(VisionIO io : cameras) {
+    for(VisionIO io : io) {
       io.setReferencePose(pose);
     }
   }
@@ -118,7 +119,7 @@ public class Limelight extends SubsystemBase {
   public void processVision(int cameraNum) {
     Pose2d currentPose =
         new Pose2d(inputs[cameraNum].x, inputs[cameraNum].y, new Rotation2d(inputs[cameraNum].rotation));
-        Logger.recordOutput(cameras[cameraNum].getName() + " pose", currentPose);
+        Logger.recordOutput(io[cameraNum].getName() + " pose", currentPose);
 
         // add the new pose to a list
         results.add(new PoseAndTimestamp(currentPose, inputs[cameraNum].timestamp));
