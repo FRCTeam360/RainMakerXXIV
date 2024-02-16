@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.Objects;
+
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
 
@@ -77,6 +79,7 @@ public class Linkage extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
+    Logger.recordOutput("Linkage Command", Objects.isNull(getCurrentCommand()) ? "null" : getCurrentCommand().getName());
     Logger.processInputs("Linkage", inputs);
   }
 }
