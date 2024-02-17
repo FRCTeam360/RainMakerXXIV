@@ -32,8 +32,6 @@ public class Intake extends SubsystemBase {
     this.io = io;
   }
 
-  /** Creates a new Intake. */
-
   public boolean getSideSensor() {
     return io.getSideSensor();
   }

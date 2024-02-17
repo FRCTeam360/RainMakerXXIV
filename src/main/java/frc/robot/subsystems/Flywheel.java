@@ -25,70 +25,71 @@ public class Flywheel extends SubsystemBase {
   private final FlywheelIO io;
   private final FlywheelIOInputsAutoLogged inputs = new FlywheelIOInputsAutoLogged();
 
-  double rpmSetpoint = 0.0;
+  private double rpmSetpoint = 0.0;
 
   /** Creates a new Flywheel. */
   public Flywheel(FlywheelIO io) {
     this.io = io;
+    SmartDashboard.putNumber("error", 0);
   }
 
-  public void runTop(double speed) {
-    io.setTop(speed);
+  public void runLeft(double speed) {
+    io.setLeft(speed);
   }
 
-  public void runBottom(double speed) {
-    io.setBottom(speed);
+  public void runRight(double speed) {
+    io.setRight(speed);
   }
 
-  public void runBoth(double speed) {
-    io.setTop(speed);
-    io.setBottom(speed);
+  public void runBoth(double leftSpeed, double rightSpeed) { 
+    io.setLeft(leftSpeed);
+    io.setRight(rightSpeed);
   }
 
-  public void setTopRPM(double rpm) {
-    io.setTopReference(rpm, ControlType.kVelocity);
+  public void setLeftRPM(double rpm) {
+    io.setLeftReference(rpm, ControlType.kVelocity);
   }
 
-  public void setBottomRPM(double rpm) {
-    io.setBottomReference(rpm, ControlType.kVelocity);
+  public void setRightRPM(double rpm) {
+    io.setRightReference(rpm, ControlType.kVelocity);
   }
 
   public void setBothRPM(double rpm) {
-    io.setTopReference(rpm, ControlType.kVelocity);
-    io.setBottomReference(rpm, ControlType.kVelocity);
+    io.setLeftReference(rpm, ControlType.kVelocity);
+    io.setRightReference(rpm, ControlType.kVelocity);
   }
 
   public void stop() {
-    io.stopTopMotor();
-    io.stopBottomMotor();
+    io.stopLeftMotor();
+    io.stopRightMotor();
   }
 
-  public double getTopPower() {
-    return io.getTopPower();
+  public double getLeftPower() {
+    return io.getLeftPower();
   }
 
-  public double getBottomPower() {
-    return io.getBottomPower();
+  public double getRightPower() {
+    return io.getRightPower();
   }
 
-  public double getTopVelocity() {
-    return io.getTopVelocity();
+  public double getLeftVelocity() {
+    return io.getLeftVelocity();
   }
 
-  public double getBottomVelocity() {
-    return io.getBottomVelocity();
+  public double getRightVelocity() {
+    return io.getRightVelocity();
   }
 
   public boolean isAtSetpoint() {
-    return Math.abs(this.getTopVelocity() - rpmSetpoint) < 30.0;
+    return Math.abs(this.getLeftVelocity() - rpmSetpoint) < 30.0;
   }
 
   public boolean isAboveSetpoint(double setpoint) {
-    return this.getTopVelocity() >= setpoint;
+    return this.getLeftVelocity() >= setpoint;
   }
 
   public boolean isBelowSetpoint() {
-    return this.getTopVelocity() <= rpmSetpoint - 30.0;
+    return this.getLeftVelocity() <= rpmSetpoint - 30.0;
   }
 
   @Override

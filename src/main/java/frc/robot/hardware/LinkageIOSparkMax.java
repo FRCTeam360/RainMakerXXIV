@@ -20,7 +20,7 @@ import frc.robot.io.LinkageIO;
 
 public class LinkageIOSparkMax implements LinkageIO {
   /** Creates a new IntakeIOSparkMax. */
-    private final CANSparkMax sparkMax = new CANSparkMax (Constants.SHOOTER_LINKAGE_ID, MotorType.kBrushless);
+    private final CANSparkMax sparkMax = new CANSparkMax (Constants.WoodBotConstants.WOOD_BOT_LINKAGE_ID, MotorType.kBrushless);
     private final RelativeEncoder encoder = sparkMax.getEncoder();
     private final SparkPIDController pidController = sparkMax.getPIDController();
 
@@ -86,9 +86,14 @@ public class LinkageIOSparkMax implements LinkageIO {
     encoder.setPosition(angle);
   }
 
-  @Override
-  public void setReference(int setPoint, ControlType kposition) {
-    pidController.setReference(setPoint, kposition);
+  public void setReference( double setPoint) {
+    pidController.setReference(setPoint, ControlType.kPosition);
+  }
+
+  public boolean getZeroButton(){
+    return true;
+  }
+  public boolean getBrakeButton(){
+    return true;
   }
 }
-
