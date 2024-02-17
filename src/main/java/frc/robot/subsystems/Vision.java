@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.littletonrobotics.junction.Logger;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -16,8 +18,9 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.Vision.PoseAndTimestamp;
 
-public class Limelight extends SubsystemBase {
+public class Vision extends SubsystemBase {
   private final VisionIO[] io;
   //NetworkTable lime = NetworkTableInstance.getDefault().getTable("limelight");
   private static final double LOWEST_DISTANCE = Units.feetToMeters(10.0);
@@ -27,9 +30,9 @@ public class Limelight extends SubsystemBase {
   private boolean useSingleTag = false;
 
 
-  private final List<Limelight.PoseAndTimestamp> results = new ArrayList<>();
+  private final List<Vision.PoseAndTimestamp> results = new ArrayList<>();
   /** Creates a new Limelight. */
-  public Limelight(VisionIO[] io) {
+  public Vision(VisionIO[] io) {
     this.io = io;
     inputs = new VisionIOInputsAutoLogged[io.length];
 
@@ -75,7 +78,7 @@ public class Limelight extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public List<Limelight.PoseAndTimestamp> getVisionOdometry() {
+  public List<Vision.PoseAndTimestamp> getVisionOdometry() {
     return results;
   }
 
