@@ -15,7 +15,9 @@ public class PowerAmpArm extends Command {
   /** Creates a new PowerArm. */
   public PowerAmpArm(AmpArm ampArm) {
     this.ampArm = ampArm;
+
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(ampArm);
   }
 
   // Called when the command is initially scheduled.

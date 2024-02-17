@@ -14,8 +14,8 @@ import frc.robot.io.AmpArmIO;
 
 public class AmpArmIOTalonFX implements AmpArmIO {
 
-  private final TalonFX armMotor = new TalonFX(Constants.AMP_ARM_ID, "Default Name");
-  private final TalonFX wristMotor = new TalonFX(Constants.AMP_WRIST_ID, "Default Name");
+  private final TalonFX armMotor = new TalonFX(Constants.AMP_ARM_ID, Constants.CANIVORE_NAME);
+  private final TalonFX wristMotor = new TalonFX(Constants.AMP_WRIST_ID, Constants.CANIVORE_NAME);
   
   /** Creates a new AmpArmIOTalonFX. */
   public AmpArmIOTalonFX() {}

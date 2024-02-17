@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.io.ClimberIO;
 import frc.robot.io.ClimberIOInputsAutoLogged;
+import frc.robot.io.IntakeIOInputsAutoLogged;
 
 public class Climber extends SubsystemBase {
   private ClimberIO io;

@@ -42,6 +42,8 @@ import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Linkage;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
+import java.util.Objects;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -128,16 +130,16 @@ public class RobotContainer {
         intake = new Intake(new IntakeIOSparkMax());
         linkage = new Linkage(new LinkageIOSparkMax());
         drivetrain = WoodbotConstants.DriveTrain;
-        ampArm = new AmpArm(new AmpArmIOTalonFX());
-        ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
+        // ampArm = new AmpArm(new AmpArmIOTalonFX());
+        // ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
         break;
       case PRACTICE:
         flywheel = new Flywheel(new FlywheelIOSparkFlex());
         intake = new Intake(new IntakeIOSparkMax());
         linkage = new Linkage(new LinkageIOTalonFX());
         climber = new Climber(new ClimberIOSparkMax());
-        ampArm = new AmpArm(new AmpArmIOTalonFX());
-        ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
+        // ampArm = new AmpArm(new AmpArmIOTalonFX());
+        // ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
         shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
 
         drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
@@ -191,8 +193,8 @@ public class RobotContainer {
     powerFlywheel = new PowerFlywheel(flywheel);
     powerClimber = new PowerClimber(climber);
     levelClimbers = new LevelClimbers(climber, drivetrain);
-    powerAmpArm = new PowerAmpArm(ampArm);
-    powerAmpIntake = new PowerAmpIntake(ampIntake);
+    // powerAmpArm = new PowerAmpArm(ampArm);
+    // powerAmpIntake = new PowerAmpIntake(ampIntake);
 
     NamedCommands.registerCommand("Intake", runExtendIntake);
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
@@ -260,14 +262,16 @@ public class RobotContainer {
     driverController.x().whileTrue(drivetrain.sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward));
     driverController.y().whileTrue(drivetrain.sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
   }
+
   public void onDisable() {
     flywheel.stop();
     intake.stop();
     linkage.stop();
     drivetrain.robotCentricDrive(0, 0, 0);
-    ampArm.stopBoth();
+    if (!Objects.isNull(ampArm)) {
+      ampArm.stopBoth();
+    }
     ampIntake.stop();
-
   }
 
   /**

@@ -13,7 +13,9 @@ public class PowerAmpIntake extends Command {
   /** Creates a new PowerArmIntake. */
   public PowerAmpIntake(AmpIntake ampIntake) {
     this.ampIntake = ampIntake;
+
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(ampIntake);
   }
 
   // Called when the command is initially scheduled.
