@@ -22,6 +22,7 @@ public interface IntakeIO {
   
   public default void updateInputs(IntakeIOInputs inputs) {}
 
+  
   public void set(double speed);
 
   public void stopMotor();

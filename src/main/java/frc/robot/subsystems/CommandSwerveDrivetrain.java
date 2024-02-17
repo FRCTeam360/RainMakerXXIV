@@ -11,7 +11,6 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentricFacingAngle;
 import com.ctre.phoenix6.mechanisms.swerve.utility.PhoenixPIDController;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -25,9 +24,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
@@ -38,7 +34,6 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Telemetry;
-import frc.robot.generated.TunerConstants;
 import edu.wpi.first.units.Unit;
 import edu.wpi.first.units.Voltage;
 
@@ -51,7 +46,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
-    CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
     private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
     private PhoenixPIDController headingController;
     final double MAX_SPEED_MPS = Constants.MAX_SPEED_MPS; 
@@ -98,7 +92,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         // kPEntry = tab.add("kP", 0.0).getEntry();
         // kIEntry = tab.add("kI", 0.0).getEntry();
         // kDEntry = tab.add("kD", 0.0).getEntry();
-
     }
 
     private void configurePID() {
@@ -115,6 +108,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         if (Utils.isSimulation()) {
             startSimThread();
         }
+    
 
         AutoBuilder.configureHolonomic(
                 this::getPose, // Robot pose supplier
@@ -143,8 +137,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                 },
                 this // Reference to this subsystem to set requirements
         );
-        setupShuffleboard();
+        // setupShuffleboard();
     }
+
 
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);

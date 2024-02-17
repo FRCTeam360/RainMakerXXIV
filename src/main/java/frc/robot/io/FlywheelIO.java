@@ -21,24 +21,25 @@ public interface FlywheelIO {
   
   public default void updateInputs(FlywheelIOInputs inputs) {}
 
-public void setTop(double speed);
+public void setLeft(double speed);
 
-public void setBottom(double speed);
+public void setRight(double speed);
 
-public void setTopReference(double rpm, ControlType kvelocity);
+public void setLeftReference(double rpm, ControlType kvelocity);
 
-public void setBottomReference(double rpm, ControlType kvelocity);
+public void setRightReference(double rpm, ControlType kvelocity);
 
-public void stopTopMotor();
+public void stopLeftMotor();
 
-public void stopBottomMotor();
 
-public double getTopPower();
+public void stopRightMotor();
 
-public double getBottomPower();
+public double getLeftPower();
 
-public double getTopVelocity();
+public double getRightPower();
 
-public double getBottomVelocity();
+public double getLeftVelocity();
+
+public double getRightVelocity();
 
 }
