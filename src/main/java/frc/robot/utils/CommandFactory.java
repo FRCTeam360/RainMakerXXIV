@@ -33,33 +33,33 @@ public class CommandFactory {
         return new PowerFlywheel(flywheel);
     }
 
-    //returns type powerIntake
+    // returns type powerIntake
     public PowerIntake powerIntake() {
         return new PowerIntake(intake);
     }
 
-    //returns type powerIntakeReversed
+    // returns type powerIntakeReversed
     public PowerIntakeReversed powerIntakeReversed() {
         return new PowerIntakeReversed(intake);
     }
 
-    //returns type powerLinkage
+    // returns type powerLinkage
     public PowerLinkage powerLinkage() {
         return new PowerLinkage(linkage);
     }
 
-    //returns type runExtendIntake
+    // returns type runExtendIntake
     public RunExtendIntake runExtendIntake() {
         return new RunExtendIntake(intake);
     }
 
-    //returns type runLinkage
+    // returns type runLinkage
     public RunLinkage runLinkage() {
         return new RunLinkage(linkage);
     }
 
-    //returns type setIntake
-    public SetIntake setIntake(boolean state) {
+    // returns type setIntake
+    public SetIntake setIntake() {
         return new SetIntake(intake);
     }
 }
