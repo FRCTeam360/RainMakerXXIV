@@ -1,16 +1,6 @@
 package frc.robot;
-import java.io.IOException;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.List;
 
-import edu.wpi.first.hal.HAL;
 import edu.wpi.first.hal.HALUtil;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import frc.robot.Constants.RobotType;
 
@@ -53,8 +43,6 @@ public class Constants {
                                                          // changed from MAX_SPEED to MAX_SPEED_MPS jan25 kinda sketch)
         public static final double MAX_ANGULAR_RATE = Math.PI * 3; // Half a rotation per second max angular velocity
         public static final int PIGEON_ID = 13;
-
-        public static RobotType robot = Constants.RobotType.PRACTICE;
 
         public static boolean isWoodBot() {
                 if (getRobotType() == Constants.RobotType.WOODBOT) {

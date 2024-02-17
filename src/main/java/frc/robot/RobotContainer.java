@@ -93,9 +93,6 @@ public class RobotContainer {
   // private PowerLinkage powerLinkage = new PowerLinkage(linkage);
   private ShuffleboardTab diagnosticTab;
 
-  // private FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
-  // private RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive(drivetrain);
-
   // private SetLinkageTalon setLinkageTalon = new SetLinkageTalon(linkage);
 
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
@@ -115,9 +112,7 @@ public class RobotContainer {
         flywheel = new Flywheel(new FlywheelIOSparkFlex());
         intake = new Intake(new IntakeIOSparkMax());
         linkage = new Linkage(new LinkageIOSparkMax());
-        drivetrain = WoodbotConstants.DriveTrain; // My drivetrain
-        // commandSwerveDrivetrain = new CommandSwerveDrivetrain(new
-        // CommandSwerveDrivetrainIOSparkMax());
+        drivetrain = WoodbotConstants.DriveTrain;
         break;
       case PRACTICE:
         flywheel = new Flywheel(new FlywheelIOSparkFlex());
@@ -172,6 +167,8 @@ public class RobotContainer {
   }
 
   private final void initializeCommands() {
+    FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
+    RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive(drivetrain);
     runExtendIntake = new RunExtendIntake(intake);
     powerIntakeReversed = new PowerIntakeReversed(intake);
     powerIntake = new PowerIntake(intake);
