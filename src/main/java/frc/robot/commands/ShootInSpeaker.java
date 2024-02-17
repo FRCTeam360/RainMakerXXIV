@@ -78,7 +78,6 @@ public class ShootInSpeaker extends Command {
 
   @Override
   public void execute() {
-    System.out.println("SHOOTING SHOOTNIG SHOOTING");
     if (!Objects.isNull(drivetrain)) {
     drivetrain.driveFieldCentricFacingAngle(0.0, 0.0, 0.0, driveAngleSetpoint); // drivetrain is rotated in its own command ran in // parallel
       }// linkage.setAngle(linkageSetpoint);
@@ -90,7 +89,7 @@ public class ShootInSpeaker extends Command {
       case LOADED:
         intake.stop();
         // boolean isLinkageAtSetpoint = linkage.isAtSetpoint();
-        boolean isFlywheelAtSetpoint = flywheel.areBothAtSetpoint();
+        boolean isFlywheelAtSetpoint = flywheel.isAboveSetpoint();
         boolean isDriveReady = Objects.isNull(drivetrain) || drivetrain.isFacingAngle();
         // if (isLinkageAtSetpoint) {
         // System.out.println("inkage at setpoint");
@@ -121,7 +120,7 @@ public class ShootInSpeaker extends Command {
         break;
       case TIMER:
           intake.run(1.0);
-          if(timer.hasElapsed(0.3)) {
+          if(timer.hasElapsed(0.24)) {
           this.state = ShootState.END;
         }
         break;

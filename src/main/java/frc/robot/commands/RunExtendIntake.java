@@ -24,7 +24,7 @@ public class RunExtendIntake extends Command {
   private Timer sensorTimer = new Timer();
   private double setPoint;
   
-  private IntakeCases state = IntakeCases.EXTEND_INTAKE;
+  private IntakeCases state = IntakeCases.CHECK_ROBOT_EMPTY;
 
  
   
@@ -50,7 +50,6 @@ public class RunExtendIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("ME IS EXTEND");
     System.out.println(state);
     switch(state){
       case CHECK_ROBOT_EMPTY:
@@ -59,7 +58,7 @@ public class RunExtendIntake extends Command {
         }
         break;
       case EXTEND_INTAKE:
-        intake.run(.6); // we should extend too but idk how we should implement this
+        intake.run(.65); // we should extend too but idk how we should implement this
         //linkage.setAngle(180);
         if(intake.getAmps() > 20 && timer.get() > .25) {
           sensorTimer.start();
@@ -67,9 +66,10 @@ public class RunExtendIntake extends Command {
         }
         break;
       case WAIT_FOR_SENSOR:
-        intake.run(.3);
-        if(!intake.getSideSensor()) {
-          state = IntakeCases.UP_TO_SHOOTER_P1;
+        intake.run(.5);
+        if(!intake.getHighSensor()) {
+          state = IntakeCases.RETRACT_STOP;
+          // state = IntakeCases.UP_TO_SHOOTER_P1;
         }
         // if(sensorTimer.get() > 1) {
         //   state = IntakeCases.EXTEND_INTAKE;
@@ -81,16 +81,24 @@ public class RunExtendIntake extends Command {
         // }
         break;
       case UP_TO_SHOOTER_P1:
-        if(!intake.getHighSensor()) {
+        // if(!intake.getHighSensor()) {
+        //   state = IntakeCases.UP_TO_SHOOTER_P2;
+        // } else {
+        //   intake.run(.25);
+        // }
+        // if(intake.getSideSensor()) {
+        //   state = IntakeCases.RETRACT_STOP;
+        // }
+        if(intake.getHighSensor()) {
           state = IntakeCases.UP_TO_SHOOTER_P2;
         }
-        intake.run(.2);
+      
         break;
       case UP_TO_SHOOTER_P2:
-          if(intake.getHighSensor()) {
+          if(!intake.getHighSensor()) {
             state = IntakeCases.RETRACT_STOP;
           } else {
-            intake.run(.15);
+            intake.run(-.14);
           }
       case RETRACT_STOP:
         break;

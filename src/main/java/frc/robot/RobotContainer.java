@@ -12,6 +12,7 @@ import frc.robot.commands.PowerIntake;
 import frc.robot.commands.PowerLinkage;
 import frc.robot.commands.SetIntake;
 import frc.robot.commands.ShootInSpeaker;
+import frc.robot.commands.PointToSpeakerPhoton;
 import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.RobotOrientedDrive;
 import frc.robot.commands.FieldOrientedDrive;
@@ -27,6 +28,8 @@ import frc.robot.subsystems.Intake;
 
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Linkage;
+import frc.robot.subsystems.Photon;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -69,6 +72,8 @@ public class RobotContainer {
   private final Flywheel flywheel = new Flywheel(new FlywheelIOSparkFlex());
   private final Linkage linkage = new Linkage(new LinkageIOSparkMax());
   private final Intake intake = new Intake(new IntakeIOSparkMax());
+    private final Photon photon = new Photon();
+
   // private final Climber climber = new Climber(new ClimberIOSparkMax());
 
 
@@ -88,7 +93,8 @@ public class RobotContainer {
   private FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive();
   private RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive();
   private SetFlywheelSetpoint setFlywheelSetpoint = new SetFlywheelSetpoint(flywheel);
-  
+    private PointToSpeakerPhoton pointToSpeaker = new PointToSpeakerPhoton(photon, drivetrain);
+
 
 
   // public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -107,6 +113,7 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    
     // switch (Constants.currentMode) {
     //   case REAL:
     //     // Real robot, instantiate hardware IO implementations
@@ -137,6 +144,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     NamedCommands.registerCommand("Shoot", shootRoutineWithDrivetrain);
     NamedCommands.registerCommand("Shoot without drivetrain", shootRoutine);
+    NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0, 0));
     NamedCommands.registerCommand("Spinny", setFlywheelSetpoint);
     NamedCommands.registerCommand("inf intake", powerIntake);
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -180,8 +188,9 @@ public class RobotContainer {
 
 
   private void configureBindings() {
-    driverController.a().whileTrue(drivetrain.turntoCMD(false, 90.0, 0.0, 0.0));
-  
+    // driverController.a().whileTrue(drivetrain.turntoCMD(false, 90.0, 0.0, 0.0));
+    // operatorController.y().toggleOnTrue(pointToSpeaker);
+
     // powerIntake = new PowerIntake(intake);
     // powerIntakeReversed = new PowerIntakeReversed(intake);
     // // powerLinkage = new PowerLinkage(linkage);
@@ -217,8 +226,8 @@ public class RobotContainer {
     // operatorController.a().whileTrue(new SetFlywheel());
     // operatorController.b().toggleOnTrue(runExtendIntake);
 
-
-    // driverController.a().whileTrue(drivetrain.turntoCMD(true, 180.0, 0.0, 0.0));
+   // driverController.b().onTrue(drivetrain.turntoCMD(true, drivetrain.getRotation2d().getDegrees()- photon.getAngle(), 0.0, 0.0));
+    // driverController.a().whileTrue(drivetrain.turntoCMD(true, 180.0, 0.0, 0.0))
     // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     
     // operatorController.y().whileTrue(new InstantCommand(() -> flywheel.runBoth(0.8), flywheel));
@@ -248,10 +257,10 @@ public class RobotContainer {
     // driverController.a().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     
     // The methods below return Command objects
-    driverController.rightTrigger().whileTrue(drivetrain.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward));
-    driverController.leftTrigger().whileTrue(drivetrain.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse));
-    driverController.x().whileTrue(drivetrain.sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward));
-    driverController.y().whileTrue(drivetrain.sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
+    // driverController.rightTrigger().whileTrue(drivetrain.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward));
+    // driverController.leftTrigger().whileTrue(drivetrain.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse));
+    // driverController.x().whileTrue(drivetrain.sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward));
+    // driverController.y().whileTrue(drivetrain.sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
     
 
     // if (Utils.isSimulation()) {

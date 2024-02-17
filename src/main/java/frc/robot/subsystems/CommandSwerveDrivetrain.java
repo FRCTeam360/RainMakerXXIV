@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import java.util.Objects;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
@@ -29,9 +28,11 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -63,10 +64,12 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
     final double MaxSpeed = 13.7;
+    boolean shouldUseVisionData =false; 
 
     CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
     private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
     private PhoenixPIDController headingController;
+private Photon vision ;
 
     GenericEntry kPEntry;
     GenericEntry kIEntry;
@@ -162,6 +165,23 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         if (Utils.isSimulation()) {
             startSimThread();
         }
+
+        
+
+        //    synchronized (this.m_odometry) {
+             //   for (int i = 0; i < vision.getEstimatedGlobalPose()) {
+                    // this.m_odometry.addVisionMeasurement(
+                    //         vision.getEstimatedGlobalPose().orElseThrow() ,  /// this is really bad but i think it works, will break robot
+                    //         vision.getTimeStamp(), 
+                    //         VecBuilder.fill(vision.getEstimationStdDevs(vision.getEstimatedGlobalPose().orElseThrow())  ) ) ;
+                    //                 // vision.getMinDistance(i) * ESTIMATION_COEFFICIENT,
+                    //                 // vision.getMinDistance(i) * ESTIMATION_COEFFICIENT,
+                    //                 // 5.0));
+                
+            
+        
+    //    vision.setReferencePose(getPose()); 2910 thing need look into
+
 
         AutoBuilder.configureHolonomic(
                 this::getPose, // Robot pose supplier
@@ -315,6 +335,22 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         return k;
     }
 
+    private SwerveDriveKinematics getKinematics() {
+     SwerveModuleState[] states = new SwerveModuleState[4];
+        for (int i = 0; i < 4; i++) {
+            states[i] = this.getModule(i).getCurrentState();
+        }
+
+        SwerveDriveKinematics m_kine = this.m_kinematics;
+return m_kine ;
+    }
+
+
+
+
+
+
+
     private void driveRobotRelative(ChassisSpeeds speed) {
         // print x and y speeds and rotation rate
         // System.out.println("X VELOCITY: " + speed.vxMetersPerSecond);
@@ -338,6 +374,21 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     @Override
     public void periodic() {
+
+        //     if (shouldUseVisionData) {
+
+        // // var visionEst = vision.getEstimatedGlobalPose();
+        // // visionEst.ifPresent(
+        // //         est -> {
+        // //             var estPose = est.estimatedPose.toPose2d();
+        // //             // Change our trust in the measurement based on the tags we can see
+        // //             var estStdDevs = vision.getEstimationStdDevs(estPose);
+
+        // //             drivetrain.addVisionMeasurement(
+        // //                     est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+        // //         });
+        //     }
+
         String moduleName = "null";
         for (int i = 0; i < 4; i++) {
             switch (i) {
@@ -362,7 +413,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
            
         }
         Logger.recordOutput("Rotation2d", this.getPigeon2().getRotation2d());
-        Logger.recordOutput("Drive Command", Objects.isNull(getCurrentCommand()) ? "null" : getCurrentCommand().getName());
+
     }
 
 }

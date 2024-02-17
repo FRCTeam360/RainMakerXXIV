@@ -15,8 +15,6 @@ import com.revrobotics.CANSparkFlex;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
-import java.util.Objects;
-
 import org.littletonrobotics.junction.Logger;
 
 import com.revrobotics.CANSparkBase.ControlType;
@@ -109,7 +107,6 @@ public class Flywheel extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
-    Logger.recordOutput("Flywheel Command", Objects.isNull(getCurrentCommand()) ? "null" : getCurrentCommand().getName());
     Logger.processInputs("Flywheel", inputs);
   }
 }
