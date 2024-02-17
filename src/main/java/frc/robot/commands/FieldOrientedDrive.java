@@ -24,8 +24,8 @@ public class FieldOrientedDrive extends Command {
   /** Creates a new TunerXDrive. */
   public FieldOrientedDrive(CommandSwerveDrivetrain driveTrain) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(driveTrain);
     this.driveTrain = driveTrain;
+    addRequirements(driveTrain);
   }
 
   // Called when the command is initially scheduled.

@@ -18,15 +18,12 @@ import frc.robot.io.IntakeIO.IntakeIOInputs;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class ClimberIOSparkMax implements ClimberIO {
-    private CommandSwerveDrivetrain drivetrain = PracticebotConstants.DriveTrain;
-
     private CANSparkMax leftMotor = new CANSparkMax(Constants.CLIMBER_LEFT_ID, MotorType.kBrushless);
     private CANSparkMax rightMotor = new CANSparkMax(Constants.CLIMBER_RIGHT_ID, MotorType.kBrushless);
 
     private RelativeEncoder leftEncoder = leftMotor.getEncoder();
     private RelativeEncoder rightEncoder = rightMotor.getEncoder();
 
-    private Pigeon2 pigeon = drivetrain.getPigeon2();
 
     private final double POSITION_CONVERSION = (1.215 * Math.PI) / 15;//5 * 3 * 1.215 * Math.PI; // motor rotations x gearbox x diameter of spool x pi
     private final double MINIMUM_HEGIHT = 0;
@@ -74,22 +71,6 @@ public class ClimberIOSparkMax implements ClimberIO {
         rightEncoder.setPosition(0);
     }
 
-
-    @Override
-    public void level() {
-        double roll = pigeon.getRoll().getValueAsDouble();
-
-        if (roll > 1.0) {
-            runLeft(-0.3);
-            runRight(0.3);
-        } else if (roll < -1.0) {
-            runLeft(0.3);
-            runRight(-0.3);
-        } else {
-            stop();
-        }
-    }
-
     @Override
     public boolean leftAboveMinHeight() {
         double height = leftEncoder.getPosition();
@@ -113,10 +94,6 @@ public class ClimberIOSparkMax implements ClimberIO {
         return rightEncoder.getPosition();
     }
 
-    @Override
-    public double getRoll() {
-        return pigeon.getRoll().getValueAsDouble();
-    }
 
     @Override
     public void updateInputs(ClimberIOInputs inputs) {

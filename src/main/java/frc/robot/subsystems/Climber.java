@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -21,13 +22,16 @@ import frc.robot.io.IntakeIOInputsAutoLogged;
 
 public class Climber extends SubsystemBase {
   private ClimberIO io;
+  private Pigeon2 pigeon;
   private final ClimberIOInputsAutoLogged inputs = new ClimberIOInputsAutoLogged();
 
   public double heightOffset = 0;
 
   /** Creates a new Climber. */
-  public Climber(ClimberIO io) {
+  public Climber(ClimberIO io, Pigeon2 pigeon) {
     this.io = io;
+
+    this.pigeon = pigeon;
 
     SmartDashboard.putNumber("Left Height", 0);
     SmartDashboard.putNumber("Right Height", 0);
@@ -52,8 +56,8 @@ public class Climber extends SubsystemBase {
     io.runRight(0);
   }
 
-  public void level() {
-    io.level();
+  public double getRoll() {
+    return pigeon.getRoll().getValueAsDouble();
   }
 
   public boolean leftAboveMinHeight() {
@@ -71,10 +75,6 @@ public class Climber extends SubsystemBase {
   public double getRightPosition() {
     return io.getRightPosition();
   } 
-
-  public double getRoll() {
-    return io.getRoll();
-  }
 
   public void zeroBoth() {
     io.zeroBoth();

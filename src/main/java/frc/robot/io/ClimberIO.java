@@ -25,8 +25,6 @@ public interface ClimberIO {
 
   public void stop();
 
-  public void level();
-
   public boolean leftAboveMinHeight();
 
   public boolean rightAboveMinHeight();
@@ -34,8 +32,6 @@ public interface ClimberIO {
   public double getLeftPosition();
 
   public double getRightPosition();
-
-  public double getRoll();
 
   public void zeroBoth();
 }
