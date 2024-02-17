@@ -150,6 +150,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     NamedCommands.registerCommand("Shoot", shootRoutine);
     NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0, 0));
+    NamedCommands.registerCommand("Shoot without drivetrain", fieldOrientedDrive);
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
     diagnosticTab = Shuffleboard.getTab("Diagnostics");
