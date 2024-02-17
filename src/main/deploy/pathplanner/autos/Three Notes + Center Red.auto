@@ -18,12 +18,6 @@
           }
         },
         {
-          "type": "race",
-          "data": {
-            "commands": []
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Mid Red Note"
@@ -34,10 +28,16 @@
           "data": {
             "pathName": "Left Red Note"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center Far Red Note"
+          }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "3 notes",
   "choreoAuto": false
 }
