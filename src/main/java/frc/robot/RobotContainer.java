@@ -159,6 +159,7 @@ public class RobotContainer {
     diagnosticTab.addBoolean("Practice Bot", () -> Constants.isPracticeBot());
     diagnosticTab.addBoolean("Comp Bot", () -> Constants.isCompBot());
     configureBindings();
+    //configureCharacterizationBindings();
     configureDefaultCommands();
   }
 
@@ -276,13 +277,14 @@ public class RobotContainer {
     // driverController.a().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     
     drivetrain.registerTelemetry(logger::telemeterize);
-        // The methods below return Command objects
+  }
+  public void configureCharacterizationBindings(){
+    // The methods below return Command objects
     driverController.rightTrigger().whileTrue(drivetrain.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward));
     driverController.leftTrigger().whileTrue(drivetrain.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse));
     driverController.x().whileTrue(drivetrain.sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward));
     driverController.y().whileTrue(drivetrain.sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
   }
-
   public void onDisable() {
     flywheel.stop();
         drivetrain.robotCentricDrive(0, 0, 0);
