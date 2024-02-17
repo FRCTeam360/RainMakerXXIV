@@ -54,7 +54,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
     private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
     private PhoenixPIDController headingController;
-    final double MaxSpeed = 13.7; 
+    final double MAX_SPEED_MPS = Constants.MAX_SPEED_MPS; 
 
 
     GenericEntry kPEntry;
@@ -82,7 +82,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     // See Robot Container: The methods below return Command objects
 
     public void runCharacterizationVolts (double voltage) {
-        double velocityX = voltage / 12.0 * MaxSpeed;
+        double velocityX = voltage / 12.0 * MAX_SPEED_MPS;
         this.setControl(new SwerveRequest.RobotCentric()
             .withVelocityX(velocityX)
             .withVelocityY(0.0)
