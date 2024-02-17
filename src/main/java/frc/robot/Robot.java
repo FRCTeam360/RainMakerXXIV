@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.io.File;
+
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -38,6 +40,20 @@ public class Robot extends LoggedRobot {
 
   private RobotContainer m_robotContainer;
 
+  private boolean isDriveWriteable(){
+    File drive = new File("/U");
+    if(drive.exists() && drive.isDirectory()){
+      try{
+        File temporaryFile = File.createTempFile("testwrite", ".txt", drive);
+        temporaryFile.delete();
+        return true; //drive is writable 
+      }catch(Exception e){
+        System.out.println("USB is not writable/present");
+      }
+    }
+    return false; //The drive is not writable/present
+  }
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any
@@ -48,7 +64,9 @@ public class Robot extends LoggedRobot {
      Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
 
     if (isReal()) {
-        Logger.addDataReceiver(new WPILOGWriter("/U")); // Log to a USB stick
+        if (isDriveWriteable()){
+          Logger.addDataReceiver(new WPILOGWriter("/U")); // Log to a USB stick
+        }
         Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
         new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
     } else {
