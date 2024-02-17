@@ -39,7 +39,7 @@ public class Constants {
                 REPLAY
         }
 
-        public static final double MAX_SPEED_MPS = 13.7; // used to be 6 meters per second desired top speed (name
+        public static final double MAX_SPEED_MPS = 16.5; // used to be 6 meters per second desired top speed (name
                                                          // changed from MAX_SPEED to MAX_SPEED_MPS jan25 kinda sketch)
         public static final double MAX_ANGULAR_RATE = Math.PI * 3; // Half a rotation per second max angular velocity
         public static final int PIGEON_ID = 13;
@@ -109,8 +109,7 @@ public class Constants {
 
                 } else if (serialAddress.equals(SerialAddressConstants.WOOD_SERIAL_ADDRESS)) {
                         return Constants.RobotType.WOODBOT;
-                }
-                else if(serialAddress.equals(SerialAddressConstants.PRACTICE_SERIAL_ADDRESS)){
+                }else if(serialAddress.equals(SerialAddressConstants.PRACTICE_SERIAL_ADDRESS)){
                         return Constants.RobotType.PRACTICE;
                 }
                 else if(serialAddress.equals(SerialAddressConstants.COMP_SERIAL_ADDRESS)){

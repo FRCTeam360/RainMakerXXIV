@@ -54,6 +54,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -71,7 +72,7 @@ public class RobotContainer {
   private final CommandXboxController operatorController = new CommandXboxController(Constants.OPERATOR_CONTROLLER);
   private final CommandXboxController driverController = new CommandXboxController(Constants.DRIVER_CONTROLLER);
 
-  final double MaxSpeed = 13.7; // used to be 6 meters per second desired top speed
+  final double MAX_SPEED_MPS = Constants.MAX_SPEED_MPS; // used to be 6 meters per second desired top speed
   final double MaxAngularRate = Math.PI * 3; // Half a rotation per second max angular velocity
   // subsystems
   private CommandSwerveDrivetrain drivetrain; // My drivetrain
@@ -94,6 +95,8 @@ public class RobotContainer {
   private LevelClimbers levelClimbers;
   // private PowerLinkage powerLinkage = new PowerLinkage(linkage);
   private ShuffleboardTab diagnosticTab;
+  private FieldOrientedDrive fieldOrientedDrive; 
+  private RobotOrientedDrive robotOrientedDrive; 
 
   // private SetLinkageTalon setLinkageTalon = new SetLinkageTalon(linkage);
 
@@ -161,12 +164,13 @@ public class RobotContainer {
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
     configureBindings();
+    //configureCharacterizationBindings();
     configureDefaultCommands();
   }
 
   private final void initializeCommands() {
-    FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
-    RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive(drivetrain);
+    fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
+    robotOrientedDrive = new RobotOrientedDrive(drivetrain);
     runExtendIntake = new RunExtendIntake(intake);
     powerIntakeReversed = new PowerIntakeReversed(intake);
     powerIntake = new PowerIntake(intake);
@@ -186,6 +190,17 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
     // linkage.setDefaultCommand(powerLinkage);
+    // // climber.setDefaultCommand();
+    //  drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+    //     drivetrain.applyRequest(
+    //         () -> drive.withVelocityX(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1) * MAX_SPEED_MPS) //drive forward with negative y
+    //             // negative Y (forward)
+    //             .withVelocityY(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1) * MAX_SPEED_MPS) // drive left with negative x
+    //             .withRotationalRate(MathUtil.applyDeadband(-driverController.getRightX(), 0.1) * MaxAngularRate) // drive counterclockwise with negative x                                                                                                  
+    //flywheel.setDefaultCommand(setFlywheel);
+    //intake.setDefaultCommand(runIntake);
+    //linkage.setDefaultCommand(powerLinkage);
+    drivetrain.setDefaultCommand(fieldOrientedDrive);
     // flywheel.setDefaultCommand(powerFlywheel);
     // drivetrain.setDefaultCommand(fieldOrientedDrive);
     climber.setDefaultCommand(powerClimber);
@@ -218,7 +233,13 @@ public class RobotContainer {
 
     // drivetrain.registerTelemetry(logger::telemeterize);
   }
-
+  public void configureCharacterizationBindings(){
+    // The methods below return Command objects
+    driverController.rightTrigger().whileTrue(drivetrain.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward));
+    driverController.leftTrigger().whileTrue(drivetrain.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse));
+    driverController.x().whileTrue(drivetrain.sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward));
+    driverController.y().whileTrue(drivetrain.sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
+  }
   public void onDisable() {
     flywheel.stop();
     intake.stop();
