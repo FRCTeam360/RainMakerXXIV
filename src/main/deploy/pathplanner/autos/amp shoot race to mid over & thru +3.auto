@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.310868399514579,
-      "y": 6.39926057629893
+      "x": 15.31,
+      "y": 6.4
     },
     "rotation": 180.0
   },
@@ -11,6 +11,38 @@
     "type": "sequential",
     "data": {
       "commands": [
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "amp shoot 3"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Spinny"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot without drivetrain"
+          }
+        },
         {
           "type": "parallel",
           "data": {
@@ -161,6 +193,6 @@
       ]
     }
   },
-  "folder": "3 notes",
+  "folder": "4 notes",
   "choreoAuto": false
 }
