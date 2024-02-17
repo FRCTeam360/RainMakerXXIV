@@ -155,11 +155,7 @@ public class RobotContainer {
     diagnosticTab.addBoolean("Practice Bot", () -> Constants.isPracticeBot());
     diagnosticTab.addBoolean("Comp Bot", () -> Constants.isCompBot());
     initializeCommands();
-    NamedCommands.registerCommand("Intake", runExtendIntake);
-    NamedCommands.registerCommand("Wait1", new WaitCommand(1));
-    NamedCommands.registerCommand("Wait", new WaitCommand(2));
-    NamedCommands.registerCommand("Shoot", shootRoutine);
-    NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0, 0));
+   
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
     configureBindings();
@@ -174,6 +170,11 @@ public class RobotContainer {
     powerIntake = new PowerIntake(intake);
     powerFlywheel = new PowerFlywheel(flywheel);
     powerClimber = new PowerClimber(climber);
+    NamedCommands.registerCommand("Intake", runExtendIntake);
+    NamedCommands.registerCommand("Wait1", new WaitCommand(1));
+    NamedCommands.registerCommand("Wait", new WaitCommand(2));
+    NamedCommands.registerCommand("Shoot", shootRoutine);
+    NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0, 0));
     // private PowerLinkage powerLinkage = new PowerLinkage(linkage);
     // fieldOrientedDrive = new FieldOrientedDrive();
     // robotOrientedDrive = new RobotOrientedDrive();
