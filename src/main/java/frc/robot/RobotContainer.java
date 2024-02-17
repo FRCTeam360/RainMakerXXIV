@@ -76,7 +76,8 @@ public class RobotContainer {
 
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
   // Create new ShootInSpeaker command
-  private final Command shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
+  private final Command shootRoutine = new ShootInSpeaker(linkage, flywheel, intake, 0.0, 5000.0);
+  private final Command shootRoutineWithDrivetrain = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 0.0);
    // auto commands
   //private final SetFlywheel setFlywheel = new SetFlywheel();
 
@@ -148,9 +149,9 @@ public class RobotContainer {
     initializeCommands();
     NamedCommands.registerCommand("Intake", runExtendIntake);
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
-    NamedCommands.registerCommand("Shoot", shootRoutine);
+    NamedCommands.registerCommand("Shoot", shootRoutineWithDrivetrain);
     NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0, 0));
-    NamedCommands.registerCommand("Shoot without drivetrain", fieldOrientedDrive);
+    NamedCommands.registerCommand("Shoot without drivetrain", shootRoutine);
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
     diagnosticTab = Shuffleboard.getTab("Diagnostics");
