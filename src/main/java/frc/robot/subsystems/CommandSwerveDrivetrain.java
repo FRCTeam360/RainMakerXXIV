@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.Utils;
+import static edu.wpi.first.units.Units.Volts;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
@@ -72,7 +73,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         (state) -> Logger.recordOutput("SysIdTestState", state.toString())
         ),
         new SysIdRoutine.Mechanism(
-        (voltage) -> this.runCharacterizationVolts(voltage.in(null)),
+        (voltage) -> this.runCharacterizationVolts(voltage.in(Volts)),
         null, // No log consumer, since data is recorded by AdvantageKit
         this
         )
