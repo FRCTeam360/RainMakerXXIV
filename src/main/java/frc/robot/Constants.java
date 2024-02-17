@@ -23,8 +23,8 @@ public class Constants {
 
         public static final int LINKAGE_ID = 14;
 
-        public static final int FLYWHEEL_LEFT_ID = 4; // LEFT & RIGHT CONFIG FOR PRACTICE & COMP BOT, NO LONGER TO BOTTOM
-        public static final int FLYWHEEL_RIGHT_ID = 3;
+        public static final int FLYWHEEL_LEFT_ID = 3; // LEFT & RIGHT CONFIG FOR PRACTICE & COMP BOT, NO LONGER TO BOTTOM
+        public static final int FLYWHEEL_RIGHT_ID = 4;
 
         public static final int INTAKE_ID = 5;
 
@@ -54,7 +54,7 @@ public class Constants {
         public static final double MAX_ANGULAR_RATE = Math.PI * 3; // Half a rotation per second max angular velocity
         public static final int PIGEON_ID = 13;
 
-        public static RobotType robot = getRobotType();
+        public static RobotType robot = Constants.RobotType.PRACTICE;
 
         public static boolean isWoodBot() {
                 if (getRobotType() == Constants.RobotType.WOODBOT) {
@@ -122,10 +122,9 @@ public class Constants {
                 } else if (serialAddress.equals(SerialAddressConstants.WOOD_SERIAL_ADDRESS)) {
                         return Constants.RobotType.WOODBOT;
                 }
-                // else
-                // if(serialAddress.equals(SerialAddressConstants.PRACTICE_SERIAL_ADDRESS)){
-                // return Constants.RobotType.PRACTICE;
-                // }
+                else if(serialAddress.equals(SerialAddressConstants.PRACTICE_SERIAL_ADDRESS)){
+                        return Constants.RobotType.PRACTICE;
+                }
                 else {
                         return Constants.RobotType.COMPETITION;
 
@@ -135,5 +134,6 @@ public class Constants {
         public static final class SerialAddressConstants {
                 public static final String TEST_SERIAL_ADDRESS = "031b5208";
                 public static final String WOOD_SERIAL_ADDRESS = "03064db8";
+                public static final String PRACTICE_SERIAL_ADDRESS = "03126d42";
         }
 }

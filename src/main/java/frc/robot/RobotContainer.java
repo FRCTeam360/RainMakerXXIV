@@ -77,14 +77,13 @@ public class RobotContainer {
   private Flywheel flywheel;
   private Linkage linkage;
   private Intake intake;
+  private Climber climber;
   // private final Climber climber = new Climber(new ClimberIOSparkMax());
 
   // subsystems
-  private final Climber climber = new Climber(new ClimberIOSparkMax());
 
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
-  private final Command shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
-
+  private Command shootRoutine;
   // tele commands
   private RunExtendIntake runExtendIntake;
   private PowerIntakeReversed powerIntakeReversed;
@@ -93,12 +92,11 @@ public class RobotContainer {
   private PowerClimber powerClimber;
   // private PowerLinkage powerLinkage = new PowerLinkage(linkage);
   private ShuffleboardTab diagnosticTab;
-  
 
-  private FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
-  private RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive(drivetrain);
+  // private FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
+  // private RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive(drivetrain);
 
-  private SetLinkageTalon setLinkageTalon = new SetLinkageTalon(linkage);
+  // private SetLinkageTalon setLinkageTalon = new SetLinkageTalon(linkage);
 
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
@@ -118,27 +116,32 @@ public class RobotContainer {
         intake = new Intake(new IntakeIOSparkMax());
         linkage = new Linkage(new LinkageIOSparkMax());
         drivetrain = WoodbotConstants.DriveTrain; // My drivetrain
-        // commandSwerveDrivetrain = new CommandSwerveDrivetrain(new CommandSwerveDrivetrainIOSparkMax());
+        // commandSwerveDrivetrain = new CommandSwerveDrivetrain(new
+        // CommandSwerveDrivetrainIOSparkMax());
         break;
       case PRACTICE:
         flywheel = new Flywheel(new FlywheelIOSparkFlex());
         intake = new Intake(new IntakeIOSparkMax());
         linkage = new Linkage(new LinkageIOTalonFX());
+        climber = new Climber(new ClimberIOSparkMax());
+        shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
+
         drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
         break;
       case COMPETITION:
 
-        break; 
+        break;
       case TEST:
 
-        break; 
+        break;
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
         // CHANGE SHOOTER AND SHOOTER LINKAGE TO SIM LATER
         // shooter = new Shooter(new ShooterIOSparkMax());
         // intake = new Intake(new IntakeIOSparkMax());
         // linkage = new Linkage(new LinkageIOSparkMax());
-        // commandSwerveDrivetrain = new CommandSwerveDrivetrain(new CommandSwerveDrivetrainIOSparkMax());
+        // commandSwerveDrivetrain = new CommandSwerveDrivetrain(new
+        // CommandSwerveDrivetrainIOSparkMax());
         break;
       case REPLAY:
 
@@ -151,6 +154,11 @@ public class RobotContainer {
         // shooterLinkage = new ShooterLinkage(new ShooterLinkageIO() {});
         break;
     }
+    diagnosticTab = Shuffleboard.getTab("Diagnostics");
+    diagnosticTab.addBoolean("Test Bot", () -> Constants.isTestBot());
+    diagnosticTab.addBoolean("Wood Bot", () -> Constants.isWoodBot());
+    diagnosticTab.addBoolean("Practice Bot", () -> Constants.isPracticeBot());
+    diagnosticTab.addBoolean("Comp Bot", () -> Constants.isCompBot());
     initializeCommands();
     NamedCommands.registerCommand("Intake", runExtendIntake);
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
@@ -159,11 +167,6 @@ public class RobotContainer {
     NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0, 0));
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
-    diagnosticTab = Shuffleboard.getTab("Diagnostics");
-    diagnosticTab.addBoolean("Test Bot", () -> Constants.isTestBot());
-    diagnosticTab.addBoolean("Wood Bot", () -> Constants.isWoodBot());
-    diagnosticTab.addBoolean("Practice Bot", () -> Constants.isPracticeBot());
-    diagnosticTab.addBoolean("Comp Bot", () -> Constants.isCompBot());
     configureBindings();
     configureDefaultCommands();
   }
@@ -173,6 +176,7 @@ public class RobotContainer {
     powerIntakeReversed = new PowerIntakeReversed(intake);
     powerIntake = new PowerIntake(intake);
     powerFlywheel = new PowerFlywheel(flywheel);
+    powerClimber = new PowerClimber(climber);
     // private PowerLinkage powerLinkage = new PowerLinkage(linkage);
     // fieldOrientedDrive = new FieldOrientedDrive();
     // robotOrientedDrive = new RobotOrientedDrive();
@@ -181,7 +185,7 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
     // linkage.setDefaultCommand(powerLinkage);
-    //flywheel.setDefaultCommand(powerFlywheel);
+    // flywheel.setDefaultCommand(powerFlywheel);
     // drivetrain.setDefaultCommand(fieldOrientedDrive);
     climber.setDefaultCommand(powerClimber);
   }
@@ -203,11 +207,12 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    operatorController.a().toggleOnTrue(runExtendIntake);
+    // operatorController.a().toggleOnTrue(runExtendIntake);
 
-    driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(),drivetrain));
+    // driverController.x().whileTrue(new InstantCommand(() ->
+    // drivetrain.zero(),drivetrain));
 
-    drivetrain.registerTelemetry(logger::telemeterize);
+    // drivetrain.registerTelemetry(logger::telemeterize);
   }
 
   public void onDisable() {

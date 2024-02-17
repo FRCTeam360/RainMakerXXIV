@@ -36,8 +36,8 @@ public class ClimberIOSparkMax implements ClimberIO {
         leftMotor.restoreFactoryDefaults();
         rightMotor.restoreFactoryDefaults();
 
-        leftMotor.setIdleMode(IdleMode.kBrake);
-        rightMotor.setIdleMode(IdleMode.kBrake);
+        leftMotor.setIdleMode(IdleMode.kCoast);
+        rightMotor.setIdleMode(IdleMode.kCoast);
 
         leftMotor.setInverted(false);
         rightMotor.setInverted(true);
