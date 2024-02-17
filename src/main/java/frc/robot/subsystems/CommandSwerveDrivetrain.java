@@ -34,8 +34,12 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
+import frc.robot.Telemetry;
 import frc.robot.generated.TunerConstants;
+import edu.wpi.first.units.Unit;
+import edu.wpi.first.units.Voltage;
 
 /**
  * Class that extends the Phoenix SwerveDrivetrain class and implements
@@ -49,6 +53,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
     private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
     private PhoenixPIDController headingController;
+    final double MaxSpeed = 13.7; 
+
 
     GenericEntry kPEntry;
     GenericEntry kIEntry;
@@ -58,6 +64,29 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private double headingKI = 0.2;
     private double headingIZone = 0.17;
     private double headingKD = 0.0;
+
+    // Create a new SysId Routine for characterizing the drive 
+    public SysIdRoutine sysIdRoutine = new SysIdRoutine(
+        new SysIdRoutine.Config(
+        null, null, null, // Use default config
+        (state) -> Logger.recordOutput("SysIdTestState", state.toString())
+        ),
+        new SysIdRoutine.Mechanism(
+        (voltage) -> this.runCharacterizationVolts(voltage.in(null)),
+        null, // No log consumer, since data is recorded by AdvantageKit
+        this
+        )
+    );
+
+    // See Robot Container: The methods below return Command objects
+
+    public void runCharacterizationVolts (double voltage) {
+        double velocityX = voltage / 12.0 * MaxSpeed;
+        this.setControl(new SwerveRequest.RobotCentric()
+            .withVelocityX(velocityX)
+            .withVelocityY(0.0)
+            .withRotationalRate(0.0));
+    }
 
     private void setupShuffleboard() {
         ShuffleboardTab tab = Shuffleboard.getTab("angle");
@@ -156,6 +185,15 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
         return run(() -> this.setControl(requestSupplier.get()));
     }
+
+    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+        return sysIdRoutine.quasistatic(direction);
+      }
+
+    public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+        return sysIdRoutine.dynamic(direction);
+    }
+
 
     private void startSimThread() {
         m_lastSimTime = Utils.getCurrentTimeSeconds();

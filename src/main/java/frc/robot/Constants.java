@@ -100,11 +100,9 @@ public class Constants {
 
                 } else if (serialAddress.equals(SerialAddressConstants.WOOD_SERIAL_ADDRESS)) {
                         return Constants.RobotType.WOODBOT;
+                }else if(serialAddress.equals(SerialAddressConstants.PRACTICE_SERIAL_ADDRESS)){
+                        return Constants.RobotType.PRACTICE;
                 }
-                // else
-                // if(serialAddress.equals(SerialAddressConstants.PRACTICE_SERIAL_ADDRESS)){
-                // return Constants.RobotType.PRACTICE;
-                // }
                 else {
                         return Constants.RobotType.COMPETITION;
 
@@ -114,5 +112,6 @@ public class Constants {
         public static final class SerialAddressConstants {
                 public static final String TEST_SERIAL_ADDRESS = "031b5208";
                 public static final String WOOD_SERIAL_ADDRESS = "03064db8";
+                public static final String PRACTICE_SERIAL_ADDRESS = "03126d42";
         }
 }
