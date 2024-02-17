@@ -4,19 +4,16 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.AmpIntake;
 
-public class PowerClimber extends Command {
-  private final Climber climber;
-  private XboxController operatorCont = new XboxController(1);
+public class PowerAmpIntake extends Command {
+  private final AmpIntake ampIntake;
 
-  /** Creates a new PowerClimber. */
-  public PowerClimber(Climber climber) {
-    this.climber = climber;
+  /** Creates a new PowerArmIntake. */
+  public PowerAmpIntake(AmpIntake ampIntake) {
+    this.ampIntake = ampIntake;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(this.climber);
   }
 
   // Called when the command is initially scheduled.
@@ -26,14 +23,13 @@ public class PowerClimber extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("TRYING TO RUN LMAOO");
-    // climber.runBoth(-operatorCont.getLeftY()* .3, -operatorCont.getRightY() * .3);//works when the rope wraps UNDER the spool
+    ampIntake.runIntake(0.3);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    climber.stop();
+    ampIntake.stop();
   }
 
   // Returns true when the command should end.
