@@ -21,13 +21,13 @@ public class SetLinkageTalon extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putNumber("error", 0);
+    //SmartDashboard.putNumber("error", 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("error", -7.0 - linkage.getAngle());
+    //SmartDashboard.putNumber("error", -7.0 - linkage.getAngle());
     linkage.setAngle(-7.0);
   }
 

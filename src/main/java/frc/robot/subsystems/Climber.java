@@ -23,12 +23,16 @@ public class Climber extends SubsystemBase {
   private ClimberIO io;
   private final ClimberIOInputsAutoLogged inputs = new ClimberIOInputsAutoLogged();
 
+  public double heightOffset = 0;
+
   /** Creates a new Climber. */
   public Climber(ClimberIO io) {
     this.io = io;
 
     SmartDashboard.putNumber("Left Height", 0);
     SmartDashboard.putNumber("Right Height", 0);
+    SmartDashboard.putNumber("roll", 0);
+    SmartDashboard.putNumber("height offset", heightOffset);
   }
 
   public void runBoth(double leftSpeed, double rightSpeed) {
@@ -68,6 +72,14 @@ public class Climber extends SubsystemBase {
     return io.getRightPosition();
   } 
 
+  public double getRoll() {
+    return io.getRoll();
+  }
+
+  public void zeroBoth() {
+    io.zeroBoth();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -76,5 +88,7 @@ public class Climber extends SubsystemBase {
 
     SmartDashboard.putNumber("Left Height", getLeftPosition());
     SmartDashboard.putNumber("Right Height", getRightPosition());
+    SmartDashboard.putNumber("roll", getRoll());
+    SmartDashboard.putNumber("height offset", heightOffset);
   }
 }

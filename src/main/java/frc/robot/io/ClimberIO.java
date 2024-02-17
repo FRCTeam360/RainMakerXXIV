@@ -35,4 +35,7 @@ public interface ClimberIO {
 
   public double getRightPosition();
 
+  public double getRoll();
+
+  public void zeroBoth();
 }

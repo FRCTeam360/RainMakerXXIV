@@ -16,6 +16,7 @@ import frc.robot.commands.ShootInSpeaker;
 import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.RobotOrientedDrive;
 import frc.robot.commands.FieldOrientedDrive;
+import frc.robot.commands.LevelClimbers;
 import frc.robot.commands.PowerClimber;
 import frc.robot.generated.PracticebotConstants;
 import frc.robot.generated.WoodbotConstants;
@@ -90,6 +91,7 @@ public class RobotContainer {
   private PowerIntake powerIntake;
   private PowerFlywheel powerFlywheel;
   private PowerClimber powerClimber;
+  private LevelClimbers levelClimbers;
   // private PowerLinkage powerLinkage = new PowerLinkage(linkage);
   private ShuffleboardTab diagnosticTab;
 
@@ -170,6 +172,7 @@ public class RobotContainer {
     powerIntake = new PowerIntake(intake);
     powerFlywheel = new PowerFlywheel(flywheel);
     powerClimber = new PowerClimber(climber);
+    levelClimbers = new LevelClimbers(climber, drivetrain);
     NamedCommands.registerCommand("Intake", runExtendIntake);
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     NamedCommands.registerCommand("Wait", new WaitCommand(2));
@@ -206,6 +209,9 @@ public class RobotContainer {
   private void configureBindings() {
 
     // operatorController.a().toggleOnTrue(runExtendIntake);
+
+    operatorController.a().onTrue(levelClimbers);
+    operatorController.b().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
 
     // driverController.x().whileTrue(new InstantCommand(() ->
     // drivetrain.zero(),drivetrain));

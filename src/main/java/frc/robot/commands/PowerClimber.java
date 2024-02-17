@@ -27,7 +27,7 @@ public class PowerClimber extends Command {
   @Override
   public void execute() {
     System.out.println("TRYING TO RUN LMAOO");
-    climber.runBoth(operatorCont.getLeftY()* .3, operatorCont.getRightY() * .3);
+    climber.runBoth(-operatorCont.getLeftY()* .3, -operatorCont.getRightY() * .3);//works when the rope wraps UNDER the spool
   }
 
   // Called once the command ends or is interrupted.

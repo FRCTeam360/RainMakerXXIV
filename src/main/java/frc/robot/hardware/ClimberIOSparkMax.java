@@ -28,16 +28,16 @@ public class ClimberIOSparkMax implements ClimberIO {
 
     private Pigeon2 pigeon = drivetrain.getPigeon2();
 
-    private final double POSITION_CONVERSION = 0;
+    private final double POSITION_CONVERSION = (1.215 * Math.PI) / 15;//5 * 3 * 1.215 * Math.PI; // motor rotations x gearbox x diameter of spool x pi
     private final double MINIMUM_HEGIHT = 0;
 
     /** Creates a new ClimberIOSparkMax. */
-    public ClimberIOSparkMax() {
+    public ClimberIOSparkMax() {//counterclocwise is positve roll follows unit circle
         leftMotor.restoreFactoryDefaults();
         rightMotor.restoreFactoryDefaults();
 
-        leftMotor.setIdleMode(IdleMode.kCoast);
-        rightMotor.setIdleMode(IdleMode.kCoast);
+        leftMotor.setIdleMode(IdleMode.kBrake);
+        rightMotor.setIdleMode(IdleMode.kBrake);
 
         leftMotor.setInverted(false);
         rightMotor.setInverted(true);
@@ -69,15 +69,22 @@ public class ClimberIOSparkMax implements ClimberIO {
     }
 
     @Override
+    public void zeroBoth() {
+        leftEncoder.setPosition(0);
+        rightEncoder.setPosition(0);
+    }
+
+
+    @Override
     public void level() {
         double roll = pigeon.getRoll().getValueAsDouble();
 
         if (roll > 1.0) {
-            runLeft(-0.2);
-            runRight(0.2);
+            runLeft(-0.3);
+            runRight(0.3);
         } else if (roll < -1.0) {
-            runLeft(0.2);
-            runRight(-0.2);
+            runLeft(0.3);
+            runRight(-0.3);
         } else {
             stop();
         }
@@ -104,6 +111,11 @@ public class ClimberIOSparkMax implements ClimberIO {
     @Override
     public double getRightPosition() {
         return rightEncoder.getPosition();
+    }
+
+    @Override
+    public double getRoll() {
+        return pigeon.getRoll().getValueAsDouble();
     }
 
     @Override
