@@ -215,6 +215,8 @@ public class RobotContainer {
 
   public void onDisable() {
     flywheel.stop();
+    intake.stop();
+    linkage.stop();
     drivetrain.robotCentricDrive(0, 0, 0);
 
   }
