@@ -1,13 +1,10 @@
 {
-  "robotWidth": 0.61,
-  "robotLength": 0.61,
+  "robotWidth": 0.9,
+  "robotLength": 0.9,
   "holonomicMode": true,
   "pathFolders": [
-    "New Folder"
-  ],
-  "autoFolders": [],
-    "2 piece preload",
-    "no preload center grab"
+    "no preload center grab",
+    "4 piece preload"
   ],
   "autoFolders": [
     "1 note",
@@ -15,10 +12,9 @@
     "3 notes",
     "4 notes",
     "5 notes",
-    "6 notes",
-    "experimental"
+    "6 notes"
   ],
-  "defaultMaxVel": 1.0,
+  "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,

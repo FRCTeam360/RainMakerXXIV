@@ -124,7 +124,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "2 piece preload 2"
+                        "pathName": "4 piece preload 2"
                       }
                     },
                     {
@@ -140,7 +140,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "2 piece preload 1"
+                              "pathName": "4 piece preload 1"
                             }
                           }
                         ]
