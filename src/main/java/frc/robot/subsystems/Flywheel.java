@@ -15,6 +15,8 @@ import com.revrobotics.CANSparkFlex;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
+import java.util.Objects;
+
 import org.littletonrobotics.junction.Logger;
 
 import com.revrobotics.CANSparkBase.ControlType;
@@ -25,7 +27,8 @@ public class Flywheel extends SubsystemBase {
   private final FlywheelIO io;
   private final FlywheelIOInputsAutoLogged inputs = new FlywheelIOInputsAutoLogged();
 
-  double rpmSetpoint = 0.0;
+  double topRPMSetpoint = 4000.0;
+  double bottomRPMSetpoint = 4000.0;
 
   /** Creates a new Flywheel. */
   public Flywheel(FlywheelIO io) {
@@ -50,10 +53,13 @@ public class Flywheel extends SubsystemBase {
   }
 
   public void setBottomRPM(double rpm) {
+
     io.setBottomReference(rpm, ControlType.kVelocity);
   }
 
   public void setBothRPM(double rpm) {
+    topRPMSetpoint = rpm;
+    bottomRPMSetpoint = rpm;
     io.setTopReference(rpm, ControlType.kVelocity);
     io.setBottomReference(rpm, ControlType.kVelocity);
   }
@@ -79,22 +85,31 @@ public class Flywheel extends SubsystemBase {
     return io.getBottomVelocity();
   }
 
-  public boolean isAtSetpoint() {
-    return Math.abs(this.getTopVelocity() - rpmSetpoint) < 30.0;
+  public boolean topIsAtSetpoint() {
+    return Math.abs(this.getTopVelocity() - topRPMSetpoint) < 30.0;
   }
 
-  public boolean isAboveSetpoint(double setpoint) {
-    return this.getTopVelocity() >= setpoint;
+  public boolean bottomIsAtSetpoint() {
+    return Math.abs(this.getBottomVelocity() - bottomRPMSetpoint) < 30.0;
+  }
+
+  public boolean areBothAtSetpoint() {
+    return bottomIsAtSetpoint() && topIsAtSetpoint();
+  }
+
+  public boolean isAboveSetpoint() {
+    return this.getTopVelocity() >= topRPMSetpoint;
   }
 
   public boolean isBelowSetpoint() {
-    return this.getTopVelocity() <= rpmSetpoint - 30.0;
+    return this.getTopVelocity() <= topRPMSetpoint - 30.0;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
+    Logger.recordOutput("Flywheel Command", Objects.isNull(getCurrentCommand()) ? "null" : getCurrentCommand().getName());
     Logger.processInputs("Flywheel", inputs);
   }
 }

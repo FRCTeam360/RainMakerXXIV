@@ -28,6 +28,10 @@ public class CommandFactory {
         return new ShootInSpeaker(linkage, flywheel, drivetrain, intake, linkageSetpoint, flywheelSetpoint, driveSetpoint);
     }
 
+    public ShootInSpeaker shootInSpeakerWithoutDriveTrain(double linkageSetpoint, double flywheelSetpoint) {
+        return new ShootInSpeaker(linkage, flywheel, intake, linkageSetpoint, flywheelSetpoint);
+    }
+
     // returns type powerFlywheel
     public PowerFlywheel powerFlywheel() {
         return new PowerFlywheel(flywheel);
