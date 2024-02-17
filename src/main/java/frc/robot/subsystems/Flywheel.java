@@ -25,17 +25,6 @@ public class Flywheel extends SubsystemBase {
   private final FlywheelIO io;
   private final FlywheelIOInputsAutoLogged inputs = new FlywheelIOInputsAutoLogged();
 
-
-  private double topP = 0.00055;
-  private double topI = 0.0;
-  private double topD = 0.0;
-  private double topFF = 0.000158;
-
-  private double bottomP = 0.00055;
-  private double bottomI = 0.0;
-  private double bottomD = 0.0;
-  private double bottomFF = 0.000155;
-
   private double rpmSetpoint = 0.0;
 
   /** Creates a new Flywheel. */
