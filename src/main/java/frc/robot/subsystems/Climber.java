@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.io.ClimberIO;
 import frc.robot.io.ClimberIOInputsAutoLogged;
 import frc.robot.io.IntakeIOInputsAutoLogged;
+import frc.robot.utils.CommandLogger;
 
 public class Climber extends SubsystemBase {
   private ClimberIO io;
@@ -85,7 +86,7 @@ public class Climber extends SubsystemBase {
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("Climber", inputs);
-
+    CommandLogger.logCommandSubsystem(this);
     SmartDashboard.putNumber("Left Height", getLeftPosition());
     SmartDashboard.putNumber("Right Height", getRightPosition());
     SmartDashboard.putNumber("roll", getRoll());

@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Telemetry;
+import frc.robot.utils.CommandLogger;
 import edu.wpi.first.units.Unit;
 import edu.wpi.first.units.Voltage;
 
@@ -348,7 +349,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
            
         }
         Logger.recordOutput("Rotation2d", this.getPigeon2().getRotation2d());
-
+        CommandLogger.logCommandSubsystem(this);
     }
 
 }
