@@ -8,7 +8,8 @@ public class Constants {
         public static class WoodBotConstants {
                 public static final int WOOD_BOT_LINKAGE_ID = 2;
         }
-        
+
+        public static final String CANIVORE_NAME = "Default Name";
         public static final int DRIVER_CONTROLLER = 0;
         public static final int OPERATOR_CONTROLLER = 1;
 
@@ -21,6 +22,11 @@ public class Constants {
 
         public static final int CLIMBER_LEFT_ID = 6; // ARBITRARY LMAO
         public static final int CLIMBER_RIGHT_ID = 7;
+
+        public static final int AMP_INTAKE_ID = 8;
+
+        public static final int AMP_ARM_ID = 15;
+        public static final int AMP_WRIST_ID = 16;
 
         public static final int INTAKE_HIGH_SENSOR_PORT = 0;
         public static final int INTAKE_SIDE_SENSOR_PORT = 1;
