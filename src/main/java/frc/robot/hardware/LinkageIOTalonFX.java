@@ -45,7 +45,11 @@ public class LinkageIOTalonFX implements LinkageIO {
   DigitalInput zeroButton = new DigitalInput(Constants.LINKAGE_ZERO_BUTTON_PORT);
   DigitalInput brakeButton = new DigitalInput(Constants.LINKAGE_BRAKE_TOGGLE_BUTTON_PORT);
 
-  private final double GEAR_RATIO = 360.0 / 60.0; // flip
+  /*
+   * DO NOT USE ON ENCODER BC MOTION MAGIC WAS TUNED IN NATIVE UNITS
+   * ONLY FOR SHUFFLEBOARD CONTROL :D
+   */
+  private final double GEAR_RATIO = 360.0 / 60.0;
 
   public LinkageIOTalonFX() {
     final double kA = 0.0;
