@@ -11,7 +11,7 @@ import frc.robot.commands.PowerIntakeReversed;
 import frc.robot.commands.PowerIntake;
 import frc.robot.commands.PowerLinkage;
 import frc.robot.commands.SetIntake;
-import frc.robot.commands.SetLinkageTalon;
+import frc.robot.commands.SetLinkage;
 import frc.robot.commands.ShootInSpeaker;
 import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.RobotOrientedDrive;
@@ -171,7 +171,7 @@ public class RobotContainer {
   private final void initializeCommands() {
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
     robotOrientedDrive = new RobotOrientedDrive(drivetrain);
-    runExtendIntake = new RunExtendIntake(intake);
+    runExtendIntake = new RunExtendIntake(intake, linkage);
     powerIntakeReversed = new PowerIntakeReversed(intake);
     powerIntake = new PowerIntake(intake);
     powerFlywheel = new PowerFlywheel(flywheel);
@@ -204,6 +204,7 @@ public class RobotContainer {
     // flywheel.setDefaultCommand(powerFlywheel);
     // drivetrain.setDefaultCommand(fieldOrientedDrive);
     climber.setDefaultCommand(powerClimber);
+    //intake.setDefaultCommand(powerIntake);
   }
 
   /**
@@ -227,6 +228,7 @@ public class RobotContainer {
 
     operatorController.a().onTrue(levelClimbers);
     operatorController.b().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
+    operatorController.y().toggleOnTrue(runExtendIntake);
 
     // driverController.x().whileTrue(new InstantCommand(() ->
     // drivetrain.zero(),drivetrain));

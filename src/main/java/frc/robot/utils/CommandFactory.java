@@ -50,7 +50,7 @@ public class CommandFactory {
 
     // returns type runExtendIntake
     public RunExtendIntake runExtendIntake() {
-        return new RunExtendIntake(intake);
+        return new RunExtendIntake(intake, linkage);
     }
 
     // returns type runLinkage

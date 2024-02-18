@@ -64,6 +64,7 @@ public class Intake extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
+    SmartDashboard.putNumber("Amps", getAmps());
     Logger.processInputs("Intake", inputs);
   }
 }
