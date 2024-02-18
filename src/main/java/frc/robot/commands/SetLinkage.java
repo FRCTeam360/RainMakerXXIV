@@ -8,13 +8,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Linkage;
 
-public class SetLinkageTalon extends Command {
+public class SetLinkage extends Command {
   final Linkage linkage;
+  private double setpoint;
   /** Creates a new SetLinkageTa\
    * lon. */
-  public SetLinkageTalon(Linkage linkage) {
+  public SetLinkage(Linkage linkage, double setpoint) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.linkage = linkage;
+    this.setpoint = setpoint;
     addRequirements(linkage);
   }
 
@@ -28,7 +30,7 @@ public class SetLinkageTalon extends Command {
   @Override
   public void execute() {
     //SmartDashboard.putNumber("error", -7.0 - linkage.getAngle());
-    linkage.setAngle(-7.0);
+    linkage.setAngle(setpoint);
   }
 
   // Called once the command ends or is interrupted.
