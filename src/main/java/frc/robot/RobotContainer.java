@@ -223,7 +223,7 @@ public class RobotContainer {
     // flywheel.setDefaultCommand(powerFlywheel);
     // drivetrain.setDefaultCommand(fieldOrientedDrive);
     climber.setDefaultCommand(powerClimber);
-    ampArm.setDefaultCommand(powerAmpArm);
+    // ampArm.setDefaultCommand(powerAmpArm);
   }
 
   /**
@@ -245,7 +245,7 @@ public class RobotContainer {
 
     // operatorController.a().toggleOnTrue(runExtendIntake);
 
-    operatorController.y().toggleOnTrue(powerAmpIntake);
+    // operatorController.y().toggleOnTrue(powerAmpIntake);
 
     operatorController.a().onTrue(levelClimbers);
     operatorController.b().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
@@ -271,7 +271,9 @@ public class RobotContainer {
     if (!Objects.isNull(ampArm)) {
       ampArm.stopBoth();
     }
-    ampIntake.stop();
+    if (!Objects.isNull(ampIntake)) {
+      ampIntake.stop();
+    }
   }
 
   /**
