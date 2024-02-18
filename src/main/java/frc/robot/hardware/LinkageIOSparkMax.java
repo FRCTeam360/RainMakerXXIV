@@ -85,6 +85,12 @@ public class LinkageIOSparkMax implements LinkageIO {
   public void setPosition(double angle) {
     encoder.setPosition(angle);
   }
+  public void enableBrakeMode(){
+    sparkMax.setIdleMode(IdleMode.kBrake);
+  }
+  public void disableBrakeMode(){
+    sparkMax.setIdleMode(IdleMode.kCoast);
+  }
 
   public void setReference( double setPoint) {
     pidController.setReference(setPoint, ControlType.kPosition);

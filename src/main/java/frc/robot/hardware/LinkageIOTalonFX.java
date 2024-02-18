@@ -126,6 +126,12 @@ public class LinkageIOTalonFX implements LinkageIO {
   public double getPosition() {
     return talonFX.getPosition().getValueAsDouble();
   }
+  public void enableBrakeMode(){
+    talonFX.setNeutralMode(NeutralModeValue.Brake);
+  }
+  public void disableBrakeMode(){
+    talonFX.setNeutralMode(NeutralModeValue.Coast);
+  }
 
   public double get() {
     return talonFX.get();
