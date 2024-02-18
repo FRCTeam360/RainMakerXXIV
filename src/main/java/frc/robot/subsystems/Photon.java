@@ -109,18 +109,18 @@ private double lastEstTimestamp = 0;
 
  //TODO im not gonna change anything in here because this is lowkey weird since you cant have vars in arrays plus visEst is var so its not even compatible with the return type (possibly)
  // this is the projected pose estimation from the camera
-    public Optional<EstimatedRobotPose> getEstimatedGlobalPoses() {
-      // for(PhotonPoseEstimator estimator : poseEstimators) {
+  //   public Optional<EstimatedRobotPose> getEstimatedGlobalPoses() {
+  //     // for(PhotonPoseEstimator estimator : poseEstimators) {
 
-      // }
-        var visionEst = photonEstimator13.update();
-        double latestTimestamp = camera.getLatestResult().getTimestampSeconds();
-        boolean newResult = Math.abs(latestTimestamp - lastEstTimestamp) > 1e-5;
-   // This is missing alot from the example that might or might not be important
-        if (newResult) lastEstTimestamp = latestTimestamp;
+  //     // }
+  //       var visionEst = photonEstimator13.update();
+  //       double latestTimestamp = camera.getLatestResult().getTimestampSeconds();
+  //       boolean newResult = Math.abs(latestTimestamp - lastEstTimestamp) > 1e-5;
+  //  // This is missing alot from the example that might or might not be important
+  //       if (newResult) lastEstTimestamp = latestTimestamp;
       
-        return visionEst;
-    }
+  //       return visionEst;
+  //   }
 
 
 
@@ -136,32 +136,32 @@ private double lastEstTimestamp = 0;
 
 //TODO lmao this method is already so messed up im not even gonna try to change this
   //   // this is some logic for rejecting bad poses
-   public Matrix<N3, N1> getEstimationStdDevs(Pose2d estimatedPose) {
-        var estStdDevs = kSingleTagStdDevs;
+  //  public Matrix<N3, N1> getEstimationStdDevs(Pose2d estimatedPose) {
+  //       var estStdDevs = kSingleTagStdDevs;
 
-        var targets = getPipelineResult().getTargets();
-  //       int numTags = 0;
-  //       double avgDist = 0;
-  //       for (var tgt : targets) {
-  //           var tagPose = photonEstimator13.getFieldTags().getTagPose(tgt.getFiducialId());
-  //           if (tagPose.isEmpty()) continue;
-  //           numTags++;
-  //           avgDist +=
-  //                   tagPose.get().toPose2d().getTranslation().getDistance(estimatedPose.getTranslation());
-  //       }
-  //       if (numTags == 0) return estStdDevs;
-  //       avgDist /= numTags;
+  //       var targets = getPipelineResult().getTargets();
+  // //       int numTags = 0;
+  // //       double avgDist = 0;
+  // //       for (var tgt : targets) {
+  // //           var tagPose = photonEstimator13.getFieldTags().getTagPose(tgt.getFiducialId());
+  // //           if (tagPose.isEmpty()) continue;
+  // //           numTags++;
+  // //           avgDist +=
+  // //                   tagPose.get().toPose2d().getTranslation().getDistance(estimatedPose.getTranslation());
+  // //       }
+  // //       if (numTags == 0) return estStdDevs;
+  // //       avgDist /= numTags;
         
-  //       // Decrease std devs if multiple targets are visible
-  //       if (numTags > 1) estStdDevs = kMultiTagStdDevs; // if larger than one make multiple
-  //       // Increase std devs based on (average) distance
-  //       if (numTags == 1 && avgDist > 4)  // reject all poses that are based on one tag more than 4 feet away
-  //           estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
-  //       else estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 30)); // multiple table by d^2 / 30. arbitrary number
+  // //       // Decrease std devs if multiple targets are visible
+  // //       if (numTags > 1) estStdDevs = kMultiTagStdDevs; // if larger than one make multiple
+  // //       // Increase std devs based on (average) distance
+  // //       if (numTags == 1 && avgDist > 4)  // reject all poses that are based on one tag more than 4 feet away
+  // //           estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+  // //       else estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 30)); // multiple table by d^2 / 30. arbitrary number
 
-        return estStdDevs;
+  //       return estStdDevs;
 
-      }
+  //     }
 
 
 

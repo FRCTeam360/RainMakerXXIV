@@ -12,7 +12,7 @@ import frc.robot.commands.PowerIntake;
 import frc.robot.commands.PowerLinkage;
 import frc.robot.commands.SetIntake;
 import frc.robot.commands.ShootInSpeaker;
-import frc.robot.commands.PointToSpeakerPhoton;
+//import frc.robot.commands.PointToSpeakerPhoton;
 import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.RobotOrientedDrive;
 import frc.robot.commands.FieldOrientedDrive;
@@ -93,7 +93,7 @@ public class RobotContainer {
   private FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive();
   private RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive();
   private SetFlywheelSetpoint setFlywheelSetpoint = new SetFlywheelSetpoint(flywheel);
-    private PointToSpeakerPhoton pointToSpeaker = new PointToSpeakerPhoton(photon, drivetrain);
+   // private PointToSpeakerPhoton pointToSpeaker = new PointToSpeakerPhoton(photon, drivetrain);
 
 
 
@@ -226,7 +226,7 @@ public class RobotContainer {
     // operatorController.a().whileTrue(new SetFlywheel());
     // operatorController.b().toggleOnTrue(runExtendIntake);
 
-   // driverController.b().onTrue(drivetrain.turntoCMD(true, drivetrain.getRotation2d().getDegrees()- photon.getAngle(), 0.0, 0.0));
+    driverController.b().onTrue(drivetrain.turntoCMD(true, drivetrain.getRotation2d().getDegrees()- photon.getAngles().get(0), 0.0, 0.0));
     // driverController.a().whileTrue(drivetrain.turntoCMD(true, 180.0, 0.0, 0.0))
     // driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     
