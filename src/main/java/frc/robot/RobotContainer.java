@@ -264,6 +264,7 @@ public class RobotContainer {
   }
 
   public void onDisable() {
+    climber.stop();
     flywheel.stop();
     intake.stop();
     linkage.stop();
