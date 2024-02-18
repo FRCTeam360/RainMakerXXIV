@@ -64,7 +64,7 @@ public class ClimberIOSparkMax implements ClimberIO {
     /** Creates a new ClimberIOSparkMax. */
     public ClimberIOSparkMax() {// counterclocwise is positve roll follows unit circle
         leftMotor.restoreFactoryDefaults();
-        leftMotor.setIdleMode(IdleMode.kBrake);
+        leftMotor.setIdleMode(IdleMode.kCoast);
         leftMotor.setInverted(true);
         leftEncoder.setPositionConversionFactor(POSITION_CONVERSION);
 

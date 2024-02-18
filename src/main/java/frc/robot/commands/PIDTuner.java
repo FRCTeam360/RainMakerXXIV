@@ -17,7 +17,7 @@ public class PIDTuner extends Command {
   private double roll = 0;
   private double leftError = 0;
   private double rightError = 0;
-  private double goalHeight = 45;
+  private double goalHeight = 85.0;
 
   /** Creates a new PIDTuner. */
   public PIDTuner(Climber climber) {
@@ -29,7 +29,7 @@ public class PIDTuner extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putNumber("goal height", 45.0);
+    SmartDashboard.putNumber("goal height", 85.0);
     SmartDashboard.putNumber("p", 0);
     SmartDashboard.putNumber("i", 0);
     SmartDashboard.putNumber("d", 0);
@@ -50,7 +50,7 @@ public class PIDTuner extends Command {
     double i = SmartDashboard.getNumber("i", 0.0);
     double d = SmartDashboard.getNumber("d", 0.0);
     double ff = SmartDashboard.getNumber("ff", 0.0);
-    goalHeight = SmartDashboard.getNumber("goal height", 45.0);
+    goalHeight = SmartDashboard.getNumber("goal height", 85.0);
     roll = climber.getRoll();
     leftError = goalHeight - climber.getLeftPosition();
     rightError = goalHeight - climber.getRightPosition();

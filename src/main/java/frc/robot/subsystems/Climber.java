@@ -30,6 +30,9 @@ public class Climber extends SubsystemBase {
     this.io = io;
     this.pigeon = pigeon;
 
+    SmartDashboard.putNumber("Position L", getLeftPosition());
+    SmartDashboard.putNumber("Position R", getRightPosition());
+
   }
 
   public void runBoth(double leftSpeed, double rightSpeed) {

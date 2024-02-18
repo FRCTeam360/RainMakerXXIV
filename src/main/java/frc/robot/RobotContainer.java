@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.RobotType;
 import frc.robot.commands.Autos;
 import frc.robot.commands.RunExtendIntake;
+import frc.robot.commands.SetClimbers;
 import frc.robot.commands.PowerIntakeReversed;
 import frc.robot.commands.PowerIntake;
 import frc.robot.commands.PowerLinkage;
@@ -99,7 +100,8 @@ public class RobotContainer {
   private FieldOrientedDrive fieldOrientedDrive;
   private RobotOrientedDrive robotOrientedDrive;
   private PIDTuner pidTuner;
-
+  private SetClimbers maxExtend;
+  private SetClimbers minExtend;
   // private SetLinkageTalon setLinkageTalon = new SetLinkageTalon(linkage);
 
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
@@ -185,6 +187,8 @@ public class RobotContainer {
     powerClimber = new PowerClimber(climber);
     levelClimbers = new LevelClimbers(climber);
     shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
+    maxExtend = new SetClimbers(climber, 85.0);
+    minExtend = new SetClimbers(climber, -35.0);
 
     NamedCommands.registerCommand("Intake", runExtendIntake);
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
@@ -218,7 +222,7 @@ public class RobotContainer {
     // flywheel.setDefaultCommand(powerFlywheel);
     
     drivetrain.setDefaultCommand(fieldOrientedDrive);
-    climber.setDefaultCommand(pidTuner);
+    climber.setDefaultCommand(powerClimber);
   }
 
   /**
@@ -240,7 +244,7 @@ public class RobotContainer {
 
     // operatorController.a().toggleOnTrue(runExtendIntake);
 
-    operatorController.a().onTrue(levelClimbers);
+    operatorController.a().onTrue(pidTuner);
     operatorController.b().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
 
     driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(),drivetrain));
