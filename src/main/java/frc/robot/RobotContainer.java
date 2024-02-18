@@ -141,12 +141,10 @@ public class RobotContainer {
         flywheel = new Flywheel(new FlywheelIOSparkFlex());
         intake = new Intake(new IntakeIOSparkMax());
         linkage = new Linkage(new LinkageIOTalonFX());
-        climber = new Climber(new ClimberIOSparkMax());
+        drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
+        climber = new Climber(new ClimberIOSparkMax(),drivetrain.getPigeon2());
         // ampArm = new AmpArm(new AmpArmIOTalonFX());
         // ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
-        shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
-
-        drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
         climber = new Climber(new ClimberIOSparkMax(), drivetrain.getPigeon2()); // MAKE SURE THIS IS AFTER DRIVETRAIN
                                                                                  // INIT LMAO
         break;
