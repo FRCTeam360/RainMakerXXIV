@@ -22,6 +22,7 @@ import frc.robot.generated.PracticebotConstants;
 import frc.robot.generated.WoodbotConstants;
 import frc.robot.hardware.ClimberIOSparkMax;
 import frc.robot.hardware.FlywheelIOSparkFlex;
+import frc.robot.hardware.IntakeIOSparkFlex;
 import frc.robot.hardware.IntakeIOSparkMax;
 import frc.robot.hardware.LinkageIOTalonFX;
 import frc.robot.hardware.LinkageIOSparkMax;
@@ -129,7 +130,7 @@ public class RobotContainer {
         drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
         break;
       case COMPETITION:
-
+        intake = new Intake(new IntakeIOSparkFlex());
         break;
       case TEST:
 
