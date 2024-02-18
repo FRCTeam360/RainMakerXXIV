@@ -6,6 +6,7 @@ package frc.robot.hardware;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -25,6 +26,7 @@ import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -35,8 +37,12 @@ import frc.robot.io.LinkageIO;
 public class LinkageIOTalonFX implements LinkageIO {
   /** Creates a new IntakeIOtalonFX. */
   private final TalonFX talonFX = new TalonFX(Constants.LINKAGE_ID, "Default Name");
+  private final Timer timer = new Timer();
   // private final RelativeEncoder encoder = talonFX.getEncoder();
   // private final SparkPIDController pidController = talonFX.getPIDController();
+  private Orchestra updateSound = new Orchestra( "FreshPrinceOfBelAir.chrp" );
+  
+  
 
   private DutyCycleOut dutyCycleOut = new DutyCycleOut(0);
   private TalonFXConfiguration talonFXConfiguration = new TalonFXConfiguration();
@@ -62,10 +68,12 @@ public class LinkageIOTalonFX implements LinkageIO {
 
     final double forwardLimit = 29.0; // TODO: make sure these are correct for prac bot
     final double reverseLimit = 0.0; // 29.5
-
+    
     talonFX.getConfigurator().apply(new TalonFXConfiguration());
     talonFX.setInverted(false);
     talonFX.setNeutralMode(NeutralModeValue.Brake);
+    updateSound.addInstrument(talonFX);
+    timer.restart();
 
     // need to add offset??? 43.0 rn
 
@@ -147,6 +155,12 @@ public class LinkageIOTalonFX implements LinkageIO {
   }
 
   public void setPosition(double angle) {
+    if(angle == 0.0){
+      timer.start();
+      while (timer.get() < 20.0) {
+        updateSound.play();
+      }
+    }
     angle = angle / GEAR_RATIO;
     talonFX.setPosition(angle);
   }
