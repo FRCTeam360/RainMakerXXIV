@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -21,18 +22,14 @@ import frc.robot.io.IntakeIOInputsAutoLogged;
 
 public class Climber extends SubsystemBase {
   private ClimberIO io;
+  private Pigeon2 pigeon;
   private final ClimberIOInputsAutoLogged inputs = new ClimberIOInputsAutoLogged();
 
-  public double heightOffset = 0;
-
   /** Creates a new Climber. */
-  public Climber(ClimberIO io) {
+  public Climber(ClimberIO io, Pigeon2 pigeon) {
     this.io = io;
+    this.pigeon = pigeon;
 
-    SmartDashboard.putNumber("Left Height", 0);
-    SmartDashboard.putNumber("Right Height", 0);
-    SmartDashboard.putNumber("roll", 0);
-    SmartDashboard.putNumber("height offset", heightOffset);
   }
 
   public void runBoth(double leftSpeed, double rightSpeed) {
@@ -52,10 +49,6 @@ public class Climber extends SubsystemBase {
     io.runRight(0);
   }
 
-  public void level() {
-    io.level();
-  }
-
   public boolean leftAboveMinHeight() {
     return io.leftAboveMinHeight();
   }
@@ -70,25 +63,33 @@ public class Climber extends SubsystemBase {
 
   public double getRightPosition() {
     return io.getRightPosition();
-  } 
-
-  public double getRoll() {
-    return io.getRoll();
   }
 
   public void zeroBoth() {
     io.zeroBoth();
   }
 
-  @Override
-  public void periodic() {
+  public double getRoll() {
+    return pigeon.getRoll().getValueAsDouble();
+  }
+
+  public void setLeftHeight(double height) {
+    io.setLeftHeight(height);
+  }
+
+  public void setRightHeight(double height) {
+    io.setRightHeight(height);
+  }
+
+  public void updatePIDF(double P, double I, double D, double F) {
+    io.updatePIDF(P, I, D, F);
+  }
+
+  @Override public void periodic() {
+    SmartDashboard.putNumber("Position L", getLeftPosition());
+    SmartDashboard.putNumber("Position R", getRightPosition());
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("Climber", inputs);
-
-    SmartDashboard.putNumber("Left Height", getLeftPosition());
-    SmartDashboard.putNumber("Right Height", getRightPosition());
-    SmartDashboard.putNumber("roll", getRoll());
-    SmartDashboard.putNumber("height offset", heightOffset);
   }
 }

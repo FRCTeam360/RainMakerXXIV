@@ -17,6 +17,7 @@ import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.RobotOrientedDrive;
 import frc.robot.commands.FieldOrientedDrive;
 import frc.robot.commands.LevelClimbers;
+import frc.robot.commands.PIDTuner;
 import frc.robot.commands.PowerClimber;
 import frc.robot.generated.PracticebotConstants;
 import frc.robot.generated.WoodbotConstants;
@@ -95,8 +96,9 @@ public class RobotContainer {
   private LevelClimbers levelClimbers;
   // private PowerLinkage powerLinkage = new PowerLinkage(linkage);
   private ShuffleboardTab diagnosticTab;
-  private FieldOrientedDrive fieldOrientedDrive; 
-  private RobotOrientedDrive robotOrientedDrive; 
+  private FieldOrientedDrive fieldOrientedDrive;
+  private RobotOrientedDrive robotOrientedDrive;
+  private PIDTuner pidTuner;
 
   // private SetLinkageTalon setLinkageTalon = new SetLinkageTalon(linkage);
 
@@ -123,13 +125,17 @@ public class RobotContainer {
         flywheel = new Flywheel(new FlywheelIOSparkFlex());
         intake = new Intake(new IntakeIOSparkMax());
         linkage = new Linkage(new LinkageIOTalonFX());
-        climber = new Climber(new ClimberIOSparkMax());
-        shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
-
         drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
+        climber = new Climber(new ClimberIOSparkMax(), drivetrain.getPigeon2()); // MAKE SURE THIS IS AFTER DRIVETRAIN
+                                                                                 // INIT LMAO
         break;
       case COMPETITION:
-
+        flywheel = new Flywheel(new FlywheelIOSparkFlex());
+        intake = new Intake(new IntakeIOSparkMax());
+        linkage = new Linkage(new LinkageIOTalonFX());
+        drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
+        climber = new Climber(new ClimberIOSparkMax(), drivetrain.getPigeon2()); // MAKE SURE THIS IS AFTER DRIVETRAIN
+                                                                                 // INIT LMAO
         break;
       case TEST:
 
@@ -160,15 +166,16 @@ public class RobotContainer {
     diagnosticTab.addBoolean("Practice Bot", () -> Constants.isPracticeBot());
     diagnosticTab.addBoolean("Comp Bot", () -> Constants.isCompBot());
     initializeCommands();
-   
+
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
     configureBindings();
-    //configureCharacterizationBindings();
+    // configureCharacterizationBindings();
     configureDefaultCommands();
   }
 
   private final void initializeCommands() {
+    pidTuner = new PIDTuner(climber);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
     robotOrientedDrive = new RobotOrientedDrive(drivetrain);
     runExtendIntake = new RunExtendIntake(intake);
@@ -176,7 +183,9 @@ public class RobotContainer {
     powerIntake = new PowerIntake(intake);
     powerFlywheel = new PowerFlywheel(flywheel);
     powerClimber = new PowerClimber(climber);
-    levelClimbers = new LevelClimbers(climber, drivetrain);
+    levelClimbers = new LevelClimbers(climber);
+    shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
+
     NamedCommands.registerCommand("Intake", runExtendIntake);
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     NamedCommands.registerCommand("Wait", new WaitCommand(2));
@@ -191,19 +200,25 @@ public class RobotContainer {
   private void configureDefaultCommands() {
     // linkage.setDefaultCommand(powerLinkage);
     // // climber.setDefaultCommand();
-    //  drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-    //     drivetrain.applyRequest(
-    //         () -> drive.withVelocityX(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1) * MAX_SPEED_MPS) //drive forward with negative y
-    //             // negative Y (forward)
-    //             .withVelocityY(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1) * MAX_SPEED_MPS) // drive left with negative x
-    //             .withRotationalRate(MathUtil.applyDeadband(-driverController.getRightX(), 0.1) * MaxAngularRate) // drive counterclockwise with negative x                                                                                                  
-    //flywheel.setDefaultCommand(setFlywheel);
-    //intake.setDefaultCommand(runIntake);
-    //linkage.setDefaultCommand(powerLinkage);
-    drivetrain.setDefaultCommand(fieldOrientedDrive);
+    // drivetrain.setDefaultCommand( // Drivetrain will execute this command
+    // periodically
+    // drivetrain.applyRequest(
+    // () ->
+    // drive.withVelocityX(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1)
+    // * MAX_SPEED_MPS) //drive forward with negative y
+    // // negative Y (forward)
+    // .withVelocityY(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1) *
+    // MAX_SPEED_MPS) // drive left with negative x
+    // .withRotationalRate(MathUtil.applyDeadband(-driverController.getRightX(),
+    // 0.1) * MaxAngularRate) // drive counterclockwise with negative x
+    // flywheel.setDefaultCommand(setFlywheel);
+    // intake.setDefaultCommand(runIntake);
+    // linkage.setDefaultCommand(powerLinkage);
+    //drivetrain.setDefaultCommand(fieldOrientedDrive);
     // flywheel.setDefaultCommand(powerFlywheel);
-    // drivetrain.setDefaultCommand(fieldOrientedDrive);
-    climber.setDefaultCommand(powerClimber);
+    
+    drivetrain.setDefaultCommand(fieldOrientedDrive);
+    climber.setDefaultCommand(pidTuner);
   }
 
   /**
@@ -228,18 +243,19 @@ public class RobotContainer {
     operatorController.a().onTrue(levelClimbers);
     operatorController.b().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
 
-    // driverController.x().whileTrue(new InstantCommand(() ->
-    // drivetrain.zero(),drivetrain));
+    driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(),drivetrain));
 
     // drivetrain.registerTelemetry(logger::telemeterize);
   }
-  public void configureCharacterizationBindings(){
+
+  public void configureCharacterizationBindings() {
     // The methods below return Command objects
     driverController.rightTrigger().whileTrue(drivetrain.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward));
     driverController.leftTrigger().whileTrue(drivetrain.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse));
     driverController.x().whileTrue(drivetrain.sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward));
     driverController.y().whileTrue(drivetrain.sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
   }
+
   public void onDisable() {
     flywheel.stop();
     intake.stop();

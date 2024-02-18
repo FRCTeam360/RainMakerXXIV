@@ -39,7 +39,7 @@ public class FieldOrientedDrive extends Command {
   @Override
   public void execute() {
 
-    driveTrain.fieldCentricDrive(driverController.getLeftX(), driverController.getLeftY(),
+    driveTrain.fieldCentricDrive(-driverController.getLeftX(), -driverController.getLeftY(),
         driverController.getRightX());
 
     CommandLogger.logCommandRunning(this);
