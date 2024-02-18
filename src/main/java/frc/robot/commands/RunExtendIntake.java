@@ -169,4 +169,3 @@ public class RunExtendIntake extends Command {
     return false;
   }
 }
-//pretty sure all of this is garbage idk if my logic is right at all lol
