@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.hardware.TalonFX;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
@@ -16,6 +17,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -30,6 +32,8 @@ public class Linkage extends SubsystemBase {
   private final LinkageIO io;
   private final LinkageIOInputsAutoLogged inputs = new LinkageIOInputsAutoLogged();
   private double positionSetpoint;
+  // private Orchestra updateSound = new Orchestra( "FreshPrinceOfBelAir.chrp" );
+  
   private static final double STARTING_ANGLE = 50.0;
   static XboxController driverCont = new XboxController(0);
 
@@ -40,6 +44,7 @@ public class Linkage extends SubsystemBase {
     ShuffleboardTab tab = Shuffleboard.getTab("Linkage");
     tab.addBoolean("Zero Button", () -> io.getZeroButton());
     tab.addBoolean("Brake Button", () -> io.getBrakeButton());
+    // updateSound.addInstrument();
   }
 
   public boolean isAtSetpoint() {
@@ -88,7 +93,8 @@ public class Linkage extends SubsystemBase {
     io.updateInputs(inputs);
     Logger.processInputs("Linkage", inputs);
 
-    if (!io.getZeroButton()) {
+    if (!io.getZeroButton() && RobotState.isDisabled()) {
+      // updateSound.play();
       this.zero();
     }
   }
