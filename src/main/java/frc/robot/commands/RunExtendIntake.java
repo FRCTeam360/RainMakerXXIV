@@ -28,16 +28,19 @@ public class RunExtendIntake extends Command {
  
   
   /** Creates a new Java. */
-  public RunExtendIntake(Intake intake) {
+  public RunExtendIntake(Intake intake, Linkage linkage) {
     this.intake = intake;
+    this.linkage = linkage;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intake);
+    addRequirements(intake, linkage);
   }
 
-    public RunExtendIntake(Intake intake, boolean isAuto) {
+    public RunExtendIntake(Intake intake, Linkage linkage, boolean isAuto) {
     this.isAuto = isAuto;
+    this.intake = intake;
+    this.linkage = linkage;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intake);
+    addRequirements(intake, linkage);
   }
 
   // Called when the command is initially scheduled.
@@ -60,12 +63,9 @@ public class RunExtendIntake extends Command {
       case EXTEND_INTAKE:
         intake.run(.65); // we should extend too but idk how we should implement this
         if(isAuto) {
-          linkage.setAngle(180); // dunno if this value is right
+          linkage.setAngle(0.0); // dunno if this value is right
         }
         if(intake.getAmps() > 20 && timer.get() > .25) {
-          spiked = true;
-        }
-        if(linkage.isAtSetpoint() && spiked) {
           sensorTimer.start();
           state = IntakeCases.WAIT_FOR_SENSOR;
         }
@@ -160,7 +160,7 @@ public class RunExtendIntake extends Command {
   @Override
   public boolean isFinished() {
     if(state == IntakeCases.RETRACT_STOP) {
-      linkage.setAngle(0); // dunno if this value is right
+      // dunno if this value is right
       System.out.print("COMMAND ENDED");
       if(linkage.isAtSetpoint()) {
       return true;
