@@ -241,6 +241,7 @@ public class RobotContainer {
     driverController.y().whileTrue(drivetrain.sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
   }
   public void onDisable() {
+    climber.stop();
     flywheel.stop();
     intake.stop();
     linkage.stop();
