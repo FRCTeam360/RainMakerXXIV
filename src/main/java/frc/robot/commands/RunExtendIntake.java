@@ -20,24 +20,28 @@ public class RunExtendIntake extends Command {
   private static XboxController operatorCont = new XboxController(1);
   private Timer timer = new Timer();
   private Timer sensorTimer = new Timer();
-  private double setPoint;
+  private boolean isAuto;
+  private boolean spiked = false;
   
   private IntakeCases state = IntakeCases.CHECK_ROBOT_EMPTY;
 
  
   
   /** Creates a new Java. */
-  public RunExtendIntake(Intake intake) {
+  public RunExtendIntake(Intake intake, Linkage linkage) {
     this.intake = intake;
+    this.linkage = linkage;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intake);
+    addRequirements(intake, linkage);
   }
 
-  //   public RunExtendIntake(boolean isAuto) {
-  //   inAuto = isAuto;
-  //   // Use addRequirements() here to declare subsystem dependencies.
-  //   addRequirements(intake);
-  // }
+    public RunExtendIntake(Intake intake, Linkage linkage, boolean isAuto) {
+    this.isAuto = isAuto;
+    this.intake = intake;
+    this.linkage = linkage;
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(intake, linkage);
+  }
 
   // Called when the command is initially scheduled.
   @Override
@@ -58,7 +62,9 @@ public class RunExtendIntake extends Command {
         break;
       case EXTEND_INTAKE:
         intake.run(.65); // we should extend too but idk how we should implement this
-        //linkage.setAngle(180);
+        if(isAuto) {
+          linkage.setAngle(0.0); // dunno if this value is right
+        }
         if(intake.getAmps() > 20 && timer.get() > .25) {
           sensorTimer.start();
           state = IntakeCases.WAIT_FOR_SENSOR;
@@ -69,7 +75,7 @@ public class RunExtendIntake extends Command {
         // if(!intake.getHighSensor()) {
         //   state = IntakeCases.UP_TO_SHOOTER_P1;
         // }
-        if(sensorTimer.get() > 1) {
+        if(sensorTimer.get() > 1.0) {
           state = IntakeCases.EXTEND_INTAKE;
           sensorTimer.reset();
         } 
@@ -154,8 +160,11 @@ public class RunExtendIntake extends Command {
   @Override
   public boolean isFinished() {
     if(state == IntakeCases.RETRACT_STOP) {
+      // dunno if this value is right
       System.out.print("COMMAND ENDED");
+      if(linkage.isAtSetpoint()) {
       return true;
+      }
     }
     return false;
   }

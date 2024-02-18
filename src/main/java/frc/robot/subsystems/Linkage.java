@@ -43,7 +43,7 @@ public class Linkage extends SubsystemBase {
   }
 
   public boolean isAtSetpoint() {
-	  return false;
+	  return Math.abs(this.getAngle()-this.positionSetpoint) < 1.0;
   }
 
   public void run(double speed) {
