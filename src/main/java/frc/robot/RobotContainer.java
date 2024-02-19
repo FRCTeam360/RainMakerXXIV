@@ -20,12 +20,14 @@ import frc.robot.commands.LevelClimbers;
 import frc.robot.commands.PowerAmpArm;
 import frc.robot.commands.PowerAmpIntake;
 import frc.robot.commands.PowerClimber;
+import frc.robot.generated.CompBotConstants;
 import frc.robot.generated.PracticebotConstants;
 import frc.robot.generated.WoodbotConstants;
 import frc.robot.hardware.AmpArmIOTalonFX;
 import frc.robot.hardware.AmpIntakeIOSparkMax;
 import frc.robot.hardware.ClimberIOSparkMax;
 import frc.robot.hardware.FlywheelIOSparkFlex;
+import frc.robot.hardware.IntakeIOSparkFlex;
 import frc.robot.hardware.IntakeIOSparkMax;
 import frc.robot.hardware.LinkageIOTalonFX;
 import frc.robot.hardware.LinkageIOSparkMax;
@@ -145,7 +147,13 @@ public class RobotContainer {
         drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
         break;
       case COMPETITION:
-
+        drivetrain = CompBotConstants.DriveTrain; 
+        flywheel = new Flywheel(new FlywheelIOSparkFlex());
+        intake = new Intake(new IntakeIOSparkFlex());
+        ampArm = new AmpArm(new AmpArmIOTalonFX());
+        ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
+        climber = new Climber(new ClimberIOSparkMax());
+        linkage = new Linkage(new LinkageIOTalonFX());
         break;
       case TEST:
 
@@ -193,6 +201,12 @@ public class RobotContainer {
     powerFlywheel = new PowerFlywheel(flywheel);
     powerClimber = new PowerClimber(climber);
     levelClimbers = new LevelClimbers(climber, drivetrain);
+    if(!Objects.isNull(ampArm)){
+      powerAmpArm = new PowerAmpArm(ampArm);
+    }
+    if(!Objects.isNull(ampIntake)){
+      powerAmpIntake = new PowerAmpIntake(ampIntake);
+    }
     // powerAmpArm = new PowerAmpArm(ampArm);
     // powerAmpIntake = new PowerAmpIntake(ampIntake);
 
@@ -224,6 +238,12 @@ public class RobotContainer {
     // drivetrain.setDefaultCommand(fieldOrientedDrive);
     climber.setDefaultCommand(powerClimber);
     // ampArm.setDefaultCommand(powerAmpArm);
+    if(!Objects.isNull(ampArm)){
+      ampArm.setDefaultCommand(powerAmpArm);
+    }
+    if(!Objects.isNull(ampIntake)){
+      ampIntake.setDefaultCommand(powerAmpIntake);
+    }
   }
 
   /**
