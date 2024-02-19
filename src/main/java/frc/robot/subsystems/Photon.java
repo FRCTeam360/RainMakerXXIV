@@ -27,11 +27,16 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 
 public class Photon extends SubsystemBase {
+  public static enum TargetType {
+    SPEAKER,
+    STAGE
+  }
   /** Creates a new Photon. */
   private final String[] cameraNames = {"lime_14"};
   private ArrayList<PhotonCamera> cameras = new ArrayList<>();
@@ -84,6 +89,60 @@ private double lastEstTimestamp = 0;
       pipelineResults.add(camera.getLatestResult());
     }
     return pipelineResults;
+  }
+
+  public boolean isTargetInView(TargetType targetType) {
+    // select the correct target based on alliance and target type
+    DriverStation.Alliance alliance = DriverStation.getAlliance().get();
+    // initialize target number to 0
+    int targetNumber = 0;
+    if (alliance == DriverStation.Alliance.Blue) {
+      if (targetType == TargetType.SPEAKER) {
+        // target is the speaker
+        targetNumber = 7;
+      } else {
+        // target is the stage
+        targetNumber = 14;
+      }
+    } else {
+      if (targetType == TargetType.SPEAKER) {
+        // target is the speaker
+        targetNumber = 4;
+      } else {
+        // target is the stage
+        targetNumber = 13;
+      }
+    }
+    return this.getHasTarget().get(targetNumber);
+  }
+
+  public double getTargetYaw(TargetType targetType) {
+    // select the correct target based on alliance and target type
+    DriverStation.Alliance alliance = DriverStation.getAlliance().get();
+    // initialize target number to 0
+    int targetNumber = 0;
+    if (alliance == DriverStation.Alliance.Blue) {
+      if (targetType == TargetType.SPEAKER) {
+        // target is the speaker
+        targetNumber = 7;
+      } else {
+        // target is the stage
+        targetNumber = 14;
+      }
+    } else {
+      if (targetType == TargetType.SPEAKER) {
+        // target is the speaker
+        targetNumber = 4;
+      } else {
+        // target is the stage
+        targetNumber = 13;
+      }
+    }
+    var result = mCamera.getLatestResult();
+    if (result.hasTargets()) {
+      return this.getYaws().get(targetNumber); 
+    }
+    return 0;
   }
 
 

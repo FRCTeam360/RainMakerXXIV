@@ -9,13 +9,11 @@ import java.util.function.Supplier;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Photon;
+import frc.robot.subsystems.Photon.TargetType;
 
-public class PointAtSpeaker extends Command {
+public class PointAtVisionTarget extends Command {
 
-  public static enum TargetType {
-    SPEAKER,
-    STAGE
-  }
 
   private TargetType targetType;
 
@@ -24,9 +22,10 @@ public class PointAtSpeaker extends Command {
   private Supplier<Double> rotationSupplier;
 
   private CommandSwerveDrivetrain drivetrain;
+  private Photon photon;
 
   /** Creates a new PointAtSpeaker. */
-  public PointAtSpeaker(CommandSwerveDrivetrain drivetrain, TargetType targetType, Supplier<Double> xSupplier,
+  public PointAtVisionTarget(CommandSwerveDrivetrain drivetrain, Photon photon, TargetType targetType, Supplier<Double> xSupplier,
       Supplier<Double> ySupplier, Supplier<Double> rotationSupplier) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
@@ -38,6 +37,7 @@ public class PointAtSpeaker extends Command {
     this.rotationSupplier = rotationSupplier;
 
     this.drivetrain = drivetrain;
+    this.photon = photon;
   }
 
   // Called when the command is initially scheduled.
@@ -48,31 +48,9 @@ public class PointAtSpeaker extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // select the correct target based on alliance and target type
-    DriverStation.Alliance alliance = DriverStation.getAlliance().get();
-    // initialize target number to 0
-    int targetNumber = 0;
-    if (alliance == DriverStation.Alliance.Blue) {
-      if (targetType == TargetType.SPEAKER) {
-        // target is the speaker
-        targetNumber = 7;
-      } else {
-        // target is the stage
-        targetNumber = 14;
-      }
-    } else {
-      if (targetType == TargetType.SPEAKER) {
-        // target is the speaker
-        targetNumber = 4;
-      } else {
-        // target is the stage
-        targetNumber = 13;
-      }
-    }
-    Camera camera = photonVision.getShooterCamera();
-    if (camera.isTargetInView(targetNumber)){
+    if (photon.isTargetInView(targetType)){
       // target yaw should be retrieved from photon vision every cycle
-      double targetYaw = camera.getTarget(targetNumber).getYaw();
+      double targetYaw = photon.getTargetYaw(targetType);
       drivetrain.pointAtTarget(xSupplier.get(), ySupplier.get(), targetYaw);
     } else {
       // no target in view, so drive as normal
