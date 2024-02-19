@@ -34,7 +34,7 @@ public class PowerIntake extends Command {
     //   intake.run(-.15);
     // }
 
-    intake.run(1.0);
+    intake.run(0.5);
     CommandLogger.logCommandRunning(this);
   }
 

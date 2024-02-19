@@ -22,6 +22,7 @@ import frc.robot.commands.LinkageSetpoint;
 import frc.robot.commands.PowerAmpArm;
 import frc.robot.commands.PowerAmpIntake;
 import frc.robot.commands.PowerClimber;
+import frc.robot.generated.CompBotConstants;
 import frc.robot.generated.PracticebotConstants;
 import frc.robot.generated.WoodbotConstants;
 import frc.robot.hardware.AmpArmIOTalonFX;
@@ -90,7 +91,7 @@ public class RobotContainer {
   private Flywheel flywheel;
   private Linkage linkage;
   private Intake intake;
-  private Climber climber;
+  // private Climber climber;
   private AmpArm ampArm;
   private AmpIntake ampIntake;
   // private final Climber climber = new Climber(new ClimberIOSparkMax());
@@ -104,8 +105,8 @@ public class RobotContainer {
   private PowerIntakeReversed powerIntakeReversed;
   private PowerIntake powerIntake;
   private PowerFlywheel powerFlywheel;
-  private PowerClimber powerClimber;
-  private LevelClimbers levelClimbers;
+  // private PowerClimber powerClimber;
+  // private LevelClimbers levelClimbers;
   private PowerAmpArm powerAmpArm;
   private PowerAmpIntake powerAmpIntake;
   // private PowerLinkage powerLinkage = new PowerLinkage(linkage);
@@ -142,7 +143,7 @@ public class RobotContainer {
         flywheel = new Flywheel(new FlywheelIOSparkFlex());
         intake = new Intake(new IntakeIOSparkMax());
         linkage = new Linkage(new LinkageIOTalonFX());
-        climber = new Climber(new ClimberIOSparkMax());
+        // climber = new Climber(new ClimberIOSparkMax());
         // ampArm = new AmpArm(new AmpArmIOTalonFX());
         // ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
         shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
@@ -151,7 +152,13 @@ public class RobotContainer {
         drivetrain.configNeutralMode(NeutralModeValue.Coast);
         break;
       case COMPETITION:
-
+        drivetrain = CompBotConstants.DriveTrain;
+        flywheel = new Flywheel(new FlywheelIOSparkFlex());
+        intake = new Intake(new IntakeIOSparkFlex());
+        ampArm = new AmpArm(new AmpArmIOTalonFX());
+        ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
+        // climber = new Climber(new ClimberIOSparkMax());
+        linkage = new Linkage(new LinkageIOTalonFX());
         break;
       case TEST:
 
@@ -186,7 +193,7 @@ public class RobotContainer {
     // autoChooser = AutoBuilder.buildAutoChooser();
     // SmartDashboard.putData("Auto Chooser", autoChooser);
     configureBindings();
-    //configureCharacterizationBindings();
+    // configureCharacterizationBindings();
     configureDefaultCommands();
   }
 
@@ -197,10 +204,14 @@ public class RobotContainer {
     powerIntakeReversed = new PowerIntakeReversed(intake);
     powerIntake = new PowerIntake(intake);
     powerFlywheel = new PowerFlywheel(flywheel);
-    powerClimber = new PowerClimber(climber);
-    levelClimbers = new LevelClimbers(climber, drivetrain);
-    tuneFlywheel = new TuneFlywheel(flywheel);
-    linkageSetpoint = new LinkageSetpoint(linkage);
+    // powerClimber = new PowerClimber(climber);
+    // levelClimbers = new LevelClimbers(climber, drivetrain);
+    if (!Objects.isNull(ampArm)) {
+      powerAmpArm = new PowerAmpArm(ampArm);
+    }
+    if (!Objects.isNull(ampIntake)) {
+      powerAmpIntake = new PowerAmpIntake(ampIntake);
+    }
     // powerAmpArm = new PowerAmpArm(ampArm);
     // powerAmpIntake = new PowerAmpIntake(ampIntake);
 
@@ -246,7 +257,7 @@ public class RobotContainer {
    * an arbitrary
    * predicate, or via the named factories in {@link
    * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
-   * {@link
+   * {@linkZ
    * CommandXboxController
    * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
    * PS4} controllers or
@@ -272,7 +283,8 @@ public class RobotContainer {
 
     // drivetrain.registerTelemetry(logger::telemeterize);
   }
-  public void configureCharacterizationBindings(){
+
+  public void configureCharacterizationBindings() {
     // The methods below return Command objects
     driverController.rightTrigger().whileTrue(drivetrain.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward));
     driverController.leftTrigger().whileTrue(drivetrain.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse));
@@ -281,7 +293,7 @@ public class RobotContainer {
   }
 
   public void onDisable() {
-    climber.stop();
+    // climber.stop();
     flywheel.stop();
     intake.stop();
     linkage.stop();
