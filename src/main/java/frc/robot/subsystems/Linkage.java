@@ -92,9 +92,14 @@ public class Linkage extends SubsystemBase {
     io.updateInputs(inputs);
     Logger.processInputs("Linkage", inputs);
 
-    if (!io.getZeroButton() && RobotState.isDisabled()) {
-      // updateSound.play();
-      this.zero();
+    if(RobotState.isDisabled()){
+      if(io.isBrakeMode() == false){
+       io.enableBrakeMode();
+      }
+      if (!io.getZeroButton()) {
+        // updateSound.play();
+        this.zero();
+      }
     }
   }
 }
