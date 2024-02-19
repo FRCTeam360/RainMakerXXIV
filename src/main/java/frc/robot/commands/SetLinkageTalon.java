@@ -10,9 +10,11 @@ import frc.robot.subsystems.Linkage;
 
 public class SetLinkageTalon extends Command {
   final Linkage linkage;
+  private double setpoint;
   /** Creates a new SetLinkageTa\
    * lon. */
-  public SetLinkageTalon(Linkage linkage) {
+  public SetLinkageTalon(Linkage linkage, double setpoint) {
+    this.setpoint = setpoint;
     // Use addRequirements() here to declare subsystem dependencies.
     this.linkage = linkage;
     addRequirements(linkage);
@@ -28,7 +30,7 @@ public class SetLinkageTalon extends Command {
   @Override
   public void execute() {
     //SmartDashboard.putNumber("error", -7.0 - linkage.getAngle());
-    linkage.setAngle(-7.0);
+    linkage.setAngle(setpoint);
   }
 
   // Called once the command ends or is interrupted.

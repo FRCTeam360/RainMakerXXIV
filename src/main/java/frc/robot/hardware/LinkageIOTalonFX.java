@@ -13,6 +13,7 @@ import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ControlModeValue;
@@ -100,6 +101,8 @@ public class LinkageIOTalonFX implements LinkageIO {
         .withForwardSoftLimitEnable(true)
         .withReverseSoftLimitEnable(true);
 
+    talonFXConfiguration.MotionMagic.withMotionMagicAcceleration(motionMagicAcceleration).withMotionMagicCruiseVelocity(motionMagicCruiseVelocity).withMotionMagicJerk(motionMagicCruiseJerk);
+
     talonFX.getConfigurator().apply(talonFXConfiguration, 0.050);
   }
 
@@ -153,8 +156,8 @@ public class LinkageIOTalonFX implements LinkageIO {
   public void setReference(double setPoint) { //TODO: TEST???
     setPoint = setPoint / GEAR_RATIO;
 
-    this.positionVoltage.Position = setPoint;
+    MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(setPoint);
 
-    talonFX.setControl(this.positionVoltage);
+    talonFX.setControl(motionMagicVoltage);
   }
 }

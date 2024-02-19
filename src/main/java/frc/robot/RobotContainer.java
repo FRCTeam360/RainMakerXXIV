@@ -110,7 +110,7 @@ public class RobotContainer {
   private FieldOrientedDrive fieldOrientedDrive; 
   private RobotOrientedDrive robotOrientedDrive; 
   private PowerLinkage powerLinkage;
-  // private SetLinkageTalon setLinkageTalon = new SetLinkageTalon(linkage);
+  private SetLinkageTalon setLinkageTalon;
 
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
@@ -223,7 +223,7 @@ public class RobotContainer {
     // flywheel.setDefaultCommand(powerFlywheel);
     // drivetrain.setDefaultCommand(fieldOrientedDrive);
     //climber.setDefaultCommand(powerClimber);
-    linkage.setDefaultCommand(powerLinkage);
+   // linkage.setDefaultCommand(powerLinkage);
     // ampArm.setDefaultCommand(powerAmpArm);
   }
 
@@ -243,6 +243,8 @@ public class RobotContainer {
    */
 
   private void configureBindings() {
+    operatorController.y().onTrue(new SetLinkageTalon(linkage, 0.0));
+    operatorController.b().onTrue(new SetLinkageTalon(linkage, 90.0));
     operatorController.a().whileTrue(powerFlywheel);
     // operatorController.a().toggleOnTrue(runExtendIntake);
 
