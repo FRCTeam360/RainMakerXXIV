@@ -19,6 +19,7 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -60,6 +61,13 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private double headingIZone = 0.17;
     private double headingKD = 0.0;
 
+    private double targetYawKP = 0.0;
+    private double targetYawKI = 0.0;
+    private double targetYawIZone = 0.0;
+    private double targetYawKD = 0.0;
+
+    PIDController targePidController;
+
     // Create a new SysId Routine for characterizing the drive 
     public SysIdRoutine sysIdRoutine = new SysIdRoutine(
         new SysIdRoutine.Config(
@@ -99,6 +107,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         headingController.enableContinuousInput(-Math.PI, Math.PI);
         headingController.setTolerance(Math.toRadians(5));
         headingController.setIntegratorRange(-headingIZone, headingIZone);
+
+        targePidController = new PIDController(targetYawKP, targetYawKI, targetYawKD);
+        targePidController.setIZone(targetYawIZone);
     }
 
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency,
@@ -252,18 +263,19 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         this.setControl(new SwerveRequest.SwerveDriveBrake());
     }
 
-    public void fieldCentricDrive(double leftX, double leftY, double rightX) {
+    public void fieldCentricDrive(double leftX, double leftY, double rotation) {
+        // let's put a deadband on the joystick to make this method more flexible
         this.setControl(new SwerveRequest.FieldCentric()
                 .withVelocityX(MathUtil.applyDeadband(leftY, 0.1) * Constants.MAX_SPEED_MPS)
                 .withVelocityY(MathUtil.applyDeadband(leftX, 0.1) * Constants.MAX_SPEED_MPS)
-                .withRotationalRate(MathUtil.applyDeadband(-rightX, 0.1) * Constants.MAX_ANGULAR_RATE));
+                .withRotationalRate(-rotation * Constants.MAX_ANGULAR_RATE));
     }
 
-    public void robotCentricDrive(double leftX, double leftY, double rightX) {
+    public void robotCentricDrive(double leftX, double leftY, double rotation) {
         this.setControl(new SwerveRequest.RobotCentric()
                 .withVelocityX(MathUtil.applyDeadband(leftY, 0.1) * Constants.MAX_SPEED_MPS)
                 .withVelocityY(MathUtil.applyDeadband(leftX, 0.1) * Constants.MAX_SPEED_MPS)
-                .withRotationalRate(MathUtil.applyDeadband(-rightX, 0.1) * Constants.MAX_ANGULAR_RATE));
+                .withRotationalRate(MathUtil.applyDeadband(-rotation, 0.1) * Constants.MAX_ANGULAR_RATE));
     }
 
     // drive robot with field centric angle
@@ -351,4 +363,14 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     }
 
+    /**
+     * Points the robot at the speaker based on the yaw of the target while driving
+     * @param targetYaw The yaw of the target
+     * @param x The x value to move the robot
+     * @param y The y value to move the robot
+     */
+    public void pointAtTarget(double x, double y, double targetYaw) {
+        double output = targePidController.calculate(targetYaw, 0.0);
+        this.fieldCentricDrive(x, y, output);
+    }
 }
