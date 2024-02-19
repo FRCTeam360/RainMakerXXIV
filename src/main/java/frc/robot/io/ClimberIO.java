@@ -12,6 +12,8 @@ public interface ClimberIO {
   public static class ClimberIOInputs {
     public double speedLeft = 0.0;
     public double speedRight = 0.0;
+    public double leftAmps = 0.0;
+    public double rightAmps = 0.0;
   }
 
   public default void updateInputs(ClimberIOInputs inputs) {

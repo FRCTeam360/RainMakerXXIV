@@ -27,7 +27,7 @@ public class SetClimbers extends Command {
   @Override
   public void execute() {
     
-    climber.setLeftHeight(setPoint);
+    //climber.setLeftHeight(setPoint);
     climber.setRightHeight(setPoint);
 
   }

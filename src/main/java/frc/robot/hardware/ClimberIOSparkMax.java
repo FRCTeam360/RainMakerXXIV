@@ -31,7 +31,7 @@ public class ClimberIOSparkMax implements ClimberIO {
     private RelativeEncoder leftEncoder = leftMotor.getEncoder();
     private RelativeEncoder rightEncoder = rightMotor.getEncoder();
 
-    private final double POSITION_CONVERSION = 0;//(1.215 * Math.PI) / 15;// 5 * 3 * 1.215 * Math.PI; // motor rotations x
+    private final double POSITION_CONVERSION = 1;//(1.215 * Math.PI) / 15;// 5 * 3 * 1.215 * Math.PI; // motor rotations x
                                                                       // 1/gearbox x diameter of spool x pi
     private final double MINIMUM_HEGIHT = 0;
 
@@ -66,12 +66,10 @@ public class ClimberIOSparkMax implements ClimberIO {
         leftMotor.restoreFactoryDefaults();
         leftMotor.setIdleMode(IdleMode.kCoast);
         leftMotor.setInverted(true);
-        leftEncoder.setPositionConversionFactor(POSITION_CONVERSION);
 
         rightMotor.restoreFactoryDefaults();
         rightMotor.setIdleMode(IdleMode.kBrake);
         rightMotor.setInverted(false);
-        rightEncoder.setPositionConversionFactor(POSITION_CONVERSION);
 
         leftMotor.setSoftLimit(SoftLimitDirection.kForward, leftExtensionLimit);
         leftMotor.setSoftLimit(SoftLimitDirection.kReverse, leftRetractLimit);
@@ -140,6 +138,7 @@ public class ClimberIOSparkMax implements ClimberIO {
      */
     @Override
     public void setLeftHeight(double height) { // height should be in inches
+        height = height / POSITION_CONVERSION;
         leftPIDController.setReference(height, ControlType.kPosition);
     }
 
@@ -148,6 +147,7 @@ public class ClimberIOSparkMax implements ClimberIO {
      */
     @Override
     public void setRightHeight(double height) {
+        height = height / POSITION_CONVERSION;
         rightPIDController.setReference(height, ControlType.kPosition);
     }
 
@@ -183,5 +183,7 @@ public class ClimberIOSparkMax implements ClimberIO {
     public void updateInputs(ClimberIOInputs inputs) {
         inputs.speedLeft = leftMotor.get();
         inputs.speedRight = rightMotor.get();
+        inputs.leftAmps = leftMotor.getOutputCurrent();
+        inputs.rightAmps = rightMotor.getOutputCurrent();
     }
 }

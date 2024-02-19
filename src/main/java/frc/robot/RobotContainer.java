@@ -92,7 +92,6 @@ public class RobotContainer {
   private Climber climber;
   private AmpArm ampArm;
   private AmpIntake ampIntake;
-  // private final Climber climber = new Climber(new ClimberIOSparkMax());
 
   // subsystems
 
@@ -145,7 +144,6 @@ public class RobotContainer {
         climber = new Climber(new ClimberIOSparkMax(),drivetrain.getPigeon2());
         // ampArm = new AmpArm(new AmpArmIOTalonFX());
         // ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
-        climber = new Climber(new ClimberIOSparkMax(), drivetrain.getPigeon2()); // MAKE SURE THIS IS AFTER DRIVETRAIN
                                                                                  // INIT LMAO
         break;
       case COMPETITION:
@@ -204,7 +202,7 @@ public class RobotContainer {
     powerClimber = new PowerClimber(climber);
     levelClimbers = new LevelClimbers(climber);
     shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
-    maxExtend = new SetClimbers(climber, 85.0);
+    maxExtend = new SetClimbers(climber, 70.0);
     minExtend = new SetClimbers(climber, -35.0);
 
     NamedCommands.registerCommand("Intake", runExtendIntake);
@@ -219,28 +217,8 @@ public class RobotContainer {
   }
 
   private void configureDefaultCommands() {
-    // linkage.setDefaultCommand(powerLinkage);
-    // // climber.setDefaultCommand();
-    // drivetrain.setDefaultCommand( // Drivetrain will execute this command
-    // periodically
-    // drivetrain.applyRequest(
-    // () ->
-    // drive.withVelocityX(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1)
-    // * MAX_SPEED_MPS) //drive forward with negative y
-    // // negative Y (forward)
-    // .withVelocityY(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1) *
-    // MAX_SPEED_MPS) // drive left with negative x
-    // .withRotationalRate(MathUtil.applyDeadband(-driverController.getRightX(),
-    // 0.1) * MaxAngularRate) // drive counterclockwise with negative x
-    // flywheel.setDefaultCommand(setFlywheel);
-    // intake.setDefaultCommand(runIntake);
-    // linkage.setDefaultCommand(powerLinkage);
-    //drivetrain.setDefaultCommand(fieldOrientedDrive);
-    // flywheel.setDefaultCommand(powerFlywheel);
-    
     drivetrain.setDefaultCommand(fieldOrientedDrive);
     climber.setDefaultCommand(powerClimber);
-    // ampArm.setDefaultCommand(powerAmpArm);
   }
 
   /**
@@ -260,14 +238,9 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    // operatorController.a().toggleOnTrue(runExtendIntake);
-
-    operatorController.a().onTrue(pidTuner);
-    operatorController.b().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
-
     driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(),drivetrain));
 
-    // drivetrain.registerTelemetry(logger::telemeterize);
+    drivetrain.registerTelemetry(logger::telemeterize);
   }
 
   public void configureCharacterizationBindings() {
