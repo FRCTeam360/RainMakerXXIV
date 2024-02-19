@@ -28,7 +28,7 @@ public class ClimberIOSparkMax implements ClimberIO {
 
     private Pigeon2 pigeon = drivetrain.getPigeon2();
 
-    private final double POSITION_CONVERSION = (1.215 * Math.PI) / 15;//5 * 3 * 1.215 * Math.PI; // motor rotations x gearbox x diameter of spool x pi
+    private final double POSITION_CONVERSION = (1.215 * Math.PI) / 15; //motor rotations -> (pulley diameter inches * pi) / (5 * 3 gearbox) -> inches
     private final double MINIMUM_HEGIHT = 0;
 
     /** Creates a new ClimberIOSparkMax. */
@@ -41,9 +41,6 @@ public class ClimberIOSparkMax implements ClimberIO {
 
         leftMotor.setInverted(false);
         rightMotor.setInverted(true);
-
-        leftEncoder.setPositionConversionFactor(POSITION_CONVERSION);
-        rightEncoder.setPositionConversionFactor(POSITION_CONVERSION);
     }
 
     @Override
