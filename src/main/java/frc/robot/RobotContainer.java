@@ -20,6 +20,7 @@ import frc.robot.commands.LevelClimbers;
 import frc.robot.commands.PowerAmpArm;
 import frc.robot.commands.PowerAmpIntake;
 import frc.robot.commands.PowerClimber;
+import frc.robot.generated.CompBotConstants;
 import frc.robot.generated.PracticebotConstants;
 import frc.robot.generated.WoodbotConstants;
 import frc.robot.hardware.AmpArmIOTalonFX;
@@ -146,9 +147,13 @@ public class RobotContainer {
         drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
         break;
       case COMPETITION:
+        drivetrain = CompBotConstants.DriveTrain; 
+        flywheel = new Flywheel(new FlywheelIOSparkFlex());
         intake = new Intake(new IntakeIOSparkFlex());
         ampArm = new AmpArm(new AmpArmIOTalonFX());
         ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
+        climber = new Climber(new ClimberIOSparkMax());
+        linkage = new Linkage(new LinkageIOTalonFX());
         break;
       case TEST:
 

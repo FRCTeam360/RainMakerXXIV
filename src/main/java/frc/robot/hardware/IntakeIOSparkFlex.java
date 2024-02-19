@@ -23,7 +23,7 @@ public class IntakeIOSparkFlex implements IntakeIO{
     private final DigitalInput highSensor = new DigitalInput(Constants.INTAKE_HIGH_SENSOR_PORT);
     public IntakeIOSparkFlex(){
         sparkFlex.restoreFactoryDefaults(); 
-        sparkFlex.setInverted(true);
+        sparkFlex.setInverted(false);
         sparkFlex.setIdleMode(IdleMode.kBrake);
         final double GEAR_RATIO = 2.0;
         // get shuffleboard tab intake
