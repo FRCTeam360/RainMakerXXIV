@@ -109,7 +109,7 @@ public class RobotContainer {
   private ShuffleboardTab diagnosticTab;
   private FieldOrientedDrive fieldOrientedDrive; 
   private RobotOrientedDrive robotOrientedDrive; 
-
+  private PowerLinkage powerLinkage;
   // private SetLinkageTalon setLinkageTalon = new SetLinkageTalon(linkage);
 
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
@@ -201,7 +201,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Wait", new WaitCommand(2));
     NamedCommands.registerCommand("Shoot", shootRoutine);
     NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0, 0));
-    // private PowerLinkage powerLinkage = new PowerLinkage(linkage);
+    powerLinkage = new PowerLinkage(linkage);
     // fieldOrientedDrive = new FieldOrientedDrive();
     // robotOrientedDrive = new RobotOrientedDrive();
     // drivetrain = TunerConstants.DriveTrain; // My drivetrain
@@ -222,7 +222,8 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(fieldOrientedDrive);
     // flywheel.setDefaultCommand(powerFlywheel);
     // drivetrain.setDefaultCommand(fieldOrientedDrive);
-    climber.setDefaultCommand(powerClimber);
+    //climber.setDefaultCommand(powerClimber);
+    linkage.setDefaultCommand(powerLinkage);
     // ampArm.setDefaultCommand(powerAmpArm);
   }
 
@@ -242,13 +243,13 @@ public class RobotContainer {
    */
 
   private void configureBindings() {
-
+    operatorController.a().whileTrue(powerFlywheel);
     // operatorController.a().toggleOnTrue(runExtendIntake);
 
     // operatorController.y().toggleOnTrue(powerAmpIntake);
 
-    operatorController.a().onTrue(levelClimbers);
-    operatorController.b().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
+   // operatorController.a().onTrue(levelClimbers);
+  //  operatorController.b().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
 
     // driverController.x().whileTrue(new InstantCommand(() ->
     // drivetrain.zero(),drivetrain));

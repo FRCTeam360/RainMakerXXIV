@@ -64,7 +64,7 @@ public class LinkageIOTalonFX implements LinkageIO {
     final double motionMagicCruiseVelocity = 85.0;
     final double motionMagicCruiseJerk = 1750.0;
 
-    final double forwardLimit = 29.0; // TODO: make sure these are correct for prac bot
+    final double forwardLimit = 28.0; // TODO: make sure these are correct for prac bot
     final double reverseLimit = 0.0; // 29.5
 
     talonFX.getConfigurator().apply(new TalonFXConfiguration());
@@ -72,12 +72,6 @@ public class LinkageIOTalonFX implements LinkageIO {
     talonFX.setNeutralMode(NeutralModeValue.Brake);
 
     // need to add offset??? 43.0 rn
-
-    talonFX.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
-        .withForwardSoftLimitThreshold(forwardLimit)
-        .withReverseSoftLimitThreshold(reverseLimit)
-        .withForwardSoftLimitEnable(true)
-        .withReverseSoftLimitEnable(true)); // TODO: dont enable robot past soft limits
 
     // translated into talonfx from sparkmax, probalby unnecessary
     // talonFX.getConfigurator().apply(new
@@ -99,6 +93,12 @@ public class LinkageIOTalonFX implements LinkageIO {
 
     talonFXConfiguration.Voltage.PeakForwardVoltage = 12.0;
     talonFXConfiguration.Voltage.PeakReverseVoltage = 12.0;
+
+    talonFXConfiguration.SoftwareLimitSwitch
+        .withForwardSoftLimitThreshold(forwardLimit)
+        .withReverseSoftLimitThreshold(reverseLimit)
+        .withForwardSoftLimitEnable(true)
+        .withReverseSoftLimitEnable(true);
 
     talonFX.getConfigurator().apply(talonFXConfiguration, 0.050);
   }
