@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
@@ -91,7 +92,7 @@ private double lastEstTimestamp = 0;
     return pipelineResults;
   }
 
-  public boolean isTargetInView(TargetType targetType) {
+  public PhotonTrackedTarget targetInView(TargetType targetType) {
     // select the correct target based on alliance and target type
     DriverStation.Alliance alliance = DriverStation.getAlliance().get();
     // initialize target number to 0
@@ -113,36 +114,17 @@ private double lastEstTimestamp = 0;
         targetNumber = 13;
       }
     }
-    return this.getHasTarget().get(targetNumber);
+    for(PhotonTrackedTarget target : mCamera.getLatestResult().getTargets()) {
+      if(target.getFiducialId() == targetNumber) {
+        return target;
+      }
+    }
+    return null;
   }
 
-  public double getTargetYaw(TargetType targetType) {
+  public double getSpecifiedTargetYaw(TargetType targetType) {
     // select the correct target based on alliance and target type
-    DriverStation.Alliance alliance = DriverStation.getAlliance().get();
-    // initialize target number to 0
-    int targetNumber = 0;
-    if (alliance == DriverStation.Alliance.Blue) {
-      if (targetType == TargetType.SPEAKER) {
-        // target is the speaker
-        targetNumber = 7;
-      } else {
-        // target is the stage
-        targetNumber = 14;
-      }
-    } else {
-      if (targetType == TargetType.SPEAKER) {
-        // target is the speaker
-        targetNumber = 4;
-      } else {
-        // target is the stage
-        targetNumber = 13;
-      }
-    }
-    var result = mCamera.getLatestResult();
-    if (result.hasTargets()) {
-      return this.getYaws().get(targetNumber); 
-    }
-    return 0;
+      return targetInView(targetType).getYaw();
   }
 
 

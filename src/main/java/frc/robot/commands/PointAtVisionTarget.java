@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -48,9 +49,9 @@ public class PointAtVisionTarget extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (photon.isTargetInView(targetType)){
+    if (!Objects.isNull(photon.targetInView(targetType))){
       // target yaw should be retrieved from photon vision every cycle
-      double targetYaw = photon.getTargetYaw(targetType);
+      double targetYaw = photon.getSpecifiedTargetYaw(targetType);
       drivetrain.pointAtTarget(xSupplier.get(), ySupplier.get(), targetYaw);
     } else {
       // no target in view, so drive as normal
