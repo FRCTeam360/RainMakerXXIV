@@ -37,10 +37,9 @@ import frc.robot.io.LinkageIO;
 public class LinkageIOTalonFX implements LinkageIO {
   /** Creates a new IntakeIOtalonFX. */
   private final TalonFX talonFX = new TalonFX(Constants.LINKAGE_ID, "Default Name");
-  private final Timer timer = new Timer();
   // private final RelativeEncoder encoder = talonFX.getEncoder();
   // private final SparkPIDController pidController = talonFX.getPIDController();
-  private Orchestra updateSound = new Orchestra( "FreshPrinceOfBelAir.chrp" );
+  private Orchestra updateSound = new Orchestra( "TetrisTheme.chrp" );
   
   
 
@@ -73,7 +72,6 @@ public class LinkageIOTalonFX implements LinkageIO {
     talonFX.setInverted(false);
     talonFX.setNeutralMode(NeutralModeValue.Brake);
     updateSound.addInstrument(talonFX);
-    timer.restart();
 
     // need to add offset??? 43.0 rn
 
@@ -156,10 +154,7 @@ public class LinkageIOTalonFX implements LinkageIO {
 
   public void setPosition(double angle) {
     if(angle == 0.0){
-      timer.start();
-      while (timer.get() < 20.0) {
-        updateSound.play();
-      }
+      updateSound.play();
     }
     angle = angle / GEAR_RATIO;
     talonFX.setPosition(angle);
