@@ -11,7 +11,7 @@ import frc.robot.commands.PowerIntakeReversed;
 import frc.robot.commands.PowerIntake;
 import frc.robot.commands.PowerLinkage;
 import frc.robot.commands.SetIntake;
-import frc.robot.commands.SetLinkageTalon;
+import frc.robot.commands.SetLinkage;
 import frc.robot.commands.ShootInSpeaker;
 import frc.robot.commands.TuneFlywheel;
 import frc.robot.commands.PowerFlywheel;
@@ -42,6 +42,8 @@ import frc.robot.subsystems.Intake;
 
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Linkage;
+import frc.robot.utils.CommandFactory;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import java.util.Objects;
@@ -94,6 +96,7 @@ public class RobotContainer {
   private AmpArm ampArm;
   private AmpIntake ampIntake;
   // private final Climber climber = new Climber(new ClimberIOSparkMax());
+  private CommandFactory commandFactory;
 
   // subsystems
 
@@ -113,7 +116,8 @@ public class RobotContainer {
   private FieldOrientedDrive fieldOrientedDrive; 
   private RobotOrientedDrive robotOrientedDrive; 
   private PowerLinkage powerLinkage;
-  private SetLinkageTalon setLinkageTalon;
+  private SetLinkage setLinkage;
+  private SetLinkage stowLinkage;
   private LinkageSetpoint linkageSetpoint;
   private TuneFlywheel tuneFlywheel;
 
@@ -191,9 +195,10 @@ public class RobotContainer {
   }
 
   private final void initializeCommands() {
+    commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
     robotOrientedDrive = new RobotOrientedDrive(drivetrain);
-    runExtendIntake = new RunExtendIntake(intake);
+    runExtendIntake = commandFactory.runExtendIntake();
     powerIntakeReversed = new PowerIntakeReversed(intake);
     powerIntake = new PowerIntake(intake);
     powerFlywheel = new PowerFlywheel(flywheel);
@@ -201,6 +206,7 @@ public class RobotContainer {
     levelClimbers = new LevelClimbers(climber, drivetrain);
     tuneFlywheel = new TuneFlywheel(flywheel);
     linkageSetpoint = new LinkageSetpoint(linkage);
+    stowLinkage = commandFactory.stowLinkage();
     // powerAmpArm = new PowerAmpArm(ampArm);
     // powerAmpIntake = new PowerAmpIntake(ampIntake);
 

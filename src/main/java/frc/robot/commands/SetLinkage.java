@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Linkage;
 
-public class SetLinkageTalon extends Command {
+public class SetLinkage extends Command {
   final Linkage linkage;
   private double setpoint;
   /** Creates a new SetLinkageTa\
    * lon. */
-  public SetLinkageTalon(Linkage linkage, double setpoint) {
+  public SetLinkage(Linkage linkage, double setpoint) {
     this.setpoint = setpoint;
     // Use addRequirements() here to declare subsystem dependencies.
     this.linkage = linkage;

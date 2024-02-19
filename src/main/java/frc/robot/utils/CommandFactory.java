@@ -50,12 +50,20 @@ public class CommandFactory {
 
     // returns type runExtendIntake
     public RunExtendIntake runExtendIntake() {
-        return new RunExtendIntake(intake);
+        return new RunExtendIntake(intake, linkage);
     }
 
     // returns type runLinkage
     public RunLinkage runLinkage() {
         return new RunLinkage(linkage);
+    }
+
+    public SetLinkage setLinkage(double setPoint) {
+        return new SetLinkage(linkage, setPoint);
+    }
+
+    public SetLinkage stowLinkage() {
+        return new SetLinkage(linkage,160.0);
     }
 
     // returns type setIntake

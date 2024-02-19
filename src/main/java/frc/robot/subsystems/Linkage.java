@@ -62,7 +62,6 @@ public class Linkage extends SubsystemBase {
   public void setAngle(double setPoint){
     io.setReference(setPoint);
     positionSetpoint = setPoint;
-    io.setReference(setPoint);
   }
 
   public double getPower() {

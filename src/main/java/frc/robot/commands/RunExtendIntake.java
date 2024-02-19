@@ -27,10 +27,11 @@ public class RunExtendIntake extends Command {
  
   
   /** Creates a new Java. */
-  public RunExtendIntake(Intake intake) {
+  public RunExtendIntake(Intake intake, Linkage linkage) {
     this.intake = intake;
+    this.linkage = linkage;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intake);
+    addRequirements(intake, linkage);
   }
 
   //   public RunExtendIntake(boolean isAuto) {
@@ -58,7 +59,7 @@ public class RunExtendIntake extends Command {
         break;
       case EXTEND_INTAKE:
         intake.run(.7); // we should extend too but idk how we should implement this
-        linkage.setAngle(0);
+        linkage.setAngle(0.0);
         if(intake.getAmps() > 20 && timer.get() > .25) {
           sensorTimer.start();
           state = IntakeCases.WAIT_FOR_SENSOR;
@@ -66,6 +67,7 @@ public class RunExtendIntake extends Command {
         break;
       case WAIT_FOR_SENSOR:
         intake.run(.6);
+        linkage.setAngle(0.0);
         // if(!intake.getHighSensor()) {
         //   state = IntakeCases.UP_TO_SHOOTER_P1;
         // }
