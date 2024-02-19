@@ -41,9 +41,6 @@ public class ClimberIOSparkMax implements ClimberIO {
 
         leftMotor.setInverted(false);
         rightMotor.setInverted(true);
-
-        leftEncoder.setPositionConversionFactor(POSITION_CONVERSION);
-        rightEncoder.setPositionConversionFactor(POSITION_CONVERSION);
     }
 
     @Override
