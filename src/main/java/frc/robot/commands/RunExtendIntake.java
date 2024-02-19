@@ -58,7 +58,7 @@ public class RunExtendIntake extends Command {
         break;
       case EXTEND_INTAKE:
         intake.run(.7); // we should extend too but idk how we should implement this
-        linkage.setAngle(0);
+        linkage.setReference(0);
         if(intake.getAmps() > 20 && timer.get() > .25) {
           sensorTimer.start();
           state = IntakeCases.WAIT_FOR_SENSOR;

@@ -199,6 +199,7 @@ public class RobotContainer {
   }
 
   private final void initializeCommands() {
+    linkageSetpoint = new LinkageSetpoint(linkage);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
     robotOrientedDrive = new RobotOrientedDrive(drivetrain);
     runExtendIntake = new RunExtendIntake(intake);
@@ -230,25 +231,9 @@ public class RobotContainer {
   }
 
   private void configureDefaultCommands() {
-    // linkage.setDefaultCommand(powerLinkage);
-    // // climber.setDefaultCommand();
-    //  drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-    //     drivetrain.applyRequest(
-    //         () -> drive.withVelocityX(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1) * MAX_SPEED_MPS) //drive forward with negative y
-    //             // negative Y (forward)
-    //             .withVelocityY(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1) * MAX_SPEED_MPS) // drive left with negative x
-    //             .withRotationalRate(MathUtil.applyDeadband(-driverController.getRightX(), 0.1) * MaxAngularRate) // drive counterclockwise with negative x                                                                                                  
-    //flywheel.setDefaultCommand(setFlywheel);
-    //intake.setDefaultCommand(runIntake);
-    //linkage.setDefaultCommand(powerLinkage);
-  //  drivetrain.setDefaultCommand(fieldOrientedDrive);
-    // flywheel.setDefaultCommand(powerFlywheel);
-    // drivetrain.setDefaultCommand(fieldOrientedDrive);
-    //climber.setDefaultCommand(powerClimber);
-   // linkage.setDefaultCommand(powerLinkage);
-    // ampArm.setDefaultCommand(powerAmpArm);
+   
     linkage.setDefaultCommand(linkageSetpoint);
-    flywheel.setDefaultCommand(tuneFlywheel);
+    //flywheel.setDefaultCommand(tuneFlywheel);
   }
 
   /**
@@ -270,8 +255,9 @@ public class RobotContainer {
     // operatorController.y().onTrue(new SetLinkageTalon(linkage, 0.0));
     // operatorController.b().onTrue(new SetLinkageTalon(linkage, 90.0));
     // operatorController.a().whileTrue(powerFlywheel);
-    operatorController.b().whileTrue(powerIntake);
-    operatorController.a().toggleOnTrue(runExtendIntake);
+    operatorController.a().whileTrue(powerIntake);
+    operatorController.b().whileTrue(powerIntakeReversed);
+    operatorController.y().whileTrue(powerFlywheel);
     // operatorController.a().toggleOnTrue(runExtendIntake);
 
     // operatorController.y().toggleOnTrue(powerAmpIntake);

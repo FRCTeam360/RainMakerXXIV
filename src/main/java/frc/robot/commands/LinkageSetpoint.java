@@ -21,14 +21,16 @@ public class LinkageSetpoint extends Command {
   @Override
   public void initialize() {
     SmartDashboard.putNumber("Setpoint", 0.0);
+    SmartDashboard.putNumber("Linkage angle", linkage.getAngle());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("Linkage angle", linkage.getAngle());
-    double setpoint = SmartDashboard.getNumber("Setpoint", 0.0);
-    linkage.setAngle(setpoint);
+    double goalSetpoint = SmartDashboard.getNumber("Setpoint", 0.0);
+    System.out.println(goalSetpoint);
+    linkage.setReference(goalSetpoint);
+    SmartDashboard.putNumber("Setpoint", goalSetpoint);
     SmartDashboard.putBoolean("Linkage at setpoint?", linkage.isAtSetpoint());
   }
 

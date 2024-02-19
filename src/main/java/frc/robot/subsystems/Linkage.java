@@ -59,7 +59,7 @@ public class Linkage extends SubsystemBase {
     return io.getPosition();
   }
 
-  public void setAngle(double setPoint){
+  public void setReference(double setPoint){
     io.setReference(setPoint);
     positionSetpoint = setPoint;
     io.setReference(setPoint);
@@ -84,7 +84,7 @@ public class Linkage extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Angle", getAngle());
+   // SmartDashboard.putNumber("Angle", getAngle());
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("Linkage", inputs);
