@@ -43,6 +43,8 @@ public interface LinkageIO {
 
   public void disableBrakeMode();
 
+  public boolean isBrakeMode();
+
   public boolean getZeroButton();
 
   public boolean getBrakeButton();

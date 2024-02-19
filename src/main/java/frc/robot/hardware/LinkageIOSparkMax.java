@@ -91,6 +91,9 @@ public class LinkageIOSparkMax implements LinkageIO {
   public void disableBrakeMode(){
     sparkMax.setIdleMode(IdleMode.kCoast);
   }
+  public boolean isBrakeMode(){
+    return sparkMax.getIdleMode() == IdleMode.kBrake;
+  }
 
   public void setReference( double setPoint) {
     pidController.setReference(setPoint, ControlType.kPosition);

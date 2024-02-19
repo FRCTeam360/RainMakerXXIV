@@ -40,7 +40,7 @@ public class LinkageIOTalonFX implements LinkageIO {
   // private final RelativeEncoder encoder = talonFX.getEncoder();
   // private final SparkPIDController pidController = talonFX.getPIDController();
   private Orchestra updateSound = new Orchestra( "TetrisTheme.chrp" );
-  
+  private NeutralModeValue neutralMode = NeutralModeValue.Brake;
   
 
   private DutyCycleOut dutyCycleOut = new DutyCycleOut(0);
@@ -133,10 +133,15 @@ public class LinkageIOTalonFX implements LinkageIO {
     return talonFX.getPosition().getValueAsDouble();
   }
   public void enableBrakeMode(){
-    talonFX.setNeutralMode(NeutralModeValue.Brake);
+    neutralMode = NeutralModeValue.Brake;
+    talonFX.setNeutralMode(neutralMode);
   }
   public void disableBrakeMode(){
-    talonFX.setNeutralMode(NeutralModeValue.Coast);
+    neutralMode = NeutralModeValue.Coast;
+    talonFX.setNeutralMode(neutralMode);
+  }
+  public boolean isBrakeMode(){
+    return neutralMode == NeutralModeValue.Brake;
   }
 
   public double get() {
