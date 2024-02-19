@@ -147,6 +147,8 @@ public class RobotContainer {
         break;
       case COMPETITION:
         intake = new Intake(new IntakeIOSparkFlex());
+        ampArm = new AmpArm(new AmpArmIOTalonFX());
+        ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
         break;
       case TEST:
 
@@ -194,6 +196,12 @@ public class RobotContainer {
     powerFlywheel = new PowerFlywheel(flywheel);
     powerClimber = new PowerClimber(climber);
     levelClimbers = new LevelClimbers(climber, drivetrain);
+    if(!Objects.isNull(ampArm)){
+      powerAmpArm = new PowerAmpArm(ampArm);
+    }
+    if(!Objects.isNull(ampIntake)){
+      powerAmpIntake = new PowerAmpIntake(ampIntake);
+    }
     // powerAmpArm = new PowerAmpArm(ampArm);
     // powerAmpIntake = new PowerAmpIntake(ampIntake);
 
@@ -225,6 +233,12 @@ public class RobotContainer {
     // drivetrain.setDefaultCommand(fieldOrientedDrive);
     climber.setDefaultCommand(powerClimber);
     // ampArm.setDefaultCommand(powerAmpArm);
+    if(!Objects.isNull(ampArm)){
+      ampArm.setDefaultCommand(powerAmpArm);
+    }
+    if(!Objects.isNull(ampIntake)){
+      ampIntake.setDefaultCommand(powerAmpIntake);
+    }
   }
 
   /**
