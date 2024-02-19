@@ -29,6 +29,7 @@ import frc.robot.hardware.AmpArmIOTalonFX;
 import frc.robot.hardware.AmpIntakeIOSparkMax;
 import frc.robot.hardware.ClimberIOSparkMax;
 import frc.robot.hardware.FlywheelIOSparkFlex;
+import frc.robot.hardware.IntakeIOSparkFlex;
 import frc.robot.hardware.IntakeIOSparkMax;
 import frc.robot.hardware.LinkageIOTalonFX;
 import frc.robot.hardware.LinkageIOSparkMax;
