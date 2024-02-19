@@ -33,8 +33,9 @@ import frc.robot.Robot;
 
 public class Photon extends SubsystemBase {
   /** Creates a new Photon. */
-  private final String[] cameraNames = {"Inno_Camera1"};
+  private final String[] cameraNames = {"lime_14"};
   private ArrayList<PhotonCamera> cameras = new ArrayList<>();
+  PhotonCamera mCamera = new PhotonCamera("lime_14");
   private ArrayList<PhotonPoseEstimator> poseEstimators = new ArrayList<>();
 
 // this Should be the poseestimator for the center of the robot relative to the april tag
@@ -75,10 +76,7 @@ private double lastEstTimestamp = 0;
 
   }
 
-  @Override
-  public void periodic() {
 
-  }
 
   public ArrayList<PhotonPipelineResult> getPipelineResult() {
     ArrayList<PhotonPipelineResult> pipelineResults = new ArrayList<>();
@@ -99,10 +97,18 @@ private double lastEstTimestamp = 0;
 
 // https://github.com/Mechanical-Advantage/RobotCode2024/blob/main/src/main/java/org/littletonrobotics/frc2024/subsystems/apriltagvision/AprilTagVision.java
 
- public ArrayList<Double> getAngles() {
+ public ArrayList<Double> getYaws() {
   ArrayList<Double> angles = new ArrayList<>();
   for(PhotonCamera camera : cameras) {
     angles.add(camera.getLatestResult().getBestTarget().getYaw());
+  }
+  return angles;
+ }
+
+ public ArrayList<Double> getPitches() {
+  ArrayList<Double> angles = new ArrayList<>();
+  for(PhotonCamera camera : cameras) {
+    angles.add(camera.getLatestResult().getBestTarget().getPitch());
   }
   return angles;
  }
@@ -183,5 +189,10 @@ private double lastEstTimestamp = 0;
   //         Units.degreesToRadians(result.getBestTarget().getPitch())); 
   //   }
   // }
+
+  @Override
+  public void periodic() {
+    SmartDashboard.putNumber("Pitch/ty", mCamera.getLatestResult().getBestTarget().getPitch());
+  }
 }
 

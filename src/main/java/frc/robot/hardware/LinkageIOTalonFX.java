@@ -131,7 +131,7 @@ public class LinkageIOTalonFX implements LinkageIO {
   }
 
   public double getPosition() {
-    return talonFX.getPosition().getValueAsDouble();
+    return talonFX.getPosition().getValueAsDouble() * GEAR_RATIO;
   }
 
   public double get() {

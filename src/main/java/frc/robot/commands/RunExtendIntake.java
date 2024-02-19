@@ -53,12 +53,12 @@ public class RunExtendIntake extends Command {
     switch(state){
       case CHECK_ROBOT_EMPTY:
         if(intake.getSideSensor()) {
-          state = IntakeCases.EXTEND_INTAKE;
+          state = IntakeCases.WAIT_FOR_SENSOR;
         }
         break;
       case EXTEND_INTAKE:
         intake.run(.65); // we should extend too but idk how we should implement this
-        //linkage.setAngle(180);
+        linkage.setAngle(0);
         if(intake.getAmps() > 20 && timer.get() > .25) {
           sensorTimer.start();
           state = IntakeCases.WAIT_FOR_SENSOR;

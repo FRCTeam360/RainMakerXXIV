@@ -36,11 +36,11 @@ public class FlywheelIOSparkFlex implements FlywheelIO {
   
     
     leftMotor.restoreFactoryDefaults();
-    leftMotor.setInverted(true);
+    leftMotor.setInverted(false);
     leftMotor.setIdleMode(IdleMode.kCoast);
 
     rightMotor.restoreFactoryDefaults();
-    rightMotor.setInverted(false);
+    rightMotor.setInverted(true);
     rightMotor.setIdleMode(IdleMode.kCoast);
 
     leftPIDController.setP(kP);
