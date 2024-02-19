@@ -26,6 +26,8 @@ public class FlywheelIOSparkFlex implements FlywheelIO {
     private final RelativeEncoder rightEncoder = rightMotor.getEncoder();
     private final SparkPIDController rightPIDController = rightMotor.getPIDController();
 
+    private final double VELOCITY_CONVERSION = 36.0/24.0; //24 motor rotations = 36 flywheel rotations (1.5)
+
   public FlywheelIOSparkFlex() {
     double kP = 0.0006;
     double kI = 0.0;
@@ -34,11 +36,11 @@ public class FlywheelIOSparkFlex implements FlywheelIO {
   
     
     leftMotor.restoreFactoryDefaults();
-    leftMotor.setInverted(true);
+    leftMotor.setInverted(false);
     leftMotor.setIdleMode(IdleMode.kCoast);
 
     rightMotor.restoreFactoryDefaults();
-    rightMotor.setInverted(false);
+    rightMotor.setInverted(true);
     rightMotor.setIdleMode(IdleMode.kCoast);
 
     leftPIDController.setP(kP);
@@ -50,6 +52,9 @@ public class FlywheelIOSparkFlex implements FlywheelIO {
     rightPIDController.setFF(kFF);
     rightPIDController.setI(kI);
     rightPIDController.setD(kD);
+
+    leftEncoder.setVelocityConversionFactor(VELOCITY_CONVERSION);
+    rightEncoder.setVelocityConversionFactor(VELOCITY_CONVERSION);
   }
 
   @Override

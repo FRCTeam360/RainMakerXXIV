@@ -13,6 +13,7 @@ import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ControlModeValue;
@@ -45,7 +46,11 @@ public class LinkageIOTalonFX implements LinkageIO {
   DigitalInput zeroButton = new DigitalInput(Constants.LINKAGE_ZERO_BUTTON_PORT);
   DigitalInput brakeButton = new DigitalInput(Constants.LINKAGE_BRAKE_TOGGLE_BUTTON_PORT);
 
-  private final double GEAR_RATIO = 360.0 / 60.0; // flip
+  /*
+   * DO NOT USE ON ENCODER BC MOTION MAGIC WAS TUNED IN NATIVE UNITS
+   * ONLY FOR SHUFFLEBOARD CONTROL :D
+   */
+  private final double GEAR_RATIO = 360.0 / 60.0;
 
   public LinkageIOTalonFX() {
     final double kA = 0.0;
@@ -60,7 +65,7 @@ public class LinkageIOTalonFX implements LinkageIO {
     final double motionMagicCruiseVelocity = 85.0;
     final double motionMagicCruiseJerk = 1750.0;
 
-    final double forwardLimit = 29.0; // TODO: make sure these are correct for prac bot
+    final double forwardLimit = 28.0; // TODO: make sure these are correct for prac bot
     final double reverseLimit = 0.0; // 29.5
 
     talonFX.getConfigurator().apply(new TalonFXConfiguration());
@@ -68,12 +73,6 @@ public class LinkageIOTalonFX implements LinkageIO {
     talonFX.setNeutralMode(NeutralModeValue.Brake);
 
     // need to add offset??? 43.0 rn
-
-    talonFX.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
-        .withForwardSoftLimitThreshold(forwardLimit)
-        .withReverseSoftLimitThreshold(reverseLimit)
-        .withForwardSoftLimitEnable(true)
-        .withReverseSoftLimitEnable(true)); // TODO: dont enable robot past soft limits
 
     // translated into talonfx from sparkmax, probalby unnecessary
     // talonFX.getConfigurator().apply(new
@@ -95,6 +94,14 @@ public class LinkageIOTalonFX implements LinkageIO {
 
     talonFXConfiguration.Voltage.PeakForwardVoltage = 12.0;
     talonFXConfiguration.Voltage.PeakReverseVoltage = 12.0;
+
+    talonFXConfiguration.SoftwareLimitSwitch
+        .withForwardSoftLimitThreshold(forwardLimit)
+        .withReverseSoftLimitThreshold(reverseLimit)
+        .withForwardSoftLimitEnable(true)
+        .withReverseSoftLimitEnable(true);
+
+    talonFXConfiguration.MotionMagic.withMotionMagicAcceleration(motionMagicAcceleration).withMotionMagicCruiseVelocity(motionMagicCruiseVelocity).withMotionMagicJerk(motionMagicCruiseJerk);
 
     talonFX.getConfigurator().apply(talonFXConfiguration, 0.050);
   }
@@ -124,7 +131,7 @@ public class LinkageIOTalonFX implements LinkageIO {
   }
 
   public double getPosition() {
-    return talonFX.getPosition().getValueAsDouble();
+    return talonFX.getPosition().getValueAsDouble() * GEAR_RATIO;
   }
 
   public double get() {
@@ -149,8 +156,8 @@ public class LinkageIOTalonFX implements LinkageIO {
   public void setReference(double setPoint) { //TODO: TEST???
     setPoint = setPoint / GEAR_RATIO;
 
-    this.positionVoltage.Position = setPoint;
+    MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(setPoint);
 
-    talonFX.setControl(this.positionVoltage);
+    talonFX.setControl(motionMagicVoltage);
   }
 }

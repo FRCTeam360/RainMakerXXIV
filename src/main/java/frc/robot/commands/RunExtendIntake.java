@@ -53,19 +53,19 @@ public class RunExtendIntake extends Command {
     switch(state){
       case CHECK_ROBOT_EMPTY:
         if(intake.getSideSensor()) {
-          state = IntakeCases.EXTEND_INTAKE;
+          state = IntakeCases.WAIT_FOR_SENSOR;
         }
         break;
       case EXTEND_INTAKE:
-        intake.run(.65); // we should extend too but idk how we should implement this
-        //linkage.setAngle(180);
+        intake.run(.7); // we should extend too but idk how we should implement this
+        linkage.setAngle(0);
         if(intake.getAmps() > 20 && timer.get() > .25) {
           sensorTimer.start();
           state = IntakeCases.WAIT_FOR_SENSOR;
         }
         break;
       case WAIT_FOR_SENSOR:
-        intake.run(.3);
+        intake.run(.6);
         // if(!intake.getHighSensor()) {
         //   state = IntakeCases.UP_TO_SHOOTER_P1;
         // }
@@ -82,7 +82,7 @@ public class RunExtendIntake extends Command {
         if(!intake.getHighSensor()) {
           state = IntakeCases.RETRACT_STOP;
         }
-        intake.run(.25);
+        intake.run(.3);
         // if(intake.getSideSensor()) {
         //   state = IntakeCases.RETRACT_STOP;
         // }
@@ -94,7 +94,7 @@ public class RunExtendIntake extends Command {
           if(!intake.getHighSensor()) {
             state = IntakeCases.RETRACT_STOP;
           } else {
-            intake.run(-.14);
+            intake.run(-.2);
           }
       case RETRACT_STOP:
         break;
