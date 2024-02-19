@@ -28,7 +28,6 @@ public class LinkageSetpoint extends Command {
   @Override
   public void execute() {
     double goalSetpoint = SmartDashboard.getNumber("Setpoint", 0.0);
-    System.out.println(goalSetpoint);
     linkage.setReference(goalSetpoint);
     SmartDashboard.putNumber("Setpoint", goalSetpoint);
     SmartDashboard.putBoolean("Linkage at setpoint?", linkage.isAtSetpoint());

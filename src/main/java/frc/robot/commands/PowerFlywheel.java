@@ -46,7 +46,7 @@ public class PowerFlywheel extends Command {
     //   flywheel.stopRight();
     // }
 
-    flywheel.setBothRPM(6000);
+    flywheel.setBothRPM(10000);
     CommandLogger.logCommandRunning(this);
   }
     

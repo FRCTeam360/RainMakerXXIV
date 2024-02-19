@@ -87,7 +87,7 @@ public class RobotContainer {
 
   final double MAX_SPEED_MPS = Constants.MAX_SPEED_MPS; // used to be 6 meters per second desired top speed
   final double MaxAngularRate = Math.PI * 3; // Half a rotation per second max angular velocity
-  // subsystems
+
   private CommandSwerveDrivetrain drivetrain; // My drivetrain
   private Flywheel flywheel;
   private Linkage linkage;
@@ -95,13 +95,10 @@ public class RobotContainer {
   // private Climber climber;
   private AmpArm ampArm;
   private AmpIntake ampIntake;
-  // private final Climber climber = new Climber(new ClimberIOSparkMax());
-
-  // subsystems
 
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
   private Command shootRoutine;
-  // tele commands
+
   private RunExtendIntake runExtendIntake;
   private PowerIntakeReversed powerIntakeReversed;
   private PowerIntake powerIntake;
@@ -110,10 +107,9 @@ public class RobotContainer {
   // private LevelClimbers levelClimbers;
   private PowerAmpArm powerAmpArm;
   private PowerAmpIntake powerAmpIntake;
-  // private PowerLinkage powerLinkage = new PowerLinkage(linkage);
   private ShuffleboardTab diagnosticTab;
-  private FieldOrientedDrive fieldOrientedDrive; 
-  private RobotOrientedDrive robotOrientedDrive; 
+  private FieldOrientedDrive fieldOrientedDrive;
+  private RobotOrientedDrive robotOrientedDrive;
   private PowerLinkage powerLinkage;
   private SetLinkageTalon setLinkageTalon;
   private LinkageSetpoint linkageSetpoint;
@@ -147,8 +143,6 @@ public class RobotContainer {
         // climber = new Climber(new ClimberIOSparkMax());
         // ampArm = new AmpArm(new AmpArmIOTalonFX());
         // ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
-        shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
-
         drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
         drivetrain.configNeutralMode(NeutralModeValue.Coast);
         break;
@@ -190,7 +184,7 @@ public class RobotContainer {
     diagnosticTab.addBoolean("Practice Bot", () -> Constants.isPracticeBot());
     diagnosticTab.addBoolean("Comp Bot", () -> Constants.isCompBot());
     initializeCommands();
-   
+
     // autoChooser = AutoBuilder.buildAutoChooser();
     // SmartDashboard.putData("Auto Chooser", autoChooser);
     configureBindings();
@@ -199,13 +193,15 @@ public class RobotContainer {
   }
 
   private final void initializeCommands() {
-    linkageSetpoint = new LinkageSetpoint(linkage);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
     robotOrientedDrive = new RobotOrientedDrive(drivetrain);
+
+    linkageSetpoint = new LinkageSetpoint(linkage);
     runExtendIntake = new RunExtendIntake(intake);
     powerIntakeReversed = new PowerIntakeReversed(intake);
-    powerIntake = new PowerIntake(intake);
+    shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
     powerFlywheel = new PowerFlywheel(flywheel);
+    powerLinkage = new PowerLinkage(linkage);
     // powerClimber = new PowerClimber(climber);
     // levelClimbers = new LevelClimbers(climber, drivetrain);
     if (!Objects.isNull(ampArm)) {
@@ -221,19 +217,18 @@ public class RobotContainer {
     // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     // NamedCommands.registerCommand("Wait", new WaitCommand(2));
     // NamedCommands.registerCommand("Shoot", shootRoutine);
-    // NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0, 0));
-    // NamedCommands.registerCommand("Shoot without drivetrain", new ShootInSpeaker(linkage, flywheel, drivetrain, intake, MAX_SPEED_MPS, MaxAngularRate, MAX_SPEED_MPS));
-    // NamedCommands.registerCommand("Spinny", new PowerFlywheel(flywheel));    
-    powerLinkage = new PowerLinkage(linkage);
-    // fieldOrientedDrive = new FieldOrientedDrive();
-    // robotOrientedDrive = new RobotOrientedDrive();
-    // drivetrain = TunerConstants.DriveTrain; // My drivetrain
+    // NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0,
+    // 0));
+    // NamedCommands.registerCommand("Shoot without drivetrain", new
+    // ShootInSpeaker(linkage, flywheel, drivetrain, intake, MAX_SPEED_MPS,
+    // MaxAngularRate, MAX_SPEED_MPS));
+    // NamedCommands.registerCommand("Spinny", new PowerFlywheel(flywheel));
   }
 
   private void configureDefaultCommands() {
-   
+
     linkage.setDefaultCommand(linkageSetpoint);
-    //flywheel.setDefaultCommand(tuneFlywheel);
+    // flywheel.setDefaultCommand(tuneFlywheel);
   }
 
   /**
@@ -252,18 +247,9 @@ public class RobotContainer {
    */
 
   private void configureBindings() {
-    // operatorController.y().onTrue(new SetLinkageTalon(linkage, 0.0));
-    // operatorController.b().onTrue(new SetLinkageTalon(linkage, 90.0));
-    // operatorController.a().whileTrue(powerFlywheel);
     operatorController.a().whileTrue(powerIntake);
     operatorController.b().whileTrue(powerIntakeReversed);
     operatorController.y().whileTrue(powerFlywheel);
-    // operatorController.a().toggleOnTrue(runExtendIntake);
-
-    // operatorController.y().toggleOnTrue(powerAmpIntake);
-
-   // operatorController.a().onTrue(levelClimbers);
-  //  operatorController.b().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
 
     // driverController.x().whileTrue(new InstantCommand(() ->
     // drivetrain.zero(),drivetrain));
