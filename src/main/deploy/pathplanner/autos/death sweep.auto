@@ -2,15 +2,59 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2,
-      "y": 2
+      "x": 15.23,
+      "y": 5.57
     },
-    "rotation": 0
+    "rotation": 180.0
   },
   "command": {
     "type": "sequential",
     "data": {
-      "commands": []
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "death sweep 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "death sweep 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "death sweep 3"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "death sweep 4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Spinny"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot without drivetrain"
+          }
+        }
+      ]
     }
   },
   "folder": "1 note",
