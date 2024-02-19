@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.hardware.TalonFX;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
@@ -97,7 +96,6 @@ public class Linkage extends SubsystemBase {
        io.enableBrakeMode();
       }
       if (!io.getZeroButton()) {
-        // updateSound.play();
         this.zero();
       }
     }
