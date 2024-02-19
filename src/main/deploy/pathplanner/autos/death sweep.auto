@@ -2,15 +2,28 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2,
-      "y": 2
+      "x": 15.1,
+      "y": 1.41
     },
-    "rotation": 0
+    "rotation": 180.0
   },
   "command": {
     "type": "sequential",
     "data": {
-      "commands": []
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "death sweep 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "death sweep 2"
+          }
+        }
+      ]
     }
   },
   "folder": "1 note",
