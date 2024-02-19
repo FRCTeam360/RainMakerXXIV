@@ -18,7 +18,7 @@ import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.RobotOrientedDrive;
 import frc.robot.commands.FieldOrientedDrive;
 import frc.robot.commands.LevelClimbers;
-import frc.robot.commands.PIDTuner;
+import frc.robot.commands.ClimberPIDTuner;
 import frc.robot.commands.PowerAmpArm;
 import frc.robot.commands.PowerAmpIntake;
 import frc.robot.commands.PowerClimber;
@@ -110,7 +110,7 @@ public class RobotContainer {
   private ShuffleboardTab diagnosticTab;
   private FieldOrientedDrive fieldOrientedDrive;
   private RobotOrientedDrive robotOrientedDrive;
-  private PIDTuner pidTuner;
+  private ClimberPIDTuner pidTuner;
   private SetClimbers maxExtend;
   private SetClimbers minExtend;
   // private SetLinkageTalon setLinkageTalon = new SetLinkageTalon(linkage);
@@ -192,7 +192,7 @@ public class RobotContainer {
   }
 
   private final void initializeCommands() {
-    pidTuner = new PIDTuner(climber);
+    pidTuner = new ClimberPIDTuner(climber);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
     robotOrientedDrive = new RobotOrientedDrive(drivetrain);
     runExtendIntake = new RunExtendIntake(intake);

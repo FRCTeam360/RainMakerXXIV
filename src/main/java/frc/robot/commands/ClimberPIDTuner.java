@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber;
 
-public class PIDTuner extends Command {
+public class ClimberPIDTuner extends Command {
   private final Climber climber;
   private double kP = 0;
   private double kI = 0;
@@ -20,7 +20,7 @@ public class PIDTuner extends Command {
   private double goalHeight = 85.0;
 
   /** Creates a new PIDTuner. */
-  public PIDTuner(Climber climber) {
+  public ClimberPIDTuner(Climber climber) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.climber = climber;
     addRequirements(this.climber);

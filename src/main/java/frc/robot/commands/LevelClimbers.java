@@ -19,8 +19,8 @@ public class LevelClimbers extends Command {
   private double kI = 0;
   private double kD = 0;
 
-  private double roll = 0;
-  private double rollHeight = 0;
+  private double roll = 0.0;
+  private double rollHeight = 0.0;
   private double initialClimb = 4.5; // inches
 
   /** Creates a new LevelClimbers. */
