@@ -20,6 +20,7 @@ public class AmpArm extends SubsystemBase {
   /** Creates a new AmpArm. */
   public AmpArm(AmpArmIO io) {
     this.io = io;
+    setupShuffleboard();
   }
 
   public void runArm(double speed) {
@@ -61,6 +62,5 @@ public class AmpArm extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("AmpArm", inputs);
-    setupShuffleboard();
   }
 }
