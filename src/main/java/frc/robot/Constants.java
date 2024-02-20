@@ -30,8 +30,8 @@ public class Constants {
 
         public static final int INTAKE_HIGH_SENSOR_PORT = 0;
         public static final int INTAKE_SIDE_SENSOR_PORT = 1;
-        public static final int LINKAGE_ZERO_BUTTON_PORT = 2;
-        public static final int LINKAGE_BRAKE_TOGGLE_BUTTON_PORT = 3;
+        public static final int LINKAGE_ZERO_BUTTON_PORT = 8;
+        public static final int LINKAGE_BRAKE_TOGGLE_BUTTON_PORT = 9;
 
         public static final Mode currentMode = Mode.REAL;
 
