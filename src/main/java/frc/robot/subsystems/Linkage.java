@@ -104,6 +104,10 @@ public class Linkage extends SubsystemBase {
       if (io.getZeroButton()) {
         this.zero();
       }
+    } else {
+      // DO NOT REMOVE
+      // This is neccessary to run the linkage after playing the update sound
+      io.stopSound();
     }
   }
 }

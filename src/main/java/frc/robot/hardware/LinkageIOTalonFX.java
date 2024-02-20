@@ -194,4 +194,13 @@ public class LinkageIOTalonFX implements LinkageIO {
 
     talonFX.setControl(this.positionVoltage);
   }
+
+  /**
+   * Stops playing sound on the linkage, this is neccessary to run the linkage
+   */
+  public void stopSound(){
+    if(updateSound.isPlaying()){
+      updateSound.stop();
+    }
+  }
 }

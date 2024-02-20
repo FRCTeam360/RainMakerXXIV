@@ -48,4 +48,9 @@ public interface LinkageIO {
   public boolean getZeroButton();
 
   public boolean getBrakeButton();
+
+  /**
+   * Stops playing sound on the linkage, this is neccessary to run the linkage
+   */
+  public void stopSound();
 }
