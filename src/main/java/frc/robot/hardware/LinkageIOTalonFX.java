@@ -55,7 +55,11 @@ public class LinkageIOTalonFX implements LinkageIO {
   private boolean zeroPrev = false;
   private boolean brakePrev = false;
 
-  private final double GEAR_RATIO = 360.0 / 60.0; // flip
+  /*
+   * DO NOT USE ON ENCODER BC MOTION MAGIC WAS TUNED IN NATIVE UNITS
+   * ONLY FOR SHUFFLEBOARD CONTROL :D
+   */
+  private final double GEAR_RATIO = 360.0 / 60.0;
 
   public LinkageIOTalonFX() {
     final double kA = 0.0;
