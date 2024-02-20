@@ -14,13 +14,13 @@ import frc.robot.utils.CommandLogger;
 public class RunExtendIntake extends Command {
   enum IntakeCases {CHECK_ROBOT_EMPTY, EXTEND_INTAKE, WAIT_FOR_SENSOR, UP_TO_SHOOTER_P1, UP_TO_SHOOTER_P2, RETRACT_STOP}; 
   private Linkage linkage;
+  private double setpoint;
   //private DigitalInput sensor = new DigitalInput(0);
   
   private Intake intake;
   private static XboxController operatorCont = new XboxController(1);
   private Timer timer = new Timer();
   private Timer sensorTimer = new Timer();
-  private double setPoint;
   
   private IntakeCases state = IntakeCases.CHECK_ROBOT_EMPTY;
 
@@ -42,8 +42,8 @@ public class RunExtendIntake extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    timer.start();
     CommandLogger.logCommandStart(this);
+    timer.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -57,8 +57,9 @@ public class RunExtendIntake extends Command {
         }
         break;
       case EXTEND_INTAKE:
-        intake.run(.4);
+        intake.run(.7);
         if(!intake.getSideSensor()) {
+          timer.start();
           intake.setEncoderValue(0.0);
           state = IntakeCases.UP_TO_SHOOTER_P1;
         } // we should extend too but idk how we should implement this
@@ -69,8 +70,28 @@ public class RunExtendIntake extends Command {
         // }
         break;
       case UP_TO_SHOOTER_P1:
-          intake.moveEncoder(.5);
+        if(timer.get() > .75) {
+          setpoint = .75;
+        } else {
+          setpoint = .5;
+        }
+          intake.moveEncoder(setpoint);
+          if(intake.isAtEncoderSetpoint(setpoint)) {
+            state = IntakeCases.UP_TO_SHOOTER_P2;
+          }
           break;
+      case UP_TO_SHOOTER_P2:
+          intake.moveEncoder(-.25);
+          if(intake.isAtEncoderSetpoint(-.25)) {
+            state = IntakeCases.WAIT_FOR_SENSOR;
+          }
+          break;
+      case WAIT_FOR_SENSOR:
+          intake.moveEncoder(.5);
+          if(intake.isAtEncoderSetpoint(.5)) {
+            state = IntakeCases.RETRACT_STOP;
+          }
+          
       // case WAIT_FOR_SENSOR:
       //   intake.run(.3);
       //   // if(!intake.getHighSensor()) {

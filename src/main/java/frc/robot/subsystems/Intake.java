@@ -39,6 +39,10 @@ public class Intake extends SubsystemBase {
     setupShuffleboard();
   }
 
+  public boolean isAtEncoderSetpoint(double setpoint) {
+    return Math.abs(getEncoderValue() - setpoint) < 0.005 ? true : false;
+  }
+
   public boolean getSideSensor() {
     return io.getSideSensor();
   }

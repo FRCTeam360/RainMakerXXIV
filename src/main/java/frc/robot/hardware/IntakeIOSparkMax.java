@@ -37,13 +37,14 @@ public class IntakeIOSparkMax implements IntakeIO {
     final double GEAR_RATIO = 0.5;
     encoder.setVelocityConversionFactor(GEAR_RATIO);
     encoder.setPositionConversionFactor(GEAR_RATIO);
-    pid.setP(.8);
-    pid.setI(.008);
-    pid.setIZone(.2);
+    pid.setP(.9);
+    pid.setI(.002);
+    pid.setIZone(1.0);
     // get shuffleboard tab intake
     ShuffleboardTab tab = Shuffleboard.getTab("intake");
     tab.addBoolean("sensor 1", () -> this.getSideSensor());
     tab.addBoolean("sensor 2", () -> this.getHighSensor());
+    tab.addDouble("applied otuput", () -> sparkMax.getAppliedOutput());
   }
 
   @Override
