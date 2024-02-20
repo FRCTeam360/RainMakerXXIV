@@ -210,8 +210,8 @@ public class RobotContainer {
     if (!Objects.isNull(ampIntake)) {
       powerAmpIntake = new PowerAmpIntake(ampIntake);
     }
-    // powerAmpArm = new PowerAmpArm(ampArm);
-    // powerAmpIntake = new PowerAmpIntake(ampIntake);
+    powerAmpArm = new PowerAmpArm(ampArm);
+    powerAmpIntake = new PowerAmpIntake(ampIntake);
 
     // NamedCommands.registerCommand("Intake", runExtendIntake);
     // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
@@ -227,7 +227,8 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
 
-    linkage.setDefaultCommand(linkageSetpoint);
+    ampArm.setDefaultCommand(powerAmpArm);
+    //ampIntake.setDefaultCommand(powerAmpIntake);
     // flywheel.setDefaultCommand(tuneFlywheel);
   }
 
@@ -247,9 +248,9 @@ public class RobotContainer {
    */
 
   private void configureBindings() {
-    operatorController.a().whileTrue(powerIntake);
-    operatorController.b().whileTrue(powerIntakeReversed);
-    operatorController.y().whileTrue(powerFlywheel);
+    operatorController.a().whileTrue(powerAmpIntake);
+    //operatorController.b().whileTrue(powerIntakeReversed);
+    //operatorController.y().whileTrue(powerFlywheel);
 
     // driverController.x().whileTrue(new InstantCommand(() ->
     // drivetrain.zero(),drivetrain));

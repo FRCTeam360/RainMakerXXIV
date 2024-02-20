@@ -28,6 +28,8 @@ public class AmpArmIOTalonFX implements AmpArmIO {
     wristMotor.getConfigurator().apply(new TalonFXConfiguration());
     wristMotor.setInverted(false);
     wristMotor.setNeutralMode(NeutralModeValue.Brake);
+
+    //kP tuned on the 19th is 0.8
   }
 
   @Override
