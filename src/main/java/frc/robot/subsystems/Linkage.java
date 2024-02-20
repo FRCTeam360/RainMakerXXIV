@@ -43,6 +43,8 @@ public class Linkage extends SubsystemBase {
     ShuffleboardTab tab = Shuffleboard.getTab("Linkage");
     tab.addBoolean("Zero Button", () -> io.getZeroButton());
     tab.addBoolean("Brake Button", () -> io.getBrakeButton());
+    tab.addDouble("Angle", () -> this.getAngle());
+    tab.addBoolean("Brake Mode", () -> io.isBrakeMode());
   }
 
   public boolean isAtSetpoint() {
@@ -92,10 +94,14 @@ public class Linkage extends SubsystemBase {
     Logger.processInputs("Linkage", inputs);
 
     if(RobotState.isDisabled()){
-      if(io.isBrakeMode() == false){
-       io.enableBrakeMode();
+      if(io.getBrakeButton()){
+        if(io.isBrakeMode()){
+          io.disableBrakeMode();
+        } else {
+          io.enableBrakeMode();
+        }
       }
-      if (!io.getZeroButton()) {
+      if (io.getZeroButton()) {
         this.zero();
       }
     }

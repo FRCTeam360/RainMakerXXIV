@@ -100,9 +100,9 @@ public class LinkageIOSparkMax implements LinkageIO {
   }
 
   public boolean getZeroButton(){
-    return true;
+    return false;
   }
   public boolean getBrakeButton(){
-    return true;
+    return false;
   }
 }

@@ -7,6 +7,8 @@ package frc.robot.hardware;
 import org.littletonrobotics.junction.AutoLog;
 
 import com.ctre.phoenix6.Orchestra;
+import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.configs.AudioConfigs;
 import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -38,7 +40,7 @@ public class LinkageIOTalonFX implements LinkageIO {
   private final TalonFX talonFX = new TalonFX(Constants.LINKAGE_ID, "Default Name");
   // private final RelativeEncoder encoder = talonFX.getEncoder();
   // private final SparkPIDController pidController = talonFX.getPIDController();
-  private Orchestra updateSound = new Orchestra( "TetrisTheme.chrp" );
+  private Orchestra updateSound;
   private NeutralModeValue neutralMode = NeutralModeValue.Brake;
   
 
@@ -46,8 +48,12 @@ public class LinkageIOTalonFX implements LinkageIO {
   private TalonFXConfiguration talonFXConfiguration = new TalonFXConfiguration();
 
   private PositionVoltage positionVoltage = new PositionVoltage(0);
-  DigitalInput zeroButton = new DigitalInput(Constants.LINKAGE_ZERO_BUTTON_PORT);
-  DigitalInput brakeButton = new DigitalInput(Constants.LINKAGE_BRAKE_TOGGLE_BUTTON_PORT);
+  
+  private DigitalInput zeroButton = new DigitalInput(Constants.LINKAGE_ZERO_BUTTON_PORT);
+  private DigitalInput brakeButton = new DigitalInput(Constants.LINKAGE_BRAKE_TOGGLE_BUTTON_PORT);
+
+  private boolean zeroPrev = false;
+  private boolean brakePrev = false;
 
   private final double GEAR_RATIO = 360.0 / 60.0; // flip
 
@@ -70,8 +76,14 @@ public class LinkageIOTalonFX implements LinkageIO {
     talonFX.getConfigurator().apply(new TalonFXConfiguration());
     talonFX.setInverted(false);
     talonFX.setNeutralMode(NeutralModeValue.Brake);
-    updateSound.addInstrument(talonFX);
 
+    updateSound = new Orchestra();
+    updateSound.addInstrument(talonFX);
+    StatusCode status = updateSound.loadMusic("TetrisTheme.chrp");
+
+    if(status != StatusCode.OK){
+      System.out.println("Error loading sound");
+    }
     // need to add offset??? 43.0 rn
 
     talonFX.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
@@ -101,15 +113,24 @@ public class LinkageIOTalonFX implements LinkageIO {
     talonFXConfiguration.Voltage.PeakForwardVoltage = 12.0;
     talonFXConfiguration.Voltage.PeakReverseVoltage = 12.0;
 
+    talonFXConfiguration.withAudio(new AudioConfigs()
+      .withAllowMusicDurDisable(true));
+
     talonFX.getConfigurator().apply(talonFXConfiguration, 0.050);
   }
 
   public boolean getZeroButton(){
-    return this.zeroButton.get();
+    boolean zeroCurr = !this.zeroButton.get();
+    boolean risingEdge = zeroCurr && !zeroPrev;
+    zeroPrev = zeroCurr;
+    return risingEdge;
   }
 
   public boolean getBrakeButton(){
-    return this.brakeButton.get();
+    boolean brakeCurr = !this.brakeButton.get();
+    boolean risingEdge = brakeCurr && !brakePrev;
+    brakePrev = brakeCurr;
+    return risingEdge;
   }
 
   @Override
@@ -133,11 +154,11 @@ public class LinkageIOTalonFX implements LinkageIO {
   }
   public void enableBrakeMode(){
     neutralMode = NeutralModeValue.Brake;
-    talonFX.setNeutralMode(neutralMode);
+    talonFX.setNeutralMode(NeutralModeValue.Brake);
   }
   public void disableBrakeMode(){
     neutralMode = NeutralModeValue.Coast;
-    talonFX.setNeutralMode(neutralMode);
+    talonFX.setNeutralMode(NeutralModeValue.Coast);
   }
   public boolean isBrakeMode(){
     return neutralMode == NeutralModeValue.Brake;
@@ -158,6 +179,7 @@ public class LinkageIOTalonFX implements LinkageIO {
 
   public void setPosition(double angle) {
     if(angle == 0.0){
+      updateSound.stop();
       updateSound.play();
     }
     angle = angle / GEAR_RATIO;
