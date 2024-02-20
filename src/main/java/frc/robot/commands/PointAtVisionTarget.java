@@ -49,7 +49,7 @@ public class PointAtVisionTarget extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (!Objects.isNull(photon.targetInView(targetType))){
+    if (photon.isTargetInView(targetType)){
       // target yaw should be retrieved from photon vision every cycle
       double targetYaw = photon.getSpecifiedTargetYaw(targetType);
       drivetrain.pointAtTarget(xSupplier.get(), ySupplier.get(), targetYaw);

@@ -19,6 +19,7 @@ import frc.robot.commands.RobotOrientedDrive;
 import frc.robot.commands.FieldOrientedDrive;
 import frc.robot.commands.LevelClimbers;
 import frc.robot.commands.LinkageSetpoint;
+import frc.robot.commands.PointAtVisionTarget;
 import frc.robot.commands.PowerAmpArm;
 import frc.robot.commands.PowerAmpIntake;
 import frc.robot.commands.PowerClimber;
@@ -42,6 +43,9 @@ import frc.robot.subsystems.Intake;
 
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Linkage;
+import frc.robot.subsystems.Photon;
+import frc.robot.utils.CommandFactory;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import java.util.Objects;
@@ -93,6 +97,7 @@ public class RobotContainer {
   private Climber climber;
   private AmpArm ampArm;
   private AmpIntake ampIntake;
+  private Photon photon;
   // private final Climber climber = new Climber(new ClimberIOSparkMax());
 
   // subsystems
@@ -116,6 +121,7 @@ public class RobotContainer {
   private SetLinkageTalon setLinkageTalon;
   private LinkageSetpoint linkageSetpoint;
   private TuneFlywheel tuneFlywheel;
+  private PointAtVisionTarget pointAtVisionTarget;
 
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
@@ -143,6 +149,7 @@ public class RobotContainer {
         intake = new Intake(new IntakeIOSparkMax());
         linkage = new Linkage(new LinkageIOTalonFX());
         climber = new Climber(new ClimberIOSparkMax());
+        photon = new Photon();
         // ampArm = new AmpArm(new AmpArmIOTalonFX());
         // ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
         shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
@@ -191,6 +198,8 @@ public class RobotContainer {
   }
 
   private final void initializeCommands() {
+    CommandFactory factory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, photon);
+    pointAtVisionTarget = factory.pointAtVisionTargetStationary();
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
     robotOrientedDrive = new RobotOrientedDrive(drivetrain);
     runExtendIntake = new RunExtendIntake(intake);

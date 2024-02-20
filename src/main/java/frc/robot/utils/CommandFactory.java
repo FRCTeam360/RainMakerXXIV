@@ -5,6 +5,7 @@
 package frc.robot.utils;
 
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.Photon.TargetType;
 import frc.robot.commands.*;
 
 /** Add your docs here. */
@@ -14,13 +15,15 @@ public class CommandFactory {
     private final Intake intake;
     private final Flywheel flywheel;
     private final Linkage linkage;
+    private final Photon photon;
     // create a constructor that will require all files from the "subsystems" folder
-    public CommandFactory(Climber climber, CommandSwerveDrivetrain drivetrain, Intake intake, Flywheel flywheel, Linkage linkage) {
+    public CommandFactory(Climber climber, CommandSwerveDrivetrain drivetrain, Intake intake, Flywheel flywheel, Linkage linkage, Photon photon) {
         this.climber = climber;
         this.drivetrain = drivetrain;
         this.intake = intake;
         this.flywheel = flywheel;
         this.linkage = linkage;
+        this.photon = photon;
     }
 
     // returns type shootInSpeaker
@@ -61,5 +64,9 @@ public class CommandFactory {
     // returns type setIntake
     public SetIntake setIntake() {
         return new SetIntake(intake);
+    }
+
+    public PointAtVisionTarget pointAtVisionTargetStationary() {
+        return new PointAtVisionTarget(drivetrain, photon, TargetType.SPEAKER, () -> 0.0, () -> 0.0, () -> 0.0);
     }
 }

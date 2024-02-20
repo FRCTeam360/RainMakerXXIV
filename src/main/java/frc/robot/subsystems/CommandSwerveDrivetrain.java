@@ -61,7 +61,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private double headingIZone = 0.17;
     private double headingKD = 0.0;
 
-    private double targetYawKP = 0.0;
+    private double targetYawKP = 0.1;
     private double targetYawKI = 0.0;
     private double targetYawIZone = 0.0;
     private double targetYawKD = 0.0;
@@ -370,7 +370,10 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
      * @param y The y value to move the robot
      */
     public void pointAtTarget(double x, double y, double targetYaw) {
-        double output = targePidController.calculate(targetYaw, 0.0);
-        this.fieldCentricDrive(x, y, output);
+        double rotation = targePidController.calculate(targetYaw, 0.0);
+        this.setControl(new SwerveRequest.FieldCentric()
+                .withVelocityX(MathUtil.applyDeadband(x, 0.1) * Constants.MAX_SPEED_MPS)
+                .withVelocityY(MathUtil.applyDeadband(y, 0.1) * Constants.MAX_SPEED_MPS)
+                .withRotationalRate(rotation));
     }
 }

@@ -29,6 +29,8 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
@@ -80,7 +82,24 @@ public class Photon extends SubsystemBase {
     }
 
     // we'll have to play around with this
+    setupShuffleboard();
+  }
 
+  private void setupShuffleboard() {
+    ShuffleboardTab visionTab = Shuffleboard.getTab("Vision");
+    
+    visionTab.addDouble("Pitch or ty", () -> {
+      if(!Objects.isNull(mCamera) && mCamera.getLatestResult().hasTargets()){
+        return mCamera.getLatestResult().getBestTarget().getPitch();
+      }
+      return 0.0;
+    });
+    visionTab.addDouble("Yaw or tx", () -> {
+      if(!Objects.isNull(mCamera) && mCamera.getLatestResult().hasTargets()){
+        return mCamera.getLatestResult().getBestTarget().getYaw();
+      }
+      return 0.0;
+    });
   }
 
   public ArrayList<PhotonPipelineResult> getPipelineResult() {
@@ -91,7 +110,7 @@ public class Photon extends SubsystemBase {
     return pipelineResults;
   }
 
-  public PhotonTrackedTarget targetInView(TargetType targetType) {
+  public PhotonTrackedTarget getTargetInView(TargetType targetType) {
     // select the correct target based on alliance and target type
     DriverStation.Alliance alliance = DriverStation.getAlliance().get();
     // initialize target number to 0
@@ -113,17 +132,27 @@ public class Photon extends SubsystemBase {
         targetNumber = 13;
       }
     }
-    for (PhotonTrackedTarget target : mCamera.getLatestResult().getTargets()) {
-      if (target.getFiducialId() == targetNumber) {
-        return target;
+    if(!Objects.isNull(mCamera)){
+      for (PhotonTrackedTarget target : mCamera.getLatestResult().getTargets()) {
+        if (target.getFiducialId() == targetNumber) {
+          return target;
+        }
       }
     }
     return null;
   }
 
+  public boolean isTargetInView(TargetType targetType) {
+    return !Objects.isNull(targetType);
+  }
+
   public double getSpecifiedTargetYaw(TargetType targetType) {
     // select the correct target based on alliance and target type
-    return targetInView(targetType).getYaw();
+    PhotonTrackedTarget target = getTargetInView(targetType);
+    if(!Objects.isNull(target)){
+      return target.getYaw();
+    }
+    return 0.0;
   }
 
   public ArrayList<Boolean> getHasTarget() {
@@ -230,6 +259,6 @@ public class Photon extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Pitch/ty", mCamera.getLatestResult().getBestTarget().getPitch());
+    // SmartDashboard.putNumber("Pitch/ty", mCamera.getLatestResult().getBestTarget().getPitch());
   }
 }
