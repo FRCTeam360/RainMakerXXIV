@@ -227,24 +227,18 @@
                 "data": {
                   "name": "Intake"
                 }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "6 piece preload 11"
-                }
               },
               {
-                "type": "named",
+                "type": "parallel",
                 "data": {
-                  "name": "Spinny"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Spinny"
+                      }
+                    }
+                  ]
                 }
               }
             ]
