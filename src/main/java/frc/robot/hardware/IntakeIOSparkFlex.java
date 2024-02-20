@@ -63,4 +63,18 @@ public class IntakeIOSparkFlex implements IntakeIO{
     public boolean getHighSensor(){
         return highSensor.get();
     }
+
+    @Override
+    public double getEncoderValue() {
+        return sparkFlex.getEncoder().getPosition();
+    }
+
+    @Override
+    public void moveEncoder(double setpoint) {
+
+    }
+    @Override
+    public void setEncoderValue(double encoderPosition) {
+        sparkFlex.getEncoder().setPosition(encoderPosition);
+    }
 }

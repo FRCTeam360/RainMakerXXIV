@@ -34,4 +34,10 @@ public interface IntakeIO {
   public boolean getSideSensor();
 
   public boolean getHighSensor();
+
+  public double getEncoderValue();
+
+  public void moveEncoder(double setpoint);
+
+  public void setEncoderValue(double encoderPosition);
 }

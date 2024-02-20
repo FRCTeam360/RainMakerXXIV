@@ -9,6 +9,7 @@ import org.littletonrobotics.junction.AutoLog;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -33,7 +34,12 @@ public class IntakeIOSparkMax implements IntakeIO {
     sparkMax.restoreFactoryDefaults();
     sparkMax.setInverted(true);
     sparkMax.setIdleMode(IdleMode.kBrake);
-    final double GEAR_RATIO = 2.0;
+    final double GEAR_RATIO = 0.5;
+    encoder.setVelocityConversionFactor(GEAR_RATIO);
+    encoder.setPositionConversionFactor(GEAR_RATIO);
+    pid.setP(.8);
+    pid.setI(.008);
+    pid.setIZone(.2);
     // get shuffleboard tab intake
     ShuffleboardTab tab = Shuffleboard.getTab("intake");
     tab.addBoolean("sensor 1", () -> this.getSideSensor());
@@ -76,5 +82,19 @@ public class IntakeIOSparkMax implements IntakeIO {
     @Override
   public boolean getHighSensor() {
     return highSensor.get();
+  }
+  @Override
+  public double getEncoderValue() {
+    return sparkMax.getEncoder().getPosition();
+  }
+
+  @Override
+  public void setEncoderValue(double encoderPosition) {
+    encoder.setPosition(encoderPosition);
+  }
+
+  @Override
+  public void moveEncoder(double setpoint) {
+    pid.setReference(setpoint, ControlType.kPosition);
   }
 }

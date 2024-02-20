@@ -57,45 +57,52 @@ public class RunExtendIntake extends Command {
         }
         break;
       case EXTEND_INTAKE:
-        intake.run(.65); // we should extend too but idk how we should implement this
-        //linkage.setAngle(180);
-        if(intake.getAmps() > 20 && timer.get() > .25) {
-          sensorTimer.start();
-          state = IntakeCases.WAIT_FOR_SENSOR;
-        }
-        break;
-      case WAIT_FOR_SENSOR:
-        intake.run(.3);
-        // if(!intake.getHighSensor()) {
-        //   state = IntakeCases.UP_TO_SHOOTER_P1;
-        // }
-        if(sensorTimer.get() > 1) {
-          state = IntakeCases.EXTEND_INTAKE;
-          sensorTimer.reset();
-        } 
-        if(!intake.getSideSensor()){
-         // setPoint = intake.encoder.getPosition() + 1.28436279297;
+        intake.run(.4);
+        if(!intake.getSideSensor()) {
+          intake.setEncoderValue(0.0);
           state = IntakeCases.UP_TO_SHOOTER_P1;
-        }
+        } // we should extend too but idk how we should implement this
+        // //linkage.setAngle(180);
+        // if(intake.getAmps() > 20 && timer.get() > .25) {
+        //   sensorTimer.start();
+        //   state = IntakeCases.WAIT_FOR_SENSOR;
+        // }
         break;
       case UP_TO_SHOOTER_P1:
-        if(!intake.getHighSensor()) {
-          state = IntakeCases.RETRACT_STOP;
-        }
-        intake.run(.25);
-        // if(intake.getSideSensor()) {
-        //   state = IntakeCases.RETRACT_STOP;
-        // }
-        // if(intake.getHighSensor()) {
-        //   state = IntakeCases.UP_TO_SHOOTER_P2;
-        // }
-        break;
-      case UP_TO_SHOOTER_P2:
-          if(!intake.getHighSensor()) {
-            state = IntakeCases.RETRACT_STOP;
-          } else {
-            intake.run(-.14);
-          }
+          intake.moveEncoder(.5);
+          break;
+      // case WAIT_FOR_SENSOR:
+      //   intake.run(.3);
+      //   // if(!intake.getHighSensor()) {
+      //   //   state = IntakeCases.UP_TO_SHOOTER_P1;
+      //   // }
+      //   if(sensorTimer.get() > 1) {
+      //     state = IntakeCases.EXTEND_INTAKE;
+      //     sensorTimer.reset();
+      //   } 
+      //   if(!intake.getSideSensor()){
+      //    // setPoint = intake.encoder.getPosition() + 1.28436279297;
+      //     state = IntakeCases.UP_TO_SHOOTER_P1;
+      //   }
+      //   break;
+      // case UP_TO_SHOOTER_P1:
+      //   if(!intake.getHighSensor()) {
+      //     state = IntakeCases.RETRACT_STOP;
+      //   }
+      //   intake.run(.25);
+      //   // if(intake.getSideSensor()) {
+      //   //   state = IntakeCases.RETRACT_STOP;
+      //   // }
+      //   // if(intake.getHighSensor()) {
+      //   //   state = IntakeCases.UP_TO_SHOOTER_P2;
+      //   // }
+      //   break;
+      // case UP_TO_SHOOTER_P2:
+      //     if(!intake.getHighSensor()) {
+      //       state = IntakeCases.RETRACT_STOP;
+      //     } else {
+      //       intake.run(-.14);
+      //     }
       case RETRACT_STOP:
         break;
 
