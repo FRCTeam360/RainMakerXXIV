@@ -105,6 +105,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
         configurePID();
+        zero();
         if (Utils.isSimulation()) {
             startSimThread();
         }
@@ -144,6 +145,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
         configurePID();
+        zero();
         if (Utils.isSimulation()) {
             startSimThread();
         }
