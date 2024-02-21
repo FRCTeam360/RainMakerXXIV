@@ -47,16 +47,19 @@ public class Flywheel extends SubsystemBase {
   }
 
   public void setLeftRPM(double rpm) {
-      io.setLeftReference(rpm, ControlType.kVelocity);
+    rpmSetpoint = rpm;
+    io.setLeftReference(rpm, ControlType.kVelocity);
   }
 
   public void setRightRPM(double rpm) {
+    rpmSetpoint = rpm;
     io.setRightReference(rpm, ControlType.kVelocity);
   }
 
   public void setBothRPM(double rpm) {
+    rpmSetpoint = rpm;
     if(rpm > 500) {
-    io.setLeftReference(rpm - 2000, ControlType.kVelocity);
+    io.setLeftReference(rpm, ControlType.kVelocity);
     io.setRightReference(rpm, ControlType.kVelocity);
     } else {
       stop();
@@ -88,8 +91,8 @@ public class Flywheel extends SubsystemBase {
     return Math.abs(this.getLeftVelocity() - rpmSetpoint) < 30.0;
   }
 
-  public boolean isAboveSetpoint(double setpoint) {
-    return this.getLeftVelocity() >= setpoint;
+  public boolean isAboveSetpoint() {
+    return this.getLeftVelocity() >= rpmSetpoint;
   }
 
   public boolean isBelowSetpoint() {

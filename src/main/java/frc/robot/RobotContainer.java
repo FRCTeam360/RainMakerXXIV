@@ -151,7 +151,6 @@ public class RobotContainer {
         climber = new Climber(new ClimberIOSparkMax());
         // ampArm = new AmpArm(new AmpArmIOTalonFX());
         // ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
-        shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
 
         drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
         drivetrain.configNeutralMode(NeutralModeValue.Coast);
@@ -215,6 +214,7 @@ public class RobotContainer {
     tuneFlywheel = new TuneFlywheel(flywheel);
     linkageSetpoint = new LinkageSetpoint(linkage);
     stowLinkage = commandFactory.stowLinkage();
+    shootRoutine = commandFactory.shootInSpeaker(15.0, 5000.0);
     if(!Objects.isNull(ampArm)){
       powerAmpArm = new PowerAmpArm(ampArm);
     }
@@ -257,6 +257,7 @@ public class RobotContainer {
     // ampArm.setDefaultCommand(powerAmpArm);
     // linkage.setDefaultCommand(linkageSetpoint);
     // flywheel.setDefaultCommand(tuneFlywheel);
+    linkage.setDefaultCommand(stowLinkage);
     if(!Objects.isNull(ampArm)){
       ampArm.setDefaultCommand(powerAmpArm);
     }
@@ -286,6 +287,7 @@ public class RobotContainer {
     // operatorController.a().whileTrue(powerFlywheel);
     operatorController.b().whileTrue(powerLinkage);
     operatorController.a().toggleOnTrue(runExtendIntake);
+    operatorController.x().whileTrue(shootRoutine);
     // operatorController.a().toggleOnTrue(runExtendIntake);
 
     // operatorController.y().toggleOnTrue(powerAmpIntake);

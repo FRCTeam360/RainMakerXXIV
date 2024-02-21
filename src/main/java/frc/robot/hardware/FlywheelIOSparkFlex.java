@@ -55,6 +55,9 @@ public class FlywheelIOSparkFlex implements FlywheelIO {
 
     leftEncoder.setVelocityConversionFactor(VELOCITY_CONVERSION);
     rightEncoder.setVelocityConversionFactor(VELOCITY_CONVERSION);
+
+    leftEncoder.setPositionConversionFactor(VELOCITY_CONVERSION);
+    rightEncoder.setPositionConversionFactor(VELOCITY_CONVERSION);
   }
 
   @Override

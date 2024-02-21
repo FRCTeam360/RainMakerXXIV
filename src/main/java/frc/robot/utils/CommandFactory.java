@@ -28,6 +28,11 @@ public class CommandFactory {
         return new ShootInSpeaker(linkage, flywheel, drivetrain, intake, linkageSetpoint, flywheelSetpoint, driveSetpoint);
     }
 
+    // returns type shootInSpeaker
+    public ShootInSpeaker shootInSpeaker(double linkageSetpoint, double flywheelSetpoint) {
+        return new ShootInSpeaker(linkage, flywheel, intake, linkageSetpoint, flywheelSetpoint);
+    }
+
     // returns type powerFlywheel
     public PowerFlywheel powerFlywheel() {
         return new PowerFlywheel(flywheel);
@@ -63,7 +68,7 @@ public class CommandFactory {
     }
 
     public SetLinkage stowLinkage() {
-        return new SetLinkage(linkage,160.0);
+        return new SetLinkage(linkage,130.0);
     }
 
     // returns type setIntake
