@@ -99,6 +99,7 @@ public class RobotContainer {
   private AmpIntake ampIntake;
   // private final Climber climber = new Climber(new ClimberIOSparkMax());
   private CommandFactory commandFactory;
+  private Photon photon= new Photon() ;
 
   // subsystems
 
@@ -287,7 +288,12 @@ public class RobotContainer {
     // operatorController.a().whileTrue(powerFlywheel);
     operatorController.b().whileTrue(powerLinkage);
     operatorController.a().toggleOnTrue(runExtendIntake);
-    operatorController.x().whileTrue(shootRoutine);
+    // operatorController.x().whileTrue(shootRoutine);
+
+    operatorController.x().whileTrue(  new InstantCommand( () -> drivetrain.zero(), drivetrain) ) ;
+
+    operatorController.y().onTrue(drivetrain.turntoCMD(true, drivetrain.getRotation2d().getDegrees() + photon.getAngle(), 0.0, 0.0));
+
     // operatorController.a().toggleOnTrue(runExtendIntake);
 
     // operatorController.y().toggleOnTrue(powerAmpIntake);
@@ -313,7 +319,7 @@ public class RobotContainer {
     flywheel.stop();
     intake.stop();
     linkage.stop();
-    drivetrain.robotCentricDrive(0, 0, 0);
+ 
     if (!Objects.isNull(ampArm)) {
       ampArm.stopBoth();
     }
