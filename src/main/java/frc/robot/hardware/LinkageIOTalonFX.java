@@ -16,6 +16,7 @@ import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ControlModeValue;
@@ -74,7 +75,7 @@ public class LinkageIOTalonFX implements LinkageIO {
     final double motionMagicCruiseVelocity = 85.0;
     final double motionMagicCruiseJerk = 1750.0;
 
-    final double forwardLimit = 29.0; // TODO: make sure these are correct for prac bot
+    final double forwardLimit = 28.0; // TODO: make sure these are correct for prac bot
     final double reverseLimit = 0.0; // 29.5
     
     talonFX.getConfigurator().apply(new TalonFXConfiguration());
@@ -89,12 +90,6 @@ public class LinkageIOTalonFX implements LinkageIO {
       System.out.println("Error loading sound");
     }
     // need to add offset??? 43.0 rn
-
-    talonFX.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
-        .withForwardSoftLimitThreshold(forwardLimit)
-        .withReverseSoftLimitThreshold(reverseLimit)
-        .withForwardSoftLimitEnable(true)
-        .withReverseSoftLimitEnable(true)); // TODO: dont enable robot past soft limits
 
     // translated into talonfx from sparkmax, probalby unnecessary
     // talonFX.getConfigurator().apply(new
@@ -117,6 +112,13 @@ public class LinkageIOTalonFX implements LinkageIO {
     talonFXConfiguration.Voltage.PeakForwardVoltage = 12.0;
     talonFXConfiguration.Voltage.PeakReverseVoltage = 12.0;
 
+    talonFXConfiguration.SoftwareLimitSwitch
+        .withForwardSoftLimitThreshold(forwardLimit)
+        .withReverseSoftLimitThreshold(reverseLimit)
+        .withForwardSoftLimitEnable(true)
+        .withReverseSoftLimitEnable(true);
+
+    talonFXConfiguration.MotionMagic.withMotionMagicAcceleration(motionMagicAcceleration).withMotionMagicCruiseVelocity(motionMagicCruiseVelocity).withMotionMagicJerk(motionMagicCruiseJerk);
     talonFXConfiguration.withAudio(new AudioConfigs()
       .withAllowMusicDurDisable(true));
 
@@ -154,7 +156,7 @@ public class LinkageIOTalonFX implements LinkageIO {
   }
 
   public double getPosition() {
-    return talonFX.getPosition().getValueAsDouble();
+    return talonFX.getPosition().getValueAsDouble() * GEAR_RATIO;
   }
   public void enableBrakeMode(){
     neutralMode = NeutralModeValue.Brake;
@@ -194,9 +196,9 @@ public class LinkageIOTalonFX implements LinkageIO {
   public void setReference(double setPoint) { //TODO: TEST???
     setPoint = setPoint / GEAR_RATIO;
 
-    this.positionVoltage.Position = setPoint;
+    MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(setPoint);
 
-    talonFX.setControl(this.positionVoltage);
+    talonFX.setControl(motionMagicVoltage);
   }
 
   /**
