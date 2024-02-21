@@ -38,7 +38,7 @@ public class CommandFactory {
     } 
 
     public ShootInSpeaker shootFromFar() {
-        return new ShootInSpeaker(linkage, flywheel, intake, 154, 7000);
+        return new ShootInSpeaker(linkage, flywheel, drivetrain, intake,  157.0, 7000, 20.0);
     }
     // returns type powerFlywheel
     public PowerFlywheel powerFlywheel() {

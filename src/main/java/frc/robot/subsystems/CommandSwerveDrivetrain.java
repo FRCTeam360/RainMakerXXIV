@@ -97,7 +97,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private void configurePID() {
         headingController = new PhoenixPIDController(headingKP, headingKI, headingKD);
         headingController.enableContinuousInput(-Math.PI, Math.PI);
-        headingController.setTolerance(Math.toRadians(5));
+        headingController.setTolerance(Math.toRadians(2));
         headingController.setIntegratorRange(-headingIZone, headingIZone);
     }
 
