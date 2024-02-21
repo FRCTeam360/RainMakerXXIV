@@ -48,7 +48,11 @@ public class Linkage extends SubsystemBase {
   }
 
   public boolean isAtSetpoint() {
-	  return false;
+	  if(Math.abs(this.getAngle() - positionSetpoint) < 3.0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public void run(double speed) {
@@ -80,6 +84,9 @@ public class Linkage extends SubsystemBase {
   public void setEncoderTo90() {
     io.setPosition(90);
   }
+  public void enableBrakeMode(){
+    io.enableBrakeMode();
+  }
 
   public void setFFWScaling(double ff) {
     io.setFF(ff * Math.cos(getAngle()));
@@ -105,6 +112,9 @@ public class Linkage extends SubsystemBase {
         this.zero();
       }
     } else {
+      if(!io.isBrakeMode()){
+        io.enableBrakeMode();
+      }
       // DO NOT REMOVE
       // This is neccessary to run the linkage after playing the update sound
       io.stopSound();

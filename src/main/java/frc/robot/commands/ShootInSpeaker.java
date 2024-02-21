@@ -91,20 +91,10 @@ public class ShootInSpeaker extends Command {
       case LOADED:
         intake.stop();
         boolean isLinkageAtSetpoint = linkage.isAtSetpoint();
-        boolean isFlywheelAtSetpoint = flywheel.isAboveSetpoint();
-        boolean isDriveReady = Objects.isNull(drivetrain) || drivetrain.isFacingAngle();
-        if (isLinkageAtSetpoint) {
-          System.out.println("inkage at setpoint");
-        }
-        if (isFlywheelAtSetpoint) {
-          System.out.println("flywheel at setpoint");
-        }
-        if (isDriveReady) {
-          System.out.println("drivetrain at setpoint");
-        }
-        if (isFlywheelAtSetpoint && isDriveReady) { // && isLinkageAtSetpoint
+        boolean isFlywheelAtSetpoint = flywheel.isAtSetpoint();
+     //   boolean isDriveReady = Objects.isNull(drivetrain) || drivetrain.isFacingAngle();
+        if (isFlywheelAtSetpoint && isLinkageAtSetpoint) { // && isLinkageAtSetpoint
           this.state = ShootState.SHOOT;
-          System.out.println("this is the robot state: " + state);
         }
         break;
 

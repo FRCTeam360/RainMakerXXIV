@@ -28,8 +28,8 @@ public class IntakeIOSparkFlex implements IntakeIO{
         final double GEAR_RATIO = 2.0;
         // get shuffleboard tab intake
         ShuffleboardTab tab = Shuffleboard.getTab("intake");
-        tab.addBoolean("sensor 1", () -> this.getSideSensor());
-        tab.addBoolean("sensor 2", () -> this.getHighSensor());
+        tab.addBoolean("side sensor", () -> this.getSideSensor());
+        tab.addBoolean("high sensor", () -> this.getHighSensor());
     }
     @Override 
     public void updateInputs(IntakeIOInputs inputs) {
