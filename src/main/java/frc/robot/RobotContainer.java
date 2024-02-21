@@ -107,7 +107,7 @@ public class RobotContainer {
   private ShootInSpeaker shootRoutine;
   // tele commands
   private RunExtendIntake runExtendIntake;
-  private PowerCenterNote powerCenterNote;
+  private PowerCenterNote powerCenterNoteIntakeRoutine;
   private PowerIntakeReversed powerIntakeReversed;
   private PowerIntake powerIntake;
   private PowerFlywheel powerFlywheel;
@@ -210,7 +210,7 @@ public class RobotContainer {
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
     robotOrientedDrive = new RobotOrientedDrive(drivetrain);
     runExtendIntake = commandFactory.runExtendIntake();
-    powerCenterNote = commandFactory.powerCenterNote();
+    powerCenterNoteIntakeRoutine = commandFactory.powerCenterNote();
     powerIntakeReversed = new PowerIntakeReversed(intake);
     powerIntake = new PowerIntake(intake);
     powerFlywheel = new PowerFlywheel(flywheel);
@@ -292,17 +292,20 @@ public class RobotContainer {
 
 
   private void configureBindings() {
-    driverController.a().onTrue(shootFromSubwoofer);
-    driverController.x().onTrue(shootFromFar);
+    driverController.a().whileTrue(shootFromSubwoofer);
+    driverController.x().whileTrue(shootFromFar);
     driverController.y().onTrue(stowLinkage);
     driverController.b().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
+    driverController.rightBumper().toggleOnTrue(powerCenterNoteIntakeRoutine);
     operatorController.leftTrigger(.15).whileTrue(powerIntakeReversed);
     operatorController.rightTrigger(.15).whileTrue(powerIntake);
     // operatorController.y().onTrue(new SetLinkageTalon(linkage, 0.0));
     // operatorController.b().onTrue(new SetLinkageTalon(linkage, 90.0));
     // operatorController.a().whileTrue(powerFlywheel);
-    operatorController.a().toggleOnTrue(powerCenterNote);
-    operatorController.x().whileTrue(shootRoutine);
+    operatorController.a().toggleOnTrue(powerCenterNoteIntakeRoutine);
+    operatorController.b().whileTrue(powerLinkage);
+    operatorController.start().and(() -> operatorController.back().getAsBoolean()).whileTrue(new InstantCommand(() -> linkage.setEncoderTo174()));
+    // operatorController.x().whileTrue(shootRoutine);
     // operatorController.a().toggleOnTrue(runExtendIntake);
 
     // operatorController.y().toggleOnTrue(powerAmpIntake);

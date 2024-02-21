@@ -81,8 +81,8 @@ public class Linkage extends SubsystemBase {
     io.setPosition(0.0); //-10.5 when resting on hard stops
   }
 
-  public void setEncoderTo90() {
-    io.setPosition(90);
+  public void setEncoderTo174() {
+    io.setPosition(174.0);
   }
   public void enableBrakeMode(){
     io.enableBrakeMode();
