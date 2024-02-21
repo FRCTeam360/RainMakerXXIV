@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 9.040487439644714,
+      "y": 4.241144824332404
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp 3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp 4"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
