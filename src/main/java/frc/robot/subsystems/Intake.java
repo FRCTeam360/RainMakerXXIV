@@ -14,6 +14,8 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -27,9 +29,18 @@ public class Intake extends SubsystemBase {
   private final IntakeIO io;
   private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
 
+  public void setupShuffleboard() {
+    ShuffleboardTab tab = Shuffleboard.getTab("intake");
+    tab.addNumber("Encoder position", () -> io.getEncoderValue());
+  }
   /** Creates a new Intake. */
   public Intake(IntakeIO io) {
     this.io = io;
+    setupShuffleboard();
+  }
+
+  public boolean isAtEncoderSetpoint(double setpoint) {
+    return Math.abs(getEncoderValue() - setpoint) < 0.005 ? true : false;
   }
 
   public boolean getSideSensor() {
@@ -56,9 +67,17 @@ public class Intake extends SubsystemBase {
     return io.getOutputCurrent();
   }
 
-  // public void setEncoder() {
-  //   encoder.setPosition(encoder.getPosition() + 1.28436279297);
-  // }
+  public double getEncoderValue() {
+    return io.getEncoderValue();
+  }
+
+  public void setEncoderValue(double encoderPosition) {
+    io.setEncoderValue(encoderPosition);
+  }
+
+  public void moveEncoder(double setpoint) {
+    io.moveEncoder(setpoint);
+  }
 
   @Override
   public void periodic() {

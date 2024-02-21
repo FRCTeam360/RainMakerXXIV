@@ -16,6 +16,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -30,6 +31,8 @@ public class Linkage extends SubsystemBase {
   private final LinkageIO io;
   private final LinkageIOInputsAutoLogged inputs = new LinkageIOInputsAutoLogged();
   private double positionSetpoint;
+  
+  
   private static final double STARTING_ANGLE = 50.0;
   static XboxController driverCont = new XboxController(0);
 
@@ -40,6 +43,8 @@ public class Linkage extends SubsystemBase {
     ShuffleboardTab tab = Shuffleboard.getTab("Linkage");
     tab.addBoolean("Zero Button", () -> io.getZeroButton());
     tab.addBoolean("Brake Button", () -> io.getBrakeButton());
+    tab.addDouble("Angle", () -> this.getAngle());
+    tab.addBoolean("Brake Mode", () -> io.isBrakeMode());
   }
 
   public boolean isAtSetpoint() {
@@ -88,8 +93,21 @@ public class Linkage extends SubsystemBase {
     io.updateInputs(inputs);
     Logger.processInputs("Linkage", inputs);
 
-    if (!io.getZeroButton()) {
-      this.zero();
+    if(RobotState.isDisabled()){
+      if(io.getBrakeButton()){
+        if(io.isBrakeMode()){
+          io.disableBrakeMode();
+        } else {
+          io.enableBrakeMode();
+        }
+      }
+      if (io.getZeroButton()) {
+        this.zero();
+      }
+    } else {
+      // DO NOT REMOVE
+      // This is neccessary to run the linkage after playing the update sound
+      io.stopSound();
     }
   }
 }

@@ -236,8 +236,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         return headingController.atSetpoint();
     }
 
-    public float getAngle() {
-        return (float) this.getPigeon2().getAngle();
+    public double getAngle() {
+        return this.getPigeon2().getAngle();
     }
 
     public Rotation2d getRotation2d() {
@@ -286,6 +286,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     private void resetPose(Pose2d pose) {
         seedFieldRelative(pose);
+        this.getPigeon2().setYaw(pose.getRotation().getDegrees());
     }
 
     private ChassisSpeeds getRobotRelativeSpeeds() {

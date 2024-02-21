@@ -22,12 +22,14 @@ import frc.robot.commands.LinkageSetpoint;
 import frc.robot.commands.PowerAmpArm;
 import frc.robot.commands.PowerAmpIntake;
 import frc.robot.commands.PowerClimber;
+import frc.robot.generated.CompBotConstants;
 import frc.robot.generated.PracticebotConstants;
 import frc.robot.generated.WoodbotConstants;
 import frc.robot.hardware.AmpArmIOTalonFX;
 import frc.robot.hardware.AmpIntakeIOSparkMax;
 import frc.robot.hardware.ClimberIOSparkMax;
 import frc.robot.hardware.FlywheelIOSparkFlex;
+import frc.robot.hardware.IntakeIOSparkFlex;
 import frc.robot.hardware.IntakeIOSparkMax;
 import frc.robot.hardware.LinkageIOTalonFX;
 import frc.robot.hardware.LinkageIOSparkMax;
@@ -155,7 +157,13 @@ public class RobotContainer {
         drivetrain.configNeutralMode(NeutralModeValue.Coast);
         break;
       case COMPETITION:
-
+        drivetrain = CompBotConstants.DriveTrain; 
+        flywheel = new Flywheel(new FlywheelIOSparkFlex());
+        intake = new Intake(new IntakeIOSparkFlex());
+        ampArm = new AmpArm(new AmpArmIOTalonFX());
+        ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
+        climber = new Climber(new ClimberIOSparkMax());
+        linkage = new Linkage(new LinkageIOTalonFX());
         break;
       case TEST:
 
@@ -207,6 +215,12 @@ public class RobotContainer {
     tuneFlywheel = new TuneFlywheel(flywheel);
     linkageSetpoint = new LinkageSetpoint(linkage);
     stowLinkage = commandFactory.stowLinkage();
+    if(!Objects.isNull(ampArm)){
+      powerAmpArm = new PowerAmpArm(ampArm);
+    }
+    if(!Objects.isNull(ampIntake)){
+      powerAmpIntake = new PowerAmpIntake(ampIntake);
+    }
     // powerAmpArm = new PowerAmpArm(ampArm);
     // powerAmpIntake = new PowerAmpIntake(ampIntake);
 
@@ -241,8 +255,14 @@ public class RobotContainer {
     //climber.setDefaultCommand(powerClimber);
    // linkage.setDefaultCommand(powerLinkage);
     // ampArm.setDefaultCommand(powerAmpArm);
-    linkage.setDefaultCommand(linkageSetpoint);
-    flywheel.setDefaultCommand(tuneFlywheel);
+    // linkage.setDefaultCommand(linkageSetpoint);
+    // flywheel.setDefaultCommand(tuneFlywheel);
+    if(!Objects.isNull(ampArm)){
+      ampArm.setDefaultCommand(powerAmpArm);
+    }
+    if(!Objects.isNull(ampIntake)){
+      ampIntake.setDefaultCommand(powerAmpIntake);
+    }
   }
 
   /**
@@ -264,7 +284,7 @@ public class RobotContainer {
     // operatorController.y().onTrue(new SetLinkageTalon(linkage, 0.0));
     // operatorController.b().onTrue(new SetLinkageTalon(linkage, 90.0));
     // operatorController.a().whileTrue(powerFlywheel);
-    operatorController.b().whileTrue(powerIntake);
+    operatorController.b().whileTrue(powerLinkage);
     operatorController.a().toggleOnTrue(runExtendIntake);
     // operatorController.a().toggleOnTrue(runExtendIntake);
 

@@ -6,6 +6,9 @@ package frc.robot.hardware;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import com.ctre.phoenix6.Orchestra;
+import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.configs.AudioConfigs;
 import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -38,13 +41,20 @@ public class LinkageIOTalonFX implements LinkageIO {
   private final TalonFX talonFX = new TalonFX(Constants.LINKAGE_ID, "Default Name");
   // private final RelativeEncoder encoder = talonFX.getEncoder();
   // private final SparkPIDController pidController = talonFX.getPIDController();
+  private Orchestra updateSound;
+  private NeutralModeValue neutralMode = NeutralModeValue.Brake;
+  
 
   private DutyCycleOut dutyCycleOut = new DutyCycleOut(0);
   private TalonFXConfiguration talonFXConfiguration = new TalonFXConfiguration();
 
   private PositionVoltage positionVoltage = new PositionVoltage(0);
-  DigitalInput zeroButton = new DigitalInput(Constants.LINKAGE_ZERO_BUTTON_PORT);
-  DigitalInput brakeButton = new DigitalInput(Constants.LINKAGE_BRAKE_TOGGLE_BUTTON_PORT);
+  
+  private DigitalInput zeroButton = new DigitalInput(Constants.LINKAGE_ZERO_BUTTON_PORT);
+  private DigitalInput brakeButton = new DigitalInput(Constants.LINKAGE_BRAKE_TOGGLE_BUTTON_PORT);
+
+  private boolean zeroPrev = false;
+  private boolean brakePrev = false;
 
   /*
    * DO NOT USE ON ENCODER BC MOTION MAGIC WAS TUNED IN NATIVE UNITS
@@ -67,11 +77,18 @@ public class LinkageIOTalonFX implements LinkageIO {
 
     final double forwardLimit = 28.0; // TODO: make sure these are correct for prac bot
     final double reverseLimit = 0.0; // 29.5
-
+    
     talonFX.getConfigurator().apply(new TalonFXConfiguration());
     talonFX.setInverted(false);
     talonFX.setNeutralMode(NeutralModeValue.Brake);
 
+    updateSound = new Orchestra();
+    updateSound.addInstrument(talonFX);
+    StatusCode status = updateSound.loadMusic("TetrisTheme.chrp");
+
+    if(status != StatusCode.OK){
+      System.out.println("Error loading sound");
+    }
     // need to add offset??? 43.0 rn
 
     // translated into talonfx from sparkmax, probalby unnecessary
@@ -102,16 +119,24 @@ public class LinkageIOTalonFX implements LinkageIO {
         .withReverseSoftLimitEnable(true);
 
     talonFXConfiguration.MotionMagic.withMotionMagicAcceleration(motionMagicAcceleration).withMotionMagicCruiseVelocity(motionMagicCruiseVelocity).withMotionMagicJerk(motionMagicCruiseJerk);
+    talonFXConfiguration.withAudio(new AudioConfigs()
+      .withAllowMusicDurDisable(true));
 
     talonFX.getConfigurator().apply(talonFXConfiguration, 0.050);
   }
 
   public boolean getZeroButton(){
-    return this.zeroButton.get();
+    boolean zeroCurr = !this.zeroButton.get();
+    boolean risingEdge = zeroCurr && !zeroPrev;
+    zeroPrev = zeroCurr;
+    return risingEdge;
   }
 
   public boolean getBrakeButton(){
-    return this.brakeButton.get();
+    boolean brakeCurr = !this.brakeButton.get();
+    boolean risingEdge = brakeCurr && !brakePrev;
+    brakePrev = brakeCurr;
+    return risingEdge;
   }
 
   @Override
@@ -133,6 +158,17 @@ public class LinkageIOTalonFX implements LinkageIO {
   public double getPosition() {
     return talonFX.getPosition().getValueAsDouble() * GEAR_RATIO;
   }
+  public void enableBrakeMode(){
+    neutralMode = NeutralModeValue.Brake;
+    talonFX.setNeutralMode(NeutralModeValue.Brake);
+  }
+  public void disableBrakeMode(){
+    neutralMode = NeutralModeValue.Coast;
+    talonFX.setNeutralMode(NeutralModeValue.Coast);
+  }
+  public boolean isBrakeMode(){
+    return neutralMode == NeutralModeValue.Brake;
+  }
 
   public double get() {
     return talonFX.get();
@@ -148,6 +184,10 @@ public class LinkageIOTalonFX implements LinkageIO {
   }
 
   public void setPosition(double angle) {
+    if(angle == 0.0){
+      updateSound.stop();
+      updateSound.play();
+    }
     angle = angle / GEAR_RATIO;
     talonFX.setPosition(angle);
   }
@@ -159,5 +199,14 @@ public class LinkageIOTalonFX implements LinkageIO {
     MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(setPoint);
 
     talonFX.setControl(motionMagicVoltage);
+  }
+
+  /**
+   * Stops playing sound on the linkage, this is neccessary to run the linkage
+   */
+  public void stopSound(){
+    if(updateSound.isPlaying()){
+      updateSound.stop();
+    }
   }
 }
