@@ -25,6 +25,7 @@ public class IntakeIOSparkFlex implements IntakeIO{
         sparkFlex.restoreFactoryDefaults(); 
         sparkFlex.setInverted(false);
         sparkFlex.setIdleMode(IdleMode.kBrake);
+        sparkFlex.setSmartCurrentLimit(120, 50);
         final double GEAR_RATIO = 2.0;
         // get shuffleboard tab intake
         ShuffleboardTab tab = Shuffleboard.getTab("intake");

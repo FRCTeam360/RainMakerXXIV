@@ -100,7 +100,6 @@ public class Linkage extends SubsystemBase {
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("Linkage", inputs);
-    CommandLogger.logCommandSubsystem(this);
 
     if(RobotState.isDisabled()){
       if(io.getBrakeButton()){

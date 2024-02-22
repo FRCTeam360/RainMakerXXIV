@@ -86,7 +86,6 @@ public class Climber extends SubsystemBase {
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("Climber", inputs);
-    CommandLogger.logCommandSubsystem(this);
     SmartDashboard.putNumber("Left Height", getLeftPosition());
     SmartDashboard.putNumber("Right Height", getRightPosition());
     SmartDashboard.putNumber("roll", getRoll());

@@ -39,10 +39,4 @@ public class CommandLogger {
         System.out.println("Print Command End: " + command.getClass().getName());
     }
 
-    /*
-     * Log the command subsystem
-     */
-    public static void logCommandSubsystem(Subsystem subsystem){
-        Logger.recordOutput("Command Running on: " + subsystem.getClass().getName(), subsystem.getCurrentCommand().getName());
-    }
 }

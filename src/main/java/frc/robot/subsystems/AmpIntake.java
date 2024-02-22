@@ -45,7 +45,5 @@ public class AmpIntake extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("AmpIntake", inputs);
-    CommandLogger.logCommandSubsystem(this);
-    setupShuffleboard();
   }
 }
