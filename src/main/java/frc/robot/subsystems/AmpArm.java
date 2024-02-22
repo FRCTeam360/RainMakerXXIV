@@ -21,6 +21,7 @@ public class AmpArm extends SubsystemBase {
   /** Creates a new AmpArm. */
   public AmpArm(AmpArmIO io) {
     this.io = io;
+    setupShuffleboard();
   }
 
   public void runArm(double speed) {

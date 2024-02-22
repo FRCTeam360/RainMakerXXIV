@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -11,8 +7,8 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
 import frc.robot.utils.CommandLogger;
 
-public class RunExtendIntake extends Command {
-  enum IntakeCases {CHECK_ROBOT_EMPTY, EXTEND_INTAKE, WAIT_FOR_SENSOR, UP_TO_SHOOTER, DOWN_TO_INTAKE, RETRACT_STOP}; 
+public class PowerCenterNote extends Command{
+    enum IntakeCases {CHECK_ROBOT_EMPTY, EXTEND_INTAKE, WAIT_FOR_SENSOR, UP_TO_SHOOTER, DOWN_TO_INTAKE, RETRACT_STOP, BACK_UP, CENTER, DONE}; 
   private Linkage linkage;
   private double setpoint;
   //private DigitalInput sensor = new DigitalInput(0);
@@ -27,7 +23,7 @@ public class RunExtendIntake extends Command {
  
   
   /** Creates a new Java. */
-  public RunExtendIntake(Intake intake, Linkage linkage) {
+  public PowerCenterNote(Intake intake, Linkage linkage) {
     this.intake = intake;
     this.linkage = linkage;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -44,6 +40,7 @@ public class RunExtendIntake extends Command {
   @Override
   public void initialize() {
     CommandLogger.logCommandStart(this);
+    linkage.enableBrakeMode();
     timer.reset();
   }
 
@@ -58,13 +55,12 @@ public class RunExtendIntake extends Command {
         }
         break;
       case EXTEND_INTAKE:
-        linkage.setAngle(setpoint);                           
+        linkage.setAngle(0.0);                           
         intake.run(1);
         if(!intake.getSideSensor()) {
-          timer.start();
-          intake.setEncoderValue(0.0);
           state = IntakeCases.UP_TO_SHOOTER;
-        } // we should extend too but idk how we should implement this
+        }
+        // we should extend too but idk how we should implement this
         // //linkage.setAngle(180);
         // if(intake.getAmps() > 20 && timer.get() > .25) {
         //   sensorTimer.start();
@@ -72,64 +68,26 @@ public class RunExtendIntake extends Command {
         // }
         break;
       case UP_TO_SHOOTER:
+        intake.run(.4);
         linkage.setAngle(130.0);
-        // if(timer.get() > 1) {
-        //   setpoint = .7;
-        // } else {
-        //   setpoint = .5;
-        // }
-        //   intake.moveEncoder(setpoint);
-        //   if(intake.isAtEncoderSetpoint(setpoint)) {
-        //     state = IntakeCases.DOWN_TO_INTAKE;
-        //   }
-        //   break;
-      // case DOWN_TO_INTAKE:
-      //     intake.moveEncoder(-.2);
-      //     if(intake.isAtEncoderSetpoint(-.2)) {
-      //       state = IntakeCases.WAIT_FOR_SENSOR;
-      //     }
-      //     break;
-      // case WAIT_FOR_SENSOR:
-      //     intake.moveEncoder(.5);
-      //     if(intake.isAtEncoderSetpoint(.5)) {
-      //       state = IntakeCases.RETRACT_STOP;
-      //     }
-          
-          
-      // case WAIT_FOR_SENSOR:
-      //   intake.run(.3);
-      //   // if(!intake.getHighSensor()) {
-      //   //   state = IntakeCases.UP_TO_SHOOTER_P1;
-      //   // }
-      //   if(sensorTimer.get() > 1) {
-      //     state = IntakeCases.EXTEND_INTAKE;
-      //     sensorTimer.reset();
-      //   } 
-      //   if(!intake.getSideSensor()){
-      //    // setPoint = intake.encoder.getPosition() + 1.28436279297;
-      //     state = IntakeCases.UP_TO_SHOOTER_P1;
-      //   }
-      //   break;
-      // case UP_TO_SHOOTER_P1:
-      //   if(!intake.getHighSensor()) {
-      //     state = IntakeCases.RETRACT_STOP;
-      //   }
-      //   intake.run(.25);
-      //   // if(intake.getSideSensor()) {
-      //   //   state = IntakeCases.RETRACT_STOP;
-      //   // }
-      //   // if(intake.getHighSensor()) {
-      //   //   state = IntakeCases.UP_TO_SHOOTER_P2;
-      //   // }
-      //   break;
-      // case UP_TO_SHOOTER_P2:
-      //     if(!intake.getHighSensor()) {
-      //       state = IntakeCases.RETRACT_STOP;
-      //     } else {
-      //       intake.run(-.14);
-      //     }
-      case RETRACT_STOP:
+        if(!intake.getHighSensor()){
+            state = IntakeCases.BACK_UP;
+        }
         break;
+      case BACK_UP:
+        intake.run(-.2);
+        if(intake.getSideSensor()){
+            state = IntakeCases.CENTER;
+        }
+        break;
+      case CENTER:
+        intake.run(.2);
+        if(!intake.getHighSensor()){
+            state = IntakeCases.RETRACT_STOP;
+        }
+        break;
+    case RETRACT_STOP:
+    break;
 
     }
     
@@ -190,5 +148,5 @@ public class RunExtendIntake extends Command {
       return true;
     }
     return false;
-  }
+}
 }

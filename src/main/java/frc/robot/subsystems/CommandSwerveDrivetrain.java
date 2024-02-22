@@ -98,7 +98,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private void configurePID() {
         headingController = new PhoenixPIDController(headingKP, headingKI, headingKD);
         headingController.enableContinuousInput(-Math.PI, Math.PI);
-        headingController.setTolerance(Math.toRadians(5));
+        headingController.setTolerance(Math.toRadians(2));
         headingController.setIntegratorRange(-headingIZone, headingIZone);
     }
 
@@ -208,7 +208,10 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     }
 
     public Command turntoCMD(boolean shouldEnd, Rotation2d desiredAngle, double velocityX, double velocityY) {
-        FieldCentricFacingAngle facingAngleCommand = drive.withTargetDirection(desiredAngle).withVelocityX(velocityX)
+        desiredAngle = Rotation2d.fromDegrees(flipAngle(desiredAngle.getDegrees()));
+        FieldCentricFacingAngle facingAngleCommand = drive
+                .withTargetDirection(desiredAngle)
+                .withVelocityX(velocityX)
                 .withVelocityY(velocityY);
         facingAngleCommand.HeadingController = headingController;
         System.out.println("turntoCMD");
@@ -229,6 +232,14 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     }
 
+    /**
+     * Flips a given angle by 180 degrees
+     * @param angle
+     */
+    public double flipAngle(double angle) {
+        return angle + 180;
+    }
+
     private double getAngleError() {
         return Math.toDegrees(headingController.getPositionError());
     }
@@ -237,8 +248,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         return headingController.atSetpoint();
     }
 
-    public float getAngle() {
-        return (float) this.getPigeon2().getAngle();
+    public double getAngle() {
+        return this.getPigeon2().getAngle();
     }
 
     public Rotation2d getRotation2d() {
@@ -253,23 +264,25 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         this.setControl(new SwerveRequest.SwerveDriveBrake());
     }
 
-    public void fieldCentricDrive(double leftX, double leftY, double rightX) {
+    public void fieldCentricDrive(double left, double forward, double rotation) {
         this.setControl(new SwerveRequest.FieldCentric()
-                .withVelocityX(MathUtil.applyDeadband(leftY, 0.1) * Constants.MAX_SPEED_MPS)
-                .withVelocityY(MathUtil.applyDeadband(leftX, 0.1) * Constants.MAX_SPEED_MPS)
-                .withRotationalRate(MathUtil.applyDeadband(-rightX, 0.1) * Constants.MAX_ANGULAR_RATE));
+                .withVelocityX(forward * Constants.MAX_SPEED_MPS)
+                .withVelocityY(left * Constants.MAX_SPEED_MPS)
+                .withRotationalRate(-rotation * Constants.MAX_ANGULAR_RATE));
     }
 
-    public void robotCentricDrive(double leftX, double leftY, double rightX) {
+    public void robotCentricDrive(double left, double forward, double rotation) {
         this.setControl(new SwerveRequest.RobotCentric()
-                .withVelocityX(MathUtil.applyDeadband(leftY, 0.1) * Constants.MAX_SPEED_MPS)
-                .withVelocityY(MathUtil.applyDeadband(leftX, 0.1) * Constants.MAX_SPEED_MPS)
-                .withRotationalRate(MathUtil.applyDeadband(-rightX, 0.1) * Constants.MAX_ANGULAR_RATE));
+                .withVelocityX(forward * Constants.MAX_SPEED_MPS)
+                .withVelocityY(left * Constants.MAX_SPEED_MPS)
+                .withRotationalRate(-rotation * Constants.MAX_ANGULAR_RATE));
     }
 
     // drive robot with field centric angle
-    public void driveFieldCentricFacingAngle(double x, double y, double angle, double desiredAngle) {
-        FieldCentricFacingAngle request = new SwerveRequest.FieldCentricFacingAngle().withVelocityX(x).withVelocityY(y)
+    public void driveFieldCentricFacingAngle(double forward, double left, double angle, double desiredAngle) {
+        FieldCentricFacingAngle request = new SwerveRequest.FieldCentricFacingAngle()
+                .withVelocityX(forward)
+                .withVelocityY(left)
                 .withTargetDirection(Rotation2d.fromDegrees(desiredAngle));
                 request.HeadingController = headingController;
         this.setControl(request);
@@ -287,6 +300,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     private void resetPose(Pose2d pose) {
         seedFieldRelative(pose);
+        this.getPigeon2().setYaw(pose.getRotation().getDegrees());
     }
 
     private ChassisSpeeds getRobotRelativeSpeeds() {
@@ -325,31 +339,30 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     @Override
     public void periodic() {
-        String moduleName = "null";
-        for (int i = 0; i < 4; i++) {
-            switch (i) {
-                case 0:
-                    moduleName = "Front Left: ";
-                    break;
-                case 1:
-                    moduleName = "Front Right: ";
-                    break;
-                case 2:
-                    moduleName = "Back Left: ";
-                    break;
-                case 3:
-                    moduleName = "Back Right: ";
-                    break;
-            }
-            Logger.recordOutput(moduleName + "Drive Voltage", this.getModule(i).getDriveMotor().getMotorVoltage().getValueAsDouble());
-            Logger.recordOutput(moduleName + "Drive Current", this.getModule(i).getDriveMotor().getSupplyCurrent().getValueAsDouble());
-            Logger.recordOutput(moduleName + "CANCoder Position", this.getModule(i).getCANcoder().getPosition().getValueAsDouble());
-            Logger.recordOutput(moduleName + "Steer Voltage", this.getModule(i).getSteerMotor().getMotorVoltage().getValueAsDouble());
-            Logger.recordOutput(moduleName + "Steer Current", this.getModule(i).getSteerMotor().getSupplyCurrent().getValueAsDouble());
+        // String moduleName = "null";
+        // for (int i = 0; i < 4; i++) {
+        //     switch (i) {
+        //         case 0:
+        //             moduleName = "Front Left: ";
+        //             break;
+        //         case 1:
+        //             moduleName = "Front Right: ";
+        //             break;
+        //         case 2:
+        //             moduleName = "Back Left: ";
+        //             break;
+        //         case 3:
+        //             moduleName = "Back Right: ";
+        //             break;
+        //     }
+        //     Logger.recordOutput("Swerve " + moduleName + "Drive Voltage", this.getModule(i).getDriveMotor().getMotorVoltage().getValueAsDouble());
+        //     Logger.recordOutput("Swerve " + moduleName + "Drive Current", this.getModule(i).getDriveMotor().getSupplyCurrent().getValueAsDouble());
+        //     Logger.recordOutput("Swerve " + moduleName + "CANCoder Position", this.getModule(i).getCANcoder().getPosition().getValueAsDouble());
+        //     Logger.recordOutput("Swerve " + moduleName + "Steer Voltage", this.getModule(i).getSteerMotor().getMotorVoltage().getValueAsDouble());
+        //     Logger.recordOutput("Swerve " + moduleName + "Steer Current", this.getModule(i).getSteerMotor().getSupplyCurrent().getValueAsDouble());
            
-        }
-        Logger.recordOutput("Rotation2d", this.getPigeon2().getRotation2d());
+        //}
+        // Logger.recordOutput("Rotation2d", this.getPigeon2().getRotation2d());
         CommandLogger.logCommandSubsystem(this);
     }
-
 }

@@ -21,6 +21,7 @@ public class AmpIntake extends SubsystemBase {
   /** Creates a new AmpIntake. */
   public AmpIntake(AmpIntakeIO io) {
     this.io = io;
+    setupShuffleboard();
   }
 
   public void runIntake(double speed){
