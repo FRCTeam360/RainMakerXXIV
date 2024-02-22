@@ -111,6 +111,5 @@ public class Flywheel extends SubsystemBase {
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("Flywheel", inputs);
-    CommandLogger.logCommandSubsystem(this);
   }
 }
