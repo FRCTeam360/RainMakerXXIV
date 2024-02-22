@@ -10,6 +10,7 @@ import frc.robot.Constants;
 import frc.robot.io.FlywheelIO;
 import frc.robot.io.FlywheelIOInputsAutoLogged;
 import frc.robot.io.IntakeIOInputsAutoLogged;
+import frc.robot.utils.CommandLogger;
 
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.RelativeEncoder;
@@ -110,5 +111,6 @@ public class Flywheel extends SubsystemBase {
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("Flywheel", inputs);
+    CommandLogger.logCommandSubsystem(this);
   }
 }

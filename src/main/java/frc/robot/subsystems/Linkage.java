@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.io.LinkageIO;
 import frc.robot.io.LinkageIOInputsAutoLogged;
+import frc.robot.utils.CommandLogger;
 
 public class Linkage extends SubsystemBase {
   private final LinkageIO io;
@@ -99,6 +100,7 @@ public class Linkage extends SubsystemBase {
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("Linkage", inputs);
+    CommandLogger.logCommandSubsystem(this);
 
     if(RobotState.isDisabled()){
       if(io.getBrakeButton()){
