@@ -10,6 +10,7 @@ import frc.robot.Constants;
 import frc.robot.io.FlywheelIO;
 import frc.robot.io.FlywheelIOInputsAutoLogged;
 import frc.robot.io.IntakeIOInputsAutoLogged;
+import frc.robot.utils.CommandLogger;
 
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.RelativeEncoder;

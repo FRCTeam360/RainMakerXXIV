@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 import frc.robot.io.IntakeIO;
 import frc.robot.io.IntakeIOInputsAutoLogged;
 import frc.robot.io.IntakeIO.IntakeIOInputs;
+import frc.robot.utils.CommandLogger;
 
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.ctre.phoenix6.hardware.CANcoder;

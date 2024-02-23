@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.io.LinkageIO;
 import frc.robot.io.LinkageIOInputsAutoLogged;
+import frc.robot.utils.CommandLogger;
 
 public class Linkage extends SubsystemBase {
   private final LinkageIO io;
