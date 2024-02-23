@@ -12,7 +12,6 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.generated.PracticeBotConstants;
 import frc.robot.io.ClimberIO;
 import frc.robot.io.IntakeIO.IntakeIOInputs;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
