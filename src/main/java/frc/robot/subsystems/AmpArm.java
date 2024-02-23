@@ -62,8 +62,6 @@ public class AmpArm extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("AmpArm", inputs);
-    CommandLogger.logCommandSubsystem(this);
-    setupShuffleboard();
   }
 
 }

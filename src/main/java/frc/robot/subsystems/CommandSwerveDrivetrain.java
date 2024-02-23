@@ -363,6 +363,5 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
            
         //}
         // Logger.recordOutput("Rotation2d", this.getPigeon2().getRotation2d());
-        CommandLogger.logCommandSubsystem(this);
     }
 }
