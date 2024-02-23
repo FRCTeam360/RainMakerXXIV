@@ -14,8 +14,9 @@ public interface AmpIntakeIO {
   /** Creates a new AmpIntakeIO. */
   @AutoLog
   public static class AmpIntakeIOInputs {
-    public double intakeSpeed = 0.0;
-    public double intakeAmps = 0.0;
+    public double ampIntakeSpeed = 0.0;
+    public double ampIntakeAmps = 0.0;
+    public double ampIntakeOutputVoltage = 0.0;
   }
 
   public default void updateInputs(AmpIntakeIOInputs inputs) {}

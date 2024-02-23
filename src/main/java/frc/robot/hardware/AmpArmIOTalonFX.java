@@ -55,6 +55,12 @@ public class AmpArmIOTalonFX implements AmpArmIO {
     inputs.wristAngle = wristMotor.getPosition().getValueAsDouble();
     inputs.armAmps = armMotor.getStatorCurrent().getValueAsDouble();
     inputs.wristAmps = wristMotor.getStatorCurrent().getValueAsDouble();
+    inputs.armVoltage = armMotor.getMotorVoltage().getValueAsDouble();
+    inputs.wristAmps = wristMotor.getMotorVoltage().getValueAsDouble();
+    inputs.armVelocity = armMotor.getVelocity().getValueAsDouble();
+    inputs.wristVelocity = wristMotor.getVelocity().getValueAsDouble();
+    inputs.armPosition = armMotor.getPosition().getValueAsDouble();
+    inputs.wristPosition = wristMotor.getPosition().getValueAsDouble();
   }
 
   @Override

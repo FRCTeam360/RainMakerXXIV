@@ -15,11 +15,21 @@ public interface FlywheelIO {
   /** Creates a new FlywheelIO. */
   @AutoLog
   public static class FlywheelIOInputs {
-    public double topSpeed = 0.0;
-    public double bottomSpeed = 0.0;
+    public double flywheelLeftSpeed = 0.0;
+    public double flywheelRightSpeed = 0.0;
+    public double flywheelLeftAmps = 0.0;
+    public double flywheelRightAmps = 0.0;
+    public double flywheelLeftVoltage = 0.0;
+    public double flywheelRightVoltage = 0.0;
+    public double flywheelLeftVelocity = 0.0;
+    public double flywheelRightVelocity = 0.0;
+    public double flywheelLeftPosition = 0.0;
+    public double flywheelRightPosition = 0.0;
+    public double flywheelLeftOutput = 0.0; 
+    public double flywheelRightOutput = 0.0; 
   }
   
-  public default void updateInputs(FlywheelIOInputs inputs) {}
+public default void updateInputs(FlywheelIOInputs inputs) {}
 
 public void setLeft(double speed);
 

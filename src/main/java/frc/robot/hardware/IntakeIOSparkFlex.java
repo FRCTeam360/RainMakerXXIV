@@ -35,10 +35,12 @@ public class IntakeIOSparkFlex implements IntakeIO{
     @Override 
     public void updateInputs(IntakeIOInputs inputs) {
         inputs.intakeSpeed = sparkFlex.get();
-        inputs.output = sparkFlex.getAppliedOutput();
-        inputs.amps = sparkFlex.getOutputCurrent();
-        inputs.sensor = sideSensor.get();
-        inputs.sensor = highSensor.get();
+        inputs.intakeSideSensor = sideSensor.get();
+        inputs.intakeHighSensor = highSensor.get();
+        inputs.intakeOutputVoltage = sparkFlex.getAppliedOutput();
+        inputs.intakeAmps = sparkFlex.getOutputCurrent();
+        inputs.intakeVelocity = encoder.getVelocity();
+        inputs.intakePosition = encoder.getPosition();
     }
     @Override
     public void set(double speed){
