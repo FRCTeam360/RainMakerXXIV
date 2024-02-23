@@ -12,13 +12,13 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.generated.PracticebotConstants;
+import frc.robot.generated.PracticeBotConstants;
 import frc.robot.io.ClimberIO;
 import frc.robot.io.IntakeIO.IntakeIOInputs;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class ClimberIOSparkMax implements ClimberIO {
-    private CommandSwerveDrivetrain drivetrain = PracticebotConstants.DriveTrain;
+    private CommandSwerveDrivetrain drivetrain = PracticeBotConstants.DriveTrain;
 
     private CANSparkMax leftMotor = new CANSparkMax(Constants.CLIMBER_LEFT_ID, MotorType.kBrushless);
     private CANSparkMax rightMotor = new CANSparkMax(Constants.CLIMBER_RIGHT_ID, MotorType.kBrushless);
