@@ -32,6 +32,18 @@ public class CommandFactory {
         return new ShootInSpeaker(linkage, flywheel, intake, linkageSetpoint, flywheelSetpoint);
     }
 
+    // returns type shootInSpeaker
+    public ShootInSpeaker shootInSpeaker(double linkageSetpoint, double flywheelSetpoint) {
+        return new ShootInSpeaker(linkage, flywheel, intake, linkageSetpoint, flywheelSetpoint);
+    }
+
+    public ShootInSpeaker shootFromSubwoofer() {
+        return new ShootInSpeaker(linkage, flywheel, intake, 172, 5000);
+    } 
+
+    public ShootInSpeaker shootFromFar() {
+        return new ShootInSpeaker(linkage, flywheel, drivetrain, intake,  157.0, 7000, 20.0);
+    }
     // returns type powerFlywheel
     public PowerFlywheel powerFlywheel() {
         return new PowerFlywheel(flywheel);
@@ -54,12 +66,25 @@ public class CommandFactory {
 
     // returns type runExtendIntake
     public RunExtendIntake runExtendIntake() {
-        return new RunExtendIntake(intake);
+        return new RunExtendIntake(intake, linkage);
+    }
+
+    //returns type powerCenterNote
+    public PowerCenterNote powerCenterNote(){
+        return new PowerCenterNote(intake, linkage);
     }
 
     // returns type runLinkage
     public RunLinkage runLinkage() {
         return new RunLinkage(linkage);
+    }
+
+    public SetLinkage setLinkage(double setPoint) {
+        return new SetLinkage(linkage, setPoint);
+    }
+
+    public SetLinkage stowLinkage() {
+        return new SetLinkage(linkage,130.0);
     }
 
     // returns type setIntake

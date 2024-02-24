@@ -20,7 +20,7 @@ import frc.robot.io.LinkageIO;
 
 public class LinkageIOSparkMax implements LinkageIO {
   /** Creates a new IntakeIOSparkMax. */
-    private final CANSparkMax sparkMax = new CANSparkMax (Constants.SHOOTER_LINKAGE_ID, MotorType.kBrushless);
+    private final CANSparkMax sparkMax = new CANSparkMax (Constants.WoodBotConstants.WOOD_BOT_LINKAGE_ID, MotorType.kBrushless);
     private final RelativeEncoder encoder = sparkMax.getEncoder();
     private final SparkPIDController pidController = sparkMax.getPIDController();
 
@@ -85,10 +85,30 @@ public class LinkageIOSparkMax implements LinkageIO {
   public void setPosition(double angle) {
     encoder.setPosition(angle);
   }
+  public void enableBrakeMode(){
+    sparkMax.setIdleMode(IdleMode.kBrake);
+  }
+  public void disableBrakeMode(){
+    sparkMax.setIdleMode(IdleMode.kCoast);
+  }
+  public boolean isBrakeMode(){
+    return sparkMax.getIdleMode() == IdleMode.kBrake;
+  }
 
-  @Override
-  public void setReference(int setPoint, ControlType kposition) {
-    pidController.setReference(setPoint, kposition);
+  public void setReference( double setPoint) {
+    pidController.setReference(setPoint, ControlType.kPosition);
+  }
+
+  public boolean getZeroButton(){
+    return false;
+  }
+  public boolean getBrakeButton(){
+    return false;
+  }
+
+  /**
+   * Stops playing sound on the linkage, this is neccessary to run the linkage
+   */
+  public void stopSound() {
   }
 }
-

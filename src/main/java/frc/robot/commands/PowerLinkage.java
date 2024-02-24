@@ -38,7 +38,7 @@ public class PowerLinkage extends Command {
     //   shooterLinkage.stop();
     // }
 
-    shooterLinkage.run(operatorCont.getLeftY() * 0.2);
+    shooterLinkage.run(operatorCont.getLeftY() * 0.5);
     CommandLogger.logCommandRunning(this);
   }
 

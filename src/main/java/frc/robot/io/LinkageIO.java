@@ -6,6 +6,7 @@ package frc.robot.io;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
@@ -34,7 +35,22 @@ public interface LinkageIO {
 
   public double getAppliedOutput();
 
-  public void setReference(int setPoint, ControlType kposition);
+  public void setReference(double setPoint);
 
   public void setPosition(double angle);
+
+  public void enableBrakeMode();
+
+  public void disableBrakeMode();
+
+  public boolean isBrakeMode();
+
+  public boolean getZeroButton();
+
+  public boolean getBrakeButton();
+
+  /**
+   * Stops playing sound on the linkage, this is neccessary to run the linkage
+   */
+  public void stopSound();
 }

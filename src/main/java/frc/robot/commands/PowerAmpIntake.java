@@ -4,38 +4,35 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Linkage;
+import frc.robot.subsystems.AmpIntake;
 
-public class SetLinkage extends Command {
-  final Linkage linkage;
-  private double setpoint;
-  /** Creates a new SetLinkageTa\
-   * lon. */
-  public SetLinkage(Linkage linkage, double setpoint) {
-    this.setpoint = setpoint;
+public class PowerAmpIntake extends Command {
+  private final AmpIntake ampIntake;
+
+  /** Creates a new PowerArmIntake. */
+  public PowerAmpIntake(AmpIntake ampIntake) {
+    this.ampIntake = ampIntake;
+
     // Use addRequirements() here to declare subsystem dependencies.
-    this.linkage = linkage;
-    addRequirements(linkage);
+    addRequirements(ampIntake);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    //SmartDashboard.putNumber("error", 0);
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //SmartDashboard.putNumber("error", -7.0 - linkage.getAngle());
-    linkage.setAngle(setpoint);
+    ampIntake.runIntake(0.3);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    ampIntake.stop();
+  }
 
   // Returns true when the command should end.
   @Override

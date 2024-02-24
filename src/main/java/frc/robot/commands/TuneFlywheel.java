@@ -7,19 +7,19 @@ package frc.robot.commands;
 import com.revrobotics.CANSparkBase;
 import com.revrobotics.SparkPIDController;
 
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Flywheel;
-import frc.robot.utils.CommandLogger;
 
-public class PowerFlywheel extends Command {
-  private final Flywheel flywheel;
-  private final XboxController operatorCont = new XboxController(1);
+public class TuneFlywheel extends Command {
+  private Flywheel flywheel;
 
-  // private final SparkPIDController topPidController = flywheel.topPidController;
+  private double goalRPM = 0.0;
 
-  /** Creates a new RunShooter. */
-  public PowerFlywheel(Flywheel flywheel) {
+
+  /** Creates a new SetFlywheel. */
+  public TuneFlywheel(Flywheel flywheel) {
     this.flywheel = flywheel;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(flywheel);
@@ -28,31 +28,24 @@ public class PowerFlywheel extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    CommandLogger.logCommandStart(this);
+    SmartDashboard.putNumber("Goal RPM", 0.0);
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // if(Math.abs(operatorCont.getLeftY()) > 0.1) {
-    //   flywheel.runLeft(-operatorCont.getLeftY());
-    // } else {
-    //   flywheel.stopLeft();
-    // }
-
-    // if(Math.abs(operatorCont.getRightY()) > 0.1) {
-    //   flywheel.runRight(-operatorCont.getRightY());
-    // } else {
-    //   flywheel.stopRight();
-    // }
-
-    flywheel.setBothRPM(4000);
-    CommandLogger.logCommandRunning(this);
+    double updatedGoalRPM = SmartDashboard.getNumber("Goal RPM", 0.0);
+    flywheel.setBothRPM(updatedGoalRPM);
+    SmartDashboard.putNumber("Left RPM", flywheel.getLeftVelocity());
+    SmartDashboard.putNumber("Right RPm", flywheel.getRightVelocity());
+    // processVariable = encoder.getPosition();
   }
-    
+
+  // Called once the command ends or is interrupted.
+  @Override
   public void end(boolean interrupted) {
     flywheel.stop();
-    CommandLogger.logCommandEnd(this);
   }
 
   // Returns true when the command should end.

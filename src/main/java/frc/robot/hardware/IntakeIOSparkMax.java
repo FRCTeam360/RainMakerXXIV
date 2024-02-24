@@ -9,6 +9,7 @@ import org.littletonrobotics.junction.AutoLog;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -18,6 +19,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.io.IntakeIO;
+import frc.robot.Constants;
 
 public class IntakeIOSparkMax implements IntakeIO {
   /** Creates a new IntakeIOSparkMax. */
@@ -25,18 +27,24 @@ public class IntakeIOSparkMax implements IntakeIO {
     private final RelativeEncoder encoder = sparkMax.getEncoder();
     private final SparkPIDController pid = sparkMax.getPIDController();
     // new hardware class for sensor?
-    private final DigitalInput sideSensor = new DigitalInput(2); // update port later idk what it is
-    private final DigitalInput highSensor = new DigitalInput(0); // update port later idk what it is
+    private final DigitalInput sideSensor = new DigitalInput(Constants.INTAKE_SIDE_SENSOR_PORT); // update port later idk what it is
+    private final DigitalInput highSensor = new DigitalInput(Constants.INTAKE_HIGH_SENSOR_PORT); // update port later idk what it is
 
   public IntakeIOSparkMax() {
     sparkMax.restoreFactoryDefaults();
-    sparkMax.setInverted(false);
+    sparkMax.setInverted(true);
     sparkMax.setIdleMode(IdleMode.kBrake);
-    final double GEAR_RATIO = 2.0;
+    final double GEAR_RATIO = 0.5;
+    encoder.setVelocityConversionFactor(GEAR_RATIO);
+    encoder.setPositionConversionFactor(GEAR_RATIO);
+    pid.setP(.9);
+    pid.setI(.002);
+    pid.setIZone(1.0);
     // get shuffleboard tab intake
     ShuffleboardTab tab = Shuffleboard.getTab("intake");
-    tab.addBoolean("sensor 1", () -> this.getSideSensor());
-    tab.addBoolean("sensor 2", () -> this.getHighSensor());
+    tab.addBoolean("side sensor", () -> this.getSideSensor());
+    tab.addBoolean("high sensor", () -> this.getHighSensor());
+    tab.addDouble("applied otuput", () -> sparkMax.getAppliedOutput());
   }
 
   @Override
@@ -75,5 +83,19 @@ public class IntakeIOSparkMax implements IntakeIO {
     @Override
   public boolean getHighSensor() {
     return highSensor.get();
+  }
+  @Override
+  public double getEncoderValue() {
+    return sparkMax.getEncoder().getPosition();
+  }
+
+  @Override
+  public void setEncoderValue(double encoderPosition) {
+    encoder.setPosition(encoderPosition);
+  }
+
+  @Override
+  public void moveEncoder(double setpoint) {
+    pid.setReference(setpoint, ControlType.kPosition);
   }
 }

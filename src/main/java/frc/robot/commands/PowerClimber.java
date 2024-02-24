@@ -4,38 +4,37 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Linkage;
+import frc.robot.subsystems.Climber;
 
-public class SetLinkage extends Command {
-  final Linkage linkage;
-  private double setpoint;
-  /** Creates a new SetLinkageTa\
-   * lon. */
-  public SetLinkage(Linkage linkage, double setpoint) {
-    this.setpoint = setpoint;
+public class PowerClimber extends Command {
+  private final Climber climber;
+  private XboxController operatorCont = new XboxController(1);
+
+  /** Creates a new PowerClimber. */
+  public PowerClimber(Climber climber) {
+    this.climber = climber;
     // Use addRequirements() here to declare subsystem dependencies.
-    this.linkage = linkage;
-    addRequirements(linkage);
+    addRequirements(this.climber);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    //SmartDashboard.putNumber("error", 0);
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //SmartDashboard.putNumber("error", -7.0 - linkage.getAngle());
-    linkage.setAngle(setpoint);
+    System.out.println("TRYING TO RUN LMAOO");
+    climber.runBoth(-operatorCont.getLeftY()* .3, -operatorCont.getRightY() * .3);//works when the rope wraps UNDER the spool
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    climber.stop();
+  }
 
   // Returns true when the command should end.
   @Override

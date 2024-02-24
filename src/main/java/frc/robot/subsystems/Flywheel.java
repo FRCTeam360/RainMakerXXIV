@@ -10,6 +10,7 @@ import frc.robot.Constants;
 import frc.robot.io.FlywheelIO;
 import frc.robot.io.FlywheelIOInputsAutoLogged;
 import frc.robot.io.IntakeIOInputsAutoLogged;
+import frc.robot.utils.CommandLogger;
 
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.RelativeEncoder;
@@ -27,86 +28,107 @@ public class Flywheel extends SubsystemBase {
   private final FlywheelIO io;
   private final FlywheelIOInputsAutoLogged inputs = new FlywheelIOInputsAutoLogged();
 
-  double topRPMSetpoint = 4000.0;
-  double bottomRPMSetpoint = 4000.0;
+  private double rpmSetpoint = 0.0;
 
   /** Creates a new Flywheel. */
   public Flywheel(FlywheelIO io) {
     this.io = io;
+    SmartDashboard.putNumber("error", 0);
   }
 
-  public void runTop(double speed) {
-    io.setTop(speed);
+  public void runLeft(double speed) {
+    io.setLeft(speed);
   }
 
-  public void runBottom(double speed) {
-    io.setBottom(speed);
+  public void runRight(double speed) {
+    io.setRight(speed);
   }
 
-  public void runBoth(double speed) {
-    io.setTop(speed);
-    io.setBottom(speed);
+  public void runBoth(double leftSpeed, double rightSpeed) { 
+    io.setLeft(leftSpeed);
+    io.setRight(rightSpeed);
   }
 
-  public void setTopRPM(double rpm) {
-    io.setTopReference(rpm, ControlType.kVelocity);
+  public void setLeftRPM(double rpm) {
+    rpmSetpoint = rpm;
+    io.setLeftReference(rpm, ControlType.kVelocity);
   }
 
-  public void setBottomRPM(double rpm) {
-
-    io.setBottomReference(rpm, ControlType.kVelocity);
+  public void setRightRPM(double rpm) {
+    rpmSetpoint = rpm;
+    io.setRightReference(rpm, ControlType.kVelocity);
   }
 
   public void setBothRPM(double rpm) {
-    topRPMSetpoint = rpm;
-    bottomRPMSetpoint = rpm;
-    io.setTopReference(rpm, ControlType.kVelocity);
-    io.setBottomReference(rpm, ControlType.kVelocity);
+    rpmSetpoint = rpm;
+    if(rpm > 500) {
+      io.setLeftReference(rpm, ControlType.kVelocity);
+      if(rpm>6000) {
+        rpm = rpm-750;
+      } 
+      io.setRightReference(rpm, ControlType.kVelocity);
+    } else {
+      stop();
+    }
   }
 
   public void stop() {
-    io.stopTopMotor();
-    io.stopBottomMotor();
+    io.stopLeftMotor();
+    io.stopRightMotor();
   }
 
-  public double getTopPower() {
-    return io.getTopPower();
+  public double getLeftPower() {
+    return io.getLeftPower();
   }
 
-  public double getBottomPower() {
-    return io.getBottomPower();
+  public double getRightPower() {
+    return io.getRightPower();
   }
 
-  public double getTopVelocity() {
-    return io.getTopVelocity();
+  public double getLeftVelocity() {
+    return io.getLeftVelocity();
   }
 
-  public double getBottomVelocity() {
-    return io.getBottomVelocity();
+  public double getRightVelocity() {
+    return io.getRightVelocity();
   }
 
-  public boolean topIsAtSetpoint() {
-    return Math.abs(this.getTopVelocity() - topRPMSetpoint) < 30.0;
+  // public boolean topIsAtSetpoint() {
+  //   return Math.abs(this.getTopVelocity() - topRPMSetpoint) < 30.0;
+  // }
+
+  // public boolean bottomIsAtSetpoint() {
+  //   return Math.abs(this.getBottomVelocity() - bottomRPMSetpoint) < 30.0;
+  // }
+
+  // public boolean areBothAtSetpoint() {
+  //   return bottomIsAtSetpoint() && topIsAtSetpoint();
+  // }
+
+  // public boolean isAboveSetpoint() {
+  //   return this.getTopVelocity() >= topRPMSetpoint;
+  // }
+
+  // public boolean isBelowSetpoint() {
+  //   return this.getTopVelocity() <= topRPMSetpoint - 30.0; }
+  public boolean isAtSetpoint() {
+    return Math.abs(this.getLeftVelocity() - rpmSetpoint) < 100.0;
   }
 
-  public boolean bottomIsAtSetpoint() {
-    return Math.abs(this.getBottomVelocity() - bottomRPMSetpoint) < 30.0;
-  }
-
-  public boolean areBothAtSetpoint() {
-    return bottomIsAtSetpoint() && topIsAtSetpoint();
-  }
 
   public boolean isAboveSetpoint() {
-    return this.getTopVelocity() >= topRPMSetpoint;
+    return this.getLeftVelocity() >= rpmSetpoint;
   }
 
   public boolean isBelowSetpoint() {
-    return this.getTopVelocity() <= topRPMSetpoint - 30.0;
+    return this.getLeftVelocity() <= rpmSetpoint - 30.0;
   }
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("setpoint rpm", rpmSetpoint);
+    SmartDashboard.putNumber("curren left rpm", getLeftVelocity());
+    SmartDashboard.putNumber("current right rpm", getRightVelocity());
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.recordOutput("Flywheel Command", Objects.isNull(getCurrentCommand()) ? "null" : getCurrentCommand().getName());

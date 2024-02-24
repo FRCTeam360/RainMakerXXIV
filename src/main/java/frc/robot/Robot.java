@@ -4,6 +4,11 @@
 
 package frc.robot;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiConsumer;
+
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -21,7 +26,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.generated.TunerConstants;
+import frc.robot.generated.WoodbotConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 /**
@@ -38,6 +43,20 @@ public class Robot extends LoggedRobot {
 
   private RobotContainer m_robotContainer;
 
+  private boolean isDriveWriteable(){
+    File drive = new File("/U");
+    if(drive.exists() && drive.isDirectory()){
+      try{
+        File temporaryFile = File.createTempFile("testwrite", ".txt", drive);
+        temporaryFile.delete();
+        return true; //drive is writable 
+      }catch(Exception e){
+        System.out.println("USB is not writable/present");
+      }
+    }
+    return false; //The drive is not writable/present
+  } 
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any
@@ -48,7 +67,9 @@ public class Robot extends LoggedRobot {
      Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
 
     if (isReal()) {
-        Logger.addDataReceiver(new WPILOGWriter("/U")); // Log to a USB stick
+        if (isDriveWriteable()){
+          Logger.addDataReceiver(new WPILOGWriter("/U")); // Log to a USB stick
+        }
         Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
         new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
     } else {
@@ -65,8 +86,37 @@ public class Robot extends LoggedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
+    // Log active commands 
+    Map<String, Integer> commandCounts = new HashMap<>();
+    BiConsumer<Command, Boolean> logCommandFunction = 
+      (Command command, Boolean active) -> {
+        String name = command.getName(); 
+        int count = commandCounts.getOrDefault(name, 0) + (active ? 1:-1);
+        commandCounts.put(name, count);
+        Logger.recordOutput("CommandsUnique/" + name + "_" + Integer.toHexString(command.hashCode()), active);
+          Logger.recordOutput("CommandsAll/" + name, count > 0);
+      };  
+    CommandScheduler.getInstance()
+      .onCommandInitialize(
+        (Command command) -> {
+          logCommandFunction.accept(command, true);
+        });
+
+    CommandScheduler.getInstance()
+      .onCommandFinish(
+        (Command command) -> {
+          logCommandFunction.accept(command, false);
+        });
+
+    CommandScheduler.getInstance()
+      .onCommandInterrupt(
+        (Command command) -> {
+        logCommandFunction.accept(command, false);
+      });
+
   }
 
+  
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items
@@ -121,6 +171,7 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void teleopInit() {
+    m_robotContainer.onTeleInit();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

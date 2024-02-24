@@ -7,6 +7,7 @@ package frc.robot.utils;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 
 /**
  * CommandLogger is a utility class that logs the start, running, and end of a command.
@@ -37,4 +38,5 @@ public class CommandLogger {
         Logger.recordOutput("Command Running: " + command.getClass().getName(), false);
         System.out.println("Print Command End: " + command.getClass().getName());
     }
+
 }
