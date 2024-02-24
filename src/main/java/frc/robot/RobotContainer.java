@@ -239,14 +239,14 @@ public class RobotContainer {
     
     Command shootRoutineWithDrivetrain = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 0.0);
     NamedCommands.registerCommand("Intake", runExtendIntake);
-    NamedCommands.registerCommand("Auto Center Note", new AutoPowerCenterNote(intake, linkage, 163));
+    NamedCommands.registerCommand("Auto Center Note", new AutoPowerCenterNote(intake, linkage, flywheel, 163));
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     NamedCommands.registerCommand("Shoot", shootRoutineWithDrivetrain);
     NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0, 0));
     NamedCommands.registerCommand("Shoot without drivetrain", shootRoutine);
     NamedCommands.registerCommand("Shoot from subwoofer", shootFromSubwoofer);
     NamedCommands.registerCommand("Spinny", new PowerFlywheel(flywheel));    
-    NamedCommands.registerCommand("AutoShot1", new ShootInSpeaker(linkage, flywheel, intake, 163.0, 6000.0));
+    NamedCommands.registerCommand("AutoShot1", new ShootInSpeaker(linkage, flywheel, intake, 163.0, 6500.0));
     NamedCommands.registerCommand("extend linkage", new InstantCommand(() -> linkage.setAngle(0), linkage));
 
     // NamedCommands.registerCommand("Intake", runExtendIntake);

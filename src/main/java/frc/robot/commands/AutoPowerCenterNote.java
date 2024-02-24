@@ -1,8 +1,11 @@
 package frc.robot.commands;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
 import frc.robot.utils.CommandLogger;
@@ -11,6 +14,7 @@ public class AutoPowerCenterNote extends Command{
     enum IntakeCases {CHECK_ROBOT_EMPTY, EXTEND_INTAKE, WAIT_FOR_SENSOR, UP_TO_SHOOTER, DOWN_TO_INTAKE, RETRACT_STOP, BACK_UP, CENTER, DONE}; 
   private Linkage linkage;
   private double setpoint;
+  private Flywheel flywheel; 
   //private DigitalInput sensor = new DigitalInput(0);
   
   private Intake intake;
@@ -23,10 +27,11 @@ public class AutoPowerCenterNote extends Command{
  
   
   /** Creates a new Java. */
-  public AutoPowerCenterNote(Intake intake, Linkage linkage, double settyspaghettipoint) {
+  public AutoPowerCenterNote(Intake intake, Linkage linkage, Flywheel flywheel, double settyspaghettipoint) {
     this.intake = intake;
     this.settyspaghettipoint = settyspaghettipoint;
     this.linkage = linkage;
+    this.flywheel = flywheel; 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake, linkage);
   }
@@ -51,13 +56,18 @@ public class AutoPowerCenterNote extends Command{
     System.out.println(state);
     switch(state){
       case CHECK_ROBOT_EMPTY:
+     Logger.recordOutput("INTAKE_STATE", 1);
+
         if(intake.getSideSensor()) {
           state = IntakeCases.EXTEND_INTAKE;
         }
         break;
       case EXTEND_INTAKE:
+           Logger.recordOutput("INTAKE_STATE", 2);
+
         linkage.setAngle(0.0);                           
         intake.run(0.5);
+
         if(!intake.getSideSensor()) {
           state = IntakeCases.UP_TO_SHOOTER;
         }
@@ -69,25 +79,30 @@ public class AutoPowerCenterNote extends Command{
         // }
         break;
       case UP_TO_SHOOTER:
-        intake.run(.25);
+        intake.run(.20);
         linkage.setAngle(settyspaghettipoint);
         if(!intake.getHighSensor()){
             state = IntakeCases.BACK_UP;
         }
         break;
       case BACK_UP:
-        intake.run(-.3);
-        if(intake.getHighSensor()){
+        intake.run(-.25);
+        if(intake.getSideSensor()){
             state = IntakeCases.CENTER;
         }
         break;
       case CENTER:
-        intake.run(.14);
+        intake.run(.17);
         if(!intake.getHighSensor()){
             state = IntakeCases.RETRACT_STOP;
         }
+        // }else{
+        //   flywheel.setBothRPM(setpoint);;
+        // }
         break;
     case RETRACT_STOP:
+Logger.recordOutput("INTAKE_STATE", 6);
+
     break;
 
     }
