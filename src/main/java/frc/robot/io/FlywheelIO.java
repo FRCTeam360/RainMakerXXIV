@@ -15,8 +15,6 @@ public interface FlywheelIO {
   /** Creates a new FlywheelIO. */
   @AutoLog
   public static class FlywheelIOInputs {
-    public double flywheelLeftSpeed = 0.0;
-    public double flywheelRightSpeed = 0.0;
     public double flywheelLeftAmps = 0.0;
     public double flywheelRightAmps = 0.0;
     public double flywheelLeftVoltage = 0.0;

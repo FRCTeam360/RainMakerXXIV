@@ -143,8 +143,8 @@ public class LinkageIOTalonFX implements LinkageIO {
   public void updateInputs(LinkageIOInputs inputs) {
     inputs.linkageVoltage = talonFX.getMotorVoltage().getValueAsDouble();
     inputs.linkageAmps = talonFX.getStatorCurrent().getValueAsDouble();
-    inputs.linkageVelocity = talonFX.getVelocity().getValueAsDouble();
-    inputs.linkagePosition = talonFX.getPosition().getValueAsDouble();
+    inputs.linkageVelocity = talonFX.getVelocity().getValueAsDouble() * GEAR_RATIO;
+    inputs.linkagePosition = talonFX.getPosition().getValueAsDouble() * GEAR_RATIO;
   }
 
   public void set(double speed) {

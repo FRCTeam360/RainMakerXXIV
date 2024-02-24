@@ -91,16 +91,4 @@ public class Climber extends SubsystemBase {
     SmartDashboard.putNumber("roll", getRoll());
     SmartDashboard.putNumber("height offset", heightOffset);
   }
-
-  public void updatePIDF(double kP, double kI, double kD, double kFF) {
-    io.updatePIDF(kP, kI, kD, kFF);
-  }
-
-public void setLeftHeight(double goalHeight) {
-    io.setLeftHeight(goalHeight);
-}
-
-public void setRightHeight(double goalHeight) {
-    io.setRightHeight(goalHeight);
-  }
 }

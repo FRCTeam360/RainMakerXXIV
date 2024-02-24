@@ -10,8 +10,6 @@ public interface ClimberIO {
   /** Creates a new ClimberIO. */
   @AutoLog
   public static class ClimberIOInputs {
-    public double climberSpeedLeft = 0.0;
-    public double climberSpeedRight = 0.0;
     public double climberLeftAmps = 0.0;
     public double climberRightAmps = 0.0;
     public double climberLeftVoltage = 0.0;
@@ -46,10 +44,4 @@ public interface ClimberIO {
   public double getRoll();
 
   public void zeroBoth();
-
-  public void setLeftHeight(double goalHeight);
-
-  public void setRightHeight(double goalHeight);
-
-  public void updatePIDF(double kP, double kI, double kD, double kFF);
 }

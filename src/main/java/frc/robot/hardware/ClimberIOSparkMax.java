@@ -29,19 +29,6 @@ public class ClimberIOSparkMax implements ClimberIO {
     private final double POSITION_CONVERSION = (1.215 * Math.PI) / 15; //motor rotations -> (pulley diameter inches * pi) / (5 * 3 gearbox) -> inches
     private final double MINIMUM_HEGIHT = 0;
 
-    private double kP = 0;
-    private double kI = 0;
-    private double kD = 0;
-    private double kFF = 0;
-    private double roll = 0;
-    private double leftError = 0;
-    private double rightError = 0;
-    double p = SmartDashboard.getNumber("p", 0.0);
-    double i = SmartDashboard.getNumber("i", 0.0);
-    double d = SmartDashboard.getNumber("d", 0.0);
-    double ff = SmartDashboard.getNumber("ff", 0.0);
-    double goalHeight = SmartDashboard.getNumber("goal height", 85.0);
-
     /** Creates a new ClimberIOSparkMax. */
     public ClimberIOSparkMax() {//counterclocwise is positve roll follows unit circle
         leftMotor.restoreFactoryDefaults();
@@ -128,8 +115,6 @@ public class ClimberIOSparkMax implements ClimberIO {
 
     @Override
     public void updateInputs(ClimberIOInputs inputs) {
-        inputs.climberSpeedLeft = leftMotor.get();
-        inputs.climberSpeedRight = rightMotor.get();
         inputs.climberLeftAmps = leftMotor.getOutputCurrent();
         inputs.climberRightAmps = rightMotor.getOutputCurrent();
         inputs.climberLeftPosition = leftEncoder.getPosition();
@@ -138,34 +123,5 @@ public class ClimberIOSparkMax implements ClimberIO {
         inputs.climberRightVelocity = rightEncoder.getVelocity();
         inputs.climberLeftVoltage = leftMotor.getAppliedOutput();
         inputs.climberRightVoltage = rightMotor.getAppliedOutput();
-    }
-
-    @Override
-    public void setLeftHeight(double goalHeight) {
-        leftEncoder.setPosition(goalHeight);
-    }
-
-    @Override
-    public void setRightHeight(double goalHeight) {
-        rightEncoder.setPosition(goalHeight);
-    }
-
-    @Override
-    public void updatePIDF(double kP, double kI, double kD, double kFF) {
-        if ((p != kP)) {
-            kP = p;
-          }
-      
-          if ((i != kI)) {
-            kI = i;
-          }
-      
-          if ((d != kD)) {
-            kD = d;
-          }
-      
-          if (ff != kFF) {
-            kFF = ff;
-          }
     }
 }

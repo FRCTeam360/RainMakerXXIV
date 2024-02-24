@@ -30,11 +30,10 @@ public class AmpIntakeIOSparkMax implements AmpIntakeIO {
   }
 
   public void updateInputs(AmpIntakeIOInputs inputs) {
-    inputs.ampIntakeSpeed = motor.get();
     inputs.ampIntakeAmps = motor.getOutputCurrent();
-    inputs.ampIntakeOutputVoltage = motor.getAppliedOutput();
+    inputs.ampIntakeVoltage = motor.getAppliedOutput();
     inputs.ampIntakeVelocity = encoder.getVelocity();
-    inputs.ampIntakeVelocity = encoder.getPosition();
+    inputs.ampIntakePosition = encoder.getPosition();
   }
 
 

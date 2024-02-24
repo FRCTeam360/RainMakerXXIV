@@ -14,8 +14,7 @@ public interface IntakeIO {
   /** Creates a new IntakeIO. */
   @AutoLog
   public static class IntakeIOInputs {
-    public double intakeSpeed = 0.0;
-    public double intakeOutputVoltage = 0.0;
+    public double intakeVoltage = 0.0;
     public boolean intakeHighSensor = true;
     public boolean intakeSideSensor = true;
     public double intakeAmps = 0.0;
