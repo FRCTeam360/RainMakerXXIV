@@ -121,7 +121,7 @@ public class ClimberIOSparkMax implements ClimberIO {
         inputs.climberRightPosition = rightEncoder.getPosition();
         inputs.climberLeftVelocity = leftEncoder.getVelocity();
         inputs.climberRightVelocity = rightEncoder.getVelocity();
-        inputs.climberLeftVoltage = leftMotor.getAppliedOutput();
-        inputs.climberRightVoltage = rightMotor.getAppliedOutput();
+        inputs.climberLeftVoltage = leftMotor.getAppliedOutput() * leftMotor.getBusVoltage();
+        inputs.climberRightVoltage = rightMotor.getAppliedOutput() * rightMotor.getBusVoltage();
     }
 }

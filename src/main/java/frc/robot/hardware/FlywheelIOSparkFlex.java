@@ -112,8 +112,8 @@ public class FlywheelIOSparkFlex implements FlywheelIO {
     inputs.flywheelRightPosition = rightEncoder.getPosition();
     inputs.flywheelLeftVelocity = leftEncoder.getVelocity();
     inputs.flywheelRightVelocity = rightEncoder.getVelocity();
-    inputs.flywheelLeftVoltage = leftMotor.getAppliedOutput();
-    inputs.flywheelRightVoltage = rightMotor.getAppliedOutput();
+    inputs.flywheelLeftVoltage = leftMotor.getAppliedOutput() * leftMotor.getBusVoltage();
+    inputs.flywheelRightVoltage = rightMotor.getAppliedOutput() * rightMotor.getBusVoltage();
     
   }
 }
