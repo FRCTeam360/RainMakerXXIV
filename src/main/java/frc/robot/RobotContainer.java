@@ -24,7 +24,7 @@ import frc.robot.commands.PowerAmpArm;
 import frc.robot.commands.PowerAmpIntake;
 import frc.robot.commands.PowerCenterNote;
 import frc.robot.commands.PowerClimber;
-import frc.robot.generated.CompbotConstants;
+import frc.robot.generated.CompBotConstants;
 import frc.robot.generated.PracticebotConstants;
 import frc.robot.generated.WoodbotConstants;
 import frc.robot.hardware.AmpArmIOTalonFX;
@@ -162,7 +162,7 @@ public class RobotContainer {
         drivetrain.configNeutralMode(NeutralModeValue.Coast);
         break;
       case COMPETITION:
-        drivetrain = CompbotConstants.DriveTrain; 
+        drivetrain = CompBotConstants.DriveTrain; 
         flywheel = new Flywheel(new FlywheelIOSparkFlex());
         intake = new Intake(new IntakeIOSparkFlex());
         ampArm = new AmpArm(new AmpArmIOTalonFX());
