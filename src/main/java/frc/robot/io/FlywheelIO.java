@@ -25,8 +25,6 @@ public interface FlywheelIO {
     public double flywheelRightVelocity = 0.0;
     public double flywheelLeftPosition = 0.0;
     public double flywheelRightPosition = 0.0;
-    public double flywheelLeftOutput = 0.0; 
-    public double flywheelRightOutput = 0.0; 
   }
   
 public default void updateInputs(FlywheelIOInputs inputs) {}

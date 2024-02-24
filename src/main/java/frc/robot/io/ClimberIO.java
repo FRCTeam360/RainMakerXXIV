@@ -20,9 +20,6 @@ public interface ClimberIO {
     public double climberRightVelocity = 0.0;
     public double climberLeftPosition = 0.0;
     public double climberRightPosition = 0.0;
-    public double climberLeftOutput = 0.0;
-    public double climberRightOutput = 0.0;
-
   }
 
   public default void updateInputs(ClimberIOInputs inputs) {
@@ -49,4 +46,10 @@ public interface ClimberIO {
   public double getRoll();
 
   public void zeroBoth();
+
+  public void setLeftHeight(double goalHeight);
+
+  public void setRightHeight(double goalHeight);
+
+  public void updatePIDF(double kP, double kI, double kD, double kFF);
 }

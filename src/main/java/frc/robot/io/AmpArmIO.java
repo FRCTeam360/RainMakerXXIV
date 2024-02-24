@@ -18,8 +18,6 @@ public interface AmpArmIO {
   public static class AmpArmIOInputs {
     public double armSpeed = 0.0;
     public double wristSpeed = 0.0;
-    public double armAngle = 0.0;
-    public double wristAngle = 0.0;
     public double armAmps = 0.0;
     public double wristAmps = 0.0;
     public double armVoltage = 0.0;
