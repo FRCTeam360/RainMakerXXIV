@@ -7,12 +7,14 @@ package frc.robot.commands;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.generated.WoodbotConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.utils.CommandLogger;
+import frc.robot.utils.UtilMethods;
 
 public class RobotOrientedDrive extends Command {
    private final XboxController driverController = new XboxController(0);
@@ -38,8 +40,11 @@ public class RobotOrientedDrive extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveTrain.robotCentricDrive(driverController.getLeftX(), driverController.getLeftY(),
-        driverController.getRightX());
+    driveTrain.robotCentricDrive(
+      UtilMethods.squareInput(MathUtil.applyDeadband(driverController.getLeftX(), 0.1)),
+      UtilMethods.squareInput(MathUtil.applyDeadband(driverController.getLeftY(), 0.1)),
+      UtilMethods.squareInput(MathUtil.applyDeadband(driverController.getRightX(), 0.1))
+    );
     CommandLogger.logCommandRunning(this);
   }
 

@@ -5,6 +5,9 @@
 package frc.robot;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiConsumer;
 
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -52,7 +55,7 @@ public class Robot extends LoggedRobot {
       }
     }
     return false; //The drive is not writable/present
-  }
+  } 
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -83,8 +86,37 @@ public class Robot extends LoggedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
+    // Log active commands 
+    Map<String, Integer> commandCounts = new HashMap<>();
+    BiConsumer<Command, Boolean> logCommandFunction = 
+      (Command command, Boolean active) -> {
+        String name = command.getName(); 
+        int count = commandCounts.getOrDefault(name, 0) + (active ? 1:-1);
+        commandCounts.put(name, count);
+        Logger.recordOutput("CommandsUnique/" + name + "_" + Integer.toHexString(command.hashCode()), active);
+          Logger.recordOutput("CommandsAll/" + name, count > 0);
+      };  
+    CommandScheduler.getInstance()
+      .onCommandInitialize(
+        (Command command) -> {
+          logCommandFunction.accept(command, true);
+        });
+
+    CommandScheduler.getInstance()
+      .onCommandFinish(
+        (Command command) -> {
+          logCommandFunction.accept(command, false);
+        });
+
+    CommandScheduler.getInstance()
+      .onCommandInterrupt(
+        (Command command) -> {
+        logCommandFunction.accept(command, false);
+      });
+
   }
 
+  
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items
@@ -139,6 +171,7 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void teleopInit() {
+    m_robotContainer.onTeleInit();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

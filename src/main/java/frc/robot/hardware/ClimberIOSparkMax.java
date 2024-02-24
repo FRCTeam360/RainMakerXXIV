@@ -15,7 +15,6 @@ import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.generated.PracticebotConstants;
 import frc.robot.io.ClimberIO;
 import frc.robot.io.IntakeIO.IntakeIOInputs;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -31,8 +30,8 @@ public class ClimberIOSparkMax implements ClimberIO {
     private RelativeEncoder leftEncoder = leftMotor.getEncoder();
     private RelativeEncoder rightEncoder = rightMotor.getEncoder();
 
-    private final double POSITION_CONVERSION = 1;//(1.215 * Math.PI) / 15;// 5 * 3 * 1.215 * Math.PI; // motor rotations x
-                                                                      // 1/gearbox x diameter of spool x pi
+
+    private final double POSITION_CONVERSION = 1; //motor rotations -> (pulley diameter inches * pi) / (5 * 3 gearbox) -> inches
     private final double MINIMUM_HEGIHT = 0;
 
     private final float leftRetractLimit = -35;
@@ -109,6 +108,8 @@ public class ClimberIOSparkMax implements ClimberIO {
         rightPIDController.setI(I, 1);
         rightPIDController.setD(D, 1);
         rightPIDController.setFF(F,1);
+        leftMotor.setInverted(false);
+        rightMotor.setInverted(true);
     }
 
     @Override
@@ -155,6 +156,19 @@ public class ClimberIOSparkMax implements ClimberIO {
     public void zeroBoth() {
         leftEncoder.setPosition(-35);
         rightEncoder.setPosition(-35);
+    }
+    public void level() {
+        // double roll = 0.0;
+
+        // if (roll > 1.0) {
+        //     runLeft(-0.3);
+        //     runRight(0.3);
+        // } else if (roll < -1.0) {
+        //     runLeft(0.3);
+        //     runRight(-0.3);
+        // } else {
+        //     stop();
+        // }
     }
 
     @Override

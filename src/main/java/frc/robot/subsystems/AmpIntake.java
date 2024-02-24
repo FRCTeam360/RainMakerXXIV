@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.io.AmpIntakeIO;
 import frc.robot.io.AmpIntakeIOInputsAutoLogged;
+import frc.robot.utils.CommandLogger;
 
 public class AmpIntake extends SubsystemBase {
   private AmpIntakeIO io;
@@ -20,6 +21,7 @@ public class AmpIntake extends SubsystemBase {
   /** Creates a new AmpIntake. */
   public AmpIntake(AmpIntakeIO io) {
     this.io = io;
+    setupShuffleboard();
   }
 
   public void runIntake(double speed){
@@ -43,6 +45,5 @@ public class AmpIntake extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("AmpIntake", inputs);
-    setupShuffleboard();
   }
 }

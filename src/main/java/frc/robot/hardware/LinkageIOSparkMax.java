@@ -85,15 +85,30 @@ public class LinkageIOSparkMax implements LinkageIO {
   public void setPosition(double angle) {
     encoder.setPosition(angle);
   }
+  public void enableBrakeMode(){
+    sparkMax.setIdleMode(IdleMode.kBrake);
+  }
+  public void disableBrakeMode(){
+    sparkMax.setIdleMode(IdleMode.kCoast);
+  }
+  public boolean isBrakeMode(){
+    return sparkMax.getIdleMode() == IdleMode.kBrake;
+  }
 
   public void setReference( double setPoint) {
     pidController.setReference(setPoint, ControlType.kPosition);
   }
 
   public boolean getZeroButton(){
-    return true;
+    return false;
   }
   public boolean getBrakeButton(){
-    return true;
+    return false;
+  }
+
+  /**
+   * Stops playing sound on the linkage, this is neccessary to run the linkage
+   */
+  public void stopSound() {
   }
 }

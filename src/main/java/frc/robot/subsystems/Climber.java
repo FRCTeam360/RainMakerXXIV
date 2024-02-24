@@ -19,16 +19,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.io.ClimberIO;
 import frc.robot.io.ClimberIOInputsAutoLogged;
 import frc.robot.io.IntakeIOInputsAutoLogged;
+import frc.robot.utils.CommandLogger;
 
 public class Climber extends SubsystemBase {
   private ClimberIO io;
-  private Pigeon2 pigeon;
   private final ClimberIOInputsAutoLogged inputs = new ClimberIOInputsAutoLogged();
 
   /** Creates a new Climber. */
-  public Climber(ClimberIO io, Pigeon2 pigeon) {
+  public Climber(ClimberIO io) {
     this.io = io;
-    this.pigeon = pigeon;
 
     SmartDashboard.putNumber("Position L", getLeftPosition());
     SmartDashboard.putNumber("Position R", getRightPosition());
@@ -72,10 +71,6 @@ public class Climber extends SubsystemBase {
     io.zeroBoth();
   }
 
-  public double getRoll() {
-    return pigeon.getRoll().getValueAsDouble();
-  }
-
   public void setLeftHeight(double height) {
     io.setLeftHeight(height);
   }
@@ -94,5 +89,9 @@ public class Climber extends SubsystemBase {
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("Climber", inputs);
+    SmartDashboard.putNumber("Left Height", getLeftPosition());
+    SmartDashboard.putNumber("Right Height", getRightPosition());
+    //SmartDashboard.putNumber("roll", getRoll());
+    //SmartDashboard.putNumber("height offset", heightOffset);
   }
 }

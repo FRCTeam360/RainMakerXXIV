@@ -30,8 +30,8 @@ public class Constants {
 
         public static final int INTAKE_HIGH_SENSOR_PORT = 0;
         public static final int INTAKE_SIDE_SENSOR_PORT = 1;
-        public static final int LINKAGE_ZERO_BUTTON_PORT = 2;
-        public static final int LINKAGE_BRAKE_TOGGLE_BUTTON_PORT = 3;
+        public static final int LINKAGE_ZERO_BUTTON_PORT = 8;
+        public static final int LINKAGE_BRAKE_TOGGLE_BUTTON_PORT = 9;
 
         public static final Mode currentMode = Mode.REAL;
 
@@ -46,7 +46,7 @@ public class Constants {
                 REPLAY
         }
 
-        public static final double MAX_SPEED_MPS = 16.5; // used to be 6 meters per second desired top speed (name
+        public static final double MAX_SPEED_MPS = 18.9; // used to be 6 meters per second desired top speed (name
                                                          // changed from MAX_SPEED to MAX_SPEED_MPS jan25 kinda sketch)
         public static final double MAX_ANGULAR_RATE = Math.PI * 3; // Half a rotation per second max angular velocity
         public static final int PIGEON_ID = 13;

@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.io.AmpArmIO;
 import frc.robot.io.AmpArmIOInputsAutoLogged;
+import frc.robot.utils.CommandLogger;
 
 public class AmpArm extends SubsystemBase {
   private AmpArmIO io;
@@ -20,6 +21,7 @@ public class AmpArm extends SubsystemBase {
   /** Creates a new AmpArm. */
   public AmpArm(AmpArmIO io) {
     this.io = io;
+    setupShuffleboard();
   }
 
   public void runArm(double speed) {
@@ -56,11 +58,10 @@ public class AmpArm extends SubsystemBase {
     tab.addNumber("Arm Angle", () -> this.getArmPosition());
     tab.addNumber("Wrist Angle", () -> this.getWristPosition());
   }
-
   @Override
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("AmpArm", inputs);
-    setupShuffleboard();
   }
+
 }

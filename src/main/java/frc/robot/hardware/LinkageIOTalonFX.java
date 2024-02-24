@@ -6,6 +6,9 @@ package frc.robot.hardware;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import com.ctre.phoenix6.Orchestra;
+import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.configs.AudioConfigs;
 import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -13,6 +16,7 @@ import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ControlModeValue;
@@ -37,15 +41,26 @@ public class LinkageIOTalonFX implements LinkageIO {
   private final TalonFX talonFX = new TalonFX(Constants.LINKAGE_ID, "Default Name");
   // private final RelativeEncoder encoder = talonFX.getEncoder();
   // private final SparkPIDController pidController = talonFX.getPIDController();
+  private Orchestra updateSound;
+  private NeutralModeValue neutralMode = NeutralModeValue.Brake;
+  
 
   private DutyCycleOut dutyCycleOut = new DutyCycleOut(0);
   private TalonFXConfiguration talonFXConfiguration = new TalonFXConfiguration();
 
   private PositionVoltage positionVoltage = new PositionVoltage(0);
-  DigitalInput zeroButton = new DigitalInput(Constants.LINKAGE_ZERO_BUTTON_PORT);
-  DigitalInput brakeButton = new DigitalInput(Constants.LINKAGE_BRAKE_TOGGLE_BUTTON_PORT);
+  
+  private DigitalInput zeroButton = new DigitalInput(Constants.LINKAGE_ZERO_BUTTON_PORT);
+  private DigitalInput brakeButton = new DigitalInput(Constants.LINKAGE_BRAKE_TOGGLE_BUTTON_PORT);
 
-  private final double GEAR_RATIO = 360.0 / 60.0; // flip
+  private boolean zeroPrev = false;
+  private boolean brakePrev = false;
+
+  /*
+   * DO NOT USE ON ENCODER BC MOTION MAGIC WAS TUNED IN NATIVE UNITS
+   * ONLY FOR SHUFFLEBOARD CONTROL :D
+   */
+  private final double GEAR_RATIO = 360.0 / 60.0;
 
   public LinkageIOTalonFX() {
     final double kA = 0.0;
@@ -60,20 +75,21 @@ public class LinkageIOTalonFX implements LinkageIO {
     final double motionMagicCruiseVelocity = 85.0;
     final double motionMagicCruiseJerk = 1750.0;
 
-    final double forwardLimit = 29.0; // TODO: make sure these are correct for prac bot
+    final double forwardLimit = 28.0; // TODO: make sure these are correct for prac bot
     final double reverseLimit = 0.0; // 29.5
-
+    
     talonFX.getConfigurator().apply(new TalonFXConfiguration());
     talonFX.setInverted(false);
     talonFX.setNeutralMode(NeutralModeValue.Brake);
 
-    // need to add offset??? 43.0 rn
+    updateSound = new Orchestra();
+    updateSound.addInstrument(talonFX);
+    StatusCode status = updateSound.loadMusic("TetrisTheme.chrp");
 
-    talonFX.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
-        .withForwardSoftLimitThreshold(forwardLimit)
-        .withReverseSoftLimitThreshold(reverseLimit)
-        .withForwardSoftLimitEnable(true)
-        .withReverseSoftLimitEnable(true)); // TODO: dont enable robot past soft limits
+    if(status != StatusCode.OK){
+      System.out.println("Error loading sound");
+    }
+    // need to add offset??? 43.0 rn
 
     // translated into talonfx from sparkmax, probalby unnecessary
     // talonFX.getConfigurator().apply(new
@@ -96,15 +112,31 @@ public class LinkageIOTalonFX implements LinkageIO {
     talonFXConfiguration.Voltage.PeakForwardVoltage = 12.0;
     talonFXConfiguration.Voltage.PeakReverseVoltage = 12.0;
 
+    talonFXConfiguration.SoftwareLimitSwitch
+        .withForwardSoftLimitThreshold(forwardLimit)
+        .withReverseSoftLimitThreshold(reverseLimit)
+        .withForwardSoftLimitEnable(true)
+        .withReverseSoftLimitEnable(true);
+
+    talonFXConfiguration.MotionMagic.withMotionMagicAcceleration(motionMagicAcceleration).withMotionMagicCruiseVelocity(motionMagicCruiseVelocity).withMotionMagicJerk(motionMagicCruiseJerk);
+    talonFXConfiguration.withAudio(new AudioConfigs()
+      .withAllowMusicDurDisable(true));
+
     talonFX.getConfigurator().apply(talonFXConfiguration, 0.050);
   }
 
   public boolean getZeroButton(){
-    return this.zeroButton.get();
+    boolean zeroCurr = !this.zeroButton.get();
+    boolean risingEdge = zeroCurr && !zeroPrev;
+    zeroPrev = zeroCurr;
+    return risingEdge;
   }
 
   public boolean getBrakeButton(){
-    return this.brakeButton.get();
+    boolean brakeCurr = !this.brakeButton.get();
+    boolean risingEdge = brakeCurr && !brakePrev;
+    brakePrev = brakeCurr;
+    return risingEdge;
   }
 
   @Override
@@ -124,7 +156,18 @@ public class LinkageIOTalonFX implements LinkageIO {
   }
 
   public double getPosition() {
-    return talonFX.getPosition().getValueAsDouble();
+    return talonFX.getPosition().getValueAsDouble() * GEAR_RATIO;
+  }
+  public void enableBrakeMode(){
+    neutralMode = NeutralModeValue.Brake;
+    talonFX.setNeutralMode(NeutralModeValue.Brake);
+  }
+  public void disableBrakeMode(){
+    neutralMode = NeutralModeValue.Coast;
+    talonFX.setNeutralMode(NeutralModeValue.Coast);
+  }
+  public boolean isBrakeMode(){
+    return neutralMode == NeutralModeValue.Brake;
   }
 
   public double get() {
@@ -141,6 +184,10 @@ public class LinkageIOTalonFX implements LinkageIO {
   }
 
   public void setPosition(double angle) {
+    if(angle == 0.0){
+      updateSound.stop();
+      updateSound.play();
+    }
     angle = angle / GEAR_RATIO;
     talonFX.setPosition(angle);
   }
@@ -149,8 +196,17 @@ public class LinkageIOTalonFX implements LinkageIO {
   public void setReference(double setPoint) { //TODO: TEST???
     setPoint = setPoint / GEAR_RATIO;
 
-    this.positionVoltage.Position = setPoint;
+    MotionMagicVoltage motionMagicVoltage = new MotionMagicVoltage(setPoint);
 
-    talonFX.setControl(this.positionVoltage);
+    talonFX.setControl(motionMagicVoltage);
+  }
+
+  /**
+   * Stops playing sound on the linkage, this is neccessary to run the linkage
+   */
+  public void stopSound(){
+    if(updateSound.isPlaying()){
+      updateSound.stop();
+    }
   }
 }
