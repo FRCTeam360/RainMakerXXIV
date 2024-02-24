@@ -10,18 +10,22 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.hardware.AmpArmIOTalonFX;
 import frc.robot.io.AmpArmIO;
 import frc.robot.io.AmpArmIOInputsAutoLogged;
 import frc.robot.utils.CommandLogger;
 
 public class AmpArm extends SubsystemBase {
   private AmpArmIO io;
+  private AmpArmIOTalonFX talonio = new AmpArmIOTalonFX();
   private final AmpArmIOInputsAutoLogged inputs = new AmpArmIOInputsAutoLogged();
 
   /** Creates a new AmpArm. */
   public AmpArm(AmpArmIO io) {
     this.io = io;
     setupShuffleboard();
+    io.zeroArm();
+    io.zeroWrist();
   }
 
   public void runArm(double speed) {
@@ -62,6 +66,7 @@ public class AmpArm extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("AmpArm", inputs);
+
   }
 
 }

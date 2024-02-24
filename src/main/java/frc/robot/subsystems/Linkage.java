@@ -89,6 +89,10 @@ public class Linkage extends SubsystemBase {
     io.enableBrakeMode();
   }
 
+  public void disableBrakeMode() {
+    io.disableBrakeMode();
+  }
+
   public void setFFWScaling(double ff) {
     io.setFF(ff * Math.cos(getAngle()));
   }

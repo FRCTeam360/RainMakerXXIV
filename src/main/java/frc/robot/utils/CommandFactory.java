@@ -28,13 +28,17 @@ public class CommandFactory {
         return new ShootInSpeaker(linkage, flywheel, drivetrain, intake, linkageSetpoint, flywheelSetpoint, driveSetpoint);
     }
 
+    public ShootInSpeaker shootInSpeakerWithoutDriveTrain(double linkageSetpoint, double flywheelSetpoint) {
+        return new ShootInSpeaker(linkage, flywheel, intake, linkageSetpoint, flywheelSetpoint);
+    }
+
     // returns type shootInSpeaker
     public ShootInSpeaker shootInSpeaker(double linkageSetpoint, double flywheelSetpoint) {
         return new ShootInSpeaker(linkage, flywheel, intake, linkageSetpoint, flywheelSetpoint);
     }
 
     public ShootInSpeaker shootFromSubwoofer() {
-        return new ShootInSpeaker(linkage, flywheel, intake, 172, 5000);
+        return new ShootInSpeaker(linkage, flywheel, intake, 177, 5000);
     } 
 
     public ShootInSpeaker shootFromFar() {

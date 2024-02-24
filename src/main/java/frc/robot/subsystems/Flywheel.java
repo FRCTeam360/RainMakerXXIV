@@ -16,6 +16,8 @@ import com.revrobotics.CANSparkFlex;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
+import java.util.Objects;
+
 import org.littletonrobotics.junction.Logger;
 
 import com.revrobotics.CANSparkBase.ControlType;
@@ -61,7 +63,7 @@ public class Flywheel extends SubsystemBase {
     rpmSetpoint = rpm;
     if(rpm > 500) {
       io.setLeftReference(rpm, ControlType.kVelocity);
-      if(rpm>6000) {
+      if(rpm>6500) {
         rpm = rpm-750;
       } 
       io.setRightReference(rpm, ControlType.kVelocity);
@@ -91,9 +93,28 @@ public class Flywheel extends SubsystemBase {
     return io.getRightVelocity();
   }
 
+  // public boolean topIsAtSetpoint() {
+  //   return Math.abs(this.getTopVelocity() - topRPMSetpoint) < 30.0;
+  // }
+
+  // public boolean bottomIsAtSetpoint() {
+  //   return Math.abs(this.getBottomVelocity() - bottomRPMSetpoint) < 30.0;
+  // }
+
+  // public boolean areBothAtSetpoint() {
+  //   return bottomIsAtSetpoint() && topIsAtSetpoint();
+  // }
+
+  // public boolean isAboveSetpoint() {
+  //   return this.getTopVelocity() >= topRPMSetpoint;
+  // }
+
+  // public boolean isBelowSetpoint() {
+  //   return this.getTopVelocity() <= topRPMSetpoint - 30.0; }
   public boolean isAtSetpoint() {
-    return Math.abs(this.getLeftVelocity() - rpmSetpoint) < 100.0;
+    return Math.abs(this.getLeftVelocity() - rpmSetpoint) < 150.0;
   }
+
 
   public boolean isAboveSetpoint() {
     return this.getLeftVelocity() >= rpmSetpoint;
@@ -110,6 +131,7 @@ public class Flywheel extends SubsystemBase {
     SmartDashboard.putNumber("current right rpm", getRightVelocity());
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
+    Logger.recordOutput("Flywheel Command", Objects.isNull(getCurrentCommand()) ? "null" : getCurrentCommand().getName());
     Logger.processInputs("Flywheel", inputs);
   }
 }
