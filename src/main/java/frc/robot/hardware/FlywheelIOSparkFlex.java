@@ -18,6 +18,7 @@ import frc.robot.io.IntakeIO.IntakeIOInputs;
 
 public class FlywheelIOSparkFlex implements FlywheelIO {
   /** Creates a new FlywheelIOSparkMax. */
+<<<<<<< HEAD
   private final CANSparkFlex topMotor = new CANSparkFlex(Constants.SHOOTER_TOP_ID, MotorType.kBrushless);
   private final RelativeEncoder topEncoder = topMotor.getEncoder();
   private final SparkPIDController topPIDController = topMotor.getPIDController();
@@ -104,5 +105,102 @@ public class FlywheelIOSparkFlex implements FlywheelIO {
   public void updateInputs(FlywheelIOInputs inputs) {
     inputs.topSpeed = topMotor.get();
     inputs.bottomSpeed = bottomMotor.get();
+=======
+  private final CANSparkFlex leftMotor = new CANSparkFlex(Constants.FLYWHEEL_LEFT_ID, MotorType.kBrushless);
+    private final RelativeEncoder leftEncoder = leftMotor.getEncoder();
+    private final SparkPIDController leftPIDController = leftMotor.getPIDController();
+
+    private final CANSparkFlex rightMotor = new CANSparkFlex(Constants.FLYWHEEL_RIGHT_ID, MotorType.kBrushless);
+    private final RelativeEncoder rightEncoder = rightMotor.getEncoder();
+    private final SparkPIDController rightPIDController = rightMotor.getPIDController();
+
+    private final double VELOCITY_CONVERSION = 36.0/24.0; //24 motor rotations = 36 flywheel rotations (1.5)
+
+  public FlywheelIOSparkFlex() {
+    double kP = 0.0006;
+    double kI = 0.0;
+    double kD = 0.0;
+    double kFF = 0.000112;
+  
+    
+    leftMotor.restoreFactoryDefaults();
+    leftMotor.setInverted(false);
+    leftMotor.setIdleMode(IdleMode.kCoast);
+
+    rightMotor.restoreFactoryDefaults();
+    rightMotor.setInverted(true);
+    rightMotor.setIdleMode(IdleMode.kCoast);
+
+    leftPIDController.setP(kP);
+    leftPIDController.setFF(kFF);
+    leftPIDController.setI(kI);
+    leftPIDController.setD(kD);
+
+    rightPIDController.setP(kP);
+    rightPIDController.setFF(kFF);
+    rightPIDController.setI(kI);
+    rightPIDController.setD(kD);
+
+    leftEncoder.setVelocityConversionFactor(VELOCITY_CONVERSION);
+    rightEncoder.setVelocityConversionFactor(VELOCITY_CONVERSION);
+
+    leftEncoder.setPositionConversionFactor(VELOCITY_CONVERSION);
+    rightEncoder.setPositionConversionFactor(VELOCITY_CONVERSION);
+  }
+
+  @Override
+  public void setLeft(double speed) {
+    leftMotor.set(speed);
+  }
+
+
+  @Override
+  public void setRight(double speed) {
+   rightMotor.set(speed);
+  }
+
+  @Override
+  public void setLeftReference(double rpm, ControlType kvelocity) {
+  leftPIDController.setReference(rpm, kvelocity);
+  }
+
+  @Override
+  public void setRightReference(double rpm, ControlType kvelocity) {
+    rightPIDController.setReference(rpm, kvelocity);
+  }
+
+  @Override
+  public void stopLeftMotor() {
+    leftMotor.stopMotor();
+  }
+
+  @Override
+  public void stopRightMotor() {
+    rightMotor.stopMotor();
+  }
+
+  public double getLeftPower() {
+   return leftMotor.get();
+  }
+
+  @Override
+  public double getRightPower() {
+    return rightMotor.get();
+  }
+
+  @Override
+  public double getLeftVelocity() {
+    return leftEncoder.getVelocity();
+  }
+
+  @Override
+  public double getRightVelocity() {
+    return rightEncoder.getVelocity();
+  }
+
+  public void updateInputs(FlywheelIOInputs inputs) {
+    inputs.topSpeed = leftMotor.get();
+    inputs.bottomSpeed = rightMotor.get();
+>>>>>>> main
   }
 }
