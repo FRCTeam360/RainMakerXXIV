@@ -56,7 +56,6 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-
 import edu.wpi.first.hal.HALUtil;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -348,6 +347,9 @@ public class RobotContainer {
     climber.stop();
     flywheel.stop();
     intake.stop();
+    linkage.disableBrakeMode();
+    
+
     linkage.stop();
     drivetrain.robotCentricDrive(0, 0, 0);
     if (!Objects.isNull(ampArm)) {
