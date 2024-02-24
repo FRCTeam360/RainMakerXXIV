@@ -38,7 +38,7 @@ public class CommandFactory {
     }
 
     public ShootInSpeaker shootFromSubwoofer() {
-        return new ShootInSpeaker(linkage, flywheel, intake, 172, 5000);
+        return new ShootInSpeaker(linkage, flywheel, intake, 177, 5000);
     } 
 
     public ShootInSpeaker shootFromFar() {

@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 14.968340435493225,
-      "y": 7.47806455232863
+      "x": 15.34,
+      "y": 5.57
     },
     "rotation": 180.0
   },
@@ -12,38 +12,31 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Shoot from subwoofer"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "extend linkage"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": null
+                  "name": "Auto Center Note"
                 }
               },
               {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
                 "type": "path",
                 "data": {
-                  "pathName": null
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Spinny"
+                  "pathName": "4 wing preload 1"
                 }
               }
             ]
@@ -52,12 +45,43 @@
         {
           "type": "named",
           "data": {
-            "name": "Shootwithoutdrivetrain"
+            "name": "AutoShot1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "extend linkage"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "4 wing preload 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Auto Center Note"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoShot1"
           }
         }
       ]
     }
   },
-  "folder": "1 note",
+  "folder": "2 notes",
   "choreoAuto": false
 }
