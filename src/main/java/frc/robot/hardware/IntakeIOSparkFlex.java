@@ -21,6 +21,7 @@ public class IntakeIOSparkFlex implements IntakeIO{
     //Sensors: ports?
     private final DigitalInput sideSensor = new DigitalInput(Constants.INTAKE_SIDE_SENSOR_PORT);
     private final DigitalInput highSensor = new DigitalInput(Constants.INTAKE_HIGH_SENSOR_PORT);
+    private final DigitalInput diagonalSensor = new DigitalInput(Constants.INTAKE_DIAGONAL_SENSOR_PORT);
     public IntakeIOSparkFlex(){
         sparkFlex.restoreFactoryDefaults(); 
         sparkFlex.setInverted(false);
@@ -63,6 +64,11 @@ public class IntakeIOSparkFlex implements IntakeIO{
     @Override
     public boolean getHighSensor(){
         return highSensor.get();
+    }
+
+    @Override
+    public boolean getDiagonalSensor() {
+        return diagonalSensor.get();
     }
 
     @Override

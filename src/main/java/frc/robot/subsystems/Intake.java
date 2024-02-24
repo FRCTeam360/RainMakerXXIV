@@ -52,6 +52,10 @@ public class Intake extends SubsystemBase {
     return io.getHighSensor();
   }
 
+  public boolean getDiagonalSensor() {
+    return io.getDiagonalSensor();
+  }
+
   public void run(double speed) {
     io.set(speed);
   }

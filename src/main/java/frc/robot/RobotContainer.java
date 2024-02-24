@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.RobotType;
 import frc.robot.commands.Autos;
+import frc.robot.commands.DiagonalSensorIntake;
 import frc.robot.commands.RunExtendIntake;
 import frc.robot.commands.PowerIntakeReversed;
 import frc.robot.commands.PowerIntake;
@@ -24,7 +25,7 @@ import frc.robot.commands.PowerAmpArm;
 import frc.robot.commands.PowerAmpIntake;
 import frc.robot.commands.PowerCenterNote;
 import frc.robot.commands.PowerClimber;
-import frc.robot.generated.CompbotConstants;
+import frc.robot.generated.CompBotConstants;
 import frc.robot.generated.PracticebotConstants;
 import frc.robot.generated.WoodbotConstants;
 import frc.robot.hardware.AmpArmIOTalonFX;
@@ -108,6 +109,7 @@ public class RobotContainer {
   private ShootInSpeaker shootRoutine;
   // tele commands
   private RunExtendIntake runExtendIntake;
+  private DiagonalSensorIntake diagonalSensorIntakeCloseShot;
   private PowerCenterNote powerCenterNoteIntakeRoutine;
   private PowerIntakeReversed powerIntakeReversed;
   private PowerIntake powerIntake;
@@ -162,7 +164,7 @@ public class RobotContainer {
         drivetrain.configNeutralMode(NeutralModeValue.Coast);
         break;
       case COMPETITION:
-        drivetrain = CompbotConstants.DriveTrain; 
+        drivetrain = CompBotConstants.DriveTrain; 
         flywheel = new Flywheel(new FlywheelIOSparkFlex());
         intake = new Intake(new IntakeIOSparkFlex());
         ampArm = new AmpArm(new AmpArmIOTalonFX());
@@ -208,6 +210,7 @@ public class RobotContainer {
   }
 
   private final void initializeCommands() {
+    diagonalSensorIntakeCloseShot = new DiagonalSensorIntake(flywheel, intake, linkage, 6000.0);
     commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
     robotOrientedDrive = new RobotOrientedDrive(drivetrain);
