@@ -78,6 +78,37 @@
           "data": {
             "name": "AutoShot1"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "extend linkage"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Auto Center Note"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "4 wing preload 3"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoShot1"
+          }
         }
       ]
     }
