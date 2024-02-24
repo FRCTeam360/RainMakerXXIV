@@ -5,6 +5,8 @@ import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.configs.Slot0Configs;
+
 import static edu.wpi.first.units.Units.Volts;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
@@ -102,6 +104,14 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         headingController.setIntegratorRange(-headingIZone, headingIZone);
     }
 
+    public void updateDriveGains(double kP, double kI, double kD, double kS, double kV, double kA) {
+        Slot0Configs slot0Configs = new Slot0Configs()
+                .withKA(kA).withKD(kD).withKI(kI).withKP(kP).withKS(kS).withKV(kV);
+        for(int i = 0; i < 4; i++){
+            this.getModule(i).getDriveMotor().getConfigurator().apply(slot0Configs, 0.05);
+        }
+    }
+
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency,
             SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
@@ -176,7 +186,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                 },
                 this // Reference to this subsystem to set requirements
         );
-        setupShuffleboard();
+        // setupShuffleboard();
     }
 
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
