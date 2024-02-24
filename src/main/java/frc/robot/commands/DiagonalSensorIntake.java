@@ -14,6 +14,7 @@ public class DiagonalSensorIntake extends Command {
   private final Intake intake;
   private final Linkage linkage;
   private double flywheelSetpoint;
+  private double x = 0;
   private enum IntakeCases {
     EXTEND_INTAKE,
     MOVE_UP_INTAKE,
@@ -40,24 +41,29 @@ public class DiagonalSensorIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(intake.getAmps() > 20 && intake.getVelocity() <= .05) {
+      x = .1;
+    } else {
+      x = 0;
+    }
     switch(state) {
       case EXTEND_INTAKE:
         linkage.setAngle(0.0);
-        intake.run(.9);
+        intake.run(.9 + x);
         if(!intake.getSideSensor()) {
           state = IntakeCases.MOVE_UP_INTAKE;
         }
         break;
       case MOVE_UP_INTAKE:
         linkage.setAngle(90.0);
-        intake.run(.5);
+        intake.run(.5 + x);
         if(!intake.getDiagonalSensor()) {
           state = IntakeCases.REVERSE_INTAKE;
         }
         break;
       case REVERSE_INTAKE:
         linkage.setAngle(90.0);
-        intake.run(-.5);
+        intake.run(-.5 - x);
         if(intake.getSideSensor()) {
           state = IntakeCases.SPIN_UP_FLYWHEEL;
         }
@@ -65,7 +71,7 @@ public class DiagonalSensorIntake extends Command {
       case SPIN_UP_FLYWHEEL:
         linkage.setAngle(90.0);
         flywheel.setBothRPM(flywheelSetpoint);
-        intake.run(.3);
+        intake.run(.3 + x);
         if(!intake.getDiagonalSensor()) {
           state = IntakeCases.END;
         }

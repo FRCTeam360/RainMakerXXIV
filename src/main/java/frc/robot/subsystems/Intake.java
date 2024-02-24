@@ -76,6 +76,10 @@ public class Intake extends SubsystemBase {
     return io.getEncoderValue();
   }
 
+  public double getVelocity() {
+    return io.getVelocity();
+  }
+
   public void setEncoderValue(double encoderPosition) {
     io.setEncoderValue(encoderPosition);
   }

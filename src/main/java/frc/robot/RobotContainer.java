@@ -251,7 +251,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Spinny", new PowerFlywheel(flywheel));    
     NamedCommands.registerCommand("AutoShot1", new ShootInSpeaker(linkage, flywheel, intake, 163.0, 6500.0));
     NamedCommands.registerCommand("extend linkage", new InstantCommand(() -> linkage.setAngle(0), linkage));
-
+    NamedCommands.registerCommand("lil cutesie intake", diagonalSensorIntakeCloseShot);
     // NamedCommands.registerCommand("Intake", runExtendIntake);
     // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     // NamedCommands.registerCommand("Wait", new WaitCommand(2));

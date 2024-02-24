@@ -79,6 +79,10 @@ public class IntakeIOSparkFlex implements IntakeIO{
 
     }
     @Override
+    public double getVelocity() {
+        return encoder.getVelocity();
+    }
+    @Override
     public void setEncoderValue(double encoderPosition) {
         sparkFlex.getEncoder().setPosition(encoderPosition);
     }
