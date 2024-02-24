@@ -18,8 +18,6 @@ public class LevelClimbers extends Command {
   private double kP = 0;
   private double kI = 0;
   private double kD = 0;
-
-  private double roll = 0.0;
   private double rollHeight = 0.0;
   private double initialClimb = 4.5; // inches
 
@@ -38,15 +36,16 @@ public class LevelClimbers extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    roll = climber.getRoll();
+  //   roll = climber.getRoll();
     
-    if(Math.abs(roll) > 1.0) {
-      rollHeight = rollPidController.calculate(roll);
-    }
+  //   if(Math.abs(roll) > 1.0) {
+  //     rollHeight = rollPidController.calculate(roll);
+  //   }
 
-    climber.setLeftHeight(initialClimb + rollHeight);
-    climber.setRightHeight(initialClimb - rollHeight);
+  //   climber.setLeftHeight(initialClimb + rollHeight);
+  //   climber.setRightHeight(initialClimb - rollHeight);
 
+  // }
   }
 
   // Called once the command ends or is interrupted.

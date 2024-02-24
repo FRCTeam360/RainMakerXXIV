@@ -14,7 +14,6 @@ public class ClimberPIDTuner extends Command {
   private double kI = 0;
   private double kD = 0;
   private double kFF = 0;
-  private double roll = 0;
   private double leftError = 0;
   private double rightError = 0;
   private double goalHeight = 85.0;
@@ -51,7 +50,6 @@ public class ClimberPIDTuner extends Command {
     double d = SmartDashboard.getNumber("d", 0.0);
     double ff = SmartDashboard.getNumber("ff", 0.0);
     goalHeight = SmartDashboard.getNumber("goal height", 85.0);
-    roll = climber.getRoll();
     leftError = goalHeight - climber.getLeftPosition();
     rightError = goalHeight - climber.getRightPosition();
 
@@ -87,7 +85,7 @@ public class ClimberPIDTuner extends Command {
 
     SmartDashboard.putNumber("Left Height", climber.getLeftPosition());
     SmartDashboard.putNumber("Right Height", climber.getRightPosition());
-    SmartDashboard.putNumber("roll", climber.getRoll());
+    // SmartDashboard.putNumber("roll", climber.getRoll());
   }
 
   // Called once the command ends or is interrupted.
