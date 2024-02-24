@@ -260,7 +260,7 @@ public class RobotContainer {
   }
 
   private void configureDefaultCommands() {
-    drivetrain.setDefaultCommand(fieldOrientedDrive);
+    //drivetrain.setDefaultCommand(fieldOrientedDrive);
     climber.setDefaultCommand(powerClimber);
     // linkage.setDefaultCommand(powerLinkage);
     // // climber.setDefaultCommand();
@@ -283,12 +283,12 @@ public class RobotContainer {
     // flywheel.setDefaultCommand(tuneFlywheel);
     //linkage.setDefaultCommand(stowLinkage);
     
-    if(!Objects.isNull(ampArm)){
-      ampArm.setDefaultCommand(powerAmpArm);
-    }
-    if(!Objects.isNull(ampIntake)){
-      ampIntake.setDefaultCommand(powerAmpIntake);
-    }
+    // if(!Objects.isNull(ampArm)){
+    //   ampArm.setDefaultCommand(powerAmpArm);
+    // }
+    // if(!Objects.isNull(ampIntake)){
+    //   ampIntake.setDefaultCommand(powerAmpIntake);
+    // }
   }
 
   /**
