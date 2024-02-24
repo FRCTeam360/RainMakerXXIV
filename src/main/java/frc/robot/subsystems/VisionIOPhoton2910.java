@@ -30,9 +30,9 @@ public class VisionIOPhoton2910 implements VisionIO {
      * @param pose Location of the camera on the robot (from center, positive x towards the arm, positive y to the left, and positive angle is counterclockwise.
      * @return 
      */
-    public void VisionIOPhoton(String name, Transform3d pose) {
+    public void VisionIOPhoton(String name /** Transform3d pose */) {
         this.name = name;
-        this.pose = pose;
+        // this.pose = pose;
         camera = new PhotonCamera(name);
 
         // odometry = new PhotonPoseEstimator(

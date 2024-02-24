@@ -18,94 +18,6 @@ import frc.robot.io.IntakeIO.IntakeIOInputs;
 
 public class FlywheelIOSparkFlex implements FlywheelIO {
   /** Creates a new FlywheelIOSparkMax. */
-<<<<<<< HEAD
-  private final CANSparkFlex topMotor = new CANSparkFlex(Constants.SHOOTER_TOP_ID, MotorType.kBrushless);
-  private final RelativeEncoder topEncoder = topMotor.getEncoder();
-  private final SparkPIDController topPIDController = topMotor.getPIDController();
-
-  private final CANSparkFlex bottomMotor = new CANSparkFlex(Constants.SHOOTER_BOTTOM_ID, MotorType.kBrushless);
-  private final RelativeEncoder bottomEncoder = bottomMotor.getEncoder();
-  private final SparkPIDController bottomPIDController = bottomMotor.getPIDController();
-
-  public FlywheelIOSparkFlex() {
-    double kP = 0.00055;
-    double kI = 0.0;
-    double kD = 0.0;
-    double kFF = 0.000152;
-  
-    
-    topMotor.restoreFactoryDefaults();
-    topMotor.setInverted(true);
-    topMotor.setIdleMode(IdleMode.kBrake);
-
-    bottomMotor.restoreFactoryDefaults();
-    bottomMotor.setInverted(false);
-    bottomMotor.setIdleMode(IdleMode.kBrake);
-
-    topPIDController.setP(kP);
-    topPIDController.setFF(kFF);
-    topPIDController.setI(kI);
-    topPIDController.setD(kD);
-
-    bottomPIDController.setP(kP);
-    bottomPIDController.setFF(kFF);
-    bottomPIDController.setI(kI);
-    bottomPIDController.setD(kD);
-  }
-
-  @Override
-  public void setTop(double speed) {
-    topMotor.set(speed);
-  }
-
-  @Override
-  public void setBottom(double speed) {
-   bottomMotor.set(speed);
-  }
-
-  @Override
-  public void setTopReference(double rpm, ControlType kvelocity) {
-  topPIDController.setReference(rpm, kvelocity);
-  }
-
-  @Override
-  public void setBottomReference(double rpm, ControlType kvelocity) {
-    bottomPIDController.setReference(rpm, kvelocity);
-  }
-
-  @Override
-  public void stopTopMotor() {
-    topMotor.stopMotor();
-  }
-
-  @Override
-  public void stopBottomMotor() {
-    bottomMotor.stopMotor();
-  }
-
-  public double getTopPower() {
-   return topMotor.get();
-  }
-
-  @Override
-  public double getBottomPower() {
-    return bottomMotor.get();
-  }
-
-  @Override
-  public double getTopVelocity() {
-    return topEncoder.getVelocity();
-  }
-
-  @Override
-  public double getBottomVelocity() {
-    return bottomEncoder.getVelocity();
-  }
-
-  public void updateInputs(FlywheelIOInputs inputs) {
-    inputs.topSpeed = topMotor.get();
-    inputs.bottomSpeed = bottomMotor.get();
-=======
   private final CANSparkFlex leftMotor = new CANSparkFlex(Constants.FLYWHEEL_LEFT_ID, MotorType.kBrushless);
     private final RelativeEncoder leftEncoder = leftMotor.getEncoder();
     private final SparkPIDController leftPIDController = leftMotor.getPIDController();
@@ -201,6 +113,5 @@ public class FlywheelIOSparkFlex implements FlywheelIO {
   public void updateInputs(FlywheelIOInputs inputs) {
     inputs.topSpeed = leftMotor.get();
     inputs.bottomSpeed = rightMotor.get();
->>>>>>> main
   }
 }
