@@ -21,8 +21,6 @@ public interface IntakeIO {
     public double intakeAmps = 0.0;
     public double intakePosition = 0.0;
     public double intakeVelocity = 0.0;
-    public boolean highSensor;
-
   }
   
   public default void updateInputs(IntakeIOInputs inputs) {}

@@ -17,6 +17,8 @@ public interface AmpIntakeIO {
     public double ampIntakeSpeed = 0.0;
     public double ampIntakeAmps = 0.0;
     public double ampIntakeOutputVoltage = 0.0;
+    public double ampIntakeVelocity = 0.0;
+    public double ampIntakePosition = 0.0;
   }
 
   public default void updateInputs(AmpIntakeIOInputs inputs) {}
