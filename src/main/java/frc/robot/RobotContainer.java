@@ -5,7 +5,6 @@
 package frc.robot;
 
 import frc.robot.Constants.RobotType;
-import frc.robot.commands.Autos;
 import frc.robot.commands.RunExtendIntake;
 import frc.robot.commands.PowerIntakeReversed;
 import frc.robot.commands.PowerIntake;
@@ -17,6 +16,7 @@ import frc.robot.commands.TuneFlywheel;
 import frc.robot.commands.TuneSwerveDrive;
 import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.RobotOrientedDrive;
+import frc.robot.commands.AutoPowerCenterNote;
 import frc.robot.commands.FieldOrientedDrive;
 import frc.robot.commands.LevelClimbers;
 import frc.robot.commands.LinkageSetpoint;
@@ -24,7 +24,7 @@ import frc.robot.commands.PowerAmpArm;
 import frc.robot.commands.PowerAmpIntake;
 import frc.robot.commands.PowerCenterNote;
 import frc.robot.commands.PowerClimber;
-import frc.robot.generated.CompbotConstants;
+import frc.robot.generated.CompBotConstants;
 import frc.robot.generated.PracticebotConstants;
 import frc.robot.generated.WoodbotConstants;
 import frc.robot.hardware.AmpArmIOTalonFX;
@@ -56,7 +56,6 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-
 import edu.wpi.first.hal.HALUtil;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -128,6 +127,7 @@ public class RobotContainer {
   private ShootInSpeaker shootFromSubwoofer;
   private ShootInSpeaker shootFromFar;
   private TuneSwerveDrive tuneSwerveDrive;
+  private AutoPowerCenterNote autoPowerCenterNote;
 
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
@@ -162,7 +162,7 @@ public class RobotContainer {
         drivetrain.configNeutralMode(NeutralModeValue.Coast);
         break;
       case COMPETITION:
-        drivetrain = CompbotConstants.DriveTrain; 
+        drivetrain = CompBotConstants.DriveTrain; 
         flywheel = new Flywheel(new FlywheelIOSparkFlex());
         intake = new Intake(new IntakeIOSparkFlex());
         ampArm = new AmpArm(new AmpArmIOTalonFX());
@@ -200,8 +200,8 @@ public class RobotContainer {
     diagnosticTab.addBoolean("Comp Bot", () -> Constants.isCompBot());
     initializeCommands();
    
-    // autoChooser = AutoBuilder.buildAutoChooser();
-    // SmartDashboard.putData("Auto Chooser", autoChooser);
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", autoChooser);
     configureBindings();
     //configureCharacterizationBindings();
     configureDefaultCommands();
@@ -212,6 +212,7 @@ public class RobotContainer {
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
     robotOrientedDrive = new RobotOrientedDrive(drivetrain);
     runExtendIntake = commandFactory.runExtendIntake();
+    //autoPowerCenterNote = new AutoPowerCenterNote(intake, linkage);
     powerCenterNoteIntakeRoutine = commandFactory.powerCenterNote();
     powerIntakeReversed = new PowerIntakeReversed(intake);
     powerIntake = new PowerIntake(intake);
@@ -222,10 +223,11 @@ public class RobotContainer {
     linkageSetpoint = new LinkageSetpoint(linkage);
     stowLinkage = commandFactory.stowLinkage();
     shootRoutine = commandFactory.shootInSpeaker(174.0, 6000.0);
+    //autoCenterNote = commandFactory.shootInSpeaker(160.0, 6000.0);
     shootFromSubwoofer = commandFactory.shootFromSubwoofer();
     shootFromFar = commandFactory.shootFromFar();
     // COMMENT OUT tuneSwerveDrive WHEN NOT USING, IT WILL SET YOUR SWERVE DRIVE CONSTANTS TO 0 WHEN CONSTRUCTED
-    tuneSwerveDrive = new TuneSwerveDrive(drivetrain);
+    //tuneSwerveDrive = new TuneSwerveDrive(drivetrain);
     if(!Objects.isNull(ampArm)){
       powerAmpArm = new PowerAmpArm(ampArm);
     }
@@ -234,6 +236,18 @@ public class RobotContainer {
     }
     // powerAmpArm = new PowerAmpArm(ampArm);
     // powerAmpIntake = new PowerAmpIntake(ampIntake);
+    
+    Command shootRoutineWithDrivetrain = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 0.0);
+    NamedCommands.registerCommand("Intake", runExtendIntake);
+    NamedCommands.registerCommand("Auto Center Note", new AutoPowerCenterNote(intake, linkage, flywheel, 163));
+    NamedCommands.registerCommand("Wait1", new WaitCommand(1));
+    NamedCommands.registerCommand("Shoot", shootRoutineWithDrivetrain);
+    NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0, 0));
+    NamedCommands.registerCommand("Shoot without drivetrain", shootRoutine);
+    NamedCommands.registerCommand("Shoot from subwoofer", shootFromSubwoofer);
+    NamedCommands.registerCommand("Spinny", new PowerFlywheel(flywheel));    
+    NamedCommands.registerCommand("AutoShot1", new ShootInSpeaker(linkage, flywheel, intake, 163.0, 6500.0));
+    NamedCommands.registerCommand("extend linkage", new InstantCommand(() -> linkage.setAngle(0), linkage));
 
     // NamedCommands.registerCommand("Intake", runExtendIntake);
     // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
@@ -241,7 +255,6 @@ public class RobotContainer {
     // NamedCommands.registerCommand("Shoot", shootRoutine);
     // NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0, 0));
     // NamedCommands.registerCommand("Shoot without drivetrain", new ShootInSpeaker(linkage, flywheel, drivetrain, intake, MAX_SPEED_MPS, MaxAngularRate, MAX_SPEED_MPS));
-    // NamedCommands.registerCommand("Spinny", new PowerFlywheel(flywheel));    
     powerLinkage = new PowerLinkage(linkage);
     // fieldOrientedDrive = new FieldOrientedDrive();
     // robotOrientedDrive = new RobotOrientedDrive();
@@ -250,7 +263,7 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
     drivetrain.setDefaultCommand(fieldOrientedDrive);
-    // linkage.setDefaultCommand(powerLinkage);
+    // linkage.setDefaultCommand(powerLinka$ge);
     // // climber.setDefaultCommand();
     //  drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
     //     drivetrain.applyRequest(
@@ -267,16 +280,16 @@ public class RobotContainer {
     //climber.setDefaultCommand(powerClimber);
    // linkage.setDefaultCommand(powerLinkage);
     // ampArm.setDefaultCommand(powerAmpArm);
-    // linkage.setDefaultCommand(linkageSetpoint);
-    // flywheel.setDefaultCommand(tuneFlywheel);
+    linkage.setDefaultCommand(linkageSetpoint);
+    flywheel.setDefaultCommand(tuneFlywheel);
     //linkage.setDefaultCommand(stowLinkage);
     
-    if(!Objects.isNull(ampArm)){
-      ampArm.setDefaultCommand(powerAmpArm);
-    }
-    if(!Objects.isNull(ampIntake)){
-      ampIntake.setDefaultCommand(powerAmpIntake);
-    }
+    // if(!Objects.isNull(ampArm)){
+    //   ampArm.setDefaultCommand(powerAmpArm);
+    // }
+    // if(!Objects.isNull(ampIntake)){
+    //   ampIntake.setDefaultCommand(powerAmpIntake);
+    // }
   }
 
   /**
@@ -334,6 +347,9 @@ public class RobotContainer {
     climber.stop();
     flywheel.stop();
     intake.stop();
+    linkage.disableBrakeMode();
+    
+
     linkage.stop();
     drivetrain.robotCentricDrive(0, 0, 0);
     if (!Objects.isNull(ampArm)) {

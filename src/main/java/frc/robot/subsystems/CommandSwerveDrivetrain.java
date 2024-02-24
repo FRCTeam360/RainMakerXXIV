@@ -310,7 +310,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     private void resetPose(Pose2d pose) {
         seedFieldRelative(pose);
-        this.getPigeon2().setYaw(pose.getRotation().getDegrees());
+        //this.getPigeon2().setYaw(pose.getRotation().getDegrees());
     }
 
     private ChassisSpeeds getRobotRelativeSpeeds() {

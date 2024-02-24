@@ -16,7 +16,8 @@ public interface IntakeIO {
   public static class IntakeIOInputs {
     public double intakeSpeed = 0.0;
     public double output = 0.0;
-    public boolean sensor = true;
+    public boolean sideSensor = true;
+    public boolean highSensor = true; 
     public double amps = 0.0;
   }
   
