@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -7,11 +9,10 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.subsystems.VisionIO;
 
 public class VisionIOLimelight implements VisionIO {
-
     private String name;
     private final Transform3d cameraOffset;
     private double[] lastData = new double[6];
@@ -34,9 +35,9 @@ public class VisionIOLimelight implements VisionIO {
         NetworkTableEntry botposeEntry;
         double[] data;
         // decides the pose based on the alliance
-        if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
+        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
             botposeEntry = NetworkTableInstance.getDefault().getTable(name).getEntry("botpose_wpiblue");
-        } else if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
+        } else if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
             botposeEntry = NetworkTableInstance.getDefault().getTable(name).getEntry("botpose_wpired");
         } else {
             botposeEntry = NetworkTableInstance.getDefault().getTable(name).getEntry("botpose");

@@ -1,11 +1,13 @@
-package org.frcteam2910.c2023.subsystems.vision;
+package frc.robot.subsystems;
 
 import java.util.List;
 import java.util.Optional;
 
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.wpilibj.DriverStation;
-import org.frcteam2910.c2023.util.constants.FieldConstants;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+
+// import org.frcteam2910.c2023.util.constants.FieldConstants;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -13,27 +15,28 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class VisionIOPhoton2910 implements VisionIO {
-    private final PhotonCamera camera;
-    private final String name;
-    private final PhotonPoseEstimator odometry;
+    private PhotonCamera camera;
+    private String name;
+    private PhotonPoseEstimator odometry;
     private double pastTimestamp;
     private Transform3d pose;
     public List<PhotonTrackedTarget> targets;
-    private static DriverStation.Alliance storedAlliance = DriverStation.Alliance.Invalid;
+    private DriverStation.Alliance storedAlliance = DriverStation.getAlliance().get();
 
     /**
      * Implements PhotonVision camera
      *
      * @param name Name of the camera.
      * @param pose Location of the camera on the robot (from center, positive x towards the arm, positive y to the left, and positive angle is counterclockwise.
+     * @return 
      */
-    public VisionIOPhoton2910(String name, Transform3d pose) {
+    public void VisionIOPhoton(String name, Transform3d pose) {
         this.name = name;
         this.pose = pose;
         camera = new PhotonCamera(name);
 
-        odometry = new PhotonPoseEstimator(
-                FieldConstants.BLUE_FIELD_LAYOUT, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP, camera, pose);
+        // odometry = new PhotonPoseEstimator(
+        //         FieldConstants.BLUE_FIELD_LAYOUT, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP, camera, pose);
         odometry.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY);
     }
 
@@ -101,7 +104,7 @@ public class VisionIOPhoton2910 implements VisionIO {
 
         pastTimestamp = inputs.timestamp;
 
-        odometry.setFieldTags(FieldConstants.getFieldLayout());
+        // odometry.setFieldTags(FieldConstants.getFieldLayout());
     }
 
     @Override
