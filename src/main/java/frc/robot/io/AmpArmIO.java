@@ -30,6 +30,10 @@ public interface AmpArmIO {
 
   public void runWrist(double speed);
 
+  public void setArm(double angle);
+
+  public void setWrist(double angle);
+
   public void stopArm();
 
   public void stopWrist();

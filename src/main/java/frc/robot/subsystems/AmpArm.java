@@ -24,10 +24,21 @@ public class AmpArm extends SubsystemBase {
   public AmpArm(AmpArmIO io) {
     this.io = io;
     setupShuffleboard();
-    io.zeroArm();
+  }
+
+  public void avoidWristCollision() {
+    if (io.getArmPosition() > 0.0) {
+      io.setWrist(io.getArmPosition());
+    }
+  }
+
+  public void zeroWrist() {
     io.zeroWrist();
   }
 
+  public void zeroArm() {
+    io.zeroArm();
+  }
   public void runArm(double speed) {
     io.runArm(speed);
   }
