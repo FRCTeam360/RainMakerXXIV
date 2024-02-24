@@ -37,4 +37,8 @@ public interface AmpArmIO {
   public double getArmPosition();
 
   public double getWristPosition();
+
+  public void zeroWrist();
+
+  public void zeroArm();
 }
