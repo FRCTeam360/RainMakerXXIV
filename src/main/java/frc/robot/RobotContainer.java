@@ -14,6 +14,7 @@ import frc.robot.commands.SetIntake;
 import frc.robot.commands.SetLinkage;
 import frc.robot.commands.ShootInSpeaker;
 import frc.robot.commands.TuneFlywheel;
+import frc.robot.commands.TuneSwerveDrive;
 import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.RobotOrientedDrive;
 import frc.robot.commands.FieldOrientedDrive;
@@ -126,6 +127,7 @@ public class RobotContainer {
   private TuneFlywheel tuneFlywheel;
   private ShootInSpeaker shootFromSubwoofer;
   private ShootInSpeaker shootFromFar;
+  private TuneSwerveDrive tuneSwerveDrive;
 
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
@@ -222,6 +224,8 @@ public class RobotContainer {
     shootRoutine = commandFactory.shootInSpeaker(174.0, 6000.0);
     shootFromSubwoofer = commandFactory.shootFromSubwoofer();
     shootFromFar = commandFactory.shootFromFar();
+    // COMMENT OUT tuneSwerveDrive WHEN NOT USING, IT WILL SET YOUR SWERVE DRIVE CONSTANTS TO 0 WHEN CONSTRUCTED
+    tuneSwerveDrive = new TuneSwerveDrive(drivetrain);
     if(!Objects.isNull(ampArm)){
       powerAmpArm = new PowerAmpArm(ampArm);
     }
