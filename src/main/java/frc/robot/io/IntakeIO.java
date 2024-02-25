@@ -41,5 +41,7 @@ public interface IntakeIO {
 
   public void moveEncoder(double setpoint);
 
+  public double getVelocity();
+
   public void setEncoderValue(double encoderPosition);
 }

@@ -64,6 +64,10 @@ public class Intake extends SubsystemBase {
     io.stopMotor();
   }
 
+  public double getVelocity() {
+    return io.getVelocity();
+  }
+
   public double getPower() {
     return io.getPower();
   }

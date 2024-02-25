@@ -32,6 +32,10 @@ public class AmpIntake extends SubsystemBase {
     io.stop();
   }
 
+  public double getAmps() {
+    return io.getAmps();
+  }
+
   public double getIntakeSpeed() {
     return io.getIntakeSpeed();
   }
@@ -43,6 +47,7 @@ public class AmpIntake extends SubsystemBase {
   
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("rotations", io.getEncoderPosition());
     io.updateInputs(inputs);
     Logger.processInputs("AmpIntake", inputs);
   }
