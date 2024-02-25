@@ -16,7 +16,6 @@ import frc.robot.io.AmpIntakeIO;
 public class AmpIntakeIOSparkMax implements AmpIntakeIO {
 
   private CANSparkMax motor = new CANSparkMax(Constants.AMP_INTAKE_ID, MotorType.kBrushless);
-  private PIDController pid = motor.getEncoder();
 
   private final double GEAR_RATIO = 1.0;
 
@@ -42,10 +41,6 @@ public class AmpIntakeIOSparkMax implements AmpIntakeIO {
 
   public double getEncoderPosition() {
     return motor.getEncoder().getPosition();
-  }
-
-  public void moveEncoder() {
-    pidController.setReference()
   }
 
   public void updateInputs(AmpIntakeIOInputs inputs) {
