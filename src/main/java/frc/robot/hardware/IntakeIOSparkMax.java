@@ -76,11 +76,6 @@ public class IntakeIOSparkMax implements IntakeIO {
   }
 
   @Override
-  public double getVelocity() {
-    return encoder.getVelocity();
-  }
-
-  @Override
   public double getOutputCurrent() {
     return sparkMax.getOutputCurrent();
   }
@@ -101,6 +96,11 @@ public class IntakeIOSparkMax implements IntakeIO {
   @Override
   public void setEncoderValue(double encoderPosition) {
     encoder.setPosition(encoderPosition);
+  }
+
+  @Override
+  public double getVelocity() {
+    return encoder.getVelocity();
   }
 
   @Override

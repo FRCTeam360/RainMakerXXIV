@@ -24,8 +24,51 @@ public class AmpArm extends SubsystemBase {
   public AmpArm(AmpArmIO io) {
     this.io = io;
     setupShuffleboard();
-    io.zeroArm();
+  }
+
+  public void avoidWristCollision(double xboxInput) {
+    double armAngle = io.getArmPosition();
+    double wristAngle = io.getWristPosition();
+    if (armAngle > 0.0) {
+      if (wristAngle > armAngle + 90.0) {
+        io.setWrist(armAngle + 90.0);
+      } else if (wristAngle < armAngle - 90.0) {
+        io.setWrist(armAngle - 90.0);
+      } else {
+        io.runWrist(xboxInput);
+      }
+    } else if (armAngle < -60.0) {
+      if (wristAngle > 55.0) {
+        io.setWrist(55.0);
+      } else if (wristAngle < 50.0) {
+        io.setWrist(50.0);
+      }
+      io.setWrist(60.0);
+    } else if (armAngle >= -60.0 && armAngle <= 0.0) {
+      if (wristAngle < 30.0) {
+        io.setWrist(30.0);
+      } else if (wristAngle > 60.0) {
+        io.setWrist(60.0);
+      } else {
+        io.runWrist(xboxInput);
+      }
+    }
+  }
+
+  public void setArm(double angle) {
+    io.setArm(angle);
+  }
+
+  public void setWrist(double angle) {
+    io.setWrist(angle);
+  }
+
+  public void zeroWrist() {
     io.zeroWrist();
+  }
+
+  public void zeroArm() {
+    io.zeroArm();
   }
 
   public void runArm(double speed) {
@@ -62,6 +105,7 @@ public class AmpArm extends SubsystemBase {
     tab.addNumber("Arm Angle", () -> this.getArmPosition());
     tab.addNumber("Wrist Angle", () -> this.getWristPosition());
   }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);

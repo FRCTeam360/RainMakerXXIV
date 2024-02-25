@@ -64,6 +64,7 @@ public class Intake extends SubsystemBase {
     io.stopMotor();
   }
 
+
   public double getPower() {
     return io.getPower();
   }

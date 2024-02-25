@@ -4,40 +4,48 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Linkage;
 
-public class PowerClimber extends Command {
-  private final Climber climber;
-  private XboxController operatorCont = new XboxController(1);
-
-  /** Creates a new PowerClimber. */
-  public PowerClimber(Climber climber) {
-    this.climber = climber;
+public class IntakeCOmmand extends Command {
+  private final Intake intake;
+  private boolean stop = false;
+  private final Linkage linkage;
+  /** Creates a new IntakeCOmmand. */
+  public IntakeCOmmand(Intake intake, Linkage linkage) {
+    this.intake = intake;
+    this.linkage = linkage;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(this.climber);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    linkage.setAngle(0.0);
+    stop = false;
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climber.runBoth(-operatorCont.getLeftTriggerAxis()* .3, -operatorCont.getRightTriggerAxis() * .3);//works when the rope wraps UNDER the spool
+    if(!intake.getSideSensor()) {
+      stop = true;
+    }
+    intake.run(.7);
   }
+  
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    climber.stop();
+    linkage.setAngle(163);
+    intake.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return stop;
   }
 }
