@@ -36,22 +36,24 @@ public class DiagonalSensorIntake extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    state = IntakeCases.EXTEND_INTAKE;
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(intake.getAmps() > 20 && intake.getVelocity() <= .05) {
-      x = .1;
-    } else {
-      x = 0;
-    }
+    // if(intake.getAmps() > 20 && intake.getVelocity() <= .05) {
+    //   this.x = .1;
+    // } else {
+    //   this.x = 0;
+    // }
     switch(state) {
       case EXTEND_INTAKE:
         linkage.setAngle(0.0);
-        intake.run(.9);
-        if(!intake.getSideSensor()) {
-          state = IntakeCases.MOVE_UP_INTAKE;
+        intake.run(.4);
+        if(!intake.getDiagonalSensor()) {
+          state = IntakeCases.SPIN_UP_FLYWHEEL;
         }
         break;
       case MOVE_UP_INTAKE:
@@ -70,9 +72,7 @@ public class DiagonalSensorIntake extends Command {
         break;
       case SPIN_UP_FLYWHEEL:
         linkage.setAngle(90.0);
-        flywheel.setBothRPM(flywheelSetpoint);
-        intake.run(.3);
-        if(!intake.getDiagonalSensor()) {
+        if(linkage.isAtSetpoint()) {
           state = IntakeCases.END;
         }
         break;
