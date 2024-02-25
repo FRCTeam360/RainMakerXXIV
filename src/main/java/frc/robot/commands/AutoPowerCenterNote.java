@@ -58,7 +58,7 @@ public class AutoPowerCenterNote extends Command{
       case CHECK_ROBOT_EMPTY:
      Logger.recordOutput("INTAKE_STATE", 1);
 
-        if(intake.getSideSensor()) {
+        if(!intake.getSideSensor()) {
           state = IntakeCases.EXTEND_INTAKE;
         }
         break;
@@ -68,7 +68,7 @@ public class AutoPowerCenterNote extends Command{
         linkage.setAngle(0.0);                           
         intake.run(0.5);
 
-        if(!intake.getSideSensor()) {
+        if(!intake.getHighSensor()) {
           state = IntakeCases.UP_TO_SHOOTER;
         }
         // we should extend too but idk how we should implement this
