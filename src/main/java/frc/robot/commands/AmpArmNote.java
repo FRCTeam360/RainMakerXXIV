@@ -10,8 +10,15 @@ import frc.robot.subsystems.AmpIntake;
 public class AmpArmNote extends Command {
   private final AmpIntake intake;
   private boolean stop;
+  private enum Cases {
+    NO_NOTE,
+    NOTE,
+    NOTE_CENTERED
+  }
+  private Cases state = Cases.NO_NOTE;
   /** Creates a new AmpArmMove. */
   public AmpArmNote(AmpIntake intake) {
+
     this.intake = intake;
     addRequirements(intake);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -26,12 +33,14 @@ public class AmpArmNote extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(intake.getAmps() > 25) {
-      intake.stop();
-      stop = true;
-    } else {
+    switch(state) {
+      case NO_NOTE:
+       if(intake.getAmps() > 25) {
+        state = Cases.NOTE;
+       }
       intake.runIntake(-.2);
     }
+   
   }
 
   // Called once the command ends or is interrupted.
