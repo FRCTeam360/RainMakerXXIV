@@ -28,7 +28,10 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   private final double ARM_RATIO = 1.68; // degrees / motor rotation
   private final double WRIST_RATIO = 11.25; // degrees / motor rotation
 
-  private final double armKP = 0.0;
+  private final double ARM_FORWARD_LIMIT = 120.0;
+  private final double ARM_REVERSE_LIMIT = -76.0;
+
+  private final double armKP = 0.48;
   private final double armKI = 0.0;
   private final double armKD = 0.0;
   private final double armKF = 0.0;
@@ -41,25 +44,35 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   /** Creates a new AmpArmIOTalonFX. */
   public AmpArmIOTalonFX() {
     armMotor.getConfigurator().apply(new TalonFXConfiguration());
-
     wristMotor.getConfigurator().apply(new TalonFXConfiguration());
-    wristMotor.setInverted(false);
-    wristMotor.setNeutralMode(NeutralModeValue.Coast);
 
     TalonFXConfiguration armConfig = new TalonFXConfiguration();
+
+    armConfig.SoftwareLimitSwitch
+        .withForwardSoftLimitThreshold(ARM_FORWARD_LIMIT)
+        .withReverseSoftLimitThreshold(ARM_REVERSE_LIMIT)
+        .withForwardSoftLimitEnable(true)
+        .withReverseSoftLimitEnable(true);
+
     armConfig.Feedback.withSensorToMechanismRatio(1 / ARM_RATIO);
     armConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // SAME AS SET INVERTED LOL
-    armMotor.setNeutralMode(NeutralModeValue.Coast);
-
+    
     TalonFXConfiguration wristConfig = new TalonFXConfiguration();
     wristConfig.Feedback.withSensorToMechanismRatio(1 / WRIST_RATIO);
 
-    Slot0Configs slot0 = wristConfig.Slot0;
-    slot0.kP = wristKP;
-    
+    Slot0Configs wristSlot0 = wristConfig.Slot0;
+    wristSlot0.kP = wristKP;
+
+    Slot0Configs armSlot0 = armConfig.Slot0;
+    armSlot0.kP = armKP;
+
     armMotor.getConfigurator().apply(armConfig);
     wristMotor.getConfigurator().apply(wristConfig);
+    
+    armMotor.setNeutralMode(NeutralModeValue.Brake);
 
+    wristMotor.setInverted(false);
+    wristMotor.setNeutralMode(NeutralModeValue.Brake);
   }
 
   @Override

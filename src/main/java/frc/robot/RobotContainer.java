@@ -52,6 +52,8 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import java.util.Objects;
 
+import javax.management.InstanceNotFoundException;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -266,7 +268,7 @@ public class RobotContainer {
   }
 
   private void configureDefaultCommands() {
-    ampArm.setDefaultCommand(powerAmpArm);
+    // ampArm.setDefaultCommand(powerAmpArm);
 
     drivetrain.setDefaultCommand(fieldOrientedDrive);
     // linkage.setDefaultCommand(powerLinka$ge);
@@ -319,8 +321,15 @@ public class RobotContainer {
    */
 
   private void configureBindings() {
+    operatorController.a().whileTrue(powerAmpArm);
     operatorController.b().whileTrue(new InstantCommand(() -> ampArm.zeroWrist(), ampArm));
     operatorController.b().whileTrue(new InstantCommand(() -> ampArm.zeroArm(), ampArm));
+
+    operatorController.pov(0).whileTrue(new InstantCommand(() -> ampArm.setArm(0.0), ampArm));
+    operatorController.pov(90).whileTrue(new InstantCommand(() -> ampArm.setArm(45.0), ampArm));
+    operatorController.pov(180).whileTrue(new InstantCommand(() -> ampArm.setArm(90.0), ampArm));
+    operatorController.pov(270).whileTrue(new InstantCommand(() -> ampArm.setArm(120.0), ampArm));
+
     // driverController.a().whileTrue(shootFromSubwoofer);
     // driverController.x().whileTrue(shootFromFar);
     // driverController.y().onTrue(stowLinkage);

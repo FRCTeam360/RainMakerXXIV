@@ -27,9 +27,23 @@ public class AmpArm extends SubsystemBase {
   }
 
   public void avoidWristCollision() {
-    if (io.getArmPosition() > 0.0) {
-      io.setWrist(io.getArmPosition());
+    double armAngle = io.getArmPosition();
+    double wristAngle = io.getWristPosition();
+    if (armAngle > 0.0) {
+      if (wristAngle > armAngle + 90.0) {
+        io.setWrist(armAngle + 90.0);
+      } else if (wristAngle < armAngle - 90.0) {
+        io.setWrist(armAngle - 90.0);
+      }
     }
+  }
+
+  public void setArm(double angle) {
+    io.setArm(angle);
+  }
+
+  public void setWrist(double angle) {
+    io.setWrist(angle);
   }
 
   public void zeroWrist() {
