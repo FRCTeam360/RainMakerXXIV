@@ -65,6 +65,11 @@ public class IntakeIOSparkFlex implements IntakeIO{
     }
 
     @Override
+    public double getVelocity() {
+        return encoder.getVelocity();
+    }
+
+    @Override
     public boolean getDiagonalSensor() {
         return diagonalSensor.get();
     }

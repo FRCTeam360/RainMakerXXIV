@@ -99,6 +99,11 @@ public class IntakeIOSparkMax implements IntakeIO {
   }
 
   @Override
+  public double getVelocity() {
+    return encoder.getVelocity();
+  }
+
+  @Override
   public void moveEncoder(double setpoint) {
     pid.setReference(setpoint, ControlType.kPosition);
   }

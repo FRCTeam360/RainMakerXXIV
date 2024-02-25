@@ -13,6 +13,7 @@ public class DiagonalSensorIntake extends Command {
   private final Flywheel flywheel;
   private final Intake intake;
   private final Linkage linkage;
+  private double x = 0;
   private double flywheelSetpoint;
   private enum IntakeCases {
     EXTEND_INTAKE,
@@ -40,6 +41,11 @@ public class DiagonalSensorIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(intake.getAmps() > 20 && intake.getVelocity() <= .05) {
+      x = .1;
+    } else {
+      x = 0;
+    }
     switch(state) {
       case EXTEND_INTAKE:
         linkage.setAngle(0.0);
