@@ -16,8 +16,7 @@ public interface IntakeIO {
   public static class IntakeIOInputs {
     public double intakeSpeed = 0.0;
     public double output = 0.0;
-    public boolean sideSensor = true;
-    public boolean highSensor = true; 
+    public boolean sensor = true;
     public double amps = 0.0;
   }
   
@@ -36,9 +35,13 @@ public interface IntakeIO {
 
   public boolean getHighSensor();
 
+  public boolean getDiagonalSensor();
+
   public double getEncoderValue();
 
   public void moveEncoder(double setpoint);
+
+  public double getVelocity();
 
   public void setEncoderValue(double encoderPosition);
 }

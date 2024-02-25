@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.RobotType;
+import frc.robot.commands.DiagonalSensorIntake;
 import frc.robot.commands.RunExtendIntake;
 import frc.robot.commands.PowerIntakeReversed;
 import frc.robot.commands.PowerIntake;
@@ -109,6 +110,7 @@ public class RobotContainer {
   private ShootInSpeaker shootRoutine;
   // tele commands
   private RunExtendIntake runExtendIntake;
+  private DiagonalSensorIntake diagonalSensorIntakeCloseShot;
   private PowerCenterNote powerCenterNoteIntakeRoutine;
   private PowerIntakeReversed powerIntakeReversed;
   private PowerIntake powerIntake;
@@ -210,6 +212,7 @@ public class RobotContainer {
   }
 
   private final void initializeCommands() {
+    diagonalSensorIntakeCloseShot = new DiagonalSensorIntake(flywheel, intake, linkage, 6000.0);
     commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
     robotOrientedDrive = new RobotOrientedDrive(drivetrain);
