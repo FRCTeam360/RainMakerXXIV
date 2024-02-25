@@ -7,42 +7,36 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AmpIntake;
 
-public class AmpArmNote extends Command {
-  private final AmpIntake intake;
-  private boolean stop;
-  /** Creates a new AmpArmMove. */
-  public AmpArmNote(AmpIntake intake) {
-    this.intake = intake;
-    addRequirements(intake);
+public class PowerAmpIntakeReverse extends Command {
+  private final AmpIntake ampIntake;
+
+  /** Creates a new PowerArmIntake. */
+  public PowerAmpIntakeReverse(AmpIntake ampIntake) {
+    this.ampIntake = ampIntake;
+
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(ampIntake);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    stop = false;
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(intake.getAmps() > 25) {
-      intake.stop();
-      stop = true;
-    } else {
-      intake.runIntake(-.2);
-    }
+    ampIntake.runIntake(-0.3);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.stop();
+    ampIntake.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return stop;
+    return false;
   }
 }

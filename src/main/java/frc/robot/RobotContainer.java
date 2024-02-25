@@ -17,12 +17,14 @@ import frc.robot.commands.TuneFlywheel;
 import frc.robot.commands.TuneSwerveDrive;
 import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.RobotOrientedDrive;
+import frc.robot.commands.AmpArmNote;
 import frc.robot.commands.AutoPowerCenterNote;
 import frc.robot.commands.FieldOrientedDrive;
 import frc.robot.commands.LevelClimbers;
 import frc.robot.commands.LinkageSetpoint;
 import frc.robot.commands.PowerAmpArm;
 import frc.robot.commands.PowerAmpIntake;
+import frc.robot.commands.PowerAmpIntakeReverse;
 import frc.robot.commands.PowerCenterNote;
 import frc.robot.commands.PowerClimber;
 import frc.robot.generated.CompBotConstants;
@@ -132,6 +134,8 @@ public class RobotContainer {
   private ShootInSpeaker shootFromFar;
   private TuneSwerveDrive tuneSwerveDrive;
   private AutoPowerCenterNote autoPowerCenterNote;
+  private PowerAmpIntakeReverse powerAmpIntakeReverse;
+  private AmpArmNote ampArmNote;
 
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
@@ -227,6 +231,8 @@ public class RobotContainer {
     tuneFlywheel = new TuneFlywheel(flywheel);
     linkageSetpoint = new LinkageSetpoint(linkage);
     stowLinkage = commandFactory.stowLinkage();
+    ampArmNote = new AmpArmNote(ampIntake);
+    powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
     shootRoutine = commandFactory.shootInSpeaker(174.0, 6000.0);
     // autoCenterNote = commandFactory.shootInSpeaker(160.0, 6000.0);
     shootFromSubwoofer = commandFactory.shootFromSubwoofer();
@@ -324,9 +330,11 @@ public class RobotContainer {
    */
 
   private void configureBindings() {
-    operatorController.a().whileTrue(powerAmpArm);
+    operatorController.a().onTrue(ampArmNote);
     operatorController.b().whileTrue(new InstantCommand(() -> ampArm.zeroWrist(), ampArm));
     operatorController.b().whileTrue(new InstantCommand(() -> ampArm.zeroArm(), ampArm));
+    operatorController.y().whileTrue(powerAmpIntake);
+    operatorController.x().whileTrue(powerAmpIntakeReverse);
 
     operatorController.pov(0).whileTrue(new InstantCommand(() -> ampArm.setArm(0.0), ampArm));
     operatorController.pov(90).whileTrue(new InstantCommand(() -> ampArm.setArm(45.0), ampArm));

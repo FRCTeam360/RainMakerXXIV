@@ -48,6 +48,7 @@ public class AmpIntake extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("rotations", io.getEncoderPosition());
+    SmartDashboard.putNumber("arm intake amps", io.getAmps());
     io.updateInputs(inputs);
     Logger.processInputs("AmpIntake", inputs);
   }
