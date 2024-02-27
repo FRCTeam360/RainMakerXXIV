@@ -259,7 +259,7 @@ public class RobotContainer {
     // powerAmpIntake = new PowerAmpIntake(ampIntake);
 
     Command shootRoutineWithDrivetrain = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 0.0);
-    NamedCommands.registerCommand("Intake", runExtendIntake);
+    NamedCommands.registerCommand("Intake", autoPowerCenterNote);
     NamedCommands.registerCommand("Auto Center Note", new AutoPowerCenterNote(intake, linkage, flywheel, 163));
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     NamedCommands.registerCommand("Shoot", shootRoutineWithDrivetrain);

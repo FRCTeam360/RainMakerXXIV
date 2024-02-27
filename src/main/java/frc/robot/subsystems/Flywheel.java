@@ -132,7 +132,6 @@ public class Flywheel extends SubsystemBase {
 
   @Override
   public void periodic() {
-    setBothRPM(1000);
     SmartDashboard.putNumber("setpoint rpm", rpmSetpoint);
     SmartDashboard.putNumber("curren left rpm", getLeftVelocity());
     SmartDashboard.putNumber("current right rpm", getRightVelocity());
