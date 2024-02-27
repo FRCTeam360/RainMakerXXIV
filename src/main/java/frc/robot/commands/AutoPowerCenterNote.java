@@ -57,20 +57,23 @@ public class AutoPowerCenterNote extends Command{
     switch(state){
       case CHECK_ROBOT_EMPTY:
      Logger.recordOutput("INTAKE_STATE", 1);
-
         if(!intake.getSideSensor()) {
+          state = IntakeCases.RETRACT_STOP;
+        } else {
+          timer.start();
           state = IntakeCases.EXTEND_INTAKE;
         }
         break;
       case EXTEND_INTAKE:
            Logger.recordOutput("INTAKE_STATE", 2);
 
-        linkage.setAngle(0.0);                           
-        intake.run(0.5);
-
-        if(!intake.getHighSensor()) {
+        linkage.setAngle(0.0);
+        intake.run(.4);
+        if(!intake.getSideSensor()) {
           state = IntakeCases.UP_TO_SHOOTER;
         }
+
+
         // we should extend too but idk how we should implement this
         // //linkage.setAngle(180);
         // if(intake.getAmps() > 20 && timer.get() > .25) {
@@ -79,27 +82,37 @@ public class AutoPowerCenterNote extends Command{
         // }
         break;
       case UP_TO_SHOOTER:
-        intake.run(.20);
-        linkage.setAngle(settyspaghettipoint);
-        if(!intake.getHighSensor()){
-            state = IntakeCases.BACK_UP;
+        intake.run(.3);
+        if(intake.getDiagonalSensor()) {
+          state = IntakeCases.BACK_UP;
         }
+        // if(!intake.get[\][]\HighSensor()){
+        //     state = IntakeCases.RETRACT_STOP;
+        // }
         break;
       case BACK_UP:
+        linkage.setAngle(90.0);
         intake.run(-.25);
         if(intake.getSideSensor()){
             state = IntakeCases.CENTER;
         }
         break;
       case CENTER:
-        intake.run(.17);
-        if(!intake.getHighSensor()){
-            state = IntakeCases.RETRACT_STOP;
+        linkage.setAngle(90.0);
+        intake.run(.2);
+        if(!intake.getDiagonalSensor()){
+          intake.stop();
+          state = IntakeCases.DONE;
         }
         // }else{
         //   flywheel.setBothRPM(setpoint);;
         // }
         break;
+      case DONE:
+        linkage.setAngle(settyspaghettipoint); 
+        if(linkage.isAtSetpoint()) {
+          state = IntakeCases.RETRACT_STOP;
+        }   
     case RETRACT_STOP:
 Logger.recordOutput("INTAKE_STATE", 6);
 

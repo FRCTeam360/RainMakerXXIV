@@ -13,13 +13,11 @@ import frc.robot.utils.CommandLogger;
 public class PowerLinkage extends Command {
 
   private final Linkage shooterLinkage;
-  private final double angle;
   private final XboxController driverCont = new XboxController(0);
 
   /** Creates a new RunShooterLinkage. */
-  public PowerLinkage(Linkage shooterLinkage, double ampAngle) {
+  public PowerLinkage(Linkage shooterLinkage) {
     this.shooterLinkage = shooterLinkage;
-    this.angle = ampAngle;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooterLinkage);
   }
@@ -33,11 +31,7 @@ public class PowerLinkage extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(angle > -74 && angle < 0) {
-      shooterLinkage.stop();
-    } else {
-      shooterLinkage.run(driverCont.getLeftY() * 0.7);
-    }
+    shooterLinkage.run(driverCont.getLeftY() * 0.7);
     // if (operatorCont.getRightTriggerAxis() > 0.1) {
     //   shooterLinkage.run(0.2);
     // } else if (operatorCont.getLeftTriggerAxis() > 0.1) {

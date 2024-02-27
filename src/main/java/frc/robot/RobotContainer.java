@@ -279,7 +279,6 @@ public class RobotContainer {
     // NamedCommands.registerCommand("Shoot without drivetrain", new
     // ShootInSpeaker(linkage, flywheel, drivetrain, intake, MAX_SPEED_MPS,
     // MaxAngularRate, MAX_SPEED_MPS));
-    powerLinkage = new PowerLinkage(linkage);
     // fieldOrientedDrive = new FieldOrientedDrive();
     // robotOrientedDrive = new RobotOrientedDrive();
     // drivetrain = TunerConstants.DriveTrain; // My drivetrain
@@ -312,15 +311,16 @@ public class RobotContainer {
    */
 
   private void configureBindings() {
-    operatorController.leftBumper().whileTrue(powerAmpIntakeReverse);
-    operatorController.rightBumper().whileTrue(powerAmpIntake);
+    operatorController.leftBumper().whileTrue(powerIntakeReversed);
+    operatorController.rightBumper().whileTrue(powerIntake);
 
     driverController.leftBumper().whileTrue(powerIntakeReversed);
     driverController.rightBumper().whileTrue(powerIntake);
     driverController.b().whileTrue(new InstantCommand(() -> flywheel.handoff(900.0), flywheel));
 
-    // operatorController.a().whileTrue(scoreInAmp);
-    // operatorController.b().onTrue(linkageToAmpHandoff);
+    operatorController.a().whileTrue(scoreInAmp);
+    operatorController.b().onTrue(linkageToAmpHandoff);
+    operatorController.y().onTrue(autoPowerCenterNote);
     // operatorController.a().onTrue(new InstantCommand(()-> ampArm.setArm(90.0)), ampArm);
     
     //operatorController.y().onTrue(diagonalSensorIntakeCloseShot);
