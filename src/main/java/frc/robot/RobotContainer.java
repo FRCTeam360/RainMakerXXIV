@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.RobotType;
 import frc.robot.commands.DiagonalSensorIntake;
 import frc.robot.commands.RunExtendIntake;
+import frc.robot.commands.ScoreInAmp;
 import frc.robot.commands.PowerIntakeReversed;
 import frc.robot.commands.PowerIntake;
 import frc.robot.commands.PowerLinkage;
@@ -138,6 +139,7 @@ public class RobotContainer {
   private PowerAmpIntakeReverse powerAmpIntakeReverse;
   private AmpArmNote ampArmNote;
   private IntakeCOmmand inny;
+  private ScoreInAmp scoreInAmp;
 
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
@@ -218,6 +220,7 @@ public class RobotContainer {
   }
 
   private final void initializeCommands() {
+    scoreInAmp = new ScoreInAmp(ampArm, ampIntake);
     diagonalSensorIntakeCloseShot = new DiagonalSensorIntake(flywheel, intake, linkage, 6000.0);
     commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
@@ -283,9 +286,9 @@ public class RobotContainer {
     // ampArm.setDefaultCommand(powerAmpArm);
 
     drivetrain.setDefaultCommand(fieldOrientedDrive);
-    linkage.setDefaultCommand(powerLinkage);
+    //linkage.setDefaultCommand(powerLinkage);
     ampArm.setDefaultCommand(powerAmpArm);
-    climber.setDefaultCommand(powerClimber);
+    //climber.setDefaultCommand(powerClimber);
   }
 
   /**
@@ -304,14 +307,16 @@ public class RobotContainer {
    */
 
   private void configureBindings() {
-    operatorController.leftBumper().whileTrue(powerIntakeReversed);
-    operatorController.rightBumper().whileTrue(powerIntake);
+    operatorController.leftBumper().whileTrue(powerAmpIntakeReverse);
+    operatorController.rightBumper().whileTrue(powerAmpIntake);
 
+    operatorController.a().whileTrue(scoreInAmp);
+    
     //operatorController.y().onTrue(diagonalSensorIntakeCloseShot);
-    operatorController.b().onTrue(stowLinkage);
-    operatorController.x().onTrue(inny);
-    operatorController.y().onTrue(new SetLinkage(linkage, 0.0));
-    operatorController.a().onTrue(shootFromSubwoofer);
+    // operatorController.b().onTrue(stowLinkage);
+    // operatorController.x().onTrue(inny);
+    // operatorController.y().onTrue(new SetLinkage(linkage, 0.0));
+    // operatorController.a().onTrue(shootFromSubwoofer);
 
     driverController.x().whileTrue(new InstantCommand(() ->
     drivetrain.zero(),drivetrain));

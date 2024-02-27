@@ -22,7 +22,7 @@ public class AmpIntakeIOSparkMax implements AmpIntakeIO {
   /** Creates a new AmpIntakeIOSparkMax. */
   public AmpIntakeIOSparkMax() {
     motor.restoreFactoryDefaults();
-    motor.setInverted(false);
+    motor.setInverted(true);
     motor.setIdleMode(IdleMode.kCoast);
   }
 

@@ -44,9 +44,7 @@ public class PassNoteToAmpIntake extends Command {
   public void execute() {
     switch(state) {
       case INTAKE_GOT_THAT_THANG:
-        linkage.setAngle(SETTHISBOY);
         if(linkage.isAtSetpoint()) {
-          state = THROW_IT_BACK;
         }
     }
   }
