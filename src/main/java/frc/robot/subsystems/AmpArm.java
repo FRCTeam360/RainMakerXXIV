@@ -86,7 +86,7 @@ public class AmpArm extends SubsystemBase {
         if(armAngle < -37.5){
           io.setArm(-75.0);
         } else {
-          io.setArm(0.0);
+          io.setArm(1.0);
         }
         safeFromCollision = false;
       } else {

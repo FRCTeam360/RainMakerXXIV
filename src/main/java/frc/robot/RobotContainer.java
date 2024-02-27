@@ -124,7 +124,6 @@ public class RobotContainer {
   private LevelClimbers levelClimbers;
   private PowerAmpArm powerAmpArm;
   private PowerAmpIntake powerAmpIntake;
-  // private PowerLinkage powerLinkage = new PowerLinkage(linkage);
   private ShuffleboardTab diagnosticTab;
   private FieldOrientedDrive fieldOrientedDrive;
   private RobotOrientedDrive robotOrientedDrive;
@@ -246,6 +245,7 @@ public class RobotContainer {
     // autoCenterNote = commandFactory.shootInSpeaker(160.0, 6000.0);
     shootFromSubwoofer = commandFactory.shootFromSubwoofer();
     shootFromFar = commandFactory.shootFromFar();
+    powerLinkage = commandFactory.powerLinkage();
     // COMMENT OUT tuneSwerveDrive WHEN NOT USING, IT WILL SET YOUR SWERVE DRIVE
     // CONSTANTS TO 0 WHEN CONSTRUCTED
     // tuneSwerveDrive = new TuneSwerveDrive(drivetrain);

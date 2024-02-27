@@ -78,7 +78,7 @@ public class Linkage extends SubsystemBase {
       safeFromCollision = true;
     } else {
       io.setReference(0.0);
-      safeFromCollision = true;
+      safeFromCollision = false;
     }
     return safeFromCollision;
   }
