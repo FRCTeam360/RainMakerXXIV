@@ -52,7 +52,7 @@ public class IntakeIOSparkMax implements IntakeIO {
     inputs.intakeSideSensor = sideSensor.get();
     inputs.intakeHighSensor = highSensor.get();
     inputs.intakeVoltage = sparkMax.getAppliedOutput();
-    inputs.intakeAmps = sparkMax.getOutputCurrent();
+    inputs.intakeStatorCurrent = sparkMax.getOutputCurrent();
     inputs.intakeVelocity = encoder.getVelocity();
     inputs.intakePosition = encoder.getPosition();
   }
