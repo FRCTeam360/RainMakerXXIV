@@ -56,13 +56,13 @@ public class LinkageToAmpHandoff extends Command {
     System.out.println(state);
     switch (state) {
       case LINKAGE_DOWN:
-        linkage.setAngle(0.0);
+        linkage.setAngle(0.0, ampArm);
         if (linkage.getAngle() < 2.0) {
           state = States.SET_ARM;
         }
         break;
         case SET_ARM:
-        ampArm.setArm(-45.0);
+        ampArm.setArm(-45.0, linkage);
         ampArm.setWrist(45.0);
         if (Math.abs(ampArm.getArmPosition() + 45.0) < 2.0 && Math.abs(ampArm.getWristPosition() - 45.0) < 2.0) {
           timer.start();
@@ -81,13 +81,13 @@ public class LinkageToAmpHandoff extends Command {
         }
         break;
       case HAS_NOTE:
-        ampArm.setArm(0.);
+        ampArm.setArm(0.0, linkage);
         if (Math.abs(ampArm.getArmPosition()) < 1.0) {
           state = States.RETRACTED;
         }
         break;
       case RETRACTED:
-        linkage.setAngle(174.0);
+        linkage.setAngle(174.0, ampArm);
         done = true;
         break;
     }

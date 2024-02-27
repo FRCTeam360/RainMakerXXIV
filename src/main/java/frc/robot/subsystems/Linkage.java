@@ -5,6 +5,10 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+
+import java.util.Objects;
+import java.util.function.Supplier;
+
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
 
@@ -56,9 +60,33 @@ public class Linkage extends SubsystemBase {
     }
   }
 
-  public void run(double speed) {
-    System.out.println("linkage speed is " + speed);
-    io.set(speed);
+  /**
+   * Avoids collision between the linkage and the amp arm
+   * @param AmpArm ampArm
+   */
+  private boolean avoidCollisionWithAmpArm(AmpArm ampArm) {
+    boolean safeFromCollision = false;
+    if (Objects.isNull(ampArm)){
+      safeFromCollision = true;
+      return safeFromCollision;
+    }
+    double armAngle = ampArm.getArmPosition();
+    double linkageAngle = io.getPosition();
+    if (armAngle > 0.0) {
+      safeFromCollision = true;
+    } else if (armAngle < -70.0) {
+      safeFromCollision = true;
+    } else {
+      io.setReference(0.0);
+      safeFromCollision = true;
+    }
+    return safeFromCollision;
+  }
+
+  public void run(double speed, AmpArm ampArm) {
+    if (avoidCollisionWithAmpArm(ampArm)) {
+      io.set(speed);
+    }
   }
 
   public void stop() {
@@ -69,9 +97,11 @@ public class Linkage extends SubsystemBase {
     return io.getPosition();
   }
 
-  public void setAngle(double setPoint){
-    io.setReference(setPoint);
-    positionSetpoint = setPoint;
+  public void setAngle(double setPoint, AmpArm ampArm) {
+    if (avoidCollisionWithAmpArm(ampArm)) {
+      io.setReference(setPoint);
+      positionSetpoint = setPoint;
+    }
   }
 
   public double getPower() {
