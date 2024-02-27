@@ -115,8 +115,8 @@ public class ClimberIOSparkMax implements ClimberIO {
 
     @Override
     public void updateInputs(ClimberIOInputs inputs) {
-        inputs.climberLeftAmps = leftMotor.getOutputCurrent();
-        inputs.climberRightAmps = rightMotor.getOutputCurrent();
+        inputs.climberLeftStatorCurrent = leftMotor.getOutputCurrent();
+        inputs.climberRightStatorCurrent = rightMotor.getOutputCurrent();
         inputs.climberLeftPosition = leftEncoder.getPosition();
         inputs.climberRightPosition = rightEncoder.getPosition();
         inputs.climberLeftVelocity = leftEncoder.getVelocity();

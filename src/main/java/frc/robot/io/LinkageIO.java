@@ -19,8 +19,9 @@ public interface LinkageIO {
   public static class LinkageIOInputs {
     public double linkageVoltage = 0.0;
     public double linkagePosition = 0.0;
-    public double linkageAmps = 0.0;
     public double linkageVelocity = 0.0;
+    public double linkageStatorCurrent = 0.0;
+    public double linkageSupplyCurrent =  0.0;
   }
 
   public default void updateInputs(LinkageIOInputs inputs) {}

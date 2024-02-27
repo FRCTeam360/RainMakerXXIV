@@ -17,7 +17,8 @@ public interface IntakeIO {
     public double intakeVoltage = 0.0;
     public boolean intakeHighSensor = true;
     public boolean intakeSideSensor = true;
-    public double intakeAmps = 0.0;
+    public double intakeStatorCurrent = 0.0;
+    // public double intakeSupplyCurrent = 0.0;
     public double intakePosition = 0.0;
     public double intakeVelocity = 0.0;
   }
