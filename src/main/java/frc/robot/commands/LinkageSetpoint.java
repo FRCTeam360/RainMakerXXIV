@@ -6,13 +6,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.AmpArm;
 import frc.robot.subsystems.Linkage;
 
 public class LinkageSetpoint extends Command {
-  private Linkage linkage;
+  private final Linkage linkage;
+  private final AmpArm arm;
   /** Creates a new LinkageSetpoint. */
-  public LinkageSetpoint(Linkage linkage) {
+  public LinkageSetpoint(Linkage linkage, AmpArm arm) {
     this.linkage = linkage;
+    this.arm = arm;
     addRequirements(linkage);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -28,7 +31,7 @@ public class LinkageSetpoint extends Command {
   public void execute() {
     SmartDashboard.putNumber("Linkage angle", linkage.getAngle());
     double setpoint = SmartDashboard.getNumber("Setpoint", 0.0);
-    linkage.setAngle(setpoint);
+    linkage.setAngle(setpoint, arm);
     SmartDashboard.putBoolean("Linkage at setpoint?", linkage.isAtSetpoint());
   }
 
