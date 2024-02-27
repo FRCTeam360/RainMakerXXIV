@@ -6,17 +6,20 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.AmpArm;
 import frc.robot.subsystems.Linkage;
 import frc.robot.utils.CommandLogger;
 
 public class RunLinkage extends Command {
 
   private final Linkage shooterLinkage;
+  private final AmpArm arm;
   private final XboxController operatorCont = new XboxController(1);
 
   /** Creates a new RunShooterLinkage. */
-  public RunLinkage(Linkage shooterLinkage) {
+  public RunLinkage(Linkage shooterLinkage, AmpArm arm) {
     this.shooterLinkage = shooterLinkage;
+    this.arm = arm;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooterLinkage);
   }
@@ -38,7 +41,7 @@ public class RunLinkage extends Command {
     //   shooterLinkage.stop();
     // }
 
-    shooterLinkage.run(operatorCont.getLeftY() * 0.2);
+    shooterLinkage.run(operatorCont.getLeftY() * 0.2, arm);
     CommandLogger.logCommandRunning(this);
   }
 

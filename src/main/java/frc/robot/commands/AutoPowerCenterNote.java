@@ -5,6 +5,7 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.AmpArm;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
@@ -12,12 +13,13 @@ import frc.robot.utils.CommandLogger;
 
 public class AutoPowerCenterNote extends Command{
     enum IntakeCases {CHECK_ROBOT_EMPTY, EXTEND_INTAKE, WAIT_FOR_SENSOR, UP_TO_SHOOTER, DOWN_TO_INTAKE, RETRACT_STOP, BACK_UP, CENTER, DONE}; 
-  private Linkage linkage;
+  private final Linkage linkage;
   private double setpoint;
-  private Flywheel flywheel; 
+  private final Flywheel flywheel; 
   //private DigitalInput sensor = new DigitalInput(0);
   
-  private Intake intake;
+  private final Intake intake;
+  private final AmpArm arm;
   private static XboxController operatorCont = new XboxController(1);
   private Timer timer = new Timer();
   private double settyspaghettipoint;
@@ -27,11 +29,12 @@ public class AutoPowerCenterNote extends Command{
  
   
   /** Creates a new Java. */
-  public AutoPowerCenterNote(Intake intake, Linkage linkage, Flywheel flywheel, double settyspaghettipoint) {
+  public AutoPowerCenterNote(AmpArm arm, Intake intake, Linkage linkage, Flywheel flywheel, double settyspaghettipoint) {
     this.intake = intake;
     this.settyspaghettipoint = settyspaghettipoint;
     this.linkage = linkage;
     this.flywheel = flywheel; 
+    this.arm = arm;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake, linkage);
   }
@@ -67,7 +70,7 @@ public class AutoPowerCenterNote extends Command{
       case EXTEND_INTAKE:
            Logger.recordOutput("INTAKE_STATE", 2);
 
-        linkage.setAngle(0.0);
+        linkage.setAngle(0.0, arm);
         intake.run(.4);
         if(!intake.getSideSensor()) {
           state = IntakeCases.UP_TO_SHOOTER;
@@ -91,14 +94,14 @@ public class AutoPowerCenterNote extends Command{
         // }
         break;
       case BACK_UP:
-        linkage.setAngle(90.0);
+        linkage.setAngle(90.0, arm);
         intake.run(-.25);
         if(intake.getSideSensor()){
             state = IntakeCases.CENTER;
         }
         break;
       case CENTER:
-        linkage.setAngle(90.0);
+        linkage.setAngle(90.0, arm);
         intake.run(.2);
         if(!intake.getDiagonalSensor()){
           intake.stop();
@@ -109,7 +112,7 @@ public class AutoPowerCenterNote extends Command{
         // }
         break;
       case DONE:
-        linkage.setAngle(settyspaghettipoint); 
+        linkage.setAngle(settyspaghettipoint, arm); 
         if(linkage.isAtSetpoint()) {
           state = IntakeCases.RETRACT_STOP;
         }   

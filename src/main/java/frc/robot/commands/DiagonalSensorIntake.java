@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.AmpArm;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
@@ -13,6 +14,8 @@ public class DiagonalSensorIntake extends Command {
   private final Flywheel flywheel;
   private final Intake intake;
   private final Linkage linkage;
+  private final AmpArm arm;
+
   private double x = 0;
   private double flywheelSetpoint;
   private enum IntakeCases {
@@ -24,12 +27,13 @@ public class DiagonalSensorIntake extends Command {
   }
   private IntakeCases state;
   /** Creates a new DiagonalSensorIntake. */
-  public DiagonalSensorIntake(Flywheel flywheel, Intake intake, Linkage linkage, double flywheelSetpoint) {
+  public DiagonalSensorIntake(AmpArm arm, Flywheel flywheel, Intake intake, Linkage linkage, double flywheelSetpoint) {
     // Use addRequirements() here to declare subsystem dependencies.
     state = IntakeCases.EXTEND_INTAKE;
     this.flywheel = flywheel;
     this.intake = intake;
     this.linkage = linkage;
+    this.arm = arm;
     this.flywheelSetpoint = flywheelSetpoint;
     addRequirements(flywheel, intake, linkage);
   }
@@ -50,28 +54,28 @@ public class DiagonalSensorIntake extends Command {
     // }
     switch(state) {
       case EXTEND_INTAKE:
-        linkage.setAngle(0.0);
+        linkage.setAngle(0.0, arm);
         intake.run(.4);
         if(!intake.getDiagonalSensor()) {
           state = IntakeCases.SPIN_UP_FLYWHEEL;
         }
         break;
       case MOVE_UP_INTAKE:
-        linkage.setAngle(90.0);
+        linkage.setAngle(90.0, arm);
         intake.run(.5);
         if(!intake.getDiagonalSensor()) {
           state = IntakeCases.REVERSE_INTAKE;
         }
         break;
       case REVERSE_INTAKE:
-        linkage.setAngle(90.0);
+        linkage.setAngle(90.0, arm);
         intake.run(-.5);
         if(intake.getSideSensor()) {
           state = IntakeCases.SPIN_UP_FLYWHEEL;
         }
         break;
       case SPIN_UP_FLYWHEEL:
-        linkage.setAngle(90.0);
+        linkage.setAngle(90.0, arm);
         if(linkage.isAtSetpoint()) {
           state = IntakeCases.END;
         }

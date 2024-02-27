@@ -13,11 +13,13 @@ import frc.robot.utils.CommandLogger;
 public class PowerLinkage extends Command {
 
   private final Linkage shooterLinkage;
+  private final AmpArm arm;
   private final XboxController driverCont = new XboxController(0);
 
   /** Creates a new RunShooterLinkage. */
-  public PowerLinkage(Linkage shooterLinkage) {
+  public PowerLinkage(Linkage shooterLinkage, AmpArm arm) {
     this.shooterLinkage = shooterLinkage;
+    this.arm = arm;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooterLinkage);
   }
@@ -31,7 +33,7 @@ public class PowerLinkage extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooterLinkage.run(driverCont.getLeftY() * 0.7);
+    shooterLinkage.run(getWithDeadband(driverCont.getLeftY() * 0.7), arm);
     // if (operatorCont.getRightTriggerAxis() > 0.1) {
     //   shooterLinkage.run(0.2);
     // } else if (operatorCont.getLeftTriggerAxis() > 0.1) {
@@ -40,6 +42,13 @@ public class PowerLinkage extends Command {
     //   shooterLinkage.stop();
     // }
     CommandLogger.logCommandRunning(this);
+  }
+  
+  public double getWithDeadband(double input) {
+    if (Math.abs(input) < 0.1) {
+      input = 0.0;
+    }
+    return input;
   }
 
   // Called once the command ends or is interrupted.
