@@ -38,7 +38,7 @@ public class AmpArmNote extends Command {
        if(intake.getAmps() > 25) {
         state = Cases.NOTE;
        }
-      intake.runIntake(-.2);
+      intake.runIntake(0.2);
     }
    
   }

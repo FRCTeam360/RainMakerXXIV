@@ -28,9 +28,16 @@ public class PowerAmpArm extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //ampArm.avoidWristCollision(0.0);
-    ampArm.runArm(-operatorCont.getRightY() * 0.5);
-    ampArm.runWrist(operatorCont.getLeftY() * 0.1);
+    // ampArm.avoidWristCollision(0.0);
+    ampArm.runWrist(getWithDeadband(-operatorCont.getLeftY()) * 0.1);
+    ampArm.runArm(getWithDeadband(operatorCont.getRightY()) * 0.5);
+  }
+
+  public double getWithDeadband(double input) {
+    if (Math.abs(input) < 0.1) {
+      input = 0.0;
+    }
+    return input;
   }
 
   // Called once the command ends or is interrupted.

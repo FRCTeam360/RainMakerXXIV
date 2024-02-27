@@ -28,10 +28,10 @@ public class ScoreInAmp extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ampArm.setArm(93.3);
-    ampArm.setWrist(113.0);
+    ampArm.setArm(108.5);
+    ampArm.setWrist(140.3);
 
-    if (ampArm.getArmPosition() >= 92.0 && ampArm.getWristPosition() >= 111.0) {
+    if (ampArm.getArmPosition() >= 107.0 && ampArm.getWristPosition() >= 139.0) {
       ampIntake.runIntake(0.5);
     }
   }

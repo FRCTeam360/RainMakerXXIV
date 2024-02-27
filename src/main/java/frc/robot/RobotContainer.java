@@ -24,6 +24,7 @@ import frc.robot.commands.FieldOrientedDrive;
 import frc.robot.commands.IntakeCOmmand;
 import frc.robot.commands.LevelClimbers;
 import frc.robot.commands.LinkageSetpoint;
+import frc.robot.commands.LinkageToAmpHandoff;
 import frc.robot.commands.PowerAmpArm;
 import frc.robot.commands.PowerAmpIntake;
 import frc.robot.commands.PowerAmpIntakeReverse;
@@ -140,6 +141,7 @@ public class RobotContainer {
   private AmpArmNote ampArmNote;
   private IntakeCOmmand inny;
   private ScoreInAmp scoreInAmp;
+  private LinkageToAmpHandoff linkageToAmpHandoff;
 
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
@@ -221,6 +223,7 @@ public class RobotContainer {
 
   private final void initializeCommands() {
     scoreInAmp = new ScoreInAmp(ampArm, ampIntake);
+    linkageToAmpHandoff = new LinkageToAmpHandoff(linkage, ampArm, ampIntake, flywheel, intake);
     diagonalSensorIntakeCloseShot = new DiagonalSensorIntake(flywheel, intake, linkage, 6000.0);
     commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
@@ -283,11 +286,13 @@ public class RobotContainer {
   }
 
   private void configureDefaultCommands() {
-    // ampArm.setDefaultCommand(powerAmpArm);
+    //ampArm.setDefaultCommand(powerAmpArm);
 
-    drivetrain.setDefaultCommand(fieldOrientedDrive);
+    //drivetrain.setDefaultCommand(fieldOrientedDrive);
     //linkage.setDefaultCommand(powerLinkage);
     ampArm.setDefaultCommand(powerAmpArm);
+    linkage.setDefaultCommand(powerLinkage);
+   // linkage.setDefaultCommand(linkageSetpoint);
     //climber.setDefaultCommand(powerClimber);
   }
 
@@ -310,7 +315,13 @@ public class RobotContainer {
     operatorController.leftBumper().whileTrue(powerAmpIntakeReverse);
     operatorController.rightBumper().whileTrue(powerAmpIntake);
 
-    operatorController.a().whileTrue(scoreInAmp);
+    driverController.leftBumper().whileTrue(powerIntakeReversed);
+    driverController.rightBumper().whileTrue(powerIntake);
+    driverController.b().whileTrue(new InstantCommand(() -> flywheel.handoff(900.0), flywheel));
+
+    // operatorController.a().whileTrue(scoreInAmp);
+    // operatorController.b().onTrue(linkageToAmpHandoff);
+    // operatorController.a().onTrue(new InstantCommand(()-> ampArm.setArm(90.0)), ampArm);
     
     //operatorController.y().onTrue(diagonalSensorIntakeCloseShot);
     // operatorController.b().onTrue(stowLinkage);
