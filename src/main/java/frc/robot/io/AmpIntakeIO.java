@@ -26,5 +26,9 @@ public interface AmpIntakeIO {
 
   public void stop();
 
+  public double getEncoderPosition();
+
   public double getIntakeSpeed();
+
+  public double getAmps();
 }

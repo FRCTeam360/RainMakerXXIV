@@ -26,8 +26,7 @@ public class PowerClimber extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("TRYING TO RUN LMAOO");
-    climber.runBoth(-operatorCont.getLeftY()* .3, -operatorCont.getRightY() * .3);//works when the rope wraps UNDER the spool
+    climber.runBoth(-operatorCont.getLeftTriggerAxis()* .3, -operatorCont.getRightTriggerAxis() * .3);//works when the rope wraps UNDER the spool
   }
 
   // Called once the command ends or is interrupted.

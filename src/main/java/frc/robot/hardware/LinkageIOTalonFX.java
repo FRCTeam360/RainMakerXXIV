@@ -75,7 +75,7 @@ public class LinkageIOTalonFX implements LinkageIO {
     final double motionMagicCruiseVelocity = 85.0;
     final double motionMagicCruiseJerk = 1750.0;
 
-    final double forwardLimit = 28.0; // TODO: make sure these are correct for prac bot
+    final double forwardLimit = 178.0 / GEAR_RATIO; // TODO: make sure these are correct for prac bot
     final double reverseLimit = 0.0; // 29.5
     
     talonFX.getConfigurator().apply(new TalonFXConfiguration());

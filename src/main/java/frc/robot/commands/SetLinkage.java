@@ -6,17 +6,20 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.AmpArm;
 import frc.robot.subsystems.Linkage;
 
 public class SetLinkage extends Command {
-  final Linkage linkage;
+  private final Linkage linkage;
+  private final AmpArm arm;
   private double setpoint;
   /** Creates a new SetLinkageTa\
    * lon. */
-  public SetLinkage(Linkage linkage, double setpoint) {
+  public SetLinkage(Linkage linkage, double setpoint, AmpArm arm) {
     this.setpoint = setpoint;
     // Use addRequirements() here to declare subsystem dependencies.
     this.linkage = linkage;
+    this.arm = arm;
     addRequirements(linkage);
   }
 
@@ -30,7 +33,7 @@ public class SetLinkage extends Command {
   @Override
   public void execute() {
     //SmartDashboard.putNumber("error", -7.0 - linkage.getAngle());
-    linkage.setAngle(setpoint);
+    linkage.setAngle(setpoint, arm);
   }
 
   // Called once the command ends or is interrupted.

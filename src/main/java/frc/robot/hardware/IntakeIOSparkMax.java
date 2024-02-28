@@ -29,6 +29,7 @@ public class IntakeIOSparkMax implements IntakeIO {
     // new hardware class for sensor?
     private final DigitalInput sideSensor = new DigitalInput(Constants.INTAKE_SIDE_SENSOR_PORT); // update port later idk what it is
     private final DigitalInput highSensor = new DigitalInput(Constants.INTAKE_HIGH_SENSOR_PORT); // update port later idk what it is
+    private final DigitalInput diagonalSensor = new DigitalInput(Constants.INTAKE_DIAGONAL_SENSOR_PORT);
 
   public IntakeIOSparkMax() {
     sparkMax.restoreFactoryDefaults();
@@ -68,6 +69,11 @@ public class IntakeIOSparkMax implements IntakeIO {
   }
 
   @Override
+  public boolean getDiagonalSensor() {
+    return diagonalSensor.get();
+  }
+
+  @Override
   public double getPower() {
     return sparkMax.get();
   }
@@ -93,6 +99,11 @@ public class IntakeIOSparkMax implements IntakeIO {
   @Override
   public void setEncoderValue(double encoderPosition) {
     encoder.setPosition(encoderPosition);
+  }
+
+  @Override
+  public double getVelocity() {
+    return encoder.getVelocity();
   }
 
   @Override
