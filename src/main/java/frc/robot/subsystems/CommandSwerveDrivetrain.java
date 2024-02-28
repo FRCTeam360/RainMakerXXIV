@@ -293,8 +293,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         ChassisSpeeds k = this.m_kinematics.toChassisSpeeds(states);
         double x = k.vxMetersPerSecond;
         double y = k.vyMetersPerSecond;
-        System.out.println("X VELOCITY: " + x);
-        System.out.println("Y VELOCITY: " + y);
         return k;
     }
 
