@@ -39,7 +39,6 @@ public class IntakeIOSparkFlex implements IntakeIO{
         inputs.intakeHighSensor = highSensor.get();
         inputs.intakeVoltage = sparkFlex.getAppliedOutput() * sparkFlex.getBusVoltage();
         inputs.intakeStatorCurrent = sparkFlex.getOutputCurrent();
-        // inputs.intakeSupplyCurrent = sparkFlex.getBusVoltage();
         inputs.intakeVelocity = encoder.getVelocity();
         inputs.intakePosition = encoder.getPosition();
     }
