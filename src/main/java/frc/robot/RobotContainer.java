@@ -222,8 +222,11 @@ public class RobotContainer {
   }
 
   private final void initializeCommands() {
-    scoreInAmp = new ScoreInAmp(ampArm, ampIntake, linkage);
-    linkageToAmpHandoff = new LinkageToAmpHandoff(linkage, ampArm, ampIntake, flywheel, intake);
+    if(Objects.nonNull(ampArm) && Objects.nonNull(ampIntake)){
+      scoreInAmp = new ScoreInAmp(ampArm, ampIntake, linkage);
+      linkageToAmpHandoff = new LinkageToAmpHandoff(linkage, ampArm, ampIntake, flywheel, intake);
+      ampArmNote = new AmpArmNote(ampIntake);
+    }
     diagonalSensorIntakeCloseShot = new DiagonalSensorIntake(ampArm, flywheel, intake, linkage, 6000.0);
     commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, ampArm);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
@@ -239,7 +242,6 @@ public class RobotContainer {
     tuneFlywheel = new TuneFlywheel(flywheel);
     linkageSetpoint = new LinkageSetpoint(linkage, ampArm);
     stowLinkage = commandFactory.stowLinkage();
-    ampArmNote = new AmpArmNote(ampIntake);
     powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
     inny = new IntakeCOmmand(intake);
     shootRoutine = commandFactory.shootInSpeaker(174.0, 6000.0);
@@ -289,7 +291,9 @@ public class RobotContainer {
 
     //drivetrain.setDefaultCommand(fieldOrientedDrive);
     //linkage.setDefaultCommand(powerLinkage);
-    ampArm.setDefaultCommand(powerAmpArm);
+    if(Objects.nonNull(ampArm)){
+      ampArm.setDefaultCommand(powerAmpArm);
+    }
     linkage.setDefaultCommand(powerLinkage);
    // linkage.setDefaultCommand(linkageSetpoint);
     //climber.setDefaultCommand(powerClimber);
@@ -318,8 +322,10 @@ public class RobotContainer {
     driverController.rightBumper().whileTrue(powerIntake);
     driverController.b().whileTrue(new InstantCommand(() -> flywheel.handoff(900.0), flywheel));
 
-    operatorController.a().whileTrue(scoreInAmp);
-    operatorController.b().onTrue(linkageToAmpHandoff);
+    if(Objects.nonNull(ampArm) && Objects.nonNull(ampIntake)){
+      operatorController.a().whileTrue(scoreInAmp);
+      operatorController.b().onTrue(linkageToAmpHandoff);
+    }
     operatorController.y().onTrue(autoPowerCenterNote);
     // operatorController.a().onTrue(new InstantCommand(()-> ampArm.setArm(90.0)), ampArm);
     
