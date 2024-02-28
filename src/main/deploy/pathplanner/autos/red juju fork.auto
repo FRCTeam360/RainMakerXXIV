@@ -14,37 +14,37 @@
         {
           "type": "named",
           "data": {
-            "name": "AutoShot1"
+            "name": "Shoot without drivetrain"
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
+          "data": {
+            "name": "extend linkage"
+          }
+        },
+        {
+          "type": "race",
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              },
-              {
-                "type": "sequential",
+                "type": "parallel",
                 "data": {
                   "commands": [
                     {
-                      "type": "path",
+                      "type": "named",
                       "data": {
-                        "pathName": "bulletproof 1"
+                        "name": "Intake"
                       }
                     },
                     {
-                      "type": "race",
+                      "type": "sequential",
                       "data": {
                         "commands": [
                           {
-                            "type": "named",
+                            "type": "path",
                             "data": {
-                              "name": "Spinny"
+                              "pathName": "bulletproof 1"
                             }
                           },
                           {
@@ -58,6 +58,12 @@
                     }
                   ]
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Spinny"
+                }
               }
             ]
           }
@@ -65,37 +71,31 @@
         {
           "type": "named",
           "data": {
-            "name": "AutoShot1"
+            "name": "Shoot without drivetrain"
           }
         },
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              },
-              {
-                "type": "sequential",
+                "type": "parallel",
                 "data": {
                   "commands": [
                     {
-                      "type": "path",
+                      "type": "named",
                       "data": {
-                        "pathName": "bulletproof 3"
+                        "name": "Intake"
                       }
                     },
                     {
-                      "type": "race",
+                      "type": "sequential",
                       "data": {
                         "commands": [
                           {
-                            "type": "named",
+                            "type": "path",
                             "data": {
-                              "name": "Spinny"
+                              "pathName": "bulletproof 3"
                             }
                           },
                           {
@@ -109,6 +109,12 @@
                     }
                   ]
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Spinny"
+                }
               }
             ]
           }
@@ -116,37 +122,31 @@
         {
           "type": "named",
           "data": {
-            "name": "AutoShot1"
+            "name": "Shoot without drivetrain"
           }
         },
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              },
-              {
-                "type": "sequential",
+                "type": "parallel",
                 "data": {
                   "commands": [
                     {
-                      "type": "path",
+                      "type": "named",
                       "data": {
-                        "pathName": "bulletproof 5"
+                        "name": "Intake"
                       }
                     },
                     {
-                      "type": "race",
+                      "type": "sequential",
                       "data": {
                         "commands": [
                           {
-                            "type": "named",
+                            "type": "path",
                             "data": {
-                              "name": "Spinny"
+                              "pathName": "bulletproof 5"
                             }
                           },
                           {
@@ -160,6 +160,12 @@
                     }
                   ]
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Spinny"
+                }
               }
             ]
           }
@@ -167,7 +173,7 @@
         {
           "type": "named",
           "data": {
-            "name": "AutoShot1"
+            "name": "Shoot without drivetrain"
           }
         }
       ]

@@ -5,20 +5,28 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.AmpArm;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Linkage;
 
 public class IntakeCOmmand extends Command {
   private final Intake intake;
+  private final Linkage linkage;
+  private AmpArm ampArm;
   private boolean stop = false;
   /** Creates a new IntakeCOmmand. */
-  public IntakeCOmmand(Intake intake) {
+  public IntakeCOmmand(Intake intake, Linkage linkage, AmpArm ampArm) {
     this.intake = intake;
+    this.linkage = linkage;
+    this.ampArm = ampArm;
+    
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    linkage.setAngle(0.0, ampArm);
     stop = false;
   }
 
@@ -28,13 +36,14 @@ public class IntakeCOmmand extends Command {
     if(!intake.getSideSensor()) {
       stop = true;
     }
-    intake.run(.7);
+    intake.run(.85);
   }
   
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    linkage.setAngle(177.0, ampArm);
     intake.stop();
   }
 
