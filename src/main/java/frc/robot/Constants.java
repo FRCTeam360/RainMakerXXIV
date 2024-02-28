@@ -30,6 +30,7 @@ public class Constants {
 
         public static final int INTAKE_HIGH_SENSOR_PORT = 0;
         public static final int INTAKE_SIDE_SENSOR_PORT = 1;
+        public static final int INTAKE_DIAGONAL_SENSOR_PORT = 2;
         public static final int LINKAGE_ZERO_BUTTON_PORT = 8;
         public static final int LINKAGE_BRAKE_TOGGLE_BUTTON_PORT = 9;
 

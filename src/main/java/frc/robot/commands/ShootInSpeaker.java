@@ -10,15 +10,17 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.subsystems.AmpArm;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
 
 public class ShootInSpeaker extends Command {
-  private Linkage linkage;
-  private Flywheel flywheel;
-  private CommandSwerveDrivetrain drivetrain;
+  private final Linkage linkage;
+  private final Flywheel flywheel;
+  private final CommandSwerveDrivetrain drivetrain;
+  private final AmpArm arm;
 
   private double linkageSetpoint;
   private double flywheelSetpoint;
@@ -34,7 +36,7 @@ public class ShootInSpeaker extends Command {
   }
 
   /** Creates a new ShootInSpeaker. */
-  public ShootInSpeaker(Linkage linkage, Flywheel flywheel,
+  public ShootInSpeaker(AmpArm ampArm, Linkage linkage, Flywheel flywheel,
       CommandSwerveDrivetrain drivetrain, Intake intake,
       double linkageSetpoint, double flywheelSetpoint, double driveSetpoint) { // Add your commands in the
     // addCommands() call, e.g.
@@ -48,6 +50,7 @@ public class ShootInSpeaker extends Command {
     this.flywheelSetpoint = flywheelSetpoint;
     this.driveAngleSetpoint = driveSetpoint;
     this.intake = intake;
+    this.arm = ampArm;
 
     // withDriveTrain = true;
   }
@@ -59,7 +62,7 @@ public class ShootInSpeaker extends Command {
     timer.reset();
   }
 
-  public ShootInSpeaker(Linkage linkage, Flywheel flywheel, Intake intake,
+  public ShootInSpeaker(AmpArm ampArm, Linkage linkage, Flywheel flywheel, Intake intake,
       double linkageSetpoint, double flywheelSetpoint) { // Add your commands in the
     // addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
@@ -71,9 +74,14 @@ public class ShootInSpeaker extends Command {
     this.linkageSetpoint = linkageSetpoint;
     this.flywheelSetpoint = flywheelSetpoint;
     this.intake = intake;
+    this.arm = ampArm;
+    this.drivetrain = null;
 
     // withDriveTrain = false;
   }
+
+  
+
 
   @Override
   public void execute() {
@@ -82,7 +90,7 @@ public class ShootInSpeaker extends Command {
       drivetrain.driveFieldCentricFacingAngle(0.0, 0.0, 0.0, driveAngleSetpoint); // drivetrain is rotated in its own
                                                                                   // command ran in // parallel
     } 
-    linkage.setAngle(linkageSetpoint);
+    linkage.setAngle(linkageSetpoint, arm);
     System.out.println("this is the robot state: " + this.state);
     flywheel.setBothRPM(flywheelSetpoint);
     System.out.println("left velocity: " + flywheel.getLeftVelocity());
@@ -112,7 +120,7 @@ public class ShootInSpeaker extends Command {
         break;
       case TIMER:
         intake.run(1.0);
-        if (timer.hasElapsed(0.3)) {
+        if (timer.hasElapsed(0.3) && intake.getDiagonalSensor() && intake.getSideSensor()) {
           this.state = ShootState.END;
         }
         break;

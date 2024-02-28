@@ -112,15 +112,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         }
     }
 
-    public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency,
-            SwerveModuleConstants... modules) {
-        super(driveTrainConstants, OdometryUpdateFrequency, modules);
-        configurePID();
-        if (Utils.isSimulation()) {
-            startSimThread();
-        }
-    
-
+    public void setupPathPlanner(){
+        
         AutoBuilder.configureHolonomic(
                 this::getPose, // Robot pose supplier
                 this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
@@ -139,15 +132,20 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                     // alliance
                     // This will flip the path being followed to the red side of the field.
                     // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-                    var alliance = DriverStation.getAlliance();
-                    if (alliance.isPresent()) {
-                        return alliance.get() == DriverStation.Alliance.Red;
-                    }
                     return false;
                 },
                 this // Reference to this subsystem to set requirements
         );
+    }
+
+    public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency,
+            SwerveModuleConstants... modules) {
+        super(driveTrainConstants, OdometryUpdateFrequency, modules);
+        configurePID();
+        if (Utils.isSimulation()) {
+            startSimThread();
+        }
+        setupPathPlanner();
         // setupShuffleboard();
     }
 
@@ -159,33 +157,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             startSimThread();
         }
 
-        AutoBuilder.configureHolonomic(
-                this::getPose, // Robot pose supplier
-                this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
-                this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-                this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your
-                                                 // Constants class
-                        new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                        new PIDConstants(5.75, 0.0, 0.0), // Rotation PID constants
-                        4.5, // Max module speed, in m/s
-                        0.4, // Drive base radius in meters. Distance from robot center to furthest module.
-                        new ReplanningConfig() // Default path replanning config. See the API for the options here
-                ),
-                () -> {
-                    // Boolean supplier that controls when the path will be mirrored for the red
-                    // alliance
-                    // This will flip the path being followed to the red side of the field.
-                    // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-                    var alliance = DriverStation.getAlliance();
-                    if (alliance.isPresent()) {
-                        return alliance.get() == DriverStation.Alliance.Red;
-                    }
-                    return false;
-                },
-                this // Reference to this subsystem to set requirements
-        );
+       setupPathPlanner();
         // setupShuffleboard();
     }
 
@@ -310,7 +282,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     private void resetPose(Pose2d pose) {
         seedFieldRelative(pose);
-        this.getPigeon2().setYaw(pose.getRotation().getDegrees());
+        //this.getPigeon2().setYaw(pose.getRotation().getDegrees());
     }
 
     private ChassisSpeeds getRobotRelativeSpeeds() {
@@ -321,8 +293,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         ChassisSpeeds k = this.m_kinematics.toChassisSpeeds(states);
         double x = k.vxMetersPerSecond;
         double y = k.vyMetersPerSecond;
-        System.out.println("X VELOCITY: " + x);
-        System.out.println("Y VELOCITY: " + y);
         return k;
     }
 

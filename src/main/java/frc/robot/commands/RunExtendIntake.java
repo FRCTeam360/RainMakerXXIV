@@ -7,17 +7,20 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.AmpArm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
 import frc.robot.utils.CommandLogger;
 
 public class RunExtendIntake extends Command {
   enum IntakeCases {CHECK_ROBOT_EMPTY, EXTEND_INTAKE, WAIT_FOR_SENSOR, UP_TO_SHOOTER, DOWN_TO_INTAKE, RETRACT_STOP}; 
-  private Linkage linkage;
+  private final Linkage linkage;
   private double setpoint;
   //private DigitalInput sensor = new DigitalInput(0);
   
-  private Intake intake;
+  private final Intake intake;
+  private final AmpArm arm;
+
   private static XboxController operatorCont = new XboxController(1);
   private Timer timer = new Timer();
   private Timer sensorTimer = new Timer();
@@ -27,9 +30,11 @@ public class RunExtendIntake extends Command {
  
   
   /** Creates a new Java. */
-  public RunExtendIntake(Intake intake, Linkage linkage) {
+  public RunExtendIntake(Intake intake, Linkage linkage, AmpArm arm) {
     this.intake = intake;
     this.linkage = linkage;
+    this.arm = arm;
+
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake, linkage);
   }
@@ -58,7 +63,7 @@ public class RunExtendIntake extends Command {
         }
         break;
       case EXTEND_INTAKE:
-        linkage.setAngle(setpoint);                           
+        linkage.setAngle(setpoint, arm);                           
         intake.run(1);
         if(!intake.getSideSensor()) {
           timer.start();
@@ -72,7 +77,7 @@ public class RunExtendIntake extends Command {
         // }
         break;
       case UP_TO_SHOOTER:
-        linkage.setAngle(130.0);
+        linkage.setAngle(130.0, arm);
         // if(timer.get() > 1) {
         //   setpoint = .7;
         // } else {

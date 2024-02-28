@@ -1,11 +1,23 @@
 {
-  "robotWidth": 0.61,
-  "robotLength": 0.61,
+  "robotWidth": 0.79,
+  "robotLength": 0.79375,
   "holonomicMode": true,
-  "pathFolders": [],
-  "autoFolders": [],
-  "defaultMaxVel": 1.0,
-  "defaultMaxAccel": 3.0,
+  "pathFolders": [
+    "4 Wing & center over",
+    "4 wing preload",
+    "death sweep",
+    "center grabs",
+    "start shoot"
+  ],
+  "autoFolders": [
+    "2 notes",
+    "3 notes",
+    "4 notes",
+    "5 notes",
+    "6 notes"
+  ],
+  "defaultMaxVel": 5.7,
+  "defaultMaxAccel": 6.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
   "maxModuleSpeed": 4.5

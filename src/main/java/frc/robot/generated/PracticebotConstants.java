@@ -31,11 +31,11 @@ public class PracticebotConstants {
     private static final ClosedLoopOutputType steerClosedLoopOutput = ClosedLoopOutputType.Voltage;
     // The closed-loop output type to use for the drive motors;
     // This affects the PID/FF gains for the drive motors
-    private static final ClosedLoopOutputType driveClosedLoopOutput = ClosedLoopOutputType.TorqueCurrentFOC;
+    private static final ClosedLoopOutputType driveClosedLoopOutput = ClosedLoopOutputType.Voltage;
 
     // The stator current at which the wheels start to slip;
     // This needs to be tuned to your individual robot
-    private static final double kSlipCurrentA = 50.0;
+    private static final double kSlipCurrentA = 80.0;
 
     // Theoretical free speed (m/s) at 12v applied output;
     // This needs to be tuned to your individual robot
@@ -91,7 +91,7 @@ public class PracticebotConstants {
     private static final int kFrontLeftDriveMotorId = 12;
     private static final int kFrontLeftSteerMotorId = 10;
     private static final int kFrontLeftEncoderId = 11;
-    private static final double kFrontLeftEncoderOffset = 0.291259765625;
+    private static final double kFrontLeftEncoderOffset = 0.29443359375;
 
     private static final double kFrontLeftXPosInches = 9.625;
     private static final double kFrontLeftYPosInches = 9.625;
@@ -100,7 +100,7 @@ public class PracticebotConstants {
     private static final int kFrontRightDriveMotorId = 3;
     private static final int kFrontRightSteerMotorId = 1;
     private static final int kFrontRightEncoderId = 2;
-    private static final double kFrontRightEncoderOffset = 0.231201171875;
+    private static final double kFrontRightEncoderOffset = 0.229736328125;
 
     private static final double kFrontRightXPosInches = 9.625;
     private static final double kFrontRightYPosInches = -9.625;
@@ -109,7 +109,7 @@ public class PracticebotConstants {
     private static final int kBackLeftDriveMotorId = 9;
     private static final int kBackLeftSteerMotorId = 7;
     private static final int kBackLeftEncoderId = 8;
-    private static final double kBackLeftEncoderOffset = -0.328125;
+    private static final double kBackLeftEncoderOffset = -0.233154296875;
 
     private static final double kBackLeftXPosInches = -9.625;
     private static final double kBackLeftYPosInches = 9.625;
@@ -118,7 +118,7 @@ public class PracticebotConstants {
     private static final int kBackRightDriveMotorId = 6;
     private static final int kBackRightSteerMotorId = 4;
     private static final int kBackRightEncoderId = 5;
-    private static final double kBackRightEncoderOffset = -0.2607421875;
+    private static final double kBackRightEncoderOffset = -0.25927734375;
 
     private static final double kBackRightXPosInches = -9.625;
     private static final double kBackRightYPosInches = -9.625;

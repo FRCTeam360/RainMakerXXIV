@@ -16,6 +16,8 @@ import com.revrobotics.CANSparkFlex;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
+import java.util.Objects;
+
 import org.littletonrobotics.junction.Logger;
 
 import com.revrobotics.CANSparkBase.ControlType;
@@ -42,7 +44,7 @@ public class Flywheel extends SubsystemBase {
     io.setRight(speed);
   }
 
-  public void runBoth(double leftSpeed, double rightSpeed) { 
+  public void runBoth(double leftSpeed, double rightSpeed) {
     io.setLeft(leftSpeed);
     io.setRight(rightSpeed);
   }
@@ -57,13 +59,20 @@ public class Flywheel extends SubsystemBase {
     io.setRightReference(rpm, ControlType.kVelocity);
   }
 
+  public void handoff(double rpm) {
+    rpmSetpoint = rpm;
+    io.setLeftReference(rpm, ControlType.kVelocity);
+    io.setRightReference(rpm, ControlType.kVelocity);
+
+  }
+
   public void setBothRPM(double rpm) {
     rpmSetpoint = rpm;
-    if(rpm > 500) {
+    if (rpm > 500) {
       io.setLeftReference(rpm, ControlType.kVelocity);
-      if(rpm>6000) {
-        rpm = rpm-750;
-      } 
+      if (rpm > 6500) {
+        rpm = rpm - 750;
+      }
       io.setRightReference(rpm, ControlType.kVelocity);
     } else {
       stop();
@@ -91,8 +100,26 @@ public class Flywheel extends SubsystemBase {
     return io.getRightVelocity();
   }
 
+  // public boolean topIsAtSetpoint() {
+  // return Math.abs(this.getTopVelocity() - topRPMSetpoint) < 30.0;
+  // }
+
+  // public boolean bottomIsAtSetpoint() {
+  // return Math.abs(this.getBottomVelocity() - bottomRPMSetpoint) < 30.0;
+  // }
+
+  // public boolean areBothAtSetpoint() {
+  // return bottomIsAtSetpoint() && topIsAtSetpoint();
+  // }
+
+  // public boolean isAboveSetpoint() {
+  // return this.getTopVelocity() >= topRPMSetpoint;
+  // }
+
+  // public boolean isBelowSetpoint() {
+  // return this.getTopVelocity() <= topRPMSetpoint - 30.0; }
   public boolean isAtSetpoint() {
-    return Math.abs(this.getLeftVelocity() - rpmSetpoint) < 100.0;
+    return Math.abs(this.getLeftVelocity() - rpmSetpoint) < 175.0;
   }
 
   public boolean isAboveSetpoint() {
@@ -110,6 +137,8 @@ public class Flywheel extends SubsystemBase {
     SmartDashboard.putNumber("current right rpm", getRightVelocity());
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
+    Logger.recordOutput("Flywheel Command",
+        Objects.isNull(getCurrentCommand()) ? "null" : getCurrentCommand().getName());
     Logger.processInputs("Flywheel", inputs);
   }
 }

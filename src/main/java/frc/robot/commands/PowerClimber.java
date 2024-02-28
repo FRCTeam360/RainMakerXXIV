@@ -28,8 +28,14 @@ public class PowerClimber extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    climber.runBoth(getWithDeadband(-operatorCont.getLeftTriggerAxis())* .3, getWithDeadband(-operatorCont.getRightTriggerAxis()) * .3);//works when the rope wraps UNDER the spool
+  }
 
-    climber.runBoth(-operatorCont.getLeftY()* .3, -operatorCont.getRightY() * .3);//works when the rope wraps UNDER the spool
+  public double getWithDeadband(double input) {
+    if (Math.abs(input) < 0.1) {
+      input = 0.0;
+    }
+    return input;
   }
 
   // Called once the command ends or is interrupted.

@@ -4,18 +4,23 @@
 
 package frc.robot.subsystems;
 
+import java.util.Objects;
+import java.util.function.Supplier;
+
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.hardware.AmpArmIOTalonFX;
 import frc.robot.io.AmpArmIO;
 import frc.robot.io.AmpArmIOInputsAutoLogged;
 import frc.robot.utils.CommandLogger;
 
 public class AmpArm extends SubsystemBase {
   private AmpArmIO io;
+  private AmpArmIOTalonFX talonio = new AmpArmIOTalonFX();
   private final AmpArmIOInputsAutoLogged inputs = new AmpArmIOInputsAutoLogged();
 
   /** Creates a new AmpArm. */
@@ -24,12 +29,105 @@ public class AmpArm extends SubsystemBase {
     setupShuffleboard();
   }
 
-  public void runArm(double speed) {
-    io.runArm(speed);
+  private boolean avoidWristCollision() {
+    double armAngle = io.getArmPosition();
+    double wristAngle = io.getWristPosition();
+    // Added this boolean for readablity
+    boolean safeFromCollision = false;
+    if (armAngle > 0.0) {
+      if (wristAngle > armAngle + 90.0) {
+        io.setWrist(armAngle + 90.0);
+        safeFromCollision = false;
+      } else if (wristAngle < armAngle - 90.0) {
+        io.setWrist(armAngle - 90.0);
+        safeFromCollision = false;
+      } else {
+        safeFromCollision = true;
+      }
+    } else if (armAngle < -60.0) {
+      io.setWrist(70.0);
+      safeFromCollision = false;
+    } else if (armAngle >= -60.0 && armAngle <= 0.0) {
+      if (wristAngle < 30.0) {
+        io.setWrist(30.0);
+        safeFromCollision = false;
+      } else if (wristAngle > 60.0) {
+        io.setWrist(0.0);
+        safeFromCollision = false;
+      } else {
+        safeFromCollision = true;
+      }
+    }
+    return safeFromCollision;
+  }
+
+  /**
+   * Used to avoid collision between the arm and the linkage
+   * @param linkage Supplies the angle of the linkage
+   * @return
+   */
+  private boolean avoidCollisionWithLinkage(Linkage linkage){
+    boolean safeFromCollision = false;
+    if (Objects.isNull(linkage)){
+      safeFromCollision = true;
+      return safeFromCollision;
+    }
+
+    double armAngle = io.getArmPosition();
+    double linkageAngle = linkage.getAngle();
+
+    if(armAngle > 0.0){
+      safeFromCollision = true;
+    } else if(armAngle <= -73.5){
+      safeFromCollision = true;
+    } else {
+      if(linkageAngle > 5.0){
+        // Set the arm to the closest safe angle to prevent it from running into the linkage
+        if(armAngle < -37.5){
+          io.setArm(-74.0);
+        } else {
+          io.setArm(1.0);
+        }
+        safeFromCollision = false;
+      } else {
+        safeFromCollision = true;
+      }
+    }
+    return safeFromCollision;
+  }
+
+  public void setArm(double angle, Linkage linkage){
+    if(avoidCollisionWithLinkage(linkage)) {
+      avoidWristCollision();
+      io.setArm(angle);
+    }
+  }
+
+  public void setWrist(double angle) {
+    if(avoidWristCollision()){
+      io.setWrist(angle);
+    }
+  }
+
+  public void zeroWrist() {
+    io.zeroWrist();
+  }
+
+  public void zeroArm() {
+    io.zeroArm();
+  }
+
+  public void runArm(double speed, Linkage linkage) {
+    if(avoidCollisionWithLinkage(linkage)) {
+      avoidWristCollision();
+      io.runArm(speed);
+    }
   }
 
   public void runWrist(double speed) {
-    io.runWrist(speed);
+    if(avoidWristCollision()){
+      io.runWrist(speed);
+    }
   }
 
   public void stopArm() {
@@ -58,10 +156,12 @@ public class AmpArm extends SubsystemBase {
     tab.addNumber("Arm Angle", () -> this.getArmPosition());
     tab.addNumber("Wrist Angle", () -> this.getWristPosition());
   }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("AmpArm", inputs);
+
   }
 
 }

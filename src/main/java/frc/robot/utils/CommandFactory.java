@@ -14,31 +14,37 @@ public class CommandFactory {
     private final Intake intake;
     private final Flywheel flywheel;
     private final Linkage linkage;
+    private final AmpArm ampArm;
     // create a constructor that will require all files from the "subsystems" folder
-    public CommandFactory(Climber climber, CommandSwerveDrivetrain drivetrain, Intake intake, Flywheel flywheel, Linkage linkage) {
+    public CommandFactory(Climber climber, CommandSwerveDrivetrain drivetrain, Intake intake, Flywheel flywheel, Linkage linkage, AmpArm ampArm) {
         this.climber = climber;
         this.drivetrain = drivetrain;
         this.intake = intake;
         this.flywheel = flywheel;
         this.linkage = linkage;
+        this.ampArm = ampArm;
     }
 
     // returns type shootInSpeaker
     public ShootInSpeaker shootInSpeaker(double linkageSetpoint, double flywheelSetpoint, double driveSetpoint) {
-        return new ShootInSpeaker(linkage, flywheel, drivetrain, intake, linkageSetpoint, flywheelSetpoint, driveSetpoint);
+        return new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, linkageSetpoint, flywheelSetpoint, driveSetpoint);
+    }
+
+    public ShootInSpeaker shootInSpeakerWithoutDriveTrain(double linkageSetpoint, double flywheelSetpoint) {
+        return new ShootInSpeaker(ampArm, linkage, flywheel, intake, linkageSetpoint, flywheelSetpoint);
     }
 
     // returns type shootInSpeaker
     public ShootInSpeaker shootInSpeaker(double linkageSetpoint, double flywheelSetpoint) {
-        return new ShootInSpeaker(linkage, flywheel, intake, linkageSetpoint, flywheelSetpoint);
+        return new ShootInSpeaker(ampArm, linkage, flywheel, intake, linkageSetpoint, flywheelSetpoint);
     }
 
     public ShootInSpeaker shootFromSubwoofer() {
-        return new ShootInSpeaker(linkage, flywheel, intake, 172, 5000);
+        return new ShootInSpeaker(ampArm, linkage, flywheel, intake, 177, 5000);
     } 
 
     public ShootInSpeaker shootFromFar() {
-        return new ShootInSpeaker(linkage, flywheel, drivetrain, intake,  157.0, 7000, 20.0);
+        return new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake,  157.0, 7000, 20.0);
     }
     // returns type powerFlywheel
     public PowerFlywheel powerFlywheel() {
@@ -57,30 +63,30 @@ public class CommandFactory {
 
     // returns type powerLinkage
     public PowerLinkage powerLinkage() {
-        return new PowerLinkage(linkage);
+        return new PowerLinkage(linkage, ampArm);
     }
 
     // returns type runExtendIntake
     public RunExtendIntake runExtendIntake() {
-        return new RunExtendIntake(intake, linkage);
+        return new RunExtendIntake(intake, linkage, ampArm);
     }
 
     //returns type powerCenterNote
     public PowerCenterNote powerCenterNote(){
-        return new PowerCenterNote(intake, linkage);
+        return new PowerCenterNote(intake, linkage, ampArm);
     }
 
     // returns type runLinkage
     public RunLinkage runLinkage() {
-        return new RunLinkage(linkage);
+        return new RunLinkage(linkage, ampArm);
     }
 
     public SetLinkage setLinkage(double setPoint) {
-        return new SetLinkage(linkage, setPoint);
+        return new SetLinkage(linkage, setPoint, ampArm);
     }
 
     public SetLinkage stowLinkage() {
-        return new SetLinkage(linkage,130.0);
+        return new SetLinkage(linkage, 130.0, ampArm);
     }
 
     // returns type setIntake
