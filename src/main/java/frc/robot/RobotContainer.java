@@ -241,7 +241,6 @@ public class RobotContainer {
     tuneFlywheel = new TuneFlywheel(flywheel);
     linkageSetpoint = new LinkageSetpoint(linkage, ampArm);
     stowLinkage = commandFactory.stowLinkage();
-    ampArmNote = new AmpArmNote(ampIntake);
     powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
     inny = new IntakeCOmmand(intake, linkage, ampArm);
     powerLinkage = commandFactory.powerLinkage();
@@ -292,7 +291,9 @@ public class RobotContainer {
 
     //drivetrain.setDefaultCommand(fieldOrientedDrive);
     //linkage.setDefaultCommand(powerLinkage);
-    ampArm.setDefaultCommand(powerAmpArm);
+    if(Objects.nonNull(ampArm)){
+      ampArm.setDefaultCommand(powerAmpArm);
+    }
     linkage.setDefaultCommand(powerLinkage);
    // linkage.setDefaultCommand(linkageSetpoint);
     //climber.setDefaultCommand(powerClimber);
@@ -321,8 +322,10 @@ public class RobotContainer {
     driverController.rightBumper().whileTrue(powerIntake);
     driverController.b().whileTrue(new InstantCommand(() -> flywheel.handoff(900.0), flywheel));
 
-    operatorController.a().whileTrue(scoreInAmp);
-    operatorController.b().onTrue(linkageToAmpHandoff);
+    if(Objects.nonNull(ampArm) && Objects.nonNull(ampIntake)){
+      operatorController.a().whileTrue(scoreInAmp);
+      operatorController.b().onTrue(linkageToAmpHandoff);
+    }
     operatorController.y().onTrue(autoPowerCenterNote);
     // operatorController.a().onTrue(new InstantCommand(()-> ampArm.setArm(90.0)), ampArm);
     
