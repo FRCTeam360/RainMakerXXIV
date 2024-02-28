@@ -34,7 +34,6 @@ PowerIntakeReversed extends Command {
     } else {
       intake.run(-0.15);
     }
-    CommandLogger.logCommandRunning(this);
   }
 
   // Called once the command ends or is interrupted.

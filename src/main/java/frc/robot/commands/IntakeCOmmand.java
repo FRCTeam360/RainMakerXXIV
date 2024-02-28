@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
+import frc.robot.utils.CommandLogger;
 
 public class IntakeCOmmand extends Command {
   private final Intake intake;
@@ -19,6 +20,7 @@ public class IntakeCOmmand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    CommandLogger.logCommandStart(this);
     stop = false;
   }
 
@@ -36,6 +38,7 @@ public class IntakeCOmmand extends Command {
   @Override
   public void end(boolean interrupted) {
     intake.stop();
+    CommandLogger.logCommandEnd(this);
   }
 
   // Returns true when the command should end.

@@ -41,7 +41,6 @@ public class PowerLinkage extends Command {
     // } else {
     //   shooterLinkage.stop();
     // }
-    CommandLogger.logCommandRunning(this);
   }
   
   public double getWithDeadband(double input) {

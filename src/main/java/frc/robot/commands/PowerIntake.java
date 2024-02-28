@@ -35,7 +35,6 @@ public class PowerIntake extends Command {
     // }
 
     intake.run(1.0);
-    CommandLogger.logCommandRunning(this);
   }
 
   // Called once the command ends or is interrupted.
