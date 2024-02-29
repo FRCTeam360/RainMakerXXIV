@@ -93,4 +93,8 @@ public class CommandFactory {
     public SetIntake setIntake() {
         return new SetIntake(intake);
     }
+
+    public AmpArmStop ampArmStop() {
+        return new AmpArmStop(ampArm, linkage);
+    }
 }
