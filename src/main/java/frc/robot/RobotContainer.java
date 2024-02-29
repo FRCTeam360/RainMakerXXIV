@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.RobotType;
 import frc.robot.commands.DiagonalSensorIntake;
 import frc.robot.commands.RunExtendIntake;
+import frc.robot.commands.SetClimbers;
 import frc.robot.commands.ScoreInAmp;
 import frc.robot.commands.PowerIntakeReversed;
 import frc.robot.commands.PowerIntake;
@@ -23,6 +24,7 @@ import frc.robot.commands.AutoPowerCenterNote;
 import frc.robot.commands.FieldOrientedDrive;
 import frc.robot.commands.IntakeCOmmand;
 import frc.robot.commands.LevelClimbers;
+import frc.robot.commands.ClimberPIDTuner;
 import frc.robot.commands.LinkageSetpoint;
 import frc.robot.commands.LinkageToAmpHandoff;
 import frc.robot.commands.PowerAmpArm;
@@ -130,6 +132,10 @@ public class RobotContainer {
   private ShuffleboardTab diagnosticTab;
   private FieldOrientedDrive fieldOrientedDrive;
   private RobotOrientedDrive robotOrientedDrive;
+  private ClimberPIDTuner pidTuner;
+  private SetClimbers maxExtend;
+  private SetClimbers minExtend;
+  // private SetLinkageTalon setLinkageTalon = new SetLinkageTalon(linkage);
   private PowerLinkage powerLinkage;
   private SetLinkage setLinkage;
   private SetLinkage stowLinkage;
@@ -170,6 +176,7 @@ public class RobotContainer {
         flywheel = new Flywheel(new FlywheelIOSparkFlex());
         intake = new Intake(new IntakeIOSparkMax());
         linkage = new Linkage(new LinkageIOTalonFX());
+        drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
         climber = new Climber(new ClimberIOSparkMax());
         // ampArm = new AmpArm(new AmpArmIOTalonFX());
         // ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
@@ -237,7 +244,10 @@ public class RobotContainer {
     powerIntake = new PowerIntake(intake);
     powerFlywheel = new PowerFlywheel(flywheel);
     powerClimber = new PowerClimber(climber);
-    levelClimbers = new LevelClimbers(climber, drivetrain);
+    shootRoutine = new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
+    maxExtend = new SetClimbers(climber, 70.0);
+    minExtend = new SetClimbers(climber, -35.0);
+    //levelClimbers = new LevelClimbers(climber, drivetrain);
     tuneFlywheel = new TuneFlywheel(flywheel);
     linkageSetpoint = new LinkageSetpoint(linkage, ampArm);
     stowLinkage = commandFactory.stowLinkage();
@@ -288,6 +298,7 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
     //ampArm.setDefaultCommand(powerAmpArm);
+    climber.setDefaultCommand(powerClimber);
 
     //drivetrain.setDefaultCommand(fieldOrientedDrive);
     //linkage.setDefaultCommand(powerLinkage);

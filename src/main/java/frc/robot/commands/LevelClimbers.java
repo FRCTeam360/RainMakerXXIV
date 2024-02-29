@@ -6,46 +6,46 @@ package frc.robot.commands;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class LevelClimbers extends Command {
   private Climber climber;
-  private CommandSwerveDrivetrain driveTrain;
+  private PIDController rollPidController = new PIDController(0, 0, 0);
 
-  private Pigeon2 pigeon;
-  private double roll = 0;
-  private double heightOffset;
-  private double rollScalar = 0;
-  private double climbPose = 4.5; //inches
+  private double kP = 0;
+  private double kI = 0;
+  private double kD = 0;
+  private double rollHeight = 0.0;
+  private double initialClimb = 4.5; // inches
 
   /** Creates a new LevelClimbers. */
-  public LevelClimbers(Climber climber, CommandSwerveDrivetrain driveTrain) {
+  public LevelClimbers(Climber climber) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.climber = climber;
-    this.driveTrain = driveTrain;
-    pigeon = driveTrain.getPigeon2();
-    heightOffset = climber.heightOffset;;
-    addRequirements(this.climber, this.driveTrain);
+    addRequirements(this.climber);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    roll = pigeon.getRoll().getValueAsDouble();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+  //   roll = climber.getRoll();
+    
+  //   if(Math.abs(roll) > 1.0) {
+  //     rollHeight = rollPidController.calculate(roll);
+  //   }
 
-    if (Math.abs(roll) > 1.0) {
-      heightOffset += Math.signum(roll) * rollScalar;
-    }
+  //   climber.setLeftHeight(initialClimb + rollHeight);
+  //   climber.setRightHeight(initialClimb - rollHeight);
 
-    climber.runLeft(climbPose - heightOffset);
-    climber.runRight(climbPose + heightOffset);
+  // }
   }
 
   // Called once the command ends or is interrupted.
