@@ -22,9 +22,35 @@
                 }
               },
               {
-                "type": "path",
+                "type": "parallel",
                 "data": {
-                  "pathName": "amp side snatch 1"
+                  "commands": [
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Wait1"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "linkage long prep"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "amp side snatch 1"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -115,6 +141,57 @@
                             "type": "path",
                             "data": {
                               "pathName": "amp side snatch 5"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Spinny"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "last guy"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "long shot inny"
+                      }
+                    },
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "red amp side snatch 6"
+                            }
+                          },
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "red amp side snatch 7"
                             }
                           }
                         ]
