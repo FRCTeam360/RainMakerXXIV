@@ -14,11 +14,13 @@ public class IntakeCOmmand extends Command {
   private final Linkage linkage;
   private AmpArm ampArm;
   private boolean stop = false;
+  private double setthatguy;
   /** Creates a new IntakeCOmmand. */
-  public IntakeCOmmand(Intake intake, Linkage linkage, AmpArm ampArm) {
+  public IntakeCOmmand(Intake intake, Linkage linkage, AmpArm ampArm, double setthatguy) {
     this.intake = intake;
     this.linkage = linkage;
     this.ampArm = ampArm;
+    this.setthatguy = setthatguy;
     
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -33,17 +35,21 @@ public class IntakeCOmmand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(intake.getAmps() > 20 && intake.getVelocity() <= .05) {
+      intake.run(.8);
+    } else {
+      intake.run(.6);
+    }
     if(!intake.getSideSensor()) {
       stop = true;
     }
-    intake.run(.85);
   }
   
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    linkage.setAngle(177.0, ampArm);
+    linkage.setAngle(setthatguy, ampArm);
     intake.stop();
   }
 
