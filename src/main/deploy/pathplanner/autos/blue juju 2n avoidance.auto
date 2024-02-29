@@ -16,15 +16,41 @@
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "amp side snatch 6"
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "Spinny"
+                }
+              },
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Wait1"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "blue linkage long prep"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "amp side snatch 6"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -33,7 +59,7 @@
         {
           "type": "named",
           "data": {
-            "name": "stay out of way shot"
+            "name": "blue stay out of way shot"
           }
         },
         {
@@ -47,7 +73,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Intake"
+                        "name": "long shot inny"
                       }
                     },
                     {
@@ -84,7 +110,7 @@
         {
           "type": "named",
           "data": {
-            "name": "stay out of way shot"
+            "name": "blue last guy"
           }
         },
         {
@@ -98,7 +124,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Intake"
+                        "name": "long shot inny"
                       }
                     },
                     {
@@ -122,6 +148,12 @@
                     }
                   ]
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Spinny"
+                }
               }
             ]
           }
@@ -129,7 +161,58 @@
         {
           "type": "named",
           "data": {
-            "name": "stay out of way shot"
+            "name": "blue last guy"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "long shot inny"
+                      }
+                    },
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "amp side snatch 12"
+                            }
+                          },
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "amp side snatch 13"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Spinny"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "blue last guy"
           }
         }
       ]
