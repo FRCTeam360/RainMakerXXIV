@@ -36,9 +36,11 @@ public class IntakeCOmmand extends Command {
   @Override
   public void execute() {
     if(intake.getAmps() > 20 && intake.getVelocity() <= .05) {
-      intake.run(.8);
+      intake.run(.9);
+      System.out.println("runnin at 90");
     } else {
-      intake.run(.6);
+      intake.run(.5);
+      System.out.println("runnin at .5");
     }
     if(!intake.getSideSensor()) {
       stop = true;
