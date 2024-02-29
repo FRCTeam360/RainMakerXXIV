@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.05,
-      "y": 7.36
+      "x": 15.34,
+      "y": 5.57
     },
     "rotation": 180.0
   },
@@ -12,19 +12,51 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Shoot from subwoofer"
+          }
+        },
+        {
           "type": "race",
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "parallel",
                 "data": {
-                  "pathName": "amp side snatch 1"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Spinny"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake"
+                      }
+                    },
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "grab dem 3 mid 1"
+                            }
+                          },
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "grab dem 3 mid 2"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Spinny"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -47,7 +79,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "long shot inny"
+                        "name": "Intake"
                       }
                     },
                     {
@@ -57,13 +89,13 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "amp side snatch 2"
+                              "pathName": "grab dem 3 mid 3"
                             }
                           },
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "amp side snatch 3"
+                              "pathName": "grab dem 3 mid 4"
                             }
                           }
                         ]
@@ -98,7 +130,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "long shot inny"
+                        "name": "Intake"
                       }
                     },
                     {
@@ -108,13 +140,13 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "amp side snatch 4"
+                              "pathName": "grab dem 3 mid 5"
                             }
                           },
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "amp side snatch 5"
+                              "pathName": "grab dem 3 mid 6"
                             }
                           }
                         ]
