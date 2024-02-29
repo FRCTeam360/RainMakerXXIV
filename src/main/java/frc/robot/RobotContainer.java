@@ -270,9 +270,9 @@ public class RobotContainer {
     shootFromFar = commandFactory.shootFromFar();
     basicClimb = new BasicClimb(climber);
 
-    goToZero = commandFactory.setClimber(climber, 0);
-    soloClimb = commandFactory.setClimber(climber, 40);
-    goToNegThirty = commandFactory.setClimber(climber, -20);
+    goToZero = commandFactory.setClimberShouldntFinish(0);
+    soloClimb = commandFactory.setClimberShouldntFinish(40);
+    goToNegThirty = commandFactory.setClimberShouldntFinish(-20);
 
     // COMMENT OUT tuneSwerveDrive WHEN NOT USING, IT WILL SET YOUR SWERVE DRIVE
     // CONSTANTS TO 0 WHEN CONSTRUCTED
