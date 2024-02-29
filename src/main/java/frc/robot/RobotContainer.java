@@ -20,6 +20,7 @@ import frc.robot.commands.TuneSwerveDrive;
 import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.RobotOrientedDrive;
 import frc.robot.commands.AmpArmNote;
+import frc.robot.commands.AmpArmStop;
 import frc.robot.commands.AutoPowerCenterNote;
 import frc.robot.commands.FieldOrientedDrive;
 import frc.robot.commands.IntakeCOmmand;
@@ -150,6 +151,7 @@ public class RobotContainer {
   private IntakeCOmmand inny;
   private ScoreInAmp scoreInAmp;
   private LinkageToAmpHandoff linkageToAmpHandoff;
+  private AmpArmStop ampArmStop;
 
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
@@ -263,6 +265,7 @@ public class RobotContainer {
     // tuneSwerveDrive = new TuneSwerveDrive(drivetrain);
     if (!Objects.isNull(ampArm)) {
       powerAmpArm = new PowerAmpArm(ampArm, linkage);
+      ampArmStop = commandFactory.ampArmStop();
     }
     if (!Objects.isNull(ampIntake)) {
       powerAmpIntake = new PowerAmpIntake(ampIntake);
@@ -298,14 +301,13 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
     //ampArm.setDefaultCommand(powerAmpArm);
-    climber.setDefaultCommand(powerClimber);
 
     //drivetrain.setDefaultCommand(fieldOrientedDrive);
     //linkage.setDefaultCommand(powerLinkage);
     if(Objects.nonNull(ampArm)){
       ampArm.setDefaultCommand(powerAmpArm);
     }
-    linkage.setDefaultCommand(powerLinkage);
+    //linkage.setDefaultCommand(powerLinkage);
    // linkage.setDefaultCommand(linkageSetpoint);
     //climber.setDefaultCommand(powerClimber);
   }
@@ -326,8 +328,8 @@ public class RobotContainer {
    */
 
   private void configureBindings() {
-    operatorController.leftBumper().whileTrue(powerIntakeReversed);
-    operatorController.rightBumper().whileTrue(powerIntake);
+    operatorController.leftTrigger(0.15).whileTrue(powerIntakeReversed);
+    operatorController.rightTrigger(0.15).whileTrue(powerIntake);
 
     driverController.leftBumper().whileTrue(powerIntakeReversed);
     driverController.rightBumper().whileTrue(powerIntake);
@@ -336,7 +338,11 @@ public class RobotContainer {
     if(Objects.nonNull(ampArm) && Objects.nonNull(ampIntake)){
       operatorController.a().whileTrue(scoreInAmp);
       operatorController.b().onTrue(linkageToAmpHandoff);
+      operatorController.leftBumper().whileTrue(ampArmStop);
     }
+
+    operatorController.leftBumper().whileTrue(powerClimber);
+    operatorController.rightBumper().whileTrue(new InstantCommand(() -> climber.zeroBoth()));
     operatorController.y().onTrue(autoPowerCenterNote);
     // operatorController.a().onTrue(new InstantCommand(()-> ampArm.setArm(90.0)), ampArm);
     

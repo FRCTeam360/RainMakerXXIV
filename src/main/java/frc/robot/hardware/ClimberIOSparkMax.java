@@ -35,10 +35,10 @@ public class ClimberIOSparkMax implements ClimberIO {
     private final double MINIMUM_HEGIHT = 0;
 
     private final float leftRetractLimit = -35;
-    private final float leftExtensionLimit = 85;
+    private final float leftExtensionLimit = 60;
 
     private final float rightRetractLimit = -35;
-    private final float rightExtensionLimit = 85;
+    private final float rightExtensionLimit = 60;
 
     private static class UnloadedConstants {
         static final double leftkP = 1.0;
@@ -154,8 +154,8 @@ public class ClimberIOSparkMax implements ClimberIO {
 
     @Override
     public void zeroBoth() {
-        leftEncoder.setPosition(-35);
-        rightEncoder.setPosition(-35);
+        leftEncoder.setPosition(0.0);
+        rightEncoder.setPosition(0.0);
     }
     public void level() {
         // double roll = 0.0;
