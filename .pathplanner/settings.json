@@ -7,7 +7,10 @@
     "4 wing preload",
     "death sweep",
     "center grabs",
-    "start shoot"
+    "start shoot",
+    "Untested 5 piece",
+    "no preload center grab",
+    "4 piece preload"
   ],
   "autoFolders": [
     "2 notes",
@@ -16,9 +19,9 @@
     "5 notes",
     "6 notes"
   ],
-  "defaultMaxVel": 5.7,
+  "defaultMaxVel": 5.73,
   "defaultMaxAccel": 6.0,
-  "defaultMaxAngVel": 540.0,
-  "defaultMaxAngAccel": 720.0,
-  "maxModuleSpeed": 4.5
+  "defaultMaxAngVel": 900.0,
+  "defaultMaxAngAccel": 900.0,
+  "maxModuleSpeed": 5.73
 }
