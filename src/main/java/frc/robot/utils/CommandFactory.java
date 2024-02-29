@@ -30,6 +30,10 @@ public class CommandFactory {
         return new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, linkageSetpoint, flywheelSetpoint, driveSetpoint);
     }
 
+    public SetClimbers setClimber(Climber climber, double height) {
+        return new SetClimbers(climber, height);
+    }
+
     public ShootInSpeaker shootInSpeakerWithoutDriveTrain(double linkageSetpoint, double flywheelSetpoint) {
         return new ShootInSpeaker(ampArm, linkage, flywheel, intake, linkageSetpoint, flywheelSetpoint);
     }

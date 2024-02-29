@@ -4,44 +4,50 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber;
 
-public class SetClimbers extends Command {
+public class BasicClimb extends Command {
   private final Climber climber;
-  private final double setPoint;
-
+  private final Timer timer = new Timer();
   private boolean isDone;
 
-  /** Creates a new SetClimbers. */
-  public SetClimbers(Climber climber, double setPoint) {
+  /** Creates a new BasicCommand. */
+  public BasicClimb(Climber climber) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.climber = climber;
-    this.setPoint = setPoint;
-    addRequirements(this.climber);
+    addRequirements(climber);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    timer.restart();
     isDone = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
-    climber.setLeftHeight(setPoint);
-    climber.setRightHeight(setPoint);
+    climber.setLeftHeight(58);
+    climber.setRightHeight(58);
 
-    if (Math.abs(climber.getLeftPosition() - setPoint) < 1.0 && Math.abs(climber.getRightPosition() - setPoint) < 1.0) {
-      isDone = true;
+    if (timer.get() > 0.8) {
+      climber.setLeftHeight(-30.0);
+      climber.setRightHeight(-30.0);
     }
+
+    // if (climber.getLeftPosition() + 30 < 1.0 && climber.getRightPosition() + 30 < 1.0) {
+    //   isDone = true;
+    // }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    timer.stop();
+  }
 
   // Returns true when the command should end.
   @Override

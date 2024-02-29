@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.05,
-      "y": 7.36
+      "x": 1.4829275372836466,
+      "y": 7.359047860952865
     },
-    "rotation": 180.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -18,7 +18,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "amp side snatch 1"
+                  "pathName": "amp side snatch 6"
                 }
               },
               {
@@ -47,26 +47,19 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "long shot inny"
+                        "name": "Intake"
                       }
                     },
                     {
-                      "type": "sequential",
+                      "type": "path",
                       "data": {
-                        "commands": [
-                          {
-                            "type": "path",
-                            "data": {
-                              "pathName": "amp side snatch 2"
-                            }
-                          },
-                          {
-                            "type": "path",
-                            "data": {
-                              "pathName": "amp side snatch 3"
-                            }
-                          }
-                        ]
+                        "pathName": "amp side snatch 7"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "amp side snatch 8"
                       }
                     }
                   ]
@@ -98,35 +91,22 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "long shot inny"
+                        "name": "Intake"
                       }
                     },
                     {
-                      "type": "sequential",
+                      "type": "path",
                       "data": {
-                        "commands": [
-                          {
-                            "type": "path",
-                            "data": {
-                              "pathName": "amp side snatch 4"
-                            }
-                          },
-                          {
-                            "type": "path",
-                            "data": {
-                              "pathName": "amp side snatch 5"
-                            }
-                          }
-                        ]
+                        "pathName": "amp side snatch 9"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "amp side snatch 10"
                       }
                     }
                   ]
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Spinny"
                 }
               }
             ]
