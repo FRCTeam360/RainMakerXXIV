@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.RobotType;
 import frc.robot.commands.DiagonalSensorIntake;
 import frc.robot.commands.RunExtendIntake;
+import frc.robot.commands.SetClimbers;
 import frc.robot.commands.ScoreInAmp;
 import frc.robot.commands.PowerIntakeReversed;
 import frc.robot.commands.PowerIntake;
@@ -19,10 +20,12 @@ import frc.robot.commands.TuneSwerveDrive;
 import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.RobotOrientedDrive;
 import frc.robot.commands.AmpArmNote;
+import frc.robot.commands.AmpArmStop;
 import frc.robot.commands.AutoPowerCenterNote;
 import frc.robot.commands.FieldOrientedDrive;
 import frc.robot.commands.IntakeCOmmand;
 import frc.robot.commands.LevelClimbers;
+import frc.robot.commands.ClimberPIDTuner;
 import frc.robot.commands.LinkageSetpoint;
 import frc.robot.commands.LinkageToAmpHandoff;
 import frc.robot.commands.PowerAmpArm;
@@ -64,6 +67,8 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import edu.wpi.first.hal.HALUtil;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -128,6 +133,10 @@ public class RobotContainer {
   private ShuffleboardTab diagnosticTab;
   private FieldOrientedDrive fieldOrientedDrive;
   private RobotOrientedDrive robotOrientedDrive;
+  private ClimberPIDTuner pidTuner;
+  private SetClimbers maxExtend;
+  private SetClimbers minExtend;
+  // private SetLinkageTalon setLinkageTalon = new SetLinkageTalon(linkage);
   private PowerLinkage powerLinkage;
   private SetLinkage setLinkage;
   private SetLinkage stowLinkage;
@@ -142,6 +151,7 @@ public class RobotContainer {
   private IntakeCOmmand inny;
   private ScoreInAmp scoreInAmp;
   private LinkageToAmpHandoff linkageToAmpHandoff;
+  private AmpArmStop ampArmStop;
 
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
@@ -168,6 +178,7 @@ public class RobotContainer {
         flywheel = new Flywheel(new FlywheelIOSparkFlex());
         intake = new Intake(new IntakeIOSparkMax());
         linkage = new Linkage(new LinkageIOTalonFX());
+        drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
         climber = new Climber(new ClimberIOSparkMax());
         // ampArm = new AmpArm(new AmpArmIOTalonFX());
         // ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
@@ -222,11 +233,8 @@ public class RobotContainer {
   }
 
   private final void initializeCommands() {
-    if(Objects.nonNull(ampArm) && Objects.nonNull(ampIntake)){
-      scoreInAmp = new ScoreInAmp(ampArm, ampIntake, linkage);
-      linkageToAmpHandoff = new LinkageToAmpHandoff(linkage, ampArm, ampIntake, flywheel, intake);
-      ampArmNote = new AmpArmNote(ampIntake);
-    }
+    scoreInAmp = new ScoreInAmp(ampArm, ampIntake, linkage);
+    linkageToAmpHandoff = new LinkageToAmpHandoff(linkage, ampArm, ampIntake, flywheel, intake);
     diagonalSensorIntakeCloseShot = new DiagonalSensorIntake(ampArm, flywheel, intake, linkage, 6000.0);
     commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, ampArm);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
@@ -238,13 +246,17 @@ public class RobotContainer {
     powerIntake = new PowerIntake(intake);
     powerFlywheel = new PowerFlywheel(flywheel);
     powerClimber = new PowerClimber(climber);
-    levelClimbers = new LevelClimbers(climber, drivetrain);
+    shootRoutine = new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
+    maxExtend = new SetClimbers(climber, 70.0);
+    minExtend = new SetClimbers(climber, -35.0);
+    //levelClimbers = new LevelClimbers(climber, drivetrain);
     tuneFlywheel = new TuneFlywheel(flywheel);
     linkageSetpoint = new LinkageSetpoint(linkage, ampArm);
     stowLinkage = commandFactory.stowLinkage();
     powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
-    inny = new IntakeCOmmand(intake);
-    shootRoutine = commandFactory.shootInSpeaker(174.0, 6000.0);
+    inny = new IntakeCOmmand(intake, linkage, ampArm);
+    powerLinkage = commandFactory.powerLinkage();
+    shootRoutine = commandFactory.shootInSpeaker(177.0, 6000.0);
     // autoCenterNote = commandFactory.shootInSpeaker(160.0, 6000.0);
     shootFromSubwoofer = commandFactory.shootFromSubwoofer();
     shootFromFar = commandFactory.shootFromFar();
@@ -253,6 +265,7 @@ public class RobotContainer {
     // tuneSwerveDrive = new TuneSwerveDrive(drivetrain);
     if (!Objects.isNull(ampArm)) {
       powerAmpArm = new PowerAmpArm(ampArm, linkage);
+      ampArmStop = commandFactory.ampArmStop();
     }
     if (!Objects.isNull(ampIntake)) {
       powerAmpIntake = new PowerAmpIntake(ampIntake);
@@ -261,7 +274,7 @@ public class RobotContainer {
     // powerAmpIntake = new PowerAmpIntake(ampIntake);
 
     Command shootRoutineWithDrivetrain = new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 0.0);
-    NamedCommands.registerCommand("Intake", autoPowerCenterNote);
+    NamedCommands.registerCommand("Intake", inny);
     NamedCommands.registerCommand("Auto Center Note", new AutoPowerCenterNote(ampArm, intake, linkage, flywheel, 163));
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     NamedCommands.registerCommand("Shoot", shootRoutineWithDrivetrain);
@@ -270,7 +283,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Shoot from subwoofer", shootFromSubwoofer);
     NamedCommands.registerCommand("Spinny", new PowerFlywheel(flywheel));
     NamedCommands.registerCommand("AutoShot1", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 163.0, 6500.0));
-    NamedCommands.registerCommand("extend linkage", new InstantCommand(() -> linkage.setAngle(0, ampArm), linkage));
+    NamedCommands.registerCommand("extend linkage", new InstantCommand(() -> linkage.setAngle(0.0, ampArm), linkage));
 
     // NamedCommands.registerCommand("Intake", runExtendIntake);
     // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
@@ -294,7 +307,7 @@ public class RobotContainer {
     if(Objects.nonNull(ampArm)){
       ampArm.setDefaultCommand(powerAmpArm);
     }
-    linkage.setDefaultCommand(powerLinkage);
+    //linkage.setDefaultCommand(powerLinkage);
    // linkage.setDefaultCommand(linkageSetpoint);
     //climber.setDefaultCommand(powerClimber);
   }
@@ -315,8 +328,8 @@ public class RobotContainer {
    */
 
   private void configureBindings() {
-    operatorController.leftBumper().whileTrue(powerIntakeReversed);
-    operatorController.rightBumper().whileTrue(powerIntake);
+    operatorController.leftTrigger(0.15).whileTrue(powerIntakeReversed);
+    operatorController.rightTrigger(0.15).whileTrue(powerIntake);
 
     driverController.leftBumper().whileTrue(powerIntakeReversed);
     driverController.rightBumper().whileTrue(powerIntake);
@@ -325,7 +338,11 @@ public class RobotContainer {
     if(Objects.nonNull(ampArm) && Objects.nonNull(ampIntake)){
       operatorController.a().whileTrue(scoreInAmp);
       operatorController.b().onTrue(linkageToAmpHandoff);
+      operatorController.leftBumper().whileTrue(ampArmStop);
     }
+
+    operatorController.leftBumper().whileTrue(powerClimber);
+    operatorController.rightBumper().whileTrue(new InstantCommand(() -> climber.zeroBoth()));
     operatorController.y().onTrue(autoPowerCenterNote);
     // operatorController.a().onTrue(new InstantCommand(()-> ampArm.setArm(90.0)), ampArm);
     
@@ -350,6 +367,7 @@ public class RobotContainer {
   }
 
   public void onDisable() {
+    
     climber.stop();
     flywheel.stop();
     intake.stop();

@@ -4,48 +4,37 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber;
-import frc.robot.utils.CommandLogger;
 
-public class PowerClimber extends Command {
+public class SetClimbers extends Command {
   private final Climber climber;
-  private XboxController operatorCont = new XboxController(1);
+  private final double setPoint;
 
-  /** Creates a new PowerClimber. */
-  public PowerClimber(Climber climber) {
-    this.climber = climber;
+  /** Creates a new SetClimbers. */
+  public SetClimbers(Climber climber, double setPoint) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.climber = climber;
+    this.setPoint = setPoint;
     addRequirements(this.climber);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    CommandLogger.logCommandStart(this);
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climber.runBoth(getWithDeadband(-operatorCont.getLeftY())* .3, getWithDeadband(-operatorCont.getRightY()) * .3);//works when the rope wraps UNDER the spool
-  }
+    
+    //climber.setLeftHeight(setPoint);
+    climber.setRightHeight(setPoint);
 
-  public double getWithDeadband(double input) {
-    if (Math.abs(input) < 0.1) {
-      input = 0.0;
-    }
-    return input;
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    climber.stop();
-    CommandLogger.logCommandEnd(this);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

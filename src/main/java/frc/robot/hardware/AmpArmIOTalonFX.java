@@ -73,6 +73,8 @@ public class AmpArmIOTalonFX implements AmpArmIO {
 
     wristMotor.setInverted(false);
     wristMotor.setNeutralMode(NeutralModeValue.Brake);
+    armMotor.setPosition(-74.0);
+    wristMotor.setPosition(70.0);
   }
 
   @Override

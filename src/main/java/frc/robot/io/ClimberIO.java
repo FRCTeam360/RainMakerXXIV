@@ -31,8 +31,6 @@ public interface ClimberIO {
 
   public void stop();
 
-  public void level();
-
   public boolean leftAboveMinHeight();
 
   public boolean rightAboveMinHeight();
@@ -41,7 +39,17 @@ public interface ClimberIO {
 
   public double getRightPosition();
 
-  public double getRoll();
-
   public void zeroBoth();
+
+  public void updatePIDF(double P, double I, double D, double F);
+
+  /**
+   * @param height is in inches :D
+   */
+  public void setLeftHeight(double height);
+
+  /**
+   * @param height is in inches :D
+   */
+  public void setRightHeight(double height);
 }

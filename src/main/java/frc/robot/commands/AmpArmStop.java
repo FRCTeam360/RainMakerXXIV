@@ -6,53 +6,36 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AmpArm;
-import frc.robot.subsystems.Intake;
-import frc.robot.utils.CommandLogger;
 import frc.robot.subsystems.Linkage;
 
-public class IntakeCOmmand extends Command {
-  private final Intake intake;
+public class AmpArmStop extends Command {
+  private final AmpArm ampArm;
   private final Linkage linkage;
-  private AmpArm ampArm;
-  private boolean stop = false;
-  /** Creates a new IntakeCOmmand. */
-  public IntakeCOmmand(Intake intake, Linkage linkage, AmpArm ampArm) {
-    this.intake = intake;
-    this.linkage = linkage;
-    this.ampArm = ampArm;
-    
+  /** Creates a new AmpArmStop. */
+  public AmpArmStop(AmpArm ampArm, Linkage linkage) {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(ampArm);
+    this.ampArm = ampArm;
+    this.linkage = linkage;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    CommandLogger.logCommandStart(this);
-    linkage.setAngle(0.0, ampArm);
-    stop = false;
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(!intake.getSideSensor()) {
-      stop = true;
-    }
-    intake.run(.85);
+  ampArm.runArm(0.0, linkage);
   }
-  
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    linkage.setAngle(177.0, ampArm);
-    intake.stop();
-    CommandLogger.logCommandEnd(this);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return stop;
+    return false;
   }
 }
