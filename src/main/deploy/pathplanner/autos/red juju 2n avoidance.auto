@@ -16,15 +16,15 @@
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "amp side snatch 1"
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "Spinny"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "amp side snatch 1"
                 }
               }
             ]

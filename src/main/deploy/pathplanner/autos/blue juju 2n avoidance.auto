@@ -51,15 +51,22 @@
                       }
                     },
                     {
-                      "type": "path",
+                      "type": "sequential",
                       "data": {
-                        "pathName": "amp side snatch 7"
-                      }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "amp side snatch 8"
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "amp side snatch 7"
+                            }
+                          },
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "amp side snatch 8"
+                            }
+                          }
+                        ]
                       }
                     }
                   ]
@@ -95,15 +102,22 @@
                       }
                     },
                     {
-                      "type": "path",
+                      "type": "sequential",
                       "data": {
-                        "pathName": "amp side snatch 9"
-                      }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "amp side snatch 10"
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "amp side snatch 9"
+                            }
+                          },
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "amp side snatch 10"
+                            }
+                          }
+                        ]
                       }
                     }
                   ]
