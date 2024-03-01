@@ -41,7 +41,7 @@ public class RunLinkage extends Command {
     //   shooterLinkage.stop();
     // }
 
-    shooterLinkage.run(operatorCont.getLeftY() * 0.2, arm);
+    shooterLinkage.run(operatorCont.getLeftY() * 0.2);
     CommandLogger.logCommandRunning(this);
   }
 

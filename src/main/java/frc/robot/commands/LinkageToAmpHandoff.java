@@ -56,7 +56,7 @@ public class LinkageToAmpHandoff extends Command {
     System.out.println(state);
     switch (state) {
       case LINKAGE_DOWN:
-        linkage.setAngle(0.0, ampArm);
+        linkage.setAngle(0.0);
         if (linkage.getAngle() < 2.0) {
           state = States.SET_ARM;
         }
@@ -87,7 +87,7 @@ public class LinkageToAmpHandoff extends Command {
         }
         break;
       case RETRACTED:
-        linkage.setAngle(174.0, ampArm);
+        linkage.setAngle(174.0);
         done = true;
         break;
     }

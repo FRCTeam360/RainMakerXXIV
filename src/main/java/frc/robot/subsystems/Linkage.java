@@ -85,10 +85,8 @@ public class Linkage extends SubsystemBase {
     return safeFromCollision;
   }
 
-  public void run(double speed, AmpArm ampArm) {
-    if (avoidCollisionWithAmpArm(ampArm)) {
+  public void run(double speed) {
       io.set(speed);
-    }
   }
 
   public void stop() {
@@ -99,11 +97,9 @@ public class Linkage extends SubsystemBase {
     return io.getPosition();
   }
 
-  public void setAngle(double setPoint, AmpArm ampArm) {
-    if (avoidCollisionWithAmpArm(ampArm)) {
+  public void setAngle(double setPoint) {
       io.setReference(setPoint);
       positionSetpoint = setPoint;
-    }
   }
 
   public double getPower() {

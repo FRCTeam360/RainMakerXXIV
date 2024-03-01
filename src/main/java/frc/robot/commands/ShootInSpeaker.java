@@ -20,7 +20,6 @@ public class ShootInSpeaker extends Command {
   private final Linkage linkage;
   private final Flywheel flywheel;
   private final CommandSwerveDrivetrain drivetrain;
-  private final AmpArm arm;
 
   private double linkageSetpoint;
   private double flywheelSetpoint;
@@ -36,7 +35,7 @@ public class ShootInSpeaker extends Command {
   }
 
   /** Creates a new ShootInSpeaker. */
-  public ShootInSpeaker(AmpArm ampArm, Linkage linkage, Flywheel flywheel,
+  public ShootInSpeaker(Linkage linkage, Flywheel flywheel,
       CommandSwerveDrivetrain drivetrain, Intake intake,
       double linkageSetpoint, double flywheelSetpoint, double driveSetpoint) { // Add your commands in the
     // addCommands() call, e.g.
@@ -50,7 +49,6 @@ public class ShootInSpeaker extends Command {
     this.flywheelSetpoint = flywheelSetpoint;
     this.driveAngleSetpoint = driveSetpoint;
     this.intake = intake;
-    this.arm = ampArm;
 
     // withDriveTrain = true;
   }
@@ -62,7 +60,7 @@ public class ShootInSpeaker extends Command {
     timer.reset();
   }
 
-  public ShootInSpeaker(AmpArm ampArm, Linkage linkage, Flywheel flywheel, Intake intake,
+  public ShootInSpeaker(Linkage linkage, Flywheel flywheel, Intake intake,
       double linkageSetpoint, double flywheelSetpoint) { // Add your commands in the
     // addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
@@ -74,7 +72,6 @@ public class ShootInSpeaker extends Command {
     this.linkageSetpoint = linkageSetpoint;
     this.flywheelSetpoint = flywheelSetpoint;
     this.intake = intake;
-    this.arm = ampArm;
     this.drivetrain = null;
 
     // withDriveTrain = false;
@@ -90,7 +87,7 @@ public class ShootInSpeaker extends Command {
       drivetrain.driveFieldCentricFacingAngle(0.0, 0.0, 0.0, driveAngleSetpoint); // drivetrain is rotated in its own
                                                                                   // command ran in // parallel
     } 
-    linkage.setAngle(linkageSetpoint, arm);
+    linkage.setAngle(linkageSetpoint);
     System.out.println("this is the robot state: " + this.state);
     flywheel.setBothRPM(flywheelSetpoint);
     System.out.println("left velocity: " + flywheel.getLeftVelocity());
@@ -107,7 +104,7 @@ public class ShootInSpeaker extends Command {
         break;
 
       case SHOOT:
-        intake.run(1.0);
+        intake.run(-1.0);
         boolean hasShot = flywheel.isBelowSetpoint(); // check logic in flywheel subsystem (180 rpm gap)
         if (hasShot) {
           timer.start();
@@ -119,7 +116,7 @@ public class ShootInSpeaker extends Command {
         }
         break;
       case TIMER:
-        intake.run(1.0);
+        intake.run(-1.0);
         if (timer.hasElapsed(0.3) && intake.getSideSensor() && intake.getDiagonalSensor()) {
           this.state = ShootState.END;
         }

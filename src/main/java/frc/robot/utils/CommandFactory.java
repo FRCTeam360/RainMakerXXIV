@@ -14,20 +14,18 @@ public class CommandFactory {
     private final Intake intake;
     private final Flywheel flywheel;
     private final Linkage linkage;
-    private final AmpArm ampArm;
     // create a constructor that will require all files from the "subsystems" folder
-    public CommandFactory(Climber climber, CommandSwerveDrivetrain drivetrain, Intake intake, Flywheel flywheel, Linkage linkage, AmpArm ampArm) {
+    public CommandFactory(Climber climber, CommandSwerveDrivetrain drivetrain, Intake intake, Flywheel flywheel, Linkage linkage) {
         this.climber = climber;
         this.drivetrain = drivetrain;
         this.intake = intake;
         this.flywheel = flywheel;
         this.linkage = linkage;
-        this.ampArm = ampArm;
     }
 
     // returns type shootInSpeaker
     public ShootInSpeaker shootInSpeaker(double linkageSetpoint, double flywheelSetpoint, double driveSetpoint) {
-        return new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, linkageSetpoint, flywheelSetpoint, driveSetpoint);
+        return new ShootInSpeaker(linkage, flywheel, drivetrain, intake, linkageSetpoint, flywheelSetpoint, driveSetpoint);
     }
 
     public SetClimbers setClimberShouldntFinish(double height) {
@@ -39,20 +37,20 @@ public class CommandFactory {
     }
 
     public ShootInSpeaker shootInSpeakerWithoutDriveTrain(double linkageSetpoint, double flywheelSetpoint) {
-        return new ShootInSpeaker(ampArm, linkage, flywheel, intake, linkageSetpoint, flywheelSetpoint);
+        return new ShootInSpeaker(linkage, flywheel, intake, linkageSetpoint, flywheelSetpoint);
     }
 
     // returns type shootInSpeaker
     public ShootInSpeaker shootInSpeaker(double linkageSetpoint, double flywheelSetpoint) {
-        return new ShootInSpeaker(ampArm, linkage, flywheel, intake, linkageSetpoint, flywheelSetpoint);
+        return new ShootInSpeaker(linkage, flywheel, intake, linkageSetpoint, flywheelSetpoint);
     }
 
     public ShootInSpeaker shootFromSubwoofer() {
-        return new ShootInSpeaker(ampArm, linkage, flywheel, intake, 177, 5000);
+        return new ShootInSpeaker(linkage, flywheel, intake, 177, 6000);
     } 
 
     public ShootInSpeaker shootFromFar() {
-        return new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake,  157.0, 7000, 20.0);
+        return new ShootInSpeaker(linkage, flywheel, drivetrain, intake,  157.0, 7000, 20.0);
     }
     // returns type powerFlywheel
     public PowerFlywheel powerFlywheel() {
@@ -71,30 +69,30 @@ public class CommandFactory {
 
     // returns type powerLinkage
     public PowerLinkage powerLinkage() {
-        return new PowerLinkage(linkage, ampArm);
+        return new PowerLinkage(linkage);
     }
 
     // returns type runExtendIntake
     public RunExtendIntake runExtendIntake() {
-        return new RunExtendIntake(intake, linkage, ampArm);
+        return new RunExtendIntake(intake, linkage);
     }
 
-    //returns type powerCenterNote
-    public PowerCenterNote powerCenterNote(){
-        return new PowerCenterNote(intake, linkage, ampArm);
-    }
+    // //returns type powerCenterNote
+    // public PowerCenterNote powerCenterNote(){
+    //     return new PowerCenterNote(intake, linkage);
+    // }
 
     // returns type runLinkage
-    public RunLinkage runLinkage() {
-        return new RunLinkage(linkage, ampArm);
-    }
+    // public RunLinkage runLinkage() {
+    //     return new RunLinkage(linkage);
+    // }
 
-    public SetLinkage setLinkage(double setPoint) {
-        return new SetLinkage(linkage, setPoint, ampArm);
-    }
+    // public SetLinkage setLinkage(double setPoint) {
+    //     return new SetLinkage(linkage, setPoint);
+    // }
 
     public SetLinkage stowLinkage() {
-        return new SetLinkage(linkage, 130.0, ampArm);
+         return new SetLinkage(linkage, 130.0);
     }
 
     // returns type setIntake
@@ -102,7 +100,7 @@ public class CommandFactory {
         return new SetIntake(intake);
     }
 
-    public AmpArmStop ampArmStop() {
-        return new AmpArmStop(ampArm, linkage);
-    }
+    // public AmpArmStop ampArmStop() {
+    //     return new AmpArmStop(ampArm, linkage);
+    // }
 }

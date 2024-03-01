@@ -12,15 +12,15 @@ import frc.robot.subsystems.Linkage;
 public class IntakeCOmmand extends Command {
   private final Intake intake;
   private final Linkage linkage;
-  private AmpArm ampArm;
   private boolean stop = false;
   private double setthatguy;
+  private boolean shouldStow;
   /** Creates a new IntakeCOmmand. */
-  public IntakeCOmmand(Intake intake, Linkage linkage, AmpArm ampArm, double setthatguy) {
+  public IntakeCOmmand(Intake intake, Linkage linkage, double setthatguy, boolean shouldStow) {
     this.intake = intake;
     this.linkage = linkage;
-    this.ampArm = ampArm;
     this.setthatguy = setthatguy;
+    this.shouldStow = shouldStow;
     
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -28,7 +28,7 @@ public class IntakeCOmmand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    linkage.setAngle(0.0, ampArm);
+    linkage.setAngle(0.0);
     stop = false;
   }
 
@@ -36,10 +36,10 @@ public class IntakeCOmmand extends Command {
   @Override
   public void execute() {
     if(intake.getAmps() > 20 && intake.getVelocity() <= .05) {
-      intake.run(.9);
+      intake.run(-.9);
       System.out.println("runnin at 90");
     } else {
-      intake.run(.5);
+      intake.run(-.5);
       System.out.println("runnin at .5");
     }
     if(!intake.getSideSensor()) {
@@ -51,7 +51,9 @@ public class IntakeCOmmand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    linkage.setAngle(setthatguy, ampArm);
+    if(shouldStow) {
+    linkage.setAngle(setthatguy);
+    }
     intake.stop();
   }
 

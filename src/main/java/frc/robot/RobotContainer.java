@@ -110,8 +110,6 @@ public class RobotContainer {
   private Linkage linkage;
   private Intake intake;
   private Climber climber;
-  private AmpArm ampArm;
-  private AmpIntake ampIntake;
   // private final Climber climber = new Climber(new ClimberIOSparkMax());
   private CommandFactory commandFactory;
 
@@ -128,8 +126,6 @@ public class RobotContainer {
   private PowerFlywheel powerFlywheel;
   private PowerClimber powerClimber;
   private LevelClimbers levelClimbers;
-  private PowerAmpArm powerAmpArm;
-  private PowerAmpIntake powerAmpIntake;
   // private PowerLinkage powerLinkage = new PowerLinkage(linkage);
   private ShuffleboardTab diagnosticTab;
   private FieldOrientedDrive fieldOrientedDrive;
@@ -142,18 +138,13 @@ public class RobotContainer {
   private PowerLinkage powerLinkage;
   private SetLinkage setLinkage;
   private SetLinkage stowLinkage;
-  private LinkageSetpoint linkageSetpoint;
   private TuneFlywheel tuneFlywheel;
+  private IntakeCOmmand intakeryry;
   private ShootInSpeaker shootFromSubwoofer;
   private ShootInSpeaker shootFromFar;
   private TuneSwerveDrive tuneSwerveDrive;
   private AutoPowerCenterNote autoPowerCenterNote;
-  private PowerAmpIntakeReverse powerAmpIntakeReverse;
-  private AmpArmNote ampArmNote;
   private IntakeCOmmand inny;
-  private ScoreInAmp scoreInAmp;
-  private LinkageToAmpHandoff linkageToAmpHandoff;
-  private AmpArmStop ampArmStop;
   private BasicClimb basicClimb;
 
   private SetClimbers goToZero;
@@ -178,8 +169,6 @@ public class RobotContainer {
         intake = new Intake(new IntakeIOSparkMax());
         linkage = new Linkage(new LinkageIOSparkMax());
         drivetrain = WoodbotConstants.DriveTrain;
-        // ampArm = new AmpArm(new AmpArmIOTalonFX());
-        // ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
         break;
       case PRACTICE:
         flywheel = new Flywheel(new FlywheelIOSparkFlex());
@@ -187,8 +176,6 @@ public class RobotContainer {
         linkage = new Linkage(new LinkageIOTalonFX());
         drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
         climber = new Climber(new ClimberIOSparkMax());
-        // ampArm = new AmpArm(new AmpArmIOTalonFX());
-        // ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
 
         drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
         drivetrain.configNeutralMode(NeutralModeValue.Coast);
@@ -197,8 +184,6 @@ public class RobotContainer {
         drivetrain = CompBotConstants.DriveTrain;
         flywheel = new Flywheel(new FlywheelIOSparkFlex());
         intake = new Intake(new IntakeIOSparkFlex());
-        ampArm = new AmpArm(new AmpArmIOTalonFX());
-        ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
         climber = new Climber(new ClimberIOSparkMax());
         linkage = new Linkage(new LinkageIOTalonFX());
         break;
@@ -240,33 +225,27 @@ public class RobotContainer {
   }
 
   private final void initializeCommands() {
-    if (Objects.nonNull(ampArm) && Objects.nonNull(ampIntake)) {
-      scoreInAmp = new ScoreInAmp(ampArm, ampIntake, linkage);
-      linkageToAmpHandoff = new LinkageToAmpHandoff(linkage, ampArm, ampIntake, flywheel, intake);
-      ampArmNote = new AmpArmNote(ampIntake);
-    }
-    diagonalSensorIntakeCloseShot = new DiagonalSensorIntake(ampArm, flywheel, intake, linkage, 6000.0);
-    commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, ampArm);
-    fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
+  //  diagonalSensorIntakeCloseShot = new DiagonalSensorIntake(flywheel, intake, linkage, 6000.0);
+    commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage);
+    fieldOrientedDrive = new FieldOrientedDrive(drivetrain, linkage);
     robotOrientedDrive = new RobotOrientedDrive(drivetrain);
     runExtendIntake = commandFactory.runExtendIntake();
-    autoPowerCenterNote = new AutoPowerCenterNote(ampArm, intake, linkage, flywheel, 177.0);
-    powerCenterNoteIntakeRoutine = commandFactory.powerCenterNote();
+  //  autoPowerCenterNote = new AutoPowerCenterNote(intake, linkage, flywheel, 177.0);
+//    powerCenterNoteIntakeRoutine = commandFactory.powerCenterNote();
     powerIntakeReversed = new PowerIntakeReversed(intake);
     powerIntake = new PowerIntake(intake);
     powerFlywheel = new PowerFlywheel(flywheel);
     powerClimber = new PowerClimber(climber);
-    shootRoutine = new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
+    shootRoutine = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
     maxExtend = new SetClimbers(climber, 70.0);
     minExtend = new SetClimbers(climber, -35.0);
     // levelClimbers = new LevelClimbers(climber, drivetrain);
     tuneFlywheel = new TuneFlywheel(flywheel);
-    linkageSetpoint = new LinkageSetpoint(linkage, ampArm);
-    powerLinkage = new PowerLinkage(linkage, ampArm);
+    powerLinkage = new PowerLinkage(linkage);
     stowLinkage = commandFactory.stowLinkage();
-    powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
-    inny = new IntakeCOmmand(intake, linkage, ampArm, 177.0);
-    longerinny = new IntakeCOmmand(intake, linkage, ampArm, 144.0);
+    inny = new IntakeCOmmand(intake, linkage, 177.0, true);
+    longerinny = new IntakeCOmmand(intake, linkage, 144.0, true);
+    intakeryry = new IntakeCOmmand(intake, linkage, 177.0, false);
     powerLinkage = commandFactory.powerLinkage();
     shootRoutine = commandFactory.shootInSpeaker(177.0, 6000.0);
     // autoCenterNote = commandFactory.shootInSpeaker(160.0, 6000.0);
@@ -278,41 +257,27 @@ public class RobotContainer {
     soloClimb = commandFactory.setClimberShouldntFinish(40);
     goToNegThirty = commandFactory.setClimberShouldntFinish(-20);
 
-    // COMMENT OUT tuneSwerveDrive WHEN NOT USING, IT WILL SET YOUR SWERVE DRIVE
-    // CONSTANTS TO 0 WHEN CONSTRUCTED
-    // tuneSwerveDrive = new TuneSwerveDrive(drivetrain);
-    if (!Objects.isNull(ampArm)) {
-      powerAmpArm = new PowerAmpArm(ampArm, linkage);
-      ampArmStop = commandFactory.ampArmStop();
-    }
-    if (!Objects.isNull(ampIntake)) {
-      powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
-      powerAmpIntake = new PowerAmpIntake(ampIntake);
-      powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
-    }
+    
 
-    // powerAmpArm = new PowerAmpArm(ampArm);
-    // powerAmpIntake = new PowerAmpIntake(ampIntake);
-
-    Command shootRoutineWithDrivetrain = new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, 0.0, 5000.0,
-        0.0);
+  //  Command shootRoutineWithDrivetrain = new ShootInSpeaker(linkage, flywheel, drivetrain, intake, 0.0, 5000.0,
+   //     0.0);
     NamedCommands.registerCommand("Intake", inny);
-    NamedCommands.registerCommand("Auto Center Note", new AutoPowerCenterNote(ampArm, intake, linkage, flywheel, 163));
+    NamedCommands.registerCommand("Auto Center Note",new WaitCommand(1));
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
-    NamedCommands.registerCommand("Shoot", shootRoutineWithDrivetrain);
+    NamedCommands.registerCommand("Shoot",  new WaitCommand(1));
     NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0, 0));
     NamedCommands.registerCommand("Shoot without drivetrain", shootRoutine);
     NamedCommands.registerCommand("Shoot from subwoofer", shootFromSubwoofer);
     NamedCommands.registerCommand("Spinny", new PowerFlywheel(flywheel));
-    NamedCommands.registerCommand("AutoShot1", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 163.0, 6500.0));
-    NamedCommands.registerCommand("extend linkage", new InstantCommand(() -> linkage.setAngle(0.0, ampArm), linkage));
-    NamedCommands.registerCommand("linkage long prep", new InstantCommand(() -> linkage.setAngle(151, ampArm), linkage));
-    NamedCommands.registerCommand("stay out of way shot", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151, 7000.0));
+    NamedCommands.registerCommand("AutoShot1", new WaitCommand(1));
+    NamedCommands.registerCommand("extend linkage", new WaitCommand(1));
+    NamedCommands.registerCommand("linkage long prep", new InstantCommand(() -> linkage.setAngle(151), linkage));
+    NamedCommands.registerCommand("stay out of way shot",new WaitCommand(1));
     NamedCommands.registerCommand("long shot inny", longerinny);
-    NamedCommands.registerCommand("last guy", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 153, 7000.0));
-    NamedCommands.registerCommand("blue linkage long prep", new InstantCommand(() -> linkage.setAngle(148, ampArm), linkage));
-    NamedCommands.registerCommand("blue stay out of way shot", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 148, 7000.0));
-    NamedCommands.registerCommand("blue last guy", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151.5, 7000.0));
+    NamedCommands.registerCommand("last guy", new WaitCommand(1));
+    NamedCommands.registerCommand("blue linkage long prep", new WaitCommand(1));
+    NamedCommands.registerCommand("blue stay out of way shot",new WaitCommand(1));
+    NamedCommands.registerCommand("blue last guy", new WaitCommand(1));
 
     // NamedCommands.registerCommand("Intake", runExtendIntake);
     // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
@@ -329,14 +294,11 @@ public class RobotContainer {
   }
 
   private void configureDefaultCommands() {
-    // ampArm.setDefaultCommand(powerAmpArm);
+    
     
     climber.setDefaultCommand(powerClimber);
     drivetrain.setDefaultCommand(fieldOrientedDrive);
     // linkage.setDefaultCommand(powerLinkage);
-    if (Objects.nonNull(ampArm)) {
-      ampArm.setDefaultCommand(powerAmpArm);
-    }
 
 
     //linkage.setDefaultCommand(powerLinkage);
@@ -364,13 +326,8 @@ public class RobotContainer {
     operatorController.rightTrigger(0.15).whileTrue(powerIntake);
 
     driverController.leftBumper().whileTrue(powerIntakeReversed);
-    driverController.rightBumper().whileTrue(powerIntake);
-
-    if (Objects.nonNull(ampArm) && Objects.nonNull(ampIntake)) {
-      // operatorController.a().whileTrue(scoreInAmp);
-      // operatorController.b().onTrue(linkageToAmpHandoff);
-      // operatorController.leftBumper().whileTrue(ampArmStop);
-    }
+    driverController.rightBumper().whileTrue(intakeryry);
+    driverController.a().whileTrue(shootFromSubwoofer);
 
     operatorController.leftBumper().whileTrue(powerClimber);
     operatorController.rightBumper().whileTrue(new InstantCommand(() -> climber.zeroBoth()));
@@ -378,19 +335,20 @@ public class RobotContainer {
 
     operatorController.pov(0).toggleOnTrue(goToZero);
     operatorController.pov(90).toggleOnTrue(soloClimb);
-    operatorController.pov(180).toggleOnTrue(goToNegThirty);
+    operatorController.pov(
+      180).toggleOnTrue(goToNegThirty);
 
-    operatorController.y().onTrue(autoPowerCenterNote);
-    // operatorController.a().onTrue(new InstantCommand(()-> ampArm.setArm(90.0)),
-    // ampArm);
+    operatorController.y().onTrue(inny);
 
+    driverController.b().onTrue(stowLinkage);
+  
     // operatorController.y().onTrue(diagonalSensorIntakeCloseShot);
     // operatorController.b().onTrue(stowLinkage);
     // operatorController.x().onTrue(inny);
     // operatorController.y().onTrue(new SetLinkage(linkage, 0.0));
     // operatorController.a().onTrue(shootFromSubwoofer);
 
-    driverController.x().whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
+    driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
 
     // drivetrain.registerTelemetry(logger::telemeterize);
   }
@@ -412,12 +370,6 @@ public class RobotContainer {
 
     linkage.stop();
     drivetrain.robotCentricDrive(0, 0, 0);
-    if (!Objects.isNull(ampArm)) {
-      ampArm.stopBoth();
-    }
-    if (!Objects.isNull(ampIntake)) {
-      ampIntake.stop();
-    }
   }
 
   public void onTeleInit() {

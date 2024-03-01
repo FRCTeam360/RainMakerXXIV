@@ -70,7 +70,7 @@ public class AutoPowerCenterNote extends Command{
       case EXTEND_INTAKE:
            Logger.recordOutput("INTAKE_STATE", 2);
 
-        linkage.setAngle(0.0, arm);
+        linkage.setAngle(0.0);
         intake.run(.5);
         if(!intake.getSideSensor()) {
           state = IntakeCases.UP_TO_SHOOTER;
@@ -94,7 +94,7 @@ public class AutoPowerCenterNote extends Command{
         // }
         break;
       case BACK_UP:
-        linkage.setAngle(90.0, arm);
+        linkage.setAngle(90.0);
         intake.run(-.3);
         if(intake.getSideSensor()){
             state = IntakeCases.CENTER;
@@ -102,7 +102,7 @@ public class AutoPowerCenterNote extends Command{
         }
         break;
       case CENTER:
-        linkage.setAngle(90.0, arm);
+        linkage.setAngle(90.0);
         if(sensorTimer.get() > 2) {
           intake.run(.3);
         } else {
@@ -117,7 +117,7 @@ public class AutoPowerCenterNote extends Command{
         // }
         break;
       case DONE:
-        linkage.setAngle(settyspaghettipoint, arm); 
+        linkage.setAngle(settyspaghettipoint); 
         if(linkage.isAtSetpoint()) {
           state = IntakeCases.RETRACT_STOP;
         }   

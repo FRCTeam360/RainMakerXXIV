@@ -11,21 +11,21 @@ import frc.robot.subsystems.Linkage;
 
 public class SetLinkage extends Command {
   private final Linkage linkage;
-  private final AmpArm arm;
   private double setpoint;
+  private boolean stop= false;
   /** Creates a new SetLinkageTa\
    * lon. */
-  public SetLinkage(Linkage linkage, double setpoint, AmpArm arm) {
+  public SetLinkage(Linkage linkage, double setpoint) {
     this.setpoint = setpoint;
     // Use addRequirements() here to declare subsystem dependencies.
     this.linkage = linkage;
-    this.arm = arm;
     addRequirements(linkage);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    stop = false;
     //SmartDashboard.putNumber("error", 0);
   }
 
@@ -33,7 +33,10 @@ public class SetLinkage extends Command {
   @Override
   public void execute() {
     //SmartDashboard.putNumber("error", -7.0 - linkage.getAngle());
-    linkage.setAngle(setpoint, arm);
+    linkage.setAngle(setpoint);
+    if(linkage.isAtSetpoint()) {
+      stop = true;
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -43,6 +46,6 @@ public class SetLinkage extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return stop;
   }
 }

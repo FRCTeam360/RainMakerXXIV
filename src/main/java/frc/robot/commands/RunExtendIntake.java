@@ -19,7 +19,6 @@ public class RunExtendIntake extends Command {
   //private DigitalInput sensor = new DigitalInput(0);
   
   private final Intake intake;
-  private final AmpArm arm;
 
   private static XboxController operatorCont = new XboxController(1);
   private Timer timer = new Timer();
@@ -30,10 +29,9 @@ public class RunExtendIntake extends Command {
  
   
   /** Creates a new Java. */
-  public RunExtendIntake(Intake intake, Linkage linkage, AmpArm arm) {
+  public RunExtendIntake(Intake intake, Linkage linkage) {
     this.intake = intake;
     this.linkage = linkage;
-    this.arm = arm;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake, linkage);
@@ -63,7 +61,7 @@ public class RunExtendIntake extends Command {
         }
         break;
       case EXTEND_INTAKE:
-        linkage.setAngle(setpoint, arm);                           
+        linkage.setAngle(setpoint);                           
         intake.run(1);
         if(!intake.getSideSensor()) {
           timer.start();
@@ -77,7 +75,7 @@ public class RunExtendIntake extends Command {
         // }
         break;
       case UP_TO_SHOOTER:
-        linkage.setAngle(130.0, arm);
+        linkage.setAngle(130.0);
         // if(timer.get() > 1) {
         //   setpoint = .7;
         // } else {

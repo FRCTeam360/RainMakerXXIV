@@ -31,7 +31,7 @@ public class LinkageSetpoint extends Command {
   public void execute() {
     SmartDashboard.putNumber("Linkage angle", linkage.getAngle());
     double setpoint = SmartDashboard.getNumber("Setpoint", 0.0);
-    linkage.setAngle(setpoint, arm);
+    linkage.setAngle(setpoint);
     SmartDashboard.putBoolean("Linkage at setpoint?", linkage.isAtSetpoint());
   }
 

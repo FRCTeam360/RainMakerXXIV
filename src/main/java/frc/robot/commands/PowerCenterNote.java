@@ -58,7 +58,7 @@ public class PowerCenterNote extends Command{
         }
         break;
       case EXTEND_INTAKE:
-        linkage.setAngle(0.0, arm);                           
+        linkage.setAngle(0.0);                           
         intake.run(1);
         if(!intake.getSideSensor()) {
           state = IntakeCases.UP_TO_SHOOTER;
@@ -72,7 +72,7 @@ public class PowerCenterNote extends Command{
         break;
       case UP_TO_SHOOTER:
         intake.run(.4);
-        linkage.setAngle(130.0, arm);
+        linkage.setAngle(130.0);
         if(!intake.getHighSensor()){
             state = IntakeCases.BACK_UP;
         }
