@@ -41,6 +41,8 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   private final double wristKD = 0.0;
   private final double wristKF = 0.0;
 
+  private NeutralModeValue neutralMode = NeutralModeValue.Brake;
+
   /** Creates a new AmpArmIOTalonFX. */
   public AmpArmIOTalonFX() {
     armMotor.getConfigurator().apply(new TalonFXConfiguration());
@@ -56,7 +58,7 @@ public class AmpArmIOTalonFX implements AmpArmIO {
 
     armConfig.Feedback.withSensorToMechanismRatio(1 / ARM_RATIO);
     armConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // SAME AS SET INVERTED LOL
-    
+
     TalonFXConfiguration wristConfig = new TalonFXConfiguration();
     wristConfig.Feedback.withSensorToMechanismRatio(1 / WRIST_RATIO);
 
@@ -68,15 +70,34 @@ public class AmpArmIOTalonFX implements AmpArmIO {
 
     armMotor.getConfigurator().apply(armConfig);
     wristMotor.getConfigurator().apply(wristConfig);
-    
+
     armMotor.setNeutralMode(NeutralModeValue.Brake);
 
     wristMotor.setInverted(false);
     wristMotor.setNeutralMode(NeutralModeValue.Brake);
 
+  }
+
+  public void enableBrakeMode() {
+    neutralMode = NeutralModeValue.Brake;
+    armMotor.setNeutralMode(NeutralModeValue.Brake);
+    wristMotor.setNeutralMode(NeutralModeValue.Brake);
+
+  }
+
+  public void disableBrakeMode() {
+    neutralMode = NeutralModeValue.Coast;
+    armMotor.setNeutralMode(NeutralModeValue.Coast);
+    wristMotor.setNeutralMode(NeutralModeValue.Brake);
+
+  }
+
+  @Override
+  public void resetArmWristPos() {
+
     armMotor.setPosition(-78.0);
     wristMotor.setPosition(70.0);
-   
+
   }
 
   @Override

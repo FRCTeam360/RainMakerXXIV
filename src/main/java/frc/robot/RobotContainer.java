@@ -302,13 +302,18 @@ public class RobotContainer {
     NamedCommands.registerCommand("Spinny", new PowerFlywheel(flywheel));
     NamedCommands.registerCommand("AutoShot1", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 163.0, 6500.0));
     NamedCommands.registerCommand("extend linkage", new InstantCommand(() -> linkage.setAngle(0.0, ampArm), linkage));
-    NamedCommands.registerCommand("linkage long prep", new InstantCommand(() -> linkage.setAngle(151, ampArm), linkage));
-    NamedCommands.registerCommand("stay out of way shot", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151, 7000.0));
+    NamedCommands.registerCommand("linkage long prep",
+        new InstantCommand(() -> linkage.setAngle(151, ampArm), linkage));
+    NamedCommands.registerCommand("stay out of way shot",
+        new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151, 7000.0));
     NamedCommands.registerCommand("long shot inny", longerinny);
     NamedCommands.registerCommand("last guy", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 153, 7000.0));
-    NamedCommands.registerCommand("blue linkage long prep", new InstantCommand(() -> linkage.setAngle(148, ampArm), linkage));
-    NamedCommands.registerCommand("blue stay out of way shot", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 148, 7000.0));
-    NamedCommands.registerCommand("blue last guy", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151.5, 7000.0));
+    NamedCommands.registerCommand("blue linkage long prep",
+        new InstantCommand(() -> linkage.setAngle(148, ampArm), linkage));
+    NamedCommands.registerCommand("blue stay out of way shot",
+        new ShootInSpeaker(ampArm, linkage, flywheel, intake, 148, 7000.0));
+    NamedCommands.registerCommand("blue last guy",
+        new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151.5, 7000.0));
 
     // NamedCommands.registerCommand("Intake", runExtendIntake);
     // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
@@ -330,14 +335,14 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(fieldOrientedDrive);
 
     // OPERATOR CONTROLS DO NOT DELETE
-    climber.setDefaultCommand(powerClimber);
+    // climber.setDefaultCommand(powerClimber);
     intake.setDefaultCommand(powerIntake);
-    linkage.setDefaultCommand(powerLinkage);
+    // linkage.setDefaultCommand(powerLinkage);
 
     // linkage.setDefaultCommand(powerLinkage);
-    if (Objects.nonNull(ampArm)) {
-      ampArm.setDefaultCommand(powerAmpArm);
-    }
+    // if (Objects.nonNull(ampArm)) {
+    // ampArm.setDefaultCommand(powerAmpArm);
+    // }
   }
 
   /**
@@ -366,21 +371,25 @@ public class RobotContainer {
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
 
     // OPERATOR CONTROLS DO NOT DELETE JUST COMMENT OUT
+ 
     operatorController.leftBumper().whileTrue(powerAmpIntakeReverse);
     operatorController.rightBumper().whileTrue(powerAmpIntake);
 
-    operatorController.pov(0).onTrue(goToNegTwenty);
-    operatorController.pov(90).onTrue(homeAmpArmWrist);
-    operatorController.pov(180).onTrue(ampArmGoToZero);
-
     if (Objects.nonNull(ampArm)) {
-      System.out.println("AMP ARM IS ALIVE");
       operatorController.x().onTrue(linkageToAmpHandoff);
-      operatorController.a().onTrue(scoreInAmp);
+      // operatorController.a().onTrue(scoreInAmp);
+      operatorController.a().toggleOnTrue(new InstantCommand(() -> ampArm.setArm(108.5, linkage)));
+      operatorController.a().toggleOnTrue(new InstantCommand(() -> ampArm.setWrist(140.3)));
+
+      operatorController.pov(90).onTrue(homeAmpArmWrist);
+      operatorController.pov(180).onTrue(ampArmGoToZero);
     }
 
-    operatorController.b().onTrue(goToNegTwenty);
+    operatorController.start().whileTrue(powerAmpArm);
+    operatorController.start().negate().whileTrue(powerClimber);
+
     operatorController.y().onTrue(goToZero);
+    operatorController.b().onTrue(goToNegTwenty);
 
     drivetrain.registerTelemetry(logger::telemeterize);
   }
@@ -399,6 +408,7 @@ public class RobotContainer {
     flywheel.stop();
     intake.stop();
     linkage.disableBrakeMode();
+    ampArm.disableBrakeMode();
 
     linkage.stop();
     drivetrain.robotCentricDrive(0, 0, 0);
@@ -413,7 +423,17 @@ public class RobotContainer {
   public void onTeleInit() {
     drivetrain.configNeutralMode(NeutralModeValue.Brake);
     linkage.enableBrakeMode();
+    ampArm.resetArmWristPos();
+    ampArm.enableBrakeMode();
   }
+
+  // public void onRobotInit() {
+  //   ampArm.armEncoderPos(-)
+  // }
+
+  // public void onRobotInit() {
+  // ampArm.
+  // }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

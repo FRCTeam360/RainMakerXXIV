@@ -167,6 +167,8 @@ public class LinkageIOTalonFX implements LinkageIO {
     neutralMode = NeutralModeValue.Coast;
     talonFX.setNeutralMode(NeutralModeValue.Coast);
   }
+
+  
   public boolean isBrakeMode(){
     return neutralMode == NeutralModeValue.Brake;
   }

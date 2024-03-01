@@ -29,10 +29,17 @@ public class HomeAmpArmWrist extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ampArm.setArm(-70, linkage);
-    ampArm.setWrist(46.0);
 
-    if (ampArm.getArmPosition() + 70 < 1.0 && ampArm.getWristPosition() - 46.0 < 1.0) {
+    linkage.setAngle(0, ampArm);
+    if (linkage.getAngle() < 1.0) {
+      
+      ampArm.setArm(-78, linkage);
+      ampArm.setWrist(70.0);
+        
+    }
+      
+
+    if (ampArm.getArmPosition() + 78 < 1.0 && ampArm.getWristPosition() - 70.0 < 1.0) {
       isDone = true;
     }
   }

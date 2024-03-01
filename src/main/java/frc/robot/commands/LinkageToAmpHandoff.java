@@ -22,14 +22,13 @@ public class LinkageToAmpHandoff extends Command {
   private boolean done;
 
   private States state;
-  
+
   private final Timer timer = new Timer();
 
   private enum States {
     LINKAGE_DOWN, AMP_ARM_UP, INTAKING, HAS_NOTE, RETRACTED, SET_ARM
   }
 
-  
   /** Creates a new LinkageToAmpHandoff. */
   public LinkageToAmpHandoff(Linkage linkage, AmpArm ampArm, AmpIntake ampIntake, Flywheel flywheel, Intake intake) {
     this.linkage = linkage;
@@ -37,11 +36,11 @@ public class LinkageToAmpHandoff extends Command {
     this.ampIntake = ampIntake;
     this.flywheel = flywheel;
     this.intake = intake;
-    
+
     addRequirements(linkage, ampArm, ampIntake, flywheel, intake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
-  
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
@@ -49,7 +48,7 @@ public class LinkageToAmpHandoff extends Command {
     timer.reset();
     done = false;
   }
-  
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
@@ -61,7 +60,7 @@ public class LinkageToAmpHandoff extends Command {
           state = States.SET_ARM;
         }
         break;
-        case SET_ARM:
+      case SET_ARM:
         ampArm.setArm(-45.0, linkage);
         ampArm.setWrist(45.0);
         if (Math.abs(ampArm.getArmPosition() + 45.0) < 2.0 && Math.abs(ampArm.getWristPosition() - 45.0) < 2.0) {
@@ -70,27 +69,30 @@ public class LinkageToAmpHandoff extends Command {
         }
         break;
       case INTAKING:
-        intake.run(0.5);
-        flywheel.handoff(750.0);
-        ampIntake.runIntake(0.5);
-        if (timer.get() > 0.15) {
-          if (ampIntake.getAmps() > 25) {
+        intake.run(0.7);
+        flywheel.handoff(950.0);
+        ampIntake.runIntake(0.70);
+        if (timer.get() > 0.2) {
+          if (ampIntake.getAmps() > 20) {
             ampIntake.stop();
             state = States.HAS_NOTE;
           }
         }
         break;
       case HAS_NOTE:
-        ampArm.setArm(0.0, linkage);
+        ampArm.setArm(5.0, linkage);
         if (Math.abs(ampArm.getArmPosition()) < 1.0) {
           state = States.RETRACTED;
         }
         break;
       case RETRACTED:
         linkage.setAngle(174.0, ampArm);
-        done = true;
+        System.out.println(linkage.getAngle());
+        if (Math.abs(linkage.getAngle() - 174) < 1.0) {
+          done = true;
+        }
         break;
-      }
+    }
   }
 
   // Called once the command ends or is interrupted.

@@ -46,5 +46,9 @@ public interface AmpArmIO {
 
   public void zeroArm();
 
-  
+  public void resetArmWristPos();
+
+  public void enableBrakeMode();
+
+  public void disableBrakeMode();
 }

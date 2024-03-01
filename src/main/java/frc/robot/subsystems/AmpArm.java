@@ -29,6 +29,18 @@ public class AmpArm extends SubsystemBase {
     setupShuffleboard();
   }
 
+  public void resetArmWristPos() {
+    io.resetArmWristPos();
+  }
+
+  public void enableBrakeMode() {
+    io.enableBrakeMode();
+  }
+
+  public void disableBrakeMode() {
+    io.disableBrakeMode();
+  }
+
   private boolean avoidWristCollision() {
     double armAngle = io.getArmPosition();
     double wristAngle = io.getWristPosition();
@@ -63,12 +75,13 @@ public class AmpArm extends SubsystemBase {
 
   /**
    * Used to avoid collision between the arm and the linkage
+   * 
    * @param linkage Supplies the angle of the linkage
    * @return
    */
-  private boolean avoidCollisionWithLinkage(Linkage linkage){
+  private boolean avoidCollisionWithLinkage(Linkage linkage) {
     boolean safeFromCollision = false;
-    if (Objects.isNull(linkage)){
+    if (Objects.isNull(linkage)) {
       safeFromCollision = true;
       return safeFromCollision;
     }
@@ -76,14 +89,15 @@ public class AmpArm extends SubsystemBase {
     double armAngle = io.getArmPosition();
     double linkageAngle = linkage.getAngle();
 
-    if(armAngle > 0.0){
+    if (armAngle > 0.0) {
       safeFromCollision = true;
-    } else if(armAngle <= -73.5){
+    } else if (armAngle <= -73.5) {
       safeFromCollision = true;
     } else {
-      if(linkageAngle > 5.0){
-        // Set the arm to the closest safe angle to prevent it from running into the linkage
-        if(armAngle < -37.5){
+      if (linkageAngle > 5.0) {
+        // Set the arm to the closest safe angle to prevent it from running into the
+        // linkage
+        if (armAngle < -37.5) {
           io.setArm(-74.0);
         } else {
           io.setArm(1.0);
@@ -96,15 +110,18 @@ public class AmpArm extends SubsystemBase {
     return safeFromCollision;
   }
 
-  public void setArm(double angle, Linkage linkage){
-    if(avoidCollisionWithLinkage(linkage)) {
+  public void setArm(double angle, Linkage linkage) {
+    if (avoidCollisionWithLinkage(linkage)) {
       avoidWristCollision();
       io.setArm(angle);
+    } else {
+      io.stopArm();
+      io.stopWrist();
     }
   }
 
   public void setWrist(double angle) {
-    if(avoidWristCollision()){
+    if (avoidWristCollision()) {
       io.setWrist(angle);
     }
   }
@@ -117,16 +134,15 @@ public class AmpArm extends SubsystemBase {
     io.zeroArm();
   }
 
-
   public void runArm(double speed, Linkage linkage) {
-    if(avoidCollisionWithLinkage(linkage)) {
+    if (avoidCollisionWithLinkage(linkage)) {
       avoidWristCollision();
       io.runArm(speed);
     }
   }
 
   public void runWrist(double speed) {
-    if(avoidWristCollision()){
+    if (avoidWristCollision()) {
       io.runWrist(speed);
     }
   }
