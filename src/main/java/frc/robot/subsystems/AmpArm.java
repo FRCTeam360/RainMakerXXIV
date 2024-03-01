@@ -96,8 +96,36 @@ public class AmpArm extends SubsystemBase {
     return safeFromCollision;
   }
 
+  /**
+   * Avoid collisions between the arm and the linakge while running a position set point
+   * @param angle The angle to set the arm to
+   */
+  private boolean avoidCollisionWithLinkage(double angleSetpoint, Linkage linkage){
+    boolean safeFromCollision = true;
+    if (Objects.isNull(linkage)){
+      safeFromCollision = true;
+      return safeFromCollision;
+    }
+    double linkageAngle = linkage.getAngle();
+    double armAngle = io.getArmPosition();
+
+    if(linkageAngle > 5.0){
+      if(angleSetpoint < 0.0 && armAngle >= 0.0){
+        safeFromCollision = false;
+        io.setArm(1.0);
+      } else if(angleSetpoint > -73.5 && armAngle <= -73.5){
+        safeFromCollision = false;
+        io.setArm(-74.0);
+      }
+    }
+    return safeFromCollision;
+
+  }
+
   public void setArm(double angle, Linkage linkage){
-    if(avoidCollisionWithLinkage(linkage)) {
+    boolean safeFromCollisionPower = avoidCollisionWithLinkage(linkage);
+    boolean safeFromCollisionSetpoint = avoidCollisionWithLinkage(angle, linkage);
+    if(safeFromCollisionPower && safeFromCollisionSetpoint) {
       avoidWristCollision();
       io.setArm(angle);
     }
