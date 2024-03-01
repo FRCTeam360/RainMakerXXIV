@@ -11,6 +11,7 @@ import frc.robot.utils.CommandLogger;
 
 public class PowerIntake extends Command {
   private XboxController operatorCont = new XboxController(1);
+
   private Intake intake;
 
   /** Creates a new ManualIntake. */

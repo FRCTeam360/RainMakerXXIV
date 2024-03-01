@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AmpArm;
 import frc.robot.subsystems.AmpIntake;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
@@ -22,6 +23,8 @@ public class LinkageToAmpHandoff extends Command {
   private boolean done;
 
   private States state;
+
+  //private double ampThreshold;
 
   private final Timer timer = new Timer();
 
@@ -47,11 +50,14 @@ public class LinkageToAmpHandoff extends Command {
     state = States.LINKAGE_DOWN;
     timer.reset();
     done = false;
+    //ampThreshold = 20;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //drivetrain.getRobotRelativeSpeeds() > 0.1
+
     System.out.println(state);
     switch (state) {
       case LINKAGE_DOWN:
@@ -70,7 +76,7 @@ public class LinkageToAmpHandoff extends Command {
         break;
       case INTAKING:
         intake.run(0.7);
-        flywheel.handoff(950.0);
+        flywheel.handoff(250.0);
         ampIntake.runIntake(0.70);
         if (timer.get() > 0.2) {
           if (ampIntake.getAmps() > 20) {

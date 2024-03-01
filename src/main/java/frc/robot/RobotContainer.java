@@ -140,6 +140,7 @@ public class RobotContainer {
   private IntakeCOmmand longerinny;
   // private SetLinkageTalon setLinkageTalon = new SetLinkageTalon(linkage);
   private SetLinkage setLinkage;
+  private IntakeCOmmand ryryinny;
   private SetLinkage stowLinkage;
   private LinkageSetpoint linkageSetpoint;
   private TuneFlywheel tuneFlywheel;
@@ -245,7 +246,7 @@ public class RobotContainer {
     linkageToAmpHandoff = new LinkageToAmpHandoff(linkage, ampArm, ampIntake, flywheel, intake);
     diagonalSensorIntakeCloseShot = new DiagonalSensorIntake(ampArm, flywheel, intake, linkage, 6000.0);
     commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, ampArm);
-    fieldOrientedDrive = new FieldOrientedDrive(drivetrain);
+    fieldOrientedDrive = new FieldOrientedDrive(drivetrain, linkage);
     robotOrientedDrive = new RobotOrientedDrive(drivetrain);
     runExtendIntake = commandFactory.runExtendIntake();
     autoPowerCenterNote = new AutoPowerCenterNote(ampArm, intake, linkage, flywheel, 177.0);
@@ -262,8 +263,9 @@ public class RobotContainer {
     linkageSetpoint = new LinkageSetpoint(linkage, ampArm);
     stowLinkage = commandFactory.stowLinkage();
     powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
-    inny = new IntakeCOmmand(intake, linkage, ampArm, 177.0);
-    longerinny = new IntakeCOmmand(intake, linkage, ampArm, 144.0);
+    inny = new IntakeCOmmand(intake, linkage, ampArm, 177.0, true);
+    longerinny = new IntakeCOmmand(intake, linkage, ampArm, 144.0, true);
+    ryryinny = new IntakeCOmmand(intake, linkage, ampArm, 0.0, false);
     powerLinkage = commandFactory.powerLinkage();
     shootRoutine = commandFactory.shootInSpeaker(177.0, 6000.0);
     // autoCenterNote = commandFactory.shootInSpeaker(160.0, 6000.0);
@@ -363,7 +365,7 @@ public class RobotContainer {
   private void configureBindings() {
     // DRIVER CONTROLS DO NOT DELETE JUST COMMENT OUT
     driverController.leftBumper().whileTrue(powerIntakeReversed);
-    driverController.rightBumper().whileTrue(powerIntake);
+    driverController.rightBumper().whileTrue(ryryinny);
 
     driverController.b().whileTrue(stowLinkage);
     driverController.a().whileTrue(shootFromSubwoofer);

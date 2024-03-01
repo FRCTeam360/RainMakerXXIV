@@ -32,7 +32,7 @@ public class PowerAmpArm extends Command {
   @Override
   public void execute() {
     ampArm.runWrist(getWithDeadband(-operatorCont.getRightY()) * 0.1);
-    ampArm.runArm(getWithDeadband(operatorCont.getLeftY()) * 0.5, linkage);
+    ampArm.runArm(getWithDeadband(operatorCont.getLeftY()) * -0.5, linkage);
 
     // FOR CHARLIE
     // if (operatorCont.getBackButton()) {
