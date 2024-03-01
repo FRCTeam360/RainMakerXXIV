@@ -23,7 +23,7 @@ public class LinkageSetpoint extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putNumber("Setpoint", 0.0);
+    //SmartDashboard.putNumber("Setpoint", 0.0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

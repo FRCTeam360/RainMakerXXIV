@@ -25,7 +25,7 @@ public class FieldOrientedDrive extends Command {
   private final AmpArm ampArm;
   
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-      .withDeadband(Constants.MAX_SPEED_MPS * 0.1).withRotationalDeadband(Constants.MAX_ANGULAR_RATE * 0.1)
+      .withDeadband(Constants.MAX_SPEED_MPS).withRotationalDeadband(Constants.MAX_ANGULAR_RATE)
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
 
   /** Creates a new TunerXDrive. */

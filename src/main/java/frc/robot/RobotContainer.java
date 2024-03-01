@@ -186,7 +186,7 @@ public class RobotContainer {
         break;
       case PRACTICE:
         flywheel = new Flywheel(new FlywheelIOSparkFlex());
-        intake = new Intake(new IntakeIOSparkMax());
+        intake = new Intake(new IntakeIOSparkFlex());
         linkage = new Linkage(new LinkageIOTalonFX());
         drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
         climber = new Climber(new ClimberIOSparkMax());
@@ -235,15 +235,18 @@ public class RobotContainer {
     diagnosticTab.addBoolean("Comp Bot", () -> Constants.isCompBot());
     initializeCommands();
 
-    autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    // autoChooser = AutoBuilder.buildAutoChooser();
+    // SmartDashboard.putData("Auto Chooser", autoChooser);
     configureBindings();
     configureDefaultCommands();
   }
 
   private final void initializeCommands() {
-    scoreInAmp = new ScoreInAmp(ampArm, ampIntake, linkage);
-    linkageToAmpHandoff = new LinkageToAmpHandoff(linkage, ampArm, ampIntake, flywheel, intake);
+    if (Objects.nonNull(ampArm) && Objects.nonNull(ampIntake)) {
+      scoreInAmp = new ScoreInAmp(ampArm, ampIntake, linkage);
+      linkageToAmpHandoff = new LinkageToAmpHandoff(linkage, ampArm, ampIntake, flywheel, intake);
+      ampArmNote = new AmpArmNote(ampIntake);
+    }
     diagonalSensorIntakeCloseShot = new DiagonalSensorIntake(ampArm, flywheel, intake, linkage, 6000.0);
     commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, ampArm);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain, linkage, ampArm);
@@ -261,6 +264,7 @@ public class RobotContainer {
     // levelClimbers = new LevelClimbers(climber, drivetrain);
     tuneFlywheel = new TuneFlywheel(flywheel);
     linkageSetpoint = new LinkageSetpoint(linkage, ampArm);
+    powerLinkage = new PowerLinkage(linkage, ampArm);
     stowLinkage = commandFactory.stowLinkage();
     powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
     inny = new IntakeCOmmand(intake, linkage, ampArm, 177.0, true);
@@ -287,8 +291,11 @@ public class RobotContainer {
       ampArmGoToZero = new AmpArmGoToZero(ampArm, linkage);
     }
     if (!Objects.isNull(ampIntake)) {
+      powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
       powerAmpIntake = new PowerAmpIntake(ampIntake);
+      powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
     }
+
     // powerAmpArm = new PowerAmpArm(ampArm);
     // powerAmpIntake = new PowerAmpIntake(ampIntake);
 
