@@ -14,7 +14,7 @@ public class PowerLinkage extends Command {
 
   private final Linkage shooterLinkage;
   private final AmpArm arm;
-  private final XboxController driverCont = new XboxController(0);
+  private final XboxController operatorCont = new XboxController(1);
 
   /** Creates a new RunShooterLinkage. */
   public PowerLinkage(Linkage shooterLinkage, AmpArm arm) {
@@ -33,7 +33,7 @@ public class PowerLinkage extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooterLinkage.run(getWithDeadband(driverCont.getLeftY() * 0.7), arm);
+    shooterLinkage.run(getWithDeadband(operatorCont.getLeftY()) * 0.8, arm);
     // if (operatorCont.getRightTriggerAxis() > 0.1) {
     //   shooterLinkage.run(0.2);
     // } else if (operatorCont.getLeftTriggerAxis() > 0.1) {

@@ -49,7 +49,7 @@ public class Constants {
 
         public static final double MAX_SPEED_MPS = 18.9; // used to be 6 meters per second desired top speed (name
                                                          // changed from MAX_SPEED to MAX_SPEED_MPS jan25 kinda sketch)
-        public static final double MAX_ANGULAR_RATE = Math.PI * 3; // Half a rotation per second max angular velocity
+        public static final double MAX_ANGULAR_RATE = Math.PI * 4; // Half a rotation per second max angular velocity
         public static final int PIGEON_ID = 13;
 
         public static boolean isWoodBot() {

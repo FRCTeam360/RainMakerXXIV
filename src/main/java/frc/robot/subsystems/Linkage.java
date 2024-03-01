@@ -44,12 +44,14 @@ public class Linkage extends SubsystemBase {
   
   /** Creates a new ShooterLinkage. */
   public Linkage(LinkageIO io) {
-  this.io = io;
+    this.io = io;
     ShuffleboardTab tab = Shuffleboard.getTab("Linkage");
     tab.addBoolean("Zero Button", () -> io.getZeroButton());
     tab.addBoolean("Brake Button", () -> io.getBrakeButton());
     tab.addDouble("Angle", () -> this.getAngle());
     tab.addBoolean("Brake Mode", () -> io.isBrakeMode());
+
+    SmartDashboard.putNumber("Linkage Angle", getAngle());
   }
 
   public boolean isAtSetpoint() {
@@ -130,7 +132,7 @@ public class Linkage extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Angle", getAngle());
+    SmartDashboard.putNumber("Linkage Angle", getAngle());
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("Linkage", inputs);

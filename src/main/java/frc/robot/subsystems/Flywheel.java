@@ -33,7 +33,8 @@ public class Flywheel extends SubsystemBase {
   /** Creates a new Flywheel. */
   public Flywheel(FlywheelIO io) {
     this.io = io;
-    SmartDashboard.putNumber("error", 0);
+    //SmartDashboard.putNumber("error", 0);
+    SmartDashboard.putBoolean("Is At Setpoint", false);
   }
 
   public void runLeft(double speed) {
@@ -132,9 +133,10 @@ public class Flywheel extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("setpoint rpm", rpmSetpoint);
-    SmartDashboard.putNumber("curren left rpm", getLeftVelocity());
-    SmartDashboard.putNumber("current right rpm", getRightVelocity());
+    SmartDashboard.putBoolean("Is At Setpoint", isAtSetpoint());
+    // SmartDashboard.putNumber("setpoint rpm", rpmSetpoint);
+    // SmartDashboard.putNumber("curren left rpm", getLeftVelocity());
+    // SmartDashboard.putNumber("current right rpm", getRightVelocity());
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.recordOutput("Flywheel Command",

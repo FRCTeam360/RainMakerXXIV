@@ -30,10 +30,10 @@ public class Climber extends SubsystemBase {
   public Climber(ClimberIO io) {
     this.io = io;
 
-    SmartDashboard.putNumber("Left Height", 0);
-    SmartDashboard.putNumber("Right Height", 0);
-    SmartDashboard.putNumber("roll", 0);
-    SmartDashboard.putNumber("height offset", heightOffset);
+    // SmartDashboard.putNumber("Left Height", 0);
+    // SmartDashboard.putNumber("Right Height", 0);
+    // SmartDashboard.putNumber("roll", 0);
+    // SmartDashboard.putNumber("height offset", heightOffset);
   }
 
   public void runBoth(double leftSpeed, double rightSpeed) {

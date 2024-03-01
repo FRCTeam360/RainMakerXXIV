@@ -166,7 +166,7 @@ public class RobotContainer {
         break;
       case PRACTICE:
         flywheel = new Flywheel(new FlywheelIOSparkFlex());
-        intake = new Intake(new IntakeIOSparkMax());
+        intake = new Intake(new IntakeIOSparkFlex());
         linkage = new Linkage(new LinkageIOTalonFX());
         climber = new Climber(new ClimberIOSparkMax());
         // ampArm = new AmpArm(new AmpArmIOTalonFX());
@@ -214,15 +214,15 @@ public class RobotContainer {
     diagnosticTab.addBoolean("Comp Bot", () -> Constants.isCompBot());
     initializeCommands();
 
-    autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    // autoChooser = AutoBuilder.buildAutoChooser();
+    // SmartDashboard.putData("Auto Chooser", autoChooser);
     configureBindings();
     // configureCharacterizationBindings();
     configureDefaultCommands();
   }
 
   private final void initializeCommands() {
-    if(Objects.nonNull(ampArm) && Objects.nonNull(ampIntake)){
+    if (Objects.nonNull(ampArm) && Objects.nonNull(ampIntake)) {
       scoreInAmp = new ScoreInAmp(ampArm, ampIntake, linkage);
       linkageToAmpHandoff = new LinkageToAmpHandoff(linkage, ampArm, ampIntake, flywheel, intake);
       ampArmNote = new AmpArmNote(ampIntake);
@@ -241,8 +241,8 @@ public class RobotContainer {
     levelClimbers = new LevelClimbers(climber, drivetrain);
     tuneFlywheel = new TuneFlywheel(flywheel);
     linkageSetpoint = new LinkageSetpoint(linkage, ampArm);
+    powerLinkage = new PowerLinkage(linkage, ampArm);
     stowLinkage = commandFactory.stowLinkage();
-    powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
     inny = new IntakeCOmmand(intake);
     shootRoutine = commandFactory.shootInSpeaker(174.0, 6000.0);
     // autoCenterNote = commandFactory.shootInSpeaker(160.0, 6000.0);
@@ -255,12 +255,16 @@ public class RobotContainer {
       powerAmpArm = new PowerAmpArm(ampArm, linkage);
     }
     if (!Objects.isNull(ampIntake)) {
+      powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
       powerAmpIntake = new PowerAmpIntake(ampIntake);
+      powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
     }
+
     // powerAmpArm = new PowerAmpArm(ampArm);
     // powerAmpIntake = new PowerAmpIntake(ampIntake);
 
-    Command shootRoutineWithDrivetrain = new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 0.0);
+    Command shootRoutineWithDrivetrain = new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, 0.0, 5000.0,
+        0.0);
     NamedCommands.registerCommand("Intake", autoPowerCenterNote);
     NamedCommands.registerCommand("Auto Center Note", new AutoPowerCenterNote(ampArm, intake, linkage, flywheel, 163));
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
@@ -287,16 +291,19 @@ public class RobotContainer {
   }
 
   private void configureDefaultCommands() {
-    //ampArm.setDefaultCommand(powerAmpArm);
-
-    //drivetrain.setDefaultCommand(fieldOrientedDrive);
-    //linkage.setDefaultCommand(powerLinkage);
-    if(Objects.nonNull(ampArm)){
+    // ampArm.setDefaultCommand(powerAmpArm);
+    
+    climber.setDefaultCommand(powerClimber);
+    drivetrain.setDefaultCommand(fieldOrientedDrive);
+    // linkage.setDefaultCommand(powerLinkage);
+    if (Objects.nonNull(ampArm)) {
       ampArm.setDefaultCommand(powerAmpArm);
     }
-    linkage.setDefaultCommand(powerLinkage);
-   // linkage.setDefaultCommand(linkageSetpoint);
-    //climber.setDefaultCommand(powerClimber);
+
+
+    //linkage.setDefaultCommand(powerLinkage);
+    // linkage.setDefaultCommand(linkageSetpoint);
+    // climber.setDefaultCommand(powerClimber);
   }
 
   /**
@@ -315,28 +322,20 @@ public class RobotContainer {
    */
 
   private void configureBindings() {
-    operatorController.leftBumper().whileTrue(powerIntakeReversed);
-    operatorController.rightBumper().whileTrue(powerIntake);
-
     driverController.leftBumper().whileTrue(powerIntakeReversed);
     driverController.rightBumper().whileTrue(powerIntake);
-    driverController.b().whileTrue(new InstantCommand(() -> flywheel.handoff(900.0), flywheel));
+    driverController.a().whileTrue(help);
 
-    if(Objects.nonNull(ampArm) && Objects.nonNull(ampIntake)){
+    if (Objects.nonNull(ampArm) && Objects.nonNull(ampIntake)) {
       operatorController.a().whileTrue(scoreInAmp);
       operatorController.b().onTrue(linkageToAmpHandoff);
     }
-    operatorController.y().onTrue(autoPowerCenterNote);
-    // operatorController.a().onTrue(new InstantCommand(()-> ampArm.setArm(90.0)), ampArm);
-    
-    //operatorController.y().onTrue(diagonalSensorIntakeCloseShot);
-    // operatorController.b().onTrue(stowLinkage);
-    // operatorController.x().onTrue(inny);
-    // operatorController.y().onTrue(new SetLinkage(linkage, 0.0));
-    // operatorController.a().onTrue(shootFromSubwoofer);
 
-    driverController.x().whileTrue(new InstantCommand(() ->
-    drivetrain.zero(),drivetrain));
+    // driverController.b().onTrue(stowLinkage);
+    // driverController.rightBumper().whileTrue(autoPowerCenterNote);
+    // driverController.a().onTrue(shootFromSubwoofer);
+
+    driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
 
     // drivetrain.registerTelemetry(logger::telemeterize);
   }
