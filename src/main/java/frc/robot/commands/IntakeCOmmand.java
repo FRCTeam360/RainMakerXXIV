@@ -15,12 +15,14 @@ public class IntakeCOmmand extends Command {
   private AmpArm ampArm;
   private boolean stop = false;
   private double setthatguy;
+  private boolean retracts;
   /** Creates a new IntakeCOmmand. */
-  public IntakeCOmmand(Intake intake, Linkage linkage, AmpArm ampArm, double setthatguy) {
+  public IntakeCOmmand(Intake intake, Linkage linkage, AmpArm ampArm, double setthatguy, boolean retracts) {
     this.intake = intake;
     this.linkage = linkage;
     this.ampArm = ampArm;
     this.setthatguy = setthatguy;
+    this.retracts = retracts;
     
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -51,7 +53,9 @@ public class IntakeCOmmand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    if(retracts) {
     linkage.setAngle(setthatguy, ampArm);
+    }
     intake.stop();
   }
 

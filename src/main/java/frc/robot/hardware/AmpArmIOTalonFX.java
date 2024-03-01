@@ -15,6 +15,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -29,7 +30,7 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   private final double WRIST_RATIO = 11.25; // degrees / motor rotation
 
   private final double ARM_FORWARD_LIMIT = 120.0;
-  private final double ARM_REVERSE_LIMIT = -76.0;
+  private final double ARM_REVERSE_LIMIT = -78.0;
 
   private final double armKP = 0.48;
   private final double armKI = 0.0;
@@ -40,9 +41,20 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   private final double wristKI = 0.0;
   private final double wristKD = 0.0;
   private final double wristKF = 0.0;
+  
+  private DigitalInput zeroButton;
+  private DigitalInput brakeButton;
+
+  private boolean zeroPrev = false;
+  private boolean brakePrev = false;
+
+  private NeutralModeValue neutralMode = NeutralModeValue.Brake;
 
   /** Creates a new AmpArmIOTalonFX. */
-  public AmpArmIOTalonFX() {
+  public AmpArmIOTalonFX(DigitalInput zeroButton, DigitalInput brakeButton) {
+    this.zeroButton = zeroButton;
+    this.brakeButton = brakeButton;
+
     armMotor.getConfigurator().apply(new TalonFXConfiguration());
     wristMotor.getConfigurator().apply(new TalonFXConfiguration());
 
@@ -56,7 +68,7 @@ public class AmpArmIOTalonFX implements AmpArmIO {
 
     armConfig.Feedback.withSensorToMechanismRatio(1 / ARM_RATIO);
     armConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // SAME AS SET INVERTED LOL
-    
+
     TalonFXConfiguration wristConfig = new TalonFXConfiguration();
     wristConfig.Feedback.withSensorToMechanismRatio(1 / WRIST_RATIO);
 
@@ -68,13 +80,34 @@ public class AmpArmIOTalonFX implements AmpArmIO {
 
     armMotor.getConfigurator().apply(armConfig);
     wristMotor.getConfigurator().apply(wristConfig);
-    
+
     armMotor.setNeutralMode(NeutralModeValue.Brake);
 
     wristMotor.setInverted(false);
     wristMotor.setNeutralMode(NeutralModeValue.Brake);
-    armMotor.setPosition(-74.0);
+
+  }
+
+  public void enableBrakeMode() {
+    neutralMode = NeutralModeValue.Brake;
+    armMotor.setNeutralMode(NeutralModeValue.Brake);
+    wristMotor.setNeutralMode(NeutralModeValue.Brake);
+
+  }
+
+  public void disableBrakeMode() {
+    neutralMode = NeutralModeValue.Coast;
+    armMotor.setNeutralMode(NeutralModeValue.Coast);
+    wristMotor.setNeutralMode(NeutralModeValue.Coast);
+
+  }
+
+  @Override
+  public void resetArmWristPos() {
+
+    armMotor.setPosition(-78.0);
     wristMotor.setPosition(70.0);
+
   }
 
   @Override
@@ -136,5 +169,23 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   @Override
   public void zeroArm() {
     armMotor.setPosition(0.0);
+  }
+  
+  public boolean getZeroButton(){
+    boolean zeroCurr = !this.zeroButton.get();
+    boolean risingEdge = zeroCurr && !zeroPrev;
+    zeroPrev = zeroCurr;
+    return risingEdge;
+  }
+
+  public boolean getBrakeButton(){
+    boolean brakeCurr = !this.brakeButton.get();
+    boolean risingEdge = brakeCurr && !brakePrev;
+    brakePrev = brakeCurr;
+    return risingEdge;
+  }
+
+  public boolean isBrakeMode(){
+    return neutralMode == NeutralModeValue.Brake;
   }
 }

@@ -49,9 +49,9 @@ public class LinkageIOTalonFX implements LinkageIO {
   private TalonFXConfiguration talonFXConfiguration = new TalonFXConfiguration();
 
   private PositionVoltage positionVoltage = new PositionVoltage(0);
-  
-  private DigitalInput zeroButton = new DigitalInput(Constants.LINKAGE_ZERO_BUTTON_PORT);
-  private DigitalInput brakeButton = new DigitalInput(Constants.LINKAGE_BRAKE_TOGGLE_BUTTON_PORT);
+
+  private DigitalInput zeroButton;
+  private DigitalInput brakeButton;
 
   private boolean zeroPrev = false;
   private boolean brakePrev = false;
@@ -62,7 +62,10 @@ public class LinkageIOTalonFX implements LinkageIO {
    */
   private final double GEAR_RATIO = 360.0 / 60.0;
 
-  public LinkageIOTalonFX() {
+  public LinkageIOTalonFX(DigitalInput zeroButton, DigitalInput brakeButton) {
+    this.zeroButton = zeroButton;
+    this.brakeButton = brakeButton;
+
     final double kA = 0.0;
     final double kD = 0.0;
     final double kG = 0.0;
@@ -158,6 +161,7 @@ public class LinkageIOTalonFX implements LinkageIO {
   public double getPosition() {
     return talonFX.getPosition().getValueAsDouble() * GEAR_RATIO;
   }
+  
   public void enableBrakeMode(){
     neutralMode = NeutralModeValue.Brake;
     talonFX.setNeutralMode(NeutralModeValue.Brake);
@@ -166,6 +170,8 @@ public class LinkageIOTalonFX implements LinkageIO {
     neutralMode = NeutralModeValue.Coast;
     talonFX.setNeutralMode(NeutralModeValue.Coast);
   }
+
+  
   public boolean isBrakeMode(){
     return neutralMode == NeutralModeValue.Brake;
   }

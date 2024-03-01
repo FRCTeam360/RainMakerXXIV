@@ -32,7 +32,9 @@ public class Climber extends SubsystemBase {
     SmartDashboard.putNumber("Position L", getLeftPosition());
     SmartDashboard.putNumber("Position R", getRightPosition());
 
+    zeroBoth();
   }
+
 
   public void runBoth(double leftSpeed, double rightSpeed) {
     io.runBoth(leftSpeed, rightSpeed);

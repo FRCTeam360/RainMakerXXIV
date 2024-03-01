@@ -103,6 +103,8 @@ public class Linkage extends SubsystemBase {
     if (avoidCollisionWithAmpArm(ampArm)) {
       io.setReference(setPoint);
       positionSetpoint = setPoint;
+    } else {
+      io.stopMotor();
     }
   }
 
