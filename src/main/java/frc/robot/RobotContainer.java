@@ -374,6 +374,7 @@ public class RobotContainer {
     operatorController.pov(180).onTrue(ampArmGoToZero);
 
     if (Objects.nonNull(ampArm)) {
+      System.out.println("AMP ARM IS ALIVE");
       operatorController.x().onTrue(linkageToAmpHandoff);
       operatorController.a().onTrue(scoreInAmp);
     }
