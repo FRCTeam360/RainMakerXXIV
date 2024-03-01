@@ -97,6 +97,10 @@ public class CommandFactory {
         return new SetLinkage(linkage, 130.0, ampArm);
     }
 
+    public SetLinkage deploy() {
+        return new SetLinkage(linkage, 0.0, ampArm);
+    }
+
     // returns type setIntake
     public SetIntake setIntake() {
         return new SetIntake(intake);

@@ -169,6 +169,8 @@ public class RobotContainer {
   private SetClimbers goToNegTwenty;
   private SetClimbers soloClimb;
 
+  private SetLinkage deploy;
+
   private HomeAmpArmWrist homeAmpArmWrist;
   private AmpArmGoToZero ampArmGoToZero;
 
@@ -263,13 +265,15 @@ public class RobotContainer {
     runExtendIntake = commandFactory.runExtendIntake();
     autoPowerCenterNote = new AutoPowerCenterNote(ampArm, intake, linkage, flywheel, 177.0);
     powerCenterNoteIntakeRoutine = commandFactory.powerCenterNote();
+
     powerIntakeReversed = new PowerIntakeReversed(intake);
     powerIntake = new PowerIntake(intake);
     powerFlywheel = new PowerFlywheel(flywheel);
     powerClimber = new PowerClimber(climber);
     shootRoutine = new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
     maxExtend = new SetClimbers(climber, 70.0);
-    passUnderStage = new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, 106.0, 4000.0, fetchAllianceSetPoint());
+    passUnderStage = new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, 106.0, 4000.0,
+        fetchAllianceNum());
     minExtend = new SetClimbers(climber, -35.0);
     // levelClimbers = new LevelClimbers(climber, drivetrain);
     tuneFlywheel = new TuneFlywheel(flywheel);
@@ -287,6 +291,8 @@ public class RobotContainer {
     shootFromFar = commandFactory.shootFromFar();
     basicClimb = new BasicClimb(climber);
 
+    deploy = commandFactory.deploy();
+    
     goToZero = commandFactory.setClimberShouldFinish(0);
     soloClimb = commandFactory.setClimberShouldFinish(40);
     goToNegTwenty = commandFactory.setClimberShouldFinish(-20);
@@ -389,9 +395,10 @@ public class RobotContainer {
     driverController.y().whileTrue(passUnderStage);
 
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
+    driverController.pov(0).whileTrue(deploy);
 
     // OPERATOR CONTROLS DO NOT DELETE JUST COMMENT OUT
- 
+
     operatorController.leftBumper().whileTrue(powerAmpIntakeReverse);
     operatorController.rightBumper().whileTrue(powerAmpIntake);
 
@@ -402,14 +409,15 @@ public class RobotContainer {
       operatorController.a().toggleOnTrue(new InstantCommand(() -> ampArm.setWrist(140.3)));
 
       operatorController.pov(90).onTrue(homeAmpArmWrist);
-      operatorController.pov(180).onTrue(ampArmGoToZero);
+      // operatorController.pov(180).onTrue(ampArmGoToZero);
     }
 
     operatorController.start().whileTrue(powerAmpArm);
     operatorController.start().negate().whileTrue(powerClimber);
 
-    operatorController.y().onTrue(goToZero);
-    operatorController.b().onTrue(goToNegTwenty);
+    operatorController.pov(0).onTrue(soloClimb);
+    operatorController.pov(270).onTrue(goToZero);
+    operatorController.pov(180).onTrue(goToNegTwenty);
 
     drivetrain.registerTelemetry(logger::telemeterize);
   }
@@ -446,13 +454,14 @@ public class RobotContainer {
     ampArm.enableBrakeMode();
   }
 
-  public double fetchAllianceSetPoint() {
-    Optional<Alliance> alliance = DriverStation.getAlliance();
-    if(alliance.get() == Alliance.Blue) {
+  private double fetchAllianceNum() {
+    if (DriverStation.getAlliance().get() == Alliance.Blue) {
       return -45.0;
+    } else {
+      return 45.0;
     }
-    return 45.0;
   }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
