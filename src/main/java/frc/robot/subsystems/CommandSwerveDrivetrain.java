@@ -263,8 +263,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     // drive robot with field centric angle
     public void driveFieldCentricFacingAngle(double forward, double left, double angle, double desiredAngle) {
         FieldCentricFacingAngle request = new SwerveRequest.FieldCentricFacingAngle()
-                .withVelocityX(forward)
-                .withVelocityY(left)
+                .withVelocityX(forward * Constants.MAX_SPEED_MPS)
+                .withVelocityY(left * Constants.MAX_SPEED_MPS)
                 .withTargetDirection(Rotation2d.fromDegrees(desiredAngle));
                 request.HeadingController = headingController;
         this.setControl(request);

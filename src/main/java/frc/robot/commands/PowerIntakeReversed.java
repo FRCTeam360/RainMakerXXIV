@@ -29,7 +29,7 @@ PowerIntakeReversed extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.run(1.0);
+    intake.run(-1.0);
     CommandLogger.logCommandRunning(this);
   }
 

@@ -8,6 +8,7 @@ import java.util.Objects;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystems.AmpArm;
@@ -15,6 +16,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
+import frc.robot.utils.UtilMethods;
 
 public class ShootInSpeaker extends Command {
   private final Linkage linkage;
@@ -25,6 +27,8 @@ public class ShootInSpeaker extends Command {
   private double linkageSetpoint;
   private double flywheelSetpoint;
   private double driveAngleSetpoint;
+
+  private final XboxController driverController = new XboxController(0);
 
   private Timer timer = new Timer();
   private Intake intake;
@@ -80,14 +84,19 @@ public class ShootInSpeaker extends Command {
     // withDriveTrain = false;
   }
 
+  public double getWithDeadband(double input) {
+    if (Math.abs(input) < 0.1) {
+      input = 0.0;
+    }
+    return input;
+  }
   
-
-
   @Override
   public void execute() {
     System.out.println("SHOOTING SHOOTNIG SHOOTING");
     if (!Objects.isNull(drivetrain)) {
-      drivetrain.driveFieldCentricFacingAngle(0.0, 0.0, 0.0, driveAngleSetpoint); // drivetrain is rotated in its own
+      //drivetrain.turntoCMD(false,  UtilMethods.squareInput(getWithDeadband(driverController.getLeftX())),  UtilMethods.squareInput(getWithDeadband(driverController.getLeftY())), driveAngleSetpoint);
+      drivetrain.driveFieldCentricFacingAngle(UtilMethods.squareInput(getWithDeadband(driverController.getLeftY())), UtilMethods.squareInput(getWithDeadband(driverController.getLeftX())), 0.0, driveAngleSetpoint); // drivetrain is rotated in its own
                                                                                   // command ran in // parallel
     } 
     linkage.setAngle(linkageSetpoint, arm);

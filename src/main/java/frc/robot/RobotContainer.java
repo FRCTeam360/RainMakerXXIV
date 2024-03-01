@@ -63,6 +63,7 @@ import frc.robot.utils.CommandFactory;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.management.InstanceNotFoundException;
 
@@ -78,6 +79,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -160,6 +163,7 @@ public class RobotContainer {
   private LinkageToAmpHandoff linkageToAmpHandoff;
   private AmpArmStop ampArmStop;
   private BasicClimb basicClimb;
+  private ShootInSpeaker passUnderStage;
 
   private SetClimbers goToZero;
   private SetClimbers goToNegTwenty;
@@ -265,6 +269,7 @@ public class RobotContainer {
     powerClimber = new PowerClimber(climber);
     shootRoutine = new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
     maxExtend = new SetClimbers(climber, 70.0);
+    passUnderStage = new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, 75.0, 5000.0, fetchAllianceSetPoint());
     minExtend = new SetClimbers(climber, -35.0);
     // levelClimbers = new LevelClimbers(climber, drivetrain);
     tuneFlywheel = new TuneFlywheel(flywheel);
@@ -377,10 +382,11 @@ public class RobotContainer {
   private void configureBindings() {
     // DRIVER CONTROLS DO NOT DELETE JUST COMMENT OUT
     driverController.leftBumper().whileTrue(powerIntakeReversed);
-    driverController.rightBumper().whileTrue(ryryinny);
+    driverController.rightBumper().whileTrue(inny);
 
     driverController.b().whileTrue(stowLinkage);
     driverController.a().whileTrue(shootFromSubwoofer);
+    driverController.y().whileTrue(passUnderStage);
 
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
 
@@ -440,6 +446,13 @@ public class RobotContainer {
     ampArm.enableBrakeMode();
   }
 
+  public double fetchAllianceSetPoint() {
+    Optional<Alliance> alliance = DriverStation.getAlliance();
+    if(alliance.get() == Alliance.Blue) {
+      return -45.0;
+    }
+    return 45.0;
+  }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
