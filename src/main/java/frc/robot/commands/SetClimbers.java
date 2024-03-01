@@ -12,12 +12,23 @@ public class SetClimbers extends Command {
   private final double setPoint;
 
   private boolean isDone;
+  private final boolean shouldFinish;
 
   /** Creates a new SetClimbers. */
   public SetClimbers(Climber climber, double setPoint) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.climber = climber;
     this.setPoint = setPoint;
+    this.shouldFinish = false;
+    addRequirements(this.climber);
+  }
+
+  /** Creates a new SetClimbers. */
+  public SetClimbers(Climber climber, double setPoint, boolean shouldFinish) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    this.climber = climber;
+    this.setPoint = setPoint;
+    this.shouldFinish = shouldFinish;
     addRequirements(this.climber);
   }
 
@@ -30,11 +41,10 @@ public class SetClimbers extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
     climber.setLeftHeight(setPoint);
     climber.setRightHeight(setPoint);
 
-    if (Math.abs(climber.getLeftPosition() - setPoint) < 1.0 && Math.abs(climber.getRightPosition() - setPoint) < 1.0) {
+    if (shouldFinish && Math.abs(climber.getLeftPosition() - setPoint) < 1.0 && Math.abs(climber.getRightPosition() - setPoint) < 1.0) {
       isDone = true;
     }
   }

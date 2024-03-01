@@ -258,7 +258,7 @@ public class RobotContainer {
     stowLinkage = commandFactory.stowLinkage();
     powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
     inny = new IntakeCOmmand(intake, linkage, ampArm, 177.0);
-    longerinny = new IntakeCOmmand(intake, linkage, ampArm, 145.0);
+    longerinny = new IntakeCOmmand(intake, linkage, ampArm, 144.0);
     powerLinkage = commandFactory.powerLinkage();
     shootRoutine = commandFactory.shootInSpeaker(177.0, 6000.0);
     // autoCenterNote = commandFactory.shootInSpeaker(160.0, 6000.0);
@@ -295,9 +295,13 @@ public class RobotContainer {
     NamedCommands.registerCommand("Spinny", new PowerFlywheel(flywheel));
     NamedCommands.registerCommand("AutoShot1", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 163.0, 6500.0));
     NamedCommands.registerCommand("extend linkage", new InstantCommand(() -> linkage.setAngle(0.0, ampArm), linkage));
-    NamedCommands.registerCommand("stay out of way shot",
-        new ShootInSpeaker(ampArm, linkage, flywheel, intake, 145.0, 7000.0));
+    NamedCommands.registerCommand("linkage long prep", new InstantCommand(() -> linkage.setAngle(151, ampArm), linkage));
+    NamedCommands.registerCommand("stay out of way shot", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151, 7000.0));
     NamedCommands.registerCommand("long shot inny", longerinny);
+    NamedCommands.registerCommand("last guy", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 153, 7000.0));
+    NamedCommands.registerCommand("blue linkage long prep", new InstantCommand(() -> linkage.setAngle(148, ampArm), linkage));
+    NamedCommands.registerCommand("blue stay out of way shot", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 148, 7000.0));
+    NamedCommands.registerCommand("blue last guy", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151.5, 7000.0));
 
     // NamedCommands.registerCommand("Intake", runExtendIntake);
     // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
