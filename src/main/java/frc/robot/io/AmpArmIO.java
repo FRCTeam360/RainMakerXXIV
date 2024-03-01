@@ -51,4 +51,10 @@ public interface AmpArmIO {
   public void enableBrakeMode();
 
   public void disableBrakeMode();
+
+public boolean getBrakeButton();
+
+public boolean isBrakeMode();
+
+public boolean getZeroButton();
 }

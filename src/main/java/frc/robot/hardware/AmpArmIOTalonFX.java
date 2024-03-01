@@ -15,6 +15,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -40,11 +41,20 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   private final double wristKI = 0.0;
   private final double wristKD = 0.0;
   private final double wristKF = 0.0;
+  
+  private DigitalInput zeroButton;
+  private DigitalInput brakeButton;
+
+  private boolean zeroPrev = false;
+  private boolean brakePrev = false;
 
   private NeutralModeValue neutralMode = NeutralModeValue.Brake;
 
   /** Creates a new AmpArmIOTalonFX. */
-  public AmpArmIOTalonFX() {
+  public AmpArmIOTalonFX(DigitalInput zeroButton, DigitalInput brakeButton) {
+    this.zeroButton = zeroButton;
+    this.brakeButton = brakeButton;
+
     armMotor.getConfigurator().apply(new TalonFXConfiguration());
     wristMotor.getConfigurator().apply(new TalonFXConfiguration());
 
@@ -88,7 +98,7 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   public void disableBrakeMode() {
     neutralMode = NeutralModeValue.Coast;
     armMotor.setNeutralMode(NeutralModeValue.Coast);
-    wristMotor.setNeutralMode(NeutralModeValue.Brake);
+    wristMotor.setNeutralMode(NeutralModeValue.Coast);
 
   }
 
@@ -159,5 +169,23 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   @Override
   public void zeroArm() {
     armMotor.setPosition(0.0);
+  }
+  
+  public boolean getZeroButton(){
+    boolean zeroCurr = !this.zeroButton.get();
+    boolean risingEdge = zeroCurr && !zeroPrev;
+    zeroPrev = zeroCurr;
+    return risingEdge;
+  }
+
+  public boolean getBrakeButton(){
+    boolean brakeCurr = !this.brakeButton.get();
+    boolean risingEdge = brakeCurr && !brakePrev;
+    brakePrev = brakeCurr;
+    return risingEdge;
+  }
+
+  public boolean isBrakeMode(){
+    return neutralMode == NeutralModeValue.Brake;
   }
 }

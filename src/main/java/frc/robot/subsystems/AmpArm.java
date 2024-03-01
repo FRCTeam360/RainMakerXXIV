@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,7 +21,6 @@ import frc.robot.utils.CommandLogger;
 
 public class AmpArm extends SubsystemBase {
   private AmpArmIO io;
-  private AmpArmIOTalonFX talonio = new AmpArmIOTalonFX();
   private final AmpArmIOInputsAutoLogged inputs = new AmpArmIOInputsAutoLogged();
 
   /** Creates a new AmpArm. */
@@ -206,7 +206,23 @@ public class AmpArm extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("AmpArm", inputs);
-
+    
+    if(RobotState.isDisabled()){
+      if(io.getBrakeButton()){
+        if(io.isBrakeMode()){
+          io.disableBrakeMode();
+        } else {
+          io.enableBrakeMode();
+        }
+      }
+      if (io.getZeroButton()) {
+        io.resetArmWristPos();
+      }
+    } else {
+      if(!io.isBrakeMode()){
+        io.enableBrakeMode();
+      }
+    }
   }
 
 }

@@ -77,6 +77,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -106,6 +107,10 @@ public class RobotContainer {
 
   final double MAX_SPEED_MPS = Constants.MAX_SPEED_MPS; // used to be 6 meters per second desired top speed
   final double MaxAngularRate = Math.PI * 3; // Half a rotation per second max angular velocity
+  // dio ports
+  private DigitalInput zeroButton = new DigitalInput(Constants.LINKAGE_ZERO_BUTTON_PORT);
+  private DigitalInput brakeButton = new DigitalInput(Constants.LINKAGE_BRAKE_TOGGLE_BUTTON_PORT);
+
   // subsystems
   private CommandSwerveDrivetrain drivetrain; // My drivetrain
   private Flywheel flywheel;
@@ -187,7 +192,7 @@ public class RobotContainer {
       case PRACTICE:
         flywheel = new Flywheel(new FlywheelIOSparkFlex());
         intake = new Intake(new IntakeIOSparkFlex());
-        linkage = new Linkage(new LinkageIOTalonFX());
+        linkage = new Linkage(new LinkageIOTalonFX(zeroButton, brakeButton));
         drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
         climber = new Climber(new ClimberIOSparkMax());
         // ampArm = new AmpArm(new AmpArmIOTalonFX());
@@ -200,10 +205,10 @@ public class RobotContainer {
         drivetrain = CompBotConstants.DriveTrain;
         flywheel = new Flywheel(new FlywheelIOSparkFlex());
         intake = new Intake(new IntakeIOSparkFlex());
-        ampArm = new AmpArm(new AmpArmIOTalonFX());
+        ampArm = new AmpArm(new AmpArmIOTalonFX(zeroButton, brakeButton));
         ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
         climber = new Climber(new ClimberIOSparkMax());
-        linkage = new Linkage(new LinkageIOTalonFX());
+        linkage = new Linkage(new LinkageIOTalonFX(zeroButton, brakeButton));
         break;
       case TEST:
 
