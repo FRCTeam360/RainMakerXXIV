@@ -246,7 +246,7 @@ public class RobotContainer {
     linkageToAmpHandoff = new LinkageToAmpHandoff(linkage, ampArm, ampIntake, flywheel, intake);
     diagonalSensorIntakeCloseShot = new DiagonalSensorIntake(ampArm, flywheel, intake, linkage, 6000.0);
     commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, ampArm);
-    fieldOrientedDrive = new FieldOrientedDrive(drivetrain, linkage);
+    fieldOrientedDrive = new FieldOrientedDrive(drivetrain, linkage, ampArm);
     robotOrientedDrive = new RobotOrientedDrive(drivetrain);
     runExtendIntake = commandFactory.runExtendIntake();
     autoPowerCenterNote = new AutoPowerCenterNote(ampArm, intake, linkage, flywheel, 177.0);
