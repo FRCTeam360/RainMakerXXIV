@@ -117,6 +117,7 @@ public class AmpArm extends SubsystemBase {
     io.zeroArm();
   }
 
+
   public void runArm(double speed, Linkage linkage) {
     if(avoidCollisionWithLinkage(linkage)) {
       avoidWristCollision();

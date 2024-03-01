@@ -73,8 +73,8 @@ public class LinkageToAmpHandoff extends Command {
         intake.run(0.5);
         flywheel.handoff(750.0);
         ampIntake.runIntake(0.5);
-        if (timer.get() > 0.1) {
-          if (ampIntake.getAmps() > 20) {
+        if (timer.get() > 0.15) {
+          if (ampIntake.getAmps() > 25) {
             ampIntake.stop();
             state = States.HAS_NOTE;
           }
@@ -90,54 +90,7 @@ public class LinkageToAmpHandoff extends Command {
         linkage.setAngle(174.0, ampArm);
         done = true;
         break;
-    }
-
-    // System.out.println(state);
-
-    // boolean link = false;
-    // boolean wrist = false;
-    // boolean arm = false;
-    // boolean wheel = false;
-
-    // switch (state) {
-    // case NO_NOTE:
-    // ampArm.setArm(-39.4);
-    // ampArm.setWrist(57.4);
-    // ampIntake.runIntake(0.2);
-    // linkage.setAngle(25.0);
-    // flywheel.handoff(1800.0);
-
-    // link = Math.abs(linkage.getAngle() - 25.0) < 3.0;
-    // wrist = Math.abs(ampArm.getWristPosition() - 57.4) < 2.0;
-    // arm = Math.abs(ampArm.getArmPosition() + 39.4) < 2.0;
-    // wheel = Math.abs(flywheel.getLeftVelocity() - 1800.0) < 20.0;
-
-    // System.out.println("link = " + link + " wrist = " + wrist + " arm = " + arm);
-    // System.out.println("arm angle" + ampArm.getArmPosition());
-    // if (link && wrist && arm && wheel) {
-    // state = States.RUN_INTAKE;
-    // }
-    // break;
-    // case RUN_INTAKE:
-    // ampArm.setArm(-39.4);
-    // ampArm.setWrist(57.4);
-    // ampIntake.runIntake(1.0);
-    // linkage.setAngle(25.0);
-    // flywheel.handoff(1800.0);
-    // intake.run(0.2);
-    // if (ampIntake.getAmps() > 25) {
-    // ampIntake.stop();
-    // flywheel.stop();
-    // state = States.NOTE_CENTERED;
-    // }
-    // break;
-    // case NOTE_CENTERED:
-    // flywheel.stop();
-
-    // done = true;
-    // break;
-    // }
-
+      }
   }
 
   // Called once the command ends or is interrupted.

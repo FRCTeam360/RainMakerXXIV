@@ -158,6 +158,7 @@ public class LinkageIOTalonFX implements LinkageIO {
   public double getPosition() {
     return talonFX.getPosition().getValueAsDouble() * GEAR_RATIO;
   }
+  
   public void enableBrakeMode(){
     neutralMode = NeutralModeValue.Brake;
     talonFX.setNeutralMode(NeutralModeValue.Brake);

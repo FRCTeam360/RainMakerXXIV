@@ -37,9 +37,11 @@ public class PowerLinkage extends Command {
     //linkage.run(getWithDeadband(operatorController.getLeftY() * 0.7), arm);
   
     //for charlie
-    if (operatorController.pov(90).getAsBoolean()) {
+    while (operatorController.pov(90).getAsBoolean()) {
       linkage.run(0.5, arm);
-    } else if (operatorController.pov(270).getAsBoolean()){
+    } 
+    
+    while(operatorController.pov(270).getAsBoolean()){
       linkage.run(-0.5, arm);
     }
 

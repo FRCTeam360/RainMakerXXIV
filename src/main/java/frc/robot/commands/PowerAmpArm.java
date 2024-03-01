@@ -31,21 +31,21 @@ public class PowerAmpArm extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // ampArm.runWrist(getWithDeadband(-operatorCont.getLeftY()) * 0.1);
-    // ampArm.runArm(getWithDeadband(operatorCont.getRightY()) * 0.5, linkage);
+    ampArm.runWrist(getWithDeadband(-operatorCont.getLeftY()) * 0.1);
+    ampArm.runArm(getWithDeadband(operatorCont.getRightY()) * 0.5, linkage);
 
     // FOR CHARLIE
-    if (operatorCont.getBackButton()) {
-      ampArm.runArm(0.3, linkage);
-    } else if (operatorCont.getLeftStickButton()) {
-      ampArm.runArm(-0.3, linkage);
-    }
+    // if (operatorCont.getBackButton()) {
+    //   ampArm.runArm(0.3, linkage);
+    // } else if (operatorCont.getLeftStickButton()) {
+    //   ampArm.runArm(-0.3, linkage);
+    // }
 
-    if (operatorCont.getStartButton()) {
-      ampArm.runWrist(0.3);
-    } else if (operatorCont.getRightStickButton()) {
-      ampArm.runWrist(-0.3);
-    }
+    // if (operatorCont.getStartButton()) {
+    //   ampArm.runWrist(0.3);
+    // } else if (operatorCont.getRightStickButton()) {
+    //   ampArm.runWrist(-0.3);
+    // }
 
   }
 

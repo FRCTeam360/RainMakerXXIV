@@ -19,11 +19,13 @@ import frc.robot.commands.TuneFlywheel;
 import frc.robot.commands.TuneSwerveDrive;
 import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.RobotOrientedDrive;
+import frc.robot.commands.AmpArmGoToZero;
 import frc.robot.commands.AmpArmNote;
 import frc.robot.commands.AmpArmStop;
 import frc.robot.commands.AutoPowerCenterNote;
 import frc.robot.commands.BasicClimb;
 import frc.robot.commands.FieldOrientedDrive;
+import frc.robot.commands.HomeAmpArmWrist;
 import frc.robot.commands.IntakeCOmmand;
 import frc.robot.commands.LevelClimbers;
 import frc.robot.commands.ClimberPIDTuner;
@@ -157,6 +159,9 @@ public class RobotContainer {
   private SetClimbers goToNegTwenty;
   private SetClimbers soloClimb;
 
+  private HomeAmpArmWrist homeAmpArmWrist;
+  private AmpArmGoToZero ampArmGoToZero;
+
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
   /* Setting up bindings for necessary control of the swerve drive platform */
@@ -266,9 +271,9 @@ public class RobotContainer {
     shootFromFar = commandFactory.shootFromFar();
     basicClimb = new BasicClimb(climber);
 
-    goToZero = commandFactory.setClimber(climber, 0);
-    soloClimb = commandFactory.setClimber(climber, 40);
-    goToNegTwenty = commandFactory.setClimber(climber, -20);
+    goToZero = commandFactory.setClimberShouldFinish(0);
+    soloClimb = commandFactory.setClimberShouldFinish(40);
+    goToNegTwenty = commandFactory.setClimberShouldFinish(-20);
 
     // COMMENT OUT tuneSwerveDrive WHEN NOT USING, IT WILL SET YOUR SWERVE DRIVE
     // CONSTANTS TO 0 WHEN CONSTRUCTED
@@ -276,6 +281,8 @@ public class RobotContainer {
     if (!Objects.isNull(ampArm)) {
       powerAmpArm = new PowerAmpArm(ampArm, linkage);
       ampArmStop = commandFactory.ampArmStop();
+      homeAmpArmWrist = new HomeAmpArmWrist(ampArm, linkage);
+      ampArmGoToZero = new AmpArmGoToZero(ampArm, linkage);
     }
     if (!Objects.isNull(ampIntake)) {
       powerAmpIntake = new PowerAmpIntake(ampIntake);
@@ -324,6 +331,8 @@ public class RobotContainer {
 
     // OPERATOR CONTROLS DO NOT DELETE
     climber.setDefaultCommand(powerClimber);
+    intake.setDefaultCommand(powerIntake);
+    linkage.setDefaultCommand(powerLinkage);
 
     // linkage.setDefaultCommand(powerLinkage);
     if (Objects.nonNull(ampArm)) {
@@ -357,18 +366,20 @@ public class RobotContainer {
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
 
     // OPERATOR CONTROLS DO NOT DELETE JUST COMMENT OUT
-    operatorController.leftBumper().whileTrue(powerIntakeReversed);
     operatorController.leftBumper().whileTrue(powerAmpIntakeReverse);
-
-    operatorController.rightBumper().whileTrue(powerIntake);
     operatorController.rightBumper().whileTrue(powerAmpIntake);
 
     operatorController.pov(0).onTrue(goToNegTwenty);
+    operatorController.pov(90).onTrue(homeAmpArmWrist);
+    operatorController.pov(180).onTrue(ampArmGoToZero);
+
     if (Objects.nonNull(ampArm)) {
       operatorController.x().onTrue(linkageToAmpHandoff);
       operatorController.a().onTrue(scoreInAmp);
-
     }
+
+    operatorController.b().onTrue(goToNegTwenty);
+    operatorController.y().onTrue(goToZero);
 
     drivetrain.registerTelemetry(logger::telemeterize);
   }

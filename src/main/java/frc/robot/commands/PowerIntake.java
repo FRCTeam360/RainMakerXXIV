@@ -34,7 +34,9 @@ public class PowerIntake extends Command {
     //   intake.run(-.15);
     // }
 
-    intake.run(1.0);
+    intake.run(-operatorCont.getRightTriggerAxis());
+    intake.run(operatorCont.getLeftTriggerAxis());
+    
     CommandLogger.logCommandRunning(this);
   }
 
