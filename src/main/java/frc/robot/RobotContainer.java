@@ -437,17 +437,8 @@ public class RobotContainer {
   public void onTeleInit() {
     drivetrain.configNeutralMode(NeutralModeValue.Brake);
     linkage.enableBrakeMode();
-    ampArm.resetArmWristPos();
     ampArm.enableBrakeMode();
   }
-
-  // public void onRobotInit() {
-  //   ampArm.armEncoderPos(-)
-  // }
-
-  // public void onRobotInit() {
-  // ampArm.
-  // }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

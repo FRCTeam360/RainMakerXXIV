@@ -29,10 +29,6 @@ public class AmpArm extends SubsystemBase {
     setupShuffleboard();
   }
 
-  public void resetArmWristPos() {
-    io.resetArmWristPos();
-  }
-
   public void enableBrakeMode() {
     io.enableBrakeMode();
   }
