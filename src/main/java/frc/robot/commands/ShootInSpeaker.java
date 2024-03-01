@@ -96,7 +96,7 @@ public class ShootInSpeaker extends Command {
     System.out.println("SHOOTING SHOOTNIG SHOOTING");
     if (!Objects.isNull(drivetrain)) {
       //drivetrain.turntoCMD(false,  UtilMethods.squareInput(getWithDeadband(driverController.getLeftX())),  UtilMethods.squareInput(getWithDeadband(driverController.getLeftY())), driveAngleSetpoint);
-      drivetrain.driveFieldCentricFacingAngle(UtilMethods.squareInput(getWithDeadband(driverController.getLeftY())), UtilMethods.squareInput(getWithDeadband(driverController.getLeftX())), 0.0, driveAngleSetpoint); // drivetrain is rotated in its own
+      drivetrain.driveFieldCentricFacingAngle(UtilMethods.squareInput(getWithDeadband(-driverController.getLeftY())), UtilMethods.squareInput(getWithDeadband(-driverController.getLeftX())), 0.0, driveAngleSetpoint); // drivetrain is rotated in its own
                                                                                   // command ran in // parallel
     } 
     linkage.setAngle(linkageSetpoint, arm);

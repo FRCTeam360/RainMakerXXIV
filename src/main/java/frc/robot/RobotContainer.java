@@ -269,7 +269,7 @@ public class RobotContainer {
     powerClimber = new PowerClimber(climber);
     shootRoutine = new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
     maxExtend = new SetClimbers(climber, 70.0);
-    passUnderStage = new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, 75.0, 5000.0, fetchAllianceSetPoint());
+    passUnderStage = new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, 106.0, 4000.0, fetchAllianceSetPoint());
     minExtend = new SetClimbers(climber, -35.0);
     // levelClimbers = new LevelClimbers(climber, drivetrain);
     tuneFlywheel = new TuneFlywheel(flywheel);
