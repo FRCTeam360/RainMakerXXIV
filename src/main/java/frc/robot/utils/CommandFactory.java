@@ -30,6 +30,14 @@ public class CommandFactory {
         return new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, linkageSetpoint, flywheelSetpoint, driveSetpoint);
     }
 
+    public SetClimbers setClimberShouldntFinish(double height) {
+        return new SetClimbers(climber, height);
+    }
+
+    public SetClimbers setClimberShouldFinish(double height) {
+        return new SetClimbers(climber, height, true);
+    }
+
     public ShootInSpeaker shootInSpeakerWithoutDriveTrain(double linkageSetpoint, double flywheelSetpoint) {
         return new ShootInSpeaker(ampArm, linkage, flywheel, intake, linkageSetpoint, flywheelSetpoint);
     }
@@ -92,5 +100,9 @@ public class CommandFactory {
     // returns type setIntake
     public SetIntake setIntake() {
         return new SetIntake(intake);
+    }
+
+    public AmpArmStop ampArmStop() {
+        return new AmpArmStop(ampArm, linkage);
     }
 }

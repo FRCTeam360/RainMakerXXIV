@@ -4,49 +4,54 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber;
 
-public class PowerClimber extends Command {
+public class BasicClimb extends Command {
   private final Climber climber;
-  private XboxController operatorCont = new XboxController(1);
+  private final Timer timer = new Timer();
+  private boolean isDone;
 
-  /** Creates a new PowerClimber. */
-  public PowerClimber(Climber climber) {
-    this.climber = climber;
+  /** Creates a new BasicCommand. */
+  public BasicClimb(Climber climber) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(this.climber);
+    this.climber = climber;
+    addRequirements(climber);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    timer.restart();
+    isDone = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climber.runBoth(getWithDeadband(-operatorCont.getLeftY())* .3, getWithDeadband(-operatorCont.getRightY()) * .3);//works when the rope wraps UNDER the spool
-  }
+    climber.setLeftHeight(58);
+    climber.setRightHeight(58);
 
-  public double getWithDeadband(double input) {
-    if (Math.abs(input) < 0.1) {
-      input = 0.0;
+    if (timer.get() > 0.8) {
+      climber.setLeftHeight(-30.0);
+      climber.setRightHeight(-30.0);
     }
-    return input;
+
+    // if (climber.getLeftPosition() + 30 < 1.0 && climber.getRightPosition() + 30 < 1.0) {
+    //   isDone = true;
+    // }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    climber.stop();
+    timer.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return isDone;
   }
 }

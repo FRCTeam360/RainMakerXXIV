@@ -45,14 +45,14 @@ public class AmpArm extends SubsystemBase {
         safeFromCollision = true;
       }
     } else if (armAngle < -60.0) {
-      io.setWrist(60.0);
+      io.setWrist(70.0);
       safeFromCollision = false;
     } else if (armAngle >= -60.0 && armAngle <= 0.0) {
       if (wristAngle < 30.0) {
         io.setWrist(30.0);
         safeFromCollision = false;
       } else if (wristAngle > 60.0) {
-        io.setWrist(60.0);
+        io.setWrist(0.0);
         safeFromCollision = false;
       } else {
         safeFromCollision = true;
@@ -78,13 +78,13 @@ public class AmpArm extends SubsystemBase {
 
     if(armAngle > 0.0){
       safeFromCollision = true;
-    } else if(armAngle <= -75.0){
+    } else if(armAngle <= -73.5){
       safeFromCollision = true;
     } else {
       if(linkageAngle > 5.0){
         // Set the arm to the closest safe angle to prevent it from running into the linkage
         if(armAngle < -37.5){
-          io.setArm(-75.0);
+          io.setArm(-74.0);
         } else {
           io.setArm(1.0);
         }

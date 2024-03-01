@@ -120,7 +120,7 @@ public class Flywheel extends SubsystemBase {
   // public boolean isBelowSetpoint() {
   // return this.getTopVelocity() <= topRPMSetpoint - 30.0; }
   public boolean isAtSetpoint() {
-    return Math.abs(this.getLeftVelocity() - rpmSetpoint) < 150.0;
+    return Math.abs(this.getLeftVelocity() - rpmSetpoint) < 175.0;
   }
 
   public boolean isAboveSetpoint() {

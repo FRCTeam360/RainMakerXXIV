@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.34,
-      "y": 5.57
+      "x": 15.05,
+      "y": 7.36
     },
     "rotation": 180.0
   },
@@ -12,48 +12,42 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "AutoShot1"
-          }
-        },
-        {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake"
+                  "name": "Spinny"
                 }
               },
               {
-                "type": "sequential",
+                "type": "parallel",
                 "data": {
                   "commands": [
                     {
-                      "type": "path",
-                      "data": {
-                        "pathName": "bulletproof 1"
-                      }
-                    },
-                    {
-                      "type": "race",
+                      "type": "sequential",
                       "data": {
                         "commands": [
                           {
                             "type": "named",
                             "data": {
-                              "name": "Spinny"
+                              "name": "Wait1"
                             }
                           },
                           {
-                            "type": "path",
+                            "type": "named",
                             "data": {
-                              "pathName": "bulletproof 2"
+                              "name": "linkage long prep"
                             }
                           }
                         ]
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "amp side snatch 1"
                       }
                     }
                   ]
@@ -65,49 +59,49 @@
         {
           "type": "named",
           "data": {
-            "name": "AutoShot1"
+            "name": "stay out of way shot"
           }
         },
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              },
-              {
-                "type": "sequential",
+                "type": "parallel",
                 "data": {
                   "commands": [
                     {
-                      "type": "path",
+                      "type": "named",
                       "data": {
-                        "pathName": "bulletproof 3"
+                        "name": "long shot inny"
                       }
                     },
                     {
-                      "type": "race",
+                      "type": "sequential",
                       "data": {
                         "commands": [
                           {
-                            "type": "named",
+                            "type": "path",
                             "data": {
-                              "name": "Spinny"
+                              "pathName": "amp side snatch 2"
                             }
                           },
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "bulletproof 4"
+                              "pathName": "amp side snatch 3"
                             }
                           }
                         ]
                       }
                     }
                   ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Spinny"
                 }
               }
             ]
@@ -116,49 +110,49 @@
         {
           "type": "named",
           "data": {
-            "name": "AutoShot1"
+            "name": "last guy"
           }
         },
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              },
-              {
-                "type": "sequential",
+                "type": "parallel",
                 "data": {
                   "commands": [
                     {
-                      "type": "path",
+                      "type": "named",
                       "data": {
-                        "pathName": "bulletproof 5"
+                        "name": "long shot inny"
                       }
                     },
                     {
-                      "type": "race",
+                      "type": "sequential",
                       "data": {
                         "commands": [
                           {
-                            "type": "named",
+                            "type": "path",
                             "data": {
-                              "name": "Spinny"
+                              "pathName": "amp side snatch 4"
                             }
                           },
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "bulletproof 6"
+                              "pathName": "amp side snatch 5"
                             }
                           }
                         ]
                       }
                     }
                   ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Spinny"
                 }
               }
             ]
@@ -167,7 +161,58 @@
         {
           "type": "named",
           "data": {
-            "name": "AutoShot1"
+            "name": "last guy"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "long shot inny"
+                      }
+                    },
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "red amp side snatch 6"
+                            }
+                          },
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "red amp side snatch 7"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Spinny"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "last guy"
           }
         }
       ]

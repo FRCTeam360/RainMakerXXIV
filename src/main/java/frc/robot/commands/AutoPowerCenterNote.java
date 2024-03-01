@@ -51,6 +51,7 @@ public class AutoPowerCenterNote extends Command{
     CommandLogger.logCommandStart(this);
     linkage.enableBrakeMode();
     timer.reset();
+    sensorTimer.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -63,7 +64,6 @@ public class AutoPowerCenterNote extends Command{
         if(!intake.getSideSensor()) {
           state = IntakeCases.RETRACT_STOP;
         } else {
-          timer.start();
           state = IntakeCases.EXTEND_INTAKE;
         }
         break;
@@ -71,7 +71,7 @@ public class AutoPowerCenterNote extends Command{
            Logger.recordOutput("INTAKE_STATE", 2);
 
         linkage.setAngle(0.0, arm);
-        intake.run(.4);
+        intake.run(.5);
         if(!intake.getSideSensor()) {
           state = IntakeCases.UP_TO_SHOOTER;
         }
@@ -95,14 +95,19 @@ public class AutoPowerCenterNote extends Command{
         break;
       case BACK_UP:
         linkage.setAngle(90.0, arm);
-        intake.run(-.25);
+        intake.run(-.3);
         if(intake.getSideSensor()){
             state = IntakeCases.CENTER;
+            sensorTimer.start();
         }
         break;
       case CENTER:
         linkage.setAngle(90.0, arm);
-        intake.run(.2);
+        if(sensorTimer.get() > 2) {
+          intake.run(.3);
+        } else {
+          intake.run(.2);
+        }
         if(!intake.getDiagonalSensor()){
           intake.stop();
           state = IntakeCases.DONE;
