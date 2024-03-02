@@ -248,8 +248,8 @@ public class RobotContainer {
     diagnosticTab.addBoolean("Comp Bot", () -> Constants.isCompBot());
     initializeCommands();
 
-    // autoChooser = AutoBuilder.buildAutoChooser();
-    // SmartDashboard.putData("Auto Chooser", autoChooser);
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", autoChooser);
     configureBindings();
     configureDefaultCommands();
   }
@@ -394,7 +394,7 @@ public class RobotContainer {
     driverController.rightBumper().whileTrue(inny);
 
     driverController.b().whileTrue(stowLinkage);
-    driverController.a().whileTrue(rydarSubwoof);
+    driverController.a().whileTrue(shootFromSubwoofer);
     driverController.y().whileTrue(passUnderStage);
 
     driverController.rightTrigger(.1).whileTrue(powerIntake);
