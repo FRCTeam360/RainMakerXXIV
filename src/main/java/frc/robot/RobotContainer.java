@@ -169,7 +169,7 @@ public class RobotContainer {
 
   private SetClimbers goToZero;
   private SetClimbers goToNegTwenty;
-  private SetClimbers soloClimb;
+  private SetClimbers goToFourty;
 
   private SetLinkage deploy;
 
@@ -297,7 +297,7 @@ public class RobotContainer {
     deploy = commandFactory.deploy();
     
     goToZero = commandFactory.setClimberShouldFinish(0);
-    soloClimb = commandFactory.setClimberShouldFinish(40);
+    goToFourty = commandFactory.setClimberShouldFinish(40);
     goToNegTwenty = commandFactory.setClimberShouldFinish(-20);
 
     // COMMENT OUT tuneSwerveDrive WHEN NOT USING, IT WILL SET YOUR SWERVE DRIVE
@@ -420,9 +420,10 @@ public class RobotContainer {
     operatorController.start().whileTrue(powerAmpArm);
     operatorController.start().negate().whileTrue(powerClimber);
 
-    operatorController.pov(0).onTrue(soloClimb);
+    operatorController.pov(0).onTrue(goToFourty);
     operatorController.pov(270).onTrue(goToZero);
     operatorController.pov(180).onTrue(goToNegTwenty);
+    operatorController.back().onTrue(new InstantCommand(()-> climber.zeroBoth(), climber));
 
     drivetrain.registerTelemetry(logger::telemeterize);
   }
