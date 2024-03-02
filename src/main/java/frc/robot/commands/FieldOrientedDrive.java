@@ -47,7 +47,7 @@ public class FieldOrientedDrive extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(linkage.getAngle() <90.0 || ampArm.getArmPosition() > 15.0) {
+    if(linkage.getAngle() <90.0 || ampArm.getArmPosition() > 45.0) {
       driveTrain.fieldCentricDrive(
         UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftX()*.5, 0.1)),
         UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftY()*.5, 0.1)),
