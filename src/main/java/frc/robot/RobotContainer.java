@@ -397,6 +397,8 @@ public class RobotContainer {
     driverController.a().whileTrue(rydarSubwoof);
     driverController.y().whileTrue(passUnderStage);
 
+    driverController.rightTrigger(.1).whileTrue(powerIntake);
+
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     driverController.pov(0).whileTrue(deploy);
 

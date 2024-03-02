@@ -22,6 +22,7 @@ public class RydarsSpinup extends Command {
     this.flywheel = flywheel;
     this.angle = angle;
     this.rpm = rpm;
+    addRequirements(linkage, flywheel);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
