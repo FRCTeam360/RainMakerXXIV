@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.RobotType;
 import frc.robot.commands.DiagonalSensorIntake;
 import frc.robot.commands.RunExtendIntake;
+import frc.robot.commands.RydarsSpinup;
 import frc.robot.commands.SetClimbers;
 import frc.robot.commands.ScoreInAmp;
 import frc.robot.commands.PowerIntakeReversed;
@@ -164,6 +165,7 @@ public class RobotContainer {
   private AmpArmStop ampArmStop;
   private BasicClimb basicClimb;
   private ShootInSpeaker passUnderStage;
+  private RydarsSpinup rydarSubwoof;
 
   private SetClimbers goToZero;
   private SetClimbers goToNegTwenty;
@@ -288,6 +290,7 @@ public class RobotContainer {
     shootRoutine = commandFactory.shootInSpeaker(177.0, 6000.0);
     // autoCenterNote = commandFactory.shootInSpeaker(160.0, 6000.0);
     shootFromSubwoofer = commandFactory.shootFromSubwoofer();
+    rydarSubwoof = new RydarsSpinup(linkage, ampArm, flywheel, 177.0, 5000.0);
     shootFromFar = commandFactory.shootFromFar();
     basicClimb = new BasicClimb(climber);
 
@@ -391,7 +394,7 @@ public class RobotContainer {
     driverController.rightBumper().whileTrue(inny);
 
     driverController.b().whileTrue(stowLinkage);
-    driverController.a().whileTrue(shootFromSubwoofer);
+    driverController.a().whileTrue(rydarSubwoof);
     driverController.y().whileTrue(passUnderStage);
 
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
