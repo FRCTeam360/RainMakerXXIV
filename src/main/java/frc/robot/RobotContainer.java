@@ -16,6 +16,7 @@ import frc.robot.commands.PowerLinkage;
 import frc.robot.commands.SetIntake;
 import frc.robot.commands.SetLinkage;
 import frc.robot.commands.ShootInSpeaker;
+import frc.robot.commands.StopClimber;
 import frc.robot.commands.TuneFlywheel;
 import frc.robot.commands.TuneSwerveDrive;
 import frc.robot.commands.PowerFlywheel;
@@ -172,6 +173,9 @@ public class RobotContainer {
   private SetClimbers goToFourty;
 
   private SetLinkage deploy;
+  private FieldOrientedDrive fieldOrientedSlowGuy;
+
+  private StopClimber stopClimber;
 
   private HomeAmpArmWrist homeAmpArmWrist;
   private AmpArmGoToZero ampArmGoToZero;
@@ -262,7 +266,8 @@ public class RobotContainer {
     }
     diagonalSensorIntakeCloseShot = new DiagonalSensorIntake(ampArm, flywheel, intake, linkage, 6000.0);
     commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, ampArm);
-    fieldOrientedDrive = new FieldOrientedDrive(drivetrain, linkage, ampArm);
+    fieldOrientedDrive = new FieldOrientedDrive(drivetrain, linkage, ampArm, false);
+    fieldOrientedSlowGuy = new FieldOrientedDrive(drivetrain, linkage, ampArm, true);
     robotOrientedDrive = new RobotOrientedDrive(drivetrain);
     runExtendIntake = commandFactory.runExtendIntake();
     autoPowerCenterNote = new AutoPowerCenterNote(ampArm, intake, linkage, flywheel, 177.0);
@@ -295,6 +300,8 @@ public class RobotContainer {
     basicClimb = new BasicClimb(climber);
 
     deploy = commandFactory.deploy();
+
+    stopClimber = new StopClimber(climber);
     
     goToZero = commandFactory.setClimberShouldFinish(0);
     goToFourty = commandFactory.setClimberShouldFinish(40);
@@ -371,6 +378,7 @@ public class RobotContainer {
     // if (Objects.nonNull(ampArm)) {
     // ampArm.setDefaultCommand(powerAmpArm);
     // }
+    climber.setDefaultCommand(powerClimber);
   }
 
   /**
@@ -408,7 +416,7 @@ public class RobotContainer {
     operatorController.rightBumper().whileTrue(powerAmpIntake);
 
     if (Objects.nonNull(ampArm)) {
-      operatorController.x().onTrue(linkageToAmpHandoff);
+      operatorController.x().onTrue(linkageToAmpHandoff.alongWith(fieldOrientedSlowGuy));
       // operatorController.a().onTrue(scoreInAmp);
       operatorController.a().toggleOnTrue(new InstantCommand(() -> ampArm.setArm(108.5, linkage)));
       operatorController.a().toggleOnTrue(new InstantCommand(() -> ampArm.setWrist(140.3)));
@@ -417,8 +425,8 @@ public class RobotContainer {
       // operatorController.pov(180).onTrue(ampArmGoToZero);
     }
 
+    operatorController.start().whileTrue(stopClimber);
     operatorController.start().whileTrue(powerAmpArm);
-    operatorController.start().negate().whileTrue(powerClimber);
 
     operatorController.pov(0).onTrue(goToFourty);
     operatorController.pov(270).onTrue(goToZero);
