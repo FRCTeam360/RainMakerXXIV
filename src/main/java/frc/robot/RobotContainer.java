@@ -171,6 +171,7 @@ public class RobotContainer {
   private SetClimbers goToZero;
   private SetClimbers goToNegTwenty;
   private SetClimbers goToFourty;
+  private SetClimbers goToMax;
 
   private SetLinkage deploy;
   private FieldOrientedDrive fieldOrientedSlowGuy;
@@ -306,6 +307,7 @@ public class RobotContainer {
     goToZero = commandFactory.setClimberShouldFinish(0);
     goToFourty = commandFactory.setClimberShouldFinish(40);
     goToNegTwenty = commandFactory.setClimberShouldFinish(-20);
+    goToMax = commandFactory.setClimberShouldFinish(60);
 
     // COMMENT OUT tuneSwerveDrive WHEN NOT USING, IT WILL SET YOUR SWERVE DRIVE
     // CONSTANTS TO 0 WHEN CONSTRUCTED
@@ -428,8 +430,8 @@ public class RobotContainer {
     operatorController.start().whileTrue(stopClimber);
     operatorController.start().whileTrue(powerAmpArm);
 
-    operatorController.pov(0).onTrue(goToFourty);
-    operatorController.pov(270).onTrue(goToZero);
+    operatorController.pov(0).onTrue(goToMax);
+    operatorController.pov(270).onTrue(goToFourty);
     operatorController.pov(180).onTrue(goToNegTwenty);
     operatorController.back().onTrue(new InstantCommand(()-> climber.zeroBoth(), climber));
 
