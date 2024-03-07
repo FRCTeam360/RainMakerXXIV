@@ -166,7 +166,7 @@ public class RobotContainer {
   private ShootInSpeaker passUnderStage;
 
   private SetClimbers goToZero;
-  private SetClimbers goToNegTwenty;
+  private SetClimbers fullRetract;
   private SetClimbers soloClimb;
 
   private SetLinkage deploy;
@@ -295,7 +295,8 @@ public class RobotContainer {
     
     goToZero = commandFactory.setClimberShouldFinish(0);
     soloClimb = commandFactory.setClimberShouldFinish(40);
-    goToNegTwenty = commandFactory.setClimberShouldFinish(-20);
+    fullRetract = commandFactory.setClimberShouldFinish(-57);
+
 
     // COMMENT OUT tuneSwerveDrive WHEN NOT USING, IT WILL SET YOUR SWERVE DRIVE
     // CONSTANTS TO 0 WHEN CONSTRUCTED
@@ -405,19 +406,25 @@ public class RobotContainer {
     if (Objects.nonNull(ampArm)) {
       operatorController.x().onTrue(linkageToAmpHandoff);
       // operatorController.a().onTrue(scoreInAmp);
-      operatorController.a().toggleOnTrue(new InstantCommand(() -> ampArm.setArm(108.5, linkage)));
-      operatorController.a().toggleOnTrue(new InstantCommand(() -> ampArm.setWrist(140.3)));
+      // operatorController.a().toggleOnTrue(new InstantCommand(() -> ampArm.setArm(108.5, linkage)));
+      // operatorController.a().toggleOnTrue(new InstantCommand(() -> ampArm.setWrist(140.3)));
+      operatorController.y().toggleOnTrue(new InstantCommand(() -> ampArm.setArm(-6.0, linkage)));
+      operatorController.y().toggleOnTrue(new InstantCommand(() -> ampArm.setWrist(45)));
+      operatorController.a().toggleOnTrue(new InstantCommand(() -> ampIntake.runIntake(.5)));
 
-      operatorController.pov(90).onTrue(homeAmpArmWrist);
+
+      // operatorController.pov(90).onTrue(homeAmpArmWrist);
       // operatorController.pov(180).onTrue(ampArmGoToZero);
     }
 
-    operatorController.start().whileTrue(powerAmpArm);
-    operatorController.start().negate().whileTrue(powerClimber);
+    operatorController.start().negate().whileTrue(powerAmpArm);
+    operatorController.start().whileTrue(powerClimber);
+
 
     operatorController.pov(0).onTrue(soloClimb);
     operatorController.pov(270).onTrue(goToZero);
-    operatorController.pov(180).onTrue(goToNegTwenty);
+    operatorController.pov(180).onTrue(fullRetract);
+    operatorController.back().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
 
     drivetrain.registerTelemetry(logger::telemeterize);
   }

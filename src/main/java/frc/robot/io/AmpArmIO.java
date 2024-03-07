@@ -22,6 +22,7 @@ public interface AmpArmIO {
     public double wristAngle = 0.0;
     public double armAmps = 0.0;
     public double wristAmps = 0.0;
+    public double armSupplyAmps = 0.0; 
   }
 
   public default void updateInputs(AmpArmIOInputs inputs) {}

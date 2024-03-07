@@ -86,8 +86,8 @@ public class LinkageToAmpHandoff extends Command {
         }
         break;
       case HAS_NOTE:
-        ampArm.setArm(5.0, linkage);
-        if (Math.abs(ampArm.getArmPosition()) < 1.0) {
+        ampArm.setArm(-6.0, linkage);
+        if (Math.abs(ampArm.getArmPosition()) < -6.0) {
           state = States.RETRACTED;
         }
         break;

@@ -74,7 +74,7 @@ public class Linkage extends SubsystemBase {
     }
     double armAngle = ampArm.getArmPosition();
     double linkageAngle = io.getPosition();
-    if (armAngle > 0.0) {
+    if (armAngle > -6.5) {
       safeFromCollision = true;
     } else if (armAngle < -70.0) {
       safeFromCollision = true;
