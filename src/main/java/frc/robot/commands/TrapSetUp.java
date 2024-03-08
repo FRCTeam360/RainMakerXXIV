@@ -11,15 +11,22 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystems.AmpArm;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Linkage;
 import frc.robot.utils.UtilMethods;
 
 public class TrapSetUp extends Command {
   private final CommandSwerveDrivetrain drivetrain;
+  private final Linkage linkage; 
+  private final AmpArm ampArm; 
+  private final Climber climber; 
   private Timer time = new Timer();
   /** Creates a new Trappin. */
-  public TrapSetUp(CommandSwerveDrivetrain drivetrain) {
+  public TrapSetUp(CommandSwerveDrivetrain drivetrain, Linkage linkage, AmpArm ampArm, Climber climber) {
+    this.linkage = linkage;
+    this.ampArm = ampArm;  
+    this.climber = climber; 
     this.drivetrain = drivetrain;
-    addRequirements(drivetrain);
+    addRequirements(drivetrain, linkage, ampArm, climber);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -32,11 +39,16 @@ public class TrapSetUp extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    linkage.setAngle(0.0, ampArm);
     if(time.get() < .3) {
       drivetrain.robotCentricDrive(
       0,
       .06,
      0);
+     ampArm.setArm(90, linkage);
+     ampArm.setWrist(15.0);
+     climber.setLeftHeight(40);
+     climber.setRightHeight(40);
     }
   }
 

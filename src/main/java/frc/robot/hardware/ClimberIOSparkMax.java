@@ -34,10 +34,10 @@ public class ClimberIOSparkMax implements ClimberIO {
     private final double POSITION_CONVERSION = 1; //motor rotations -> (pulley diameter inches * pi) / (5 * 3 gearbox) -> inches
     private final double MINIMUM_HEGIHT = 0;
 
-    private final float leftRetractLimit = -60;
+    private final float leftRetractLimit = -57;
     private final float leftExtensionLimit = 60;
 
-    private final float rightRetractLimit = -60;
+    private final float rightRetractLimit = -57;
     private final float rightExtensionLimit = 60;
 
     private static class UnloadedConstants {

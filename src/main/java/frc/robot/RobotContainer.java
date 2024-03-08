@@ -15,6 +15,7 @@ import frc.robot.commands.PowerLinkage;
 import frc.robot.commands.SetIntake;
 import frc.robot.commands.SetLinkage;
 import frc.robot.commands.ShootInSpeaker;
+import frc.robot.commands.TrapClimb;
 import frc.robot.commands.TrapSetUp;
 import frc.robot.commands.TuneFlywheel;
 import frc.robot.commands.TuneSwerveDrive;
@@ -176,6 +177,7 @@ public class RobotContainer {
   private AmpArmGoToZero ampArmGoToZero;
 
   private TrapSetUp trapDrive;
+  private TrapClimb trapClimb; 
 
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
@@ -296,7 +298,8 @@ public class RobotContainer {
 
     deploy = commandFactory.deploy();
 
-    trapDrive = new TrapSetUp(drivetrain);
+    trapDrive = new TrapSetUp(drivetrain, linkage, ampArm, climber);
+    trapClimb = new TrapClimb(ampArm, climber, linkage);
     
     goToZero = commandFactory.setClimberShouldFinish(0);
     soloClimb = commandFactory.setClimberShouldFinish(40);
@@ -402,11 +405,7 @@ public class RobotContainer {
 
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     driverController.pov(0).whileTrue(deploy);
-    driverController.pov(90)
-        .toggleOnTrue(
-          trapDrive
-          .alongWith(new InstantCommand(() -> ampArm.setArm(90, linkage)))
-          .alongWith(soloClimb).alongWith(stowLinkage));
+    
           
 
     // OPERATOR CONTROLS DO NOT DELETE JUST COMMENT OUT
@@ -415,13 +414,20 @@ public class RobotContainer {
     operatorController.rightBumper().whileTrue(powerAmpIntake);
 
     if (Objects.nonNull(ampArm)) {
+      driverController.pov(90)
+        .toggleOnTrue(
+          trapDrive
+          );
       operatorController.x().toggleOnTrue(linkageToAmpHandoff);
       // operatorController.a().onTrue(scoreInAmp);
       // operatorController.a().toggleOnTrue(new InstantCommand(() -> ampArm.setArm(108.5, linkage)));
       // operatorController.a().toggleOnTrue(new InstantCommand(() -> ampArm.setWrist(140.3)));
-      operatorController.y().toggleOnTrue(new InstantCommand(() -> ampArm.setArm(-6.0, linkage)));
-      operatorController.y().toggleOnTrue(new InstantCommand(() -> ampArm.setWrist(45)));
+      operatorController.y().toggleOnTrue(new InstantCommand(() -> {
+        ampArm.setArm(-6.0, linkage);
+        ampArm.setWrist(45);
+      }, ampArm));
       operatorController.a().toggleOnTrue(new InstantCommand(() -> ampIntake.runIntake(.5)));
+      operatorController.pov(90).toggleOnTrue(trapClimb);
 
 
       // operatorController.pov(90).onTrue(homeAmpArmWrist);
