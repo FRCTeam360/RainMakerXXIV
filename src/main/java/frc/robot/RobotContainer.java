@@ -15,6 +15,7 @@ import frc.robot.commands.PowerLinkage;
 import frc.robot.commands.SetIntake;
 import frc.robot.commands.SetLinkage;
 import frc.robot.commands.ShootInSpeaker;
+import frc.robot.commands.TrapSetUp;
 import frc.robot.commands.TuneFlywheel;
 import frc.robot.commands.TuneSwerveDrive;
 import frc.robot.commands.PowerFlywheel;
@@ -174,6 +175,8 @@ public class RobotContainer {
   private HomeAmpArmWrist homeAmpArmWrist;
   private AmpArmGoToZero ampArmGoToZero;
 
+  private TrapSetUp trapDrive;
+
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
   /* Setting up bindings for necessary control of the swerve drive platform */
@@ -292,6 +295,8 @@ public class RobotContainer {
     basicClimb = new BasicClimb(climber);
 
     deploy = commandFactory.deploy();
+
+    trapDrive = new TrapSetUp(drivetrain);
     
     goToZero = commandFactory.setClimberShouldFinish(0);
     soloClimb = commandFactory.setClimberShouldFinish(40);
@@ -397,6 +402,12 @@ public class RobotContainer {
 
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     driverController.pov(0).whileTrue(deploy);
+    driverController.pov(90)
+        .toggleOnTrue(
+          trapDrive
+          .alongWith(new InstantCommand(() -> ampArm.setArm(90, linkage)))
+          .alongWith(soloClimb).alongWith(stowLinkage));
+          
 
     // OPERATOR CONTROLS DO NOT DELETE JUST COMMENT OUT
 
@@ -404,7 +415,7 @@ public class RobotContainer {
     operatorController.rightBumper().whileTrue(powerAmpIntake);
 
     if (Objects.nonNull(ampArm)) {
-      operatorController.x().onTrue(linkageToAmpHandoff);
+      operatorController.x().toggleOnTrue(linkageToAmpHandoff);
       // operatorController.a().onTrue(scoreInAmp);
       // operatorController.a().toggleOnTrue(new InstantCommand(() -> ampArm.setArm(108.5, linkage)));
       // operatorController.a().toggleOnTrue(new InstantCommand(() -> ampArm.setWrist(140.3)));
@@ -417,8 +428,8 @@ public class RobotContainer {
       // operatorController.pov(180).onTrue(ampArmGoToZero);
     }
 
-    operatorController.start().negate().whileTrue(powerAmpArm);
-    operatorController.start().whileTrue(powerClimber);
+    operatorController.start().negate().whileTrue(powerAmpArm); //should not be negated for driver control
+    operatorController.start().whileTrue(powerClimber); //should be negated for driver control
 
 
     operatorController.pov(0).onTrue(soloClimb);
