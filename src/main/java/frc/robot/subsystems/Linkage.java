@@ -37,7 +37,6 @@ public class Linkage extends SubsystemBase {
   private final LinkageIOInputsAutoLogged inputs = new LinkageIOInputsAutoLogged();
   private double positionSetpoint;
   
-  
   private static final double STARTING_ANGLE = 50.0;
   static XboxController driverCont = new XboxController(0);
 
@@ -52,6 +51,7 @@ public class Linkage extends SubsystemBase {
     tab.addBoolean("Brake Mode", () -> io.isBrakeMode());
 
     SmartDashboard.putNumber("Linkage Angle", getAngle());
+    SmartDashboard.putBoolean("Linkage is at home", isAtZero());
   }
 
   public boolean isAtSetpoint() {
@@ -131,10 +131,15 @@ public class Linkage extends SubsystemBase {
     io.setFF(ff * Math.cos(getAngle()));
   }
 
+  public boolean isAtZero() {
+    return Math.abs(getAngle()) < 5.0;
+  }
+
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Linkage Angle", getAngle());
+    SmartDashboard.putBoolean("Linkage is at home", isAtZero());
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("Linkage", inputs);
