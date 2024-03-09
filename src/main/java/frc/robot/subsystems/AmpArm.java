@@ -44,10 +44,10 @@ public class AmpArm extends SubsystemBase {
     boolean safeFromCollision = false;
     if (armAngle > 0.0) {
       if (wristAngle > armAngle + 90.0) {
-        io.setWrist(armAngle + 90.0);
+        io.setWrist(armAngle + 80.0);
         safeFromCollision = false;
       } else if (wristAngle < armAngle - 90.0) {
-        io.setWrist(armAngle - 90.0);
+        io.setWrist(armAngle - 80.0);
         safeFromCollision = false;
       } else {
         safeFromCollision = true;
