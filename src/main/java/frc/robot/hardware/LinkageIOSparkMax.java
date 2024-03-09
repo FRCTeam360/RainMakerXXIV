@@ -54,7 +54,7 @@ public class LinkageIOSparkMax implements LinkageIO {
 
   @Override 
   public void updateInputs(LinkageIOInputs inputs) {
-    inputs.linkageAngle = encoder.getPosition(); 
+    inputs.linkagePosition = encoder.getPosition(); 
     inputs.linkageVoltage = sparkMax.getBusVoltage();
   }
 

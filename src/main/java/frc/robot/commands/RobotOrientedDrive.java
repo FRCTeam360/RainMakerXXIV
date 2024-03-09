@@ -45,7 +45,6 @@ public class RobotOrientedDrive extends Command {
       UtilMethods.squareInput(MathUtil.applyDeadband(driverController.getLeftY(), 0.1)),
       UtilMethods.squareInput(MathUtil.applyDeadband(driverController.getRightX(), 0.1))
     );
-    CommandLogger.logCommandRunning(this);
   }
 
   // Called once the command ends or is interrupted.

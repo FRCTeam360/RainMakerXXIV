@@ -10,10 +10,14 @@ public interface ClimberIO {
   /** Creates a new ClimberIO. */
   @AutoLog
   public static class ClimberIOInputs {
-    public double speedLeft = 0.0;
-    public double speedRight = 0.0;
-    public double leftAmps = 0.0;
-    public double rightAmps = 0.0;
+    public double climberLeftStatorCurrent = 0.0;
+    public double climberRightStatorCurrent = 0.0;
+    public double climberLeftVoltage = 0.0;
+    public double climberRightVoltage = 0.0;
+    public double climberLeftVelocity = 0.0;
+    public double climberRightVelocity = 0.0;
+    public double climberLeftPosition = 0.0;
+    public double climberRightPosition = 0.0;
   }
 
   public default void updateInputs(ClimberIOInputs inputs) {

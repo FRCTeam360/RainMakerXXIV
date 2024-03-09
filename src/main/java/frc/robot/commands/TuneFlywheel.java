@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Flywheel;
+import frc.robot.utils.CommandLogger;
 
 public class TuneFlywheel extends Command {
   private Flywheel flywheel;
@@ -28,6 +29,7 @@ public class TuneFlywheel extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    CommandLogger.logCommandStart(this);
     SmartDashboard.putNumber("Goal RPM", 0.0);
     
   }
@@ -46,6 +48,7 @@ public class TuneFlywheel extends Command {
   @Override
   public void end(boolean interrupted) {
     flywheel.stop();
+    CommandLogger.logCommandEnd(this);
   }
 
   // Returns true when the command should end.

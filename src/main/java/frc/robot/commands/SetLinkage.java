@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AmpArm;
 import frc.robot.subsystems.Linkage;
+import frc.robot.utils.CommandLogger;
 
 public class SetLinkage extends Command {
   private final Linkage linkage;
@@ -26,6 +27,7 @@ public class SetLinkage extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    CommandLogger.logCommandStart(this);
     //SmartDashboard.putNumber("error", 0);
   }
 
@@ -38,7 +40,9 @@ public class SetLinkage extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    CommandLogger.logCommandEnd(this);
+  }
 
   // Returns true when the command should end.
   @Override

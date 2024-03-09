@@ -22,9 +22,9 @@ public class IntakeIOSparkFlex implements IntakeIO {
     private final DigitalInput sideSensor = new DigitalInput(Constants.INTAKE_SIDE_SENSOR_PORT);
     private final DigitalInput highSensor = new DigitalInput(Constants.INTAKE_HIGH_SENSOR_PORT);
     private final DigitalInput diagonalSensor = new DigitalInput(Constants.INTAKE_DIAGONAL_SENSOR_PORT);
-
-    public IntakeIOSparkFlex() {
-        sparkFlex.restoreFactoryDefaults();
+    
+    public IntakeIOSparkFlex(){
+        sparkFlex.restoreFactoryDefaults(); 
         sparkFlex.setInverted(false);
 
         sparkFlex.setIdleMode(IdleMode.kBrake);
@@ -38,9 +38,12 @@ public class IntakeIOSparkFlex implements IntakeIO {
 
     @Override
     public void updateInputs(IntakeIOInputs inputs) {
-        inputs.intakeSpeed = sparkFlex.get();
-        inputs.output = sparkFlex.getAppliedOutput();
-        inputs.amps = sparkFlex.getOutputCurrent();
+        inputs.intakeSideSensor = sideSensor.get();
+        inputs.intakeHighSensor = highSensor.get();
+        inputs.intakeVoltage = sparkFlex.getAppliedOutput() * sparkFlex.getBusVoltage();
+        inputs.intakeStatorCurrent = sparkFlex.getOutputCurrent();
+        inputs.intakeVelocity = encoder.getVelocity();
+        inputs.intakePosition = encoder.getPosition();
     }
 
     @Override

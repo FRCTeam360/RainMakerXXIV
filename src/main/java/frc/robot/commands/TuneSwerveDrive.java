@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.utils.CommandLogger;
 
 public class TuneSwerveDrive extends Command {
   private CommandSwerveDrivetrain drivetrain;
@@ -76,6 +77,7 @@ public class TuneSwerveDrive extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    CommandLogger.logCommandStart(this);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -95,6 +97,7 @@ public class TuneSwerveDrive extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    CommandLogger.logCommandEnd(this);
   }
 
   // Returns true when the command should end.

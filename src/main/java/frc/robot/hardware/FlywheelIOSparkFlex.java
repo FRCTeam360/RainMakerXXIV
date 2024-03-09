@@ -18,7 +18,7 @@ import frc.robot.io.IntakeIO.IntakeIOInputs;
 
 public class FlywheelIOSparkFlex implements FlywheelIO {
   /** Creates a new FlywheelIOSparkMax. */
-  private final CANSparkFlex leftMotor = new CANSparkFlex(Constants.FLYWHEEL_LEFT_ID, MotorType.kBrushless);
+    private final CANSparkFlex leftMotor = new CANSparkFlex(Constants.FLYWHEEL_LEFT_ID, MotorType.kBrushless);
     private final RelativeEncoder leftEncoder = leftMotor.getEncoder();
     private final SparkPIDController leftPIDController = leftMotor.getPIDController();
 
@@ -27,6 +27,7 @@ public class FlywheelIOSparkFlex implements FlywheelIO {
     private final SparkPIDController rightPIDController = rightMotor.getPIDController();
 
     private final double VELOCITY_CONVERSION = 36.0/24.0; //24 motor rotations = 36 flywheel rotations (1.5)
+
 
   public FlywheelIOSparkFlex() {
     double kP = 0.0006;
@@ -52,7 +53,7 @@ public class FlywheelIOSparkFlex implements FlywheelIO {
     rightPIDController.setFF(kFF);
     rightPIDController.setI(kI);
     rightPIDController.setD(kD);
-
+    
     leftEncoder.setVelocityConversionFactor(VELOCITY_CONVERSION);
     rightEncoder.setVelocityConversionFactor(VELOCITY_CONVERSION);
 
@@ -64,7 +65,6 @@ public class FlywheelIOSparkFlex implements FlywheelIO {
   public void setLeft(double speed) {
     leftMotor.set(speed);
   }
-
 
   @Override
   public void setRight(double speed) {
@@ -111,7 +111,14 @@ public class FlywheelIOSparkFlex implements FlywheelIO {
   }
 
   public void updateInputs(FlywheelIOInputs inputs) {
-    inputs.topSpeed = leftMotor.get();
-    inputs.bottomSpeed = rightMotor.get();
+    inputs.flywheelLeftStatorCurrent = leftMotor.getOutputCurrent();
+    inputs.flywheelRightStatorCurrent = rightMotor.getOutputCurrent();
+    inputs.flywheelLeftPosition = leftEncoder.getPosition();
+    inputs.flywheelRightPosition = rightEncoder.getPosition();
+    inputs.flywheelLeftVelocity = leftEncoder.getVelocity();
+    inputs.flywheelRightVelocity = rightEncoder.getVelocity();
+    inputs.flywheelLeftVoltage = leftMotor.getAppliedOutput() * leftMotor.getBusVoltage();
+    inputs.flywheelRightVoltage = rightMotor.getAppliedOutput() * rightMotor.getBusVoltage();
+    
   }
 }
