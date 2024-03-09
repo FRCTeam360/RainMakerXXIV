@@ -16,13 +16,16 @@ public interface AmpArmIO {
   /** Creates a new AmpArmIO. */
   @AutoLog
   public static class AmpArmIOInputs {
-    public double armSpeed = 0.0;
-    public double wristSpeed = 0.0;
-    public double armAngle = 0.0;
-    public double wristAngle = 0.0;
-    public double armAmps = 0.0;
-    public double wristAmps = 0.0;
-    public double armSupplyAmps = 0.0; 
+    public double armStatorCurrent = 0.0;
+    public double wristStatorCurrent = 0.0;
+    public double armSupplyCurrent = 0.0;
+    public double wristSupplyCurrent = 0.0;
+    public double armVoltage = 0.0;
+    public double wristVoltage = 0.0;
+    public double armVelocity = 0.0;
+    public double wristVelocity = 0.0;
+    public double armPosition = 0.0;
+    public double wristPosition = 0.0;
   }
 
   public default void updateInputs(AmpArmIOInputs inputs) {}

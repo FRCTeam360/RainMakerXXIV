@@ -126,7 +126,6 @@ public class PowerCenterNote extends Command{
       
     //   System.out.println(operatorCont.getRightTriggerAxis());
     //   SmartDashboard.putNumber("Trigger val: ", operatorCont.getRightTriggerAxis());
-    CommandLogger.logCommandRunning(this);
   }
 
   // Called once the command ends or is interrupted.

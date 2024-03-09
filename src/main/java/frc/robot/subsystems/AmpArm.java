@@ -26,6 +26,8 @@ public class AmpArm extends SubsystemBase {
   /** Creates a new AmpArm. */
   public AmpArm(AmpArmIO io) {
     this.io = io;
+    SmartDashboard.putBoolean("Is arm at home", isArmAtZero());
+    SmartDashboard.putBoolean("is wrist at home", isWristAtZero());
     setupShuffleboard();
   }
 
@@ -159,6 +161,14 @@ public class AmpArm extends SubsystemBase {
     io.zeroArm();
   }
 
+  public boolean isWristAtZero() {
+    return Math.abs(getWristPosition()) < 2.0;
+  }
+
+  public boolean isArmAtZero() {
+    return Math.abs(getArmPosition()) < 5.0;
+  }
+
   public void runArm(double speed, Linkage linkage) {
     if (avoidCollisionWithLinkage(linkage)) {
       avoidWristCollision();
@@ -201,6 +211,8 @@ public class AmpArm extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putBoolean("Is arm at home", isArmAtZero());
+    SmartDashboard.putBoolean("is wrist at home", isWristAtZero());
     io.updateInputs(inputs);
     Logger.processInputs("AmpArm", inputs);
     

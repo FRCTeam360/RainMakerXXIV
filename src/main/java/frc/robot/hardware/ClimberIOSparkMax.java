@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.io.ClimberIO;
@@ -195,9 +196,13 @@ public class ClimberIOSparkMax implements ClimberIO {
 
     @Override
     public void updateInputs(ClimberIOInputs inputs) {
-        inputs.speedLeft = leftMotor.get();
-        inputs.speedRight = rightMotor.get();
-        inputs.leftAmps = leftMotor.getOutputCurrent();
-        inputs.rightAmps = rightMotor.getOutputCurrent();
+        inputs.climberLeftStatorCurrent = leftMotor.getOutputCurrent();
+        inputs.climberRightStatorCurrent = rightMotor.getOutputCurrent();
+        inputs.climberLeftPosition = leftEncoder.getPosition();
+        inputs.climberRightPosition = rightEncoder.getPosition();
+        inputs.climberLeftVelocity = leftEncoder.getVelocity();
+        inputs.climberRightVelocity = rightEncoder.getVelocity();
+        inputs.climberLeftVoltage = leftMotor.getAppliedOutput() * leftMotor.getBusVoltage();
+        inputs.climberRightVoltage = rightMotor.getAppliedOutput() * rightMotor.getBusVoltage();
     }
 }

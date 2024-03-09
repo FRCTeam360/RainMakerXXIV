@@ -17,6 +17,7 @@ import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
 import frc.robot.utils.UtilMethods;
+import frc.robot.utils.CommandLogger;
 
 public class ShootInSpeaker extends Command {
   private final Linkage linkage;
@@ -61,6 +62,7 @@ public class ShootInSpeaker extends Command {
 
   @Override
   public void initialize() {
+    CommandLogger.logCommandStart(this);
     state = ShootState.LOADED;
     timer.stop();
     timer.reset();
@@ -142,6 +144,7 @@ public class ShootInSpeaker extends Command {
     intake.stop();
     flywheel.stop();
     // linkage.stop();
+    CommandLogger.logCommandEnd(this);
   }
 
   // Returns true when the command should end.

@@ -12,6 +12,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
+import frc.robot.utils.CommandLogger;
 
 public class LinkageToAmpHandoff extends Command {
   private final Linkage linkage;
@@ -47,6 +48,7 @@ public class LinkageToAmpHandoff extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    CommandLogger.logCommandStart(this);
     state = States.LINKAGE_DOWN;
     timer.reset();
     done = false;
@@ -109,6 +111,7 @@ public class LinkageToAmpHandoff extends Command {
     intake.stop();
     timer.stop();
     timer.reset();
+    CommandLogger.logCommandEnd(this);
   }
 
   // Returns true when the command should end.

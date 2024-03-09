@@ -29,7 +29,6 @@ public class SetIntake extends Command {
   @Override
   public void execute() {
     intake.run(0.5);
-    CommandLogger.logCommandRunning(this);
   }
 
   // Called once the command ends or is interrupted.

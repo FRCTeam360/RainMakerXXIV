@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AmpArm;
 import frc.robot.subsystems.Intake;
+import frc.robot.utils.CommandLogger;
 import frc.robot.subsystems.Linkage;
 
 public class IntakeCOmmand extends Command {
@@ -30,6 +31,7 @@ public class IntakeCOmmand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    CommandLogger.logCommandStart(this);
     linkage.setAngle(0.0, ampArm);
     stop = false;
   }
@@ -57,6 +59,7 @@ public class IntakeCOmmand extends Command {
     linkage.setAngle(setthatguy, ampArm);
     }
     intake.stop();
+    CommandLogger.logCommandEnd(this);
   }
 
   // Returns true when the command should end.

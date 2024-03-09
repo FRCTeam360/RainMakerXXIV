@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AmpArm;
 import frc.robot.subsystems.Linkage;
+import frc.robot.utils.CommandLogger;
 
 public class PowerAmpArm extends Command {
   private final AmpArm ampArm;
@@ -26,6 +27,7 @@ public class PowerAmpArm extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    CommandLogger.logCommandStart(this);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -61,6 +63,7 @@ public class PowerAmpArm extends Command {
   public void end(boolean interrupted) {
     ampArm.stopArm();
     ampArm.stopWrist();
+    CommandLogger.logCommandEnd(this);
   }
 
   // Returns true when the command should end.

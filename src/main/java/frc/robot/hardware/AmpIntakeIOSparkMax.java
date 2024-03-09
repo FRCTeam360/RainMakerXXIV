@@ -6,6 +6,7 @@ package frc.robot.hardware;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,6 +17,7 @@ import frc.robot.io.AmpIntakeIO;
 public class AmpIntakeIOSparkMax implements AmpIntakeIO {
 
   private CANSparkMax motor = new CANSparkMax(Constants.AMP_INTAKE_ID, MotorType.kBrushless);
+  private RelativeEncoder encoder = motor.getEncoder();
 
   private final double GEAR_RATIO = 1.0;
 
@@ -44,9 +46,12 @@ public class AmpIntakeIOSparkMax implements AmpIntakeIO {
   }
 
   public void updateInputs(AmpIntakeIOInputs inputs) {
-    inputs.intakeSpeed = motor.get();
-    inputs.intakeAmps = motor.getAppliedOutput();
+    inputs.ampIntakeStatorCurrent = motor.getOutputCurrent();
+    inputs.ampIntakeVoltage = motor.getAppliedOutput() * motor.getBusVoltage();
+    inputs.ampIntakeVelocity = encoder.getVelocity();
+    inputs.ampIntakePosition = encoder.getPosition();
   }
+
 
   @Override
   public double getIntakeSpeed() {
