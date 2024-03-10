@@ -1,0 +1,82 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 15.251083423782047,
+      "y": 5.5086133925236975
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot from subwoofer"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "UmbrellaSplitA"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "extend linkage"
+                            }
+                          },
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "UmbrellaSplitA(UP)"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "UmbrellaSplitA(UP)return"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot from subwoofer"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
