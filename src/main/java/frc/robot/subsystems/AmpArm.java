@@ -44,12 +44,12 @@ public class AmpArm extends SubsystemBase {
     double wristAngle = io.getWristPosition();
     // Added this boolean for readablity
     boolean safeFromCollision = false;
-    if (armAngle > 0.0) {
-      if (wristAngle > armAngle + 90.0) {
-        io.setWrist(armAngle + 90.0);
+    if (armAngle > -10.0) {
+      if (wristAngle > armAngle + 105.0) {
+        io.setWrist(armAngle + 105.0);
         safeFromCollision = false;
-      } else if (wristAngle < armAngle - 90.0) {
-        io.setWrist(armAngle - 90.0);
+      } else if (wristAngle < armAngle - 105.0) {
+        io.setWrist(armAngle - 100.0);
         safeFromCollision = false;
       } else {
         safeFromCollision = true;
@@ -58,16 +58,17 @@ public class AmpArm extends SubsystemBase {
       io.setWrist(70.0);
       safeFromCollision = false;
     } else if (armAngle >= -60.0 && armAngle <= 0.0) {
-      if (wristAngle < 30.0) {
-        io.setWrist(30.0);
+      if (wristAngle > 70.0) {
+        io.setWrist(70.0);
         safeFromCollision = false;
       } else if (wristAngle > 60.0) {
-        io.setWrist(0.0);
+
+        io.setWrist(60.0);
         safeFromCollision = false;
       } else {
         safeFromCollision = true;
       }
-    }
+    }System.out.println("safe: " + safeFromCollision);
     return safeFromCollision;
   }
 
@@ -87,7 +88,7 @@ public class AmpArm extends SubsystemBase {
     double armAngle = io.getArmPosition();
     double linkageAngle = linkage.getAngle();
 
-    if (armAngle > 0.0) {
+    if (armAngle > -6.5) {
       safeFromCollision = true;
     } else if (armAngle <= -73.5) {
       safeFromCollision = true;
@@ -98,7 +99,7 @@ public class AmpArm extends SubsystemBase {
         if (armAngle < -37.5) {
           io.setArm(-74.0);
         } else {
-          io.setArm(1.0);
+          io.setArm(-6.0);
         }
         safeFromCollision = false;
       } else {
@@ -122,9 +123,9 @@ public class AmpArm extends SubsystemBase {
     double armAngle = io.getArmPosition();
 
     if(linkageAngle > 5.0){
-      if(angleSetpoint < 0.0 && armAngle >= 0.0){
+      if(angleSetpoint < -6.5 && armAngle >= -6.5){
         safeFromCollision = false;
-        io.setArm(1.0);
+        io.setArm(-6.0);
       } else if(angleSetpoint > -73.5 && armAngle <= -73.5){
         safeFromCollision = false;
         io.setArm(-74.0);
@@ -169,6 +170,9 @@ public class AmpArm extends SubsystemBase {
   }
 
   public void runArm(double speed, Linkage linkage) {
+    if(speed == 0) {
+      io.stopArm();
+    }
     if (avoidCollisionWithLinkage(linkage)) {
       avoidWristCollision();
       io.runArm(speed);

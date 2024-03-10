@@ -41,8 +41,8 @@ public class RobotOrientedDrive extends Command {
   @Override
   public void execute() {
     driveTrain.robotCentricDrive(
-      UtilMethods.squareInput(MathUtil.applyDeadband(driverController.getLeftX(), 0.1)),
-      UtilMethods.squareInput(MathUtil.applyDeadband(driverController.getLeftY(), 0.1)),
+      UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1)),
+      UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1)),
       UtilMethods.squareInput(MathUtil.applyDeadband(driverController.getRightX(), 0.1))
     );
   }

@@ -30,12 +30,12 @@ public class BasicClimb extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climber.setLeftHeight(58);
-    climber.setRightHeight(58);
+    climber.setLeftHeight(58, 0);
+    climber.setRightHeight(58, 0);
 
     if (timer.get() > 0.8) {
-      climber.setLeftHeight(-30.0);
-      climber.setRightHeight(-30.0);
+      climber.setLeftHeight(-30.0, 0);
+      climber.setRightHeight(-30.0, 0);
     }
 
     // if (climber.getLeftPosition() + 30 < 1.0 && climber.getRightPosition() + 30 < 1.0) {
