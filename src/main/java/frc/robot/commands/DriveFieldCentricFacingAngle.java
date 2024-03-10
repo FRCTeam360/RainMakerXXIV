@@ -26,9 +26,9 @@ public class DriveFieldCentricFacingAngle extends Command {
   @Override
   public void execute() {
     if(DriverStation.getAlliance().get() == Alliance.Red){
-      drivetrain.driveFieldCentricFacingAngle(0, 0, 0, 135.0);
+      drivetrain.driveFieldCentricFacingAngle(0, 0, 0, 225.0);
     }else{
-      drivetrain.driveFieldCentricFacingAngle(0, 0, 0, 45.0);
+      drivetrain.driveFieldCentricFacingAngle(0, 0, 0, 315.0);
     }
   }
 

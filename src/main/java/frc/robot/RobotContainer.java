@@ -145,7 +145,7 @@ public class RobotContainer {
   private ShuffleboardTab diagnosticTab;
   private FieldOrientedDrive fieldOrientedDrive;
   private RobotOrientedDrive robotOrientedDrive;
-  private DriveFieldCentricFacingAngle fieldCentricFacingAngle;
+  private DriveFieldCentricFacingAngle passFromSourceAngle;
   private ClimberPIDTuner pidTuner;
   private SetClimbers maxExtend;
   private SetClimbers minExtend;
@@ -272,7 +272,7 @@ public class RobotContainer {
     commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, ampArm);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain, linkage, ampArm, false);
     fieldOrientedSlowGuy = new FieldOrientedDrive(drivetrain, linkage, ampArm, true);
-    fieldCentricFacingAngle = new DriveFieldCentricFacingAngle(drivetrain);
+    passFromSourceAngle = new DriveFieldCentricFacingAngle(drivetrain);
     robotOrientedDrive = new RobotOrientedDrive(drivetrain);
     runExtendIntake = commandFactory.runExtendIntake();
     autoPowerCenterNote = new AutoPowerCenterNote(ampArm, intake, linkage, flywheel, 177.0);
@@ -410,7 +410,7 @@ public class RobotContainer {
     driverController.b().whileTrue(stowLinkage);
     driverController.a().whileTrue(shootFromSubwoofer);
     driverController.y().whileTrue(passUnderStage);
-    driverController.x().whileTrue(fieldCentricFacingAngle);
+    driverController.x().whileTrue(passFromSourceAngle);
 
     driverController.rightTrigger(.1).whileTrue(powerIntake);
 
