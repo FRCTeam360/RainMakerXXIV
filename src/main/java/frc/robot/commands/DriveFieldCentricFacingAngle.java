@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
@@ -23,7 +25,11 @@ public class DriveFieldCentricFacingAngle extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.driveFieldCentricFacingAngle(0, 0, 0, 45.0);
+    if(DriverStation.getAlliance().get() == Alliance.Red){
+      drivetrain.driveFieldCentricFacingAngle(0, 0, 0, 135.0);
+    }else{
+      drivetrain.driveFieldCentricFacingAngle(0, 0, 0, 45.0);
+    }
   }
 
   // Called once the command ends or is interrupted.
