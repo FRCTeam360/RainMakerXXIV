@@ -70,8 +70,8 @@ public class ClimberPIDTuner extends Command {
     }
 
     climber.updatePIDF(kP, kI, kD, kFF);
-    climber.setLeftHeight(goalHeight);
-    climber.setRightHeight(goalHeight);
+    climber.setLeftHeight(goalHeight, 0);
+    climber.setRightHeight(goalHeight, 0);
 
     SmartDashboard.putNumber("p", kP);
     SmartDashboard.putNumber("i", kI);

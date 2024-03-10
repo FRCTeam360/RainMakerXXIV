@@ -271,7 +271,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         this.setControl(request);
     }
 
-    private Pose2d getPose() {
+    public Pose2d getPose() {
         // double x = this.getState().Pose.getX();
         // double y = this.getState().Pose.getY();
         // Rotation2d rot = this.getState().Pose.getRotation();

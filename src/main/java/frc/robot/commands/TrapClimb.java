@@ -17,7 +17,7 @@ public class TrapClimb extends Command {
   private final Linkage linkage; 
   private final XboxController operatorCont = new XboxController(1);
   private double climbHeight = -57.0; 
-  private double ampSetpoint = 95.0;
+  private double ampSetpoint = 115.0;
   /** Creates a new TrapClimb. */
   public TrapClimb(AmpArm ampArm, Climber climber, Linkage linkage) {
     this.ampArm = ampArm; 
@@ -35,14 +35,17 @@ public class TrapClimb extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climber.setLeftHeight(climbHeight);
-    climber.setRightHeight(climbHeight);
+    climber.setLeftHeight(climbHeight, 1);
+    climber.setRightHeight(climbHeight, 1);
     ampArm.setArm(ampSetpoint, linkage);
     ampArm.runWrist(getWithDeadband(-operatorCont.getRightY()) * 0.1);
     boolean leftClimbCheck = Math.abs(climber.getLeftPosition() - climbHeight) < 1.0;
     System.out.println(Math.abs(climber.getLeftPosition() - climbHeight));
     boolean rightClimbCheck = Math.abs(climber.getRightPosition() - climbHeight) < 1.0;
     System.out.println(Math.abs(climber.getRightPosition() - climbHeight));
+    if(leftClimbCheck && rightClimbCheck) {
+      ampArm.setWrist(180.0);
+    }
     // if(leftClimbCheck && rightClimbCheck){
     //   System.out.println(leftClimbCheck);
     //   System.out.println(rightClimbCheck);

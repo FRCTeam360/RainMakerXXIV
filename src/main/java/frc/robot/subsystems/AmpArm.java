@@ -44,12 +44,12 @@ public class AmpArm extends SubsystemBase {
     double wristAngle = io.getWristPosition();
     // Added this boolean for readablity
     boolean safeFromCollision = false;
-    if (armAngle > 0.0) {
-      if (wristAngle > armAngle + 90.0) {
-        io.setWrist(armAngle + 80.0);
+    if (armAngle > -10.0) {
+      if (wristAngle > armAngle + 105.0) {
+        io.setWrist(armAngle + 105.0);
         safeFromCollision = false;
-      } else if (wristAngle < armAngle - 90.0) {
-        io.setWrist(armAngle - 80.0);
+      } else if (wristAngle < armAngle - 105.0) {
+        io.setWrist(armAngle - 100.0);
         safeFromCollision = false;
       } else {
         safeFromCollision = true;
@@ -170,6 +170,9 @@ public class AmpArm extends SubsystemBase {
   }
 
   public void runArm(double speed, Linkage linkage) {
+    if(speed == 0) {
+      io.stopArm();
+    }
     if (avoidCollisionWithLinkage(linkage)) {
       avoidWristCollision();
       io.runArm(speed);
