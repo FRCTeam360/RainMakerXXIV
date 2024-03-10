@@ -23,7 +23,7 @@ public class DriveFieldCentricFacingAngle extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.driveFieldCentricFacingAngle(0, 0, 0, 0);
+    drivetrain.driveFieldCentricFacingAngle(0, 0, 0, 45.0);
   }
 
   // Called once the command ends or is interrupted.
