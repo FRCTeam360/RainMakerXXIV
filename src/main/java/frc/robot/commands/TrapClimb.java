@@ -30,21 +30,26 @@ public class TrapClimb extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    linkage.setAngle(0.0, ampArm);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    
     climber.setLeftHeight(climbHeight, 1);
     climber.setRightHeight(climbHeight, 1);
-    ampArm.setArm(ampSetpoint, linkage);
-    ampArm.runWrist(getWithDeadband(-operatorCont.getRightY()) * 0.1);
+    
+   // ampArm.runWrist(getWithDeadband(-operatorCont.getRightY()) * 0.1);
     boolean leftClimbCheck = Math.abs(climber.getLeftPosition() - climbHeight) < 1.0;
     System.out.println(Math.abs(climber.getLeftPosition() - climbHeight));
     boolean rightClimbCheck = Math.abs(climber.getRightPosition() - climbHeight) < 1.0;
     System.out.println(Math.abs(climber.getRightPosition() - climbHeight));
     if(leftClimbCheck && rightClimbCheck) {
-      ampArm.setWrist(180.0);
+      ampArm.setArm(ampSetpoint, linkage);
+      ampArm.runWrist(getWithDeadband(-operatorCont.getRightY()) * 0.1);
+    } else {
+      ampArm.setWrist(135.0);
     }
     // if(leftClimbCheck && rightClimbCheck){
     //   System.out.println(leftClimbCheck);
