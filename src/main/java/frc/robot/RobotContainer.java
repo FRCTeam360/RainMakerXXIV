@@ -16,6 +16,7 @@ import frc.robot.commands.PowerLinkage;
 import frc.robot.commands.SetIntake;
 import frc.robot.commands.SetLinkage;
 import frc.robot.commands.ShootInSpeaker;
+import frc.robot.commands.ShootingPrepRyRy;
 import frc.robot.commands.TrapClimb;
 import frc.robot.commands.TrapSetUp;
 import frc.robot.commands.TrapSetUpTheSequel;
@@ -187,6 +188,7 @@ public class RobotContainer {
 
   private TrapSetUp trapDrive;
   private TrapClimb trapClimb;
+  private ShootingPrepRyRy subwoofShotRy;
 
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
@@ -282,6 +284,7 @@ public class RobotContainer {
     runExtendIntake = commandFactory.runExtendIntake();
     autoPowerCenterNote = new AutoPowerCenterNote(ampArm, intake, linkage, flywheel, 177.0);
     powerCenterNoteIntakeRoutine = commandFactory.powerCenterNote();
+    subwoofShotRy = new ShootingPrepRyRy(linkage, flywheel, ampArm, 177.0, 5000.0);
 
     sequal = new TrapSetUpTheSequel(linkage, ampArm, drivetrain, climber);
 
@@ -418,10 +421,10 @@ public class RobotContainer {
     driverController.rightBumper().whileTrue(inny);
 
     driverController.b().whileTrue(stowLinkage);
-    driverController.a().toggleOnTrue(sequal);
+    driverController.a().toggleOnTrue(subwoofShotRy);
     driverController.y().whileTrue(trapDrive.andThen(sequal.andThen(robotOrientedDrive)));
 
-    driverController.rightTrigger(.1).whileTrue(powerIntake);
+    driverController.rightTrigger().toggleOnTrue(powerIntake);
 
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     driverController.pov(0).whileTrue(deploy);
