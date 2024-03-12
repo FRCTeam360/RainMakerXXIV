@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 10.746695127594531,
-        "y": 4.055899418212139
+        "x": 1.3089291736778261,
+        "y": 5.537862667174266
       },
       "prevControl": null,
       "nextControl": {
-        "x": 9.391478735451534,
-        "y": 4.055899418212139
+        "x": 1.5721726455329406,
+        "y": 4.4361399886695265
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.504250737717628,
-        "y": 4.055899418212139
+        "x": 5.852316502732768,
+        "y": 4.07539893464585
       },
       "prevControl": {
-        "x": 9.40122849366839,
-        "y": 4.055899418212139
+        "x": 6.4178024793104225,
+        "y": 5.157622096716877
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "TAKEOUT UmbrellaSplitB",
   "previewStartingState": {
-    "rotation": 180.0,
+    "rotation": 0.0,
     "velocity": 0
   },
   "useDefaultConstraints": true
