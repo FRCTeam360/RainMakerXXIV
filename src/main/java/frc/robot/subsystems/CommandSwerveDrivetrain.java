@@ -21,6 +21,7 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -51,6 +52,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private double m_lastSimTime;
     private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
     private PhoenixPIDController headingController;
+    private PIDController visionTargetPIDController;
     final double MAX_SPEED_MPS = Constants.MAX_SPEED_MPS; 
 
 
@@ -62,6 +64,12 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private double headingKI = 0.2;
     private double headingIZone = 0.17;
     private double headingKD = 0.0;
+
+    // Point to vision target PID gains
+    private double visionTargetKP = 2.5;
+    private double visionTargetKI = 0.0;
+    private double visionTargetKD = 0.0;
+    private double visionTargetIZone = 0.0;
 
     // Create a new SysId Routine for characterizing the drive 
     public SysIdRoutine sysIdRoutine = new SysIdRoutine(
@@ -102,6 +110,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         headingController.enableContinuousInput(-Math.PI, Math.PI);
         headingController.setTolerance(Math.toRadians(2));
         headingController.setIntegratorRange(-headingIZone, headingIZone);
+        visionTargetPIDController = new PIDController(visionTargetKP, visionTargetKI, visionTargetKD);
+        visionTargetPIDController.setTolerance(Math.toRadians(1));
+        visionTargetPIDController.setIntegratorRange(-visionTargetIZone, visionTargetIZone);
     }
 
     public void updateDriveGains(double kP, double kI, double kD, double kS, double kV, double kA) {
@@ -316,6 +327,23 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         public boolean isFinished() {
             return headingController.atSetpoint();
         }
+    }
+
+    /**
+     * this method should take in three doubles, forward, left, and tx value from vision system
+     * it should then use the tx value to turn the robot to the target, and then drive forward and left in field centric mode
+     */
+    public void pointAtTarget(double forward, double left, double tx) {
+        // Call fieldCentric request with forward and left and the ouput of our PIDController
+        this.setControl(new SwerveRequest.FieldCentric()
+                .withVelocityX(forward * Constants.MAX_SPEED_MPS)
+                .withVelocityY(left * Constants.MAX_SPEED_MPS)
+                .withRotationalRate(-visionTargetPIDController.calculate(tx, 0)));
+    }
+
+    // checks if vision PID is at setpoint
+    public boolean isAtVisionTarget() {
+        return visionTargetPIDController.atSetpoint();
     }
 
     @Override
