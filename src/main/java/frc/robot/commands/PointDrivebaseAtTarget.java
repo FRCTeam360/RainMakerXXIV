@@ -32,7 +32,9 @@ public class PointDrivebaseAtTarget extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    drivetrain.setPastTX(100.0);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -43,9 +45,13 @@ public class PointDrivebaseAtTarget extends Command {
     }
     double left = x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1));
     double forward = x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1));
+    double rotation = UtilMethods.squareInput(MathUtil.applyDeadband(driverController.getRightX(), 0.1));
+
     // Points the drivebase at the target
     if (Objects.nonNull(vision) && vision.isTargetInView()) {
       drivetrain.pointAtTarget(forward, left, vision.getTX());
+    } else{
+      drivetrain.fieldCentricDrive(left, forward, rotation);
     }
 
   }

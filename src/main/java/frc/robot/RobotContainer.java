@@ -436,7 +436,7 @@ public class RobotContainer {
     driverController.y().whileTrue(trapDrive.andThen(sequal.andThen(robotOrientedDrive)));
 
     driverController.rightTrigger().toggleOnTrue(powerIntake);
-    driverController.leftTrigger().toggleOnTrue(pointDrivebaseAtTarget);
+    driverController.leftTrigger().whileTrue(pointDrivebaseAtTarget);
 
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     driverController.pov(0).whileTrue(deploy);
