@@ -61,7 +61,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     GenericEntry kIEntry;
     GenericEntry kDEntry;
 
-    private double headingKP = 5;
+    private double headingKP = 10;
     private double headingKI = 0.2;
     private double headingIZone = 0.17;
     private double headingKD = 0.0;
@@ -330,6 +330,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         }
     }
     private double pastTX = 100.0;
+    private Rotation2d visionTargetRotation = new Rotation2d();
     public void setPastTX(double tx) {
         pastTX = tx;
     }
@@ -339,16 +340,16 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
      */
     public void pointAtTarget(double forward, double left, double tx) {
         if (pastTX != tx) {
-            Rotation2d targetRotation2d = this.getPose().getRotation().minus(Rotation2d.fromDegrees(tx));
+            pastTX = tx;  
+            visionTargetRotation = this.getPose().getRotation().minus(Rotation2d.fromDegrees(tx));
+        }
         // Call fieldCentric request with forward and left and the ouput of our PIDController
         FieldCentricFacingAngle request = new SwerveRequest.FieldCentricFacingAngle()
         .withVelocityX(forward * Constants.MAX_SPEED_MPS)
         .withVelocityY(left * Constants.MAX_SPEED_MPS)
-        .withTargetDirection(targetRotation2d);
+        .withTargetDirection(visionTargetRotation);
         request.HeadingController = headingController;
-        this.setControl(request);
-        }
-        pastTX = tx;                
+        this.setControl(request);              
     }
 
     // checks if vision PID is at setpoint
