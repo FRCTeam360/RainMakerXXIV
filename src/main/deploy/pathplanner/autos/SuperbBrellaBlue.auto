@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.260833181998908,
-      "y": 5.547612425391122
+      "x": 1.2991794154609702,
+      "y": 5.557362183607978
     },
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
@@ -40,7 +40,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "S.Umbrella 1"
+                        "pathName": "S.Umbrella 1 (Blue)"
                       }
                     }
                   ]
@@ -84,7 +84,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "S.Umbrella 2"
+                        "pathName": "S.Umbrella 2 (Blue)"
                       }
                     }
                   ]
@@ -122,7 +122,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "S.Umbrella 3"
+                        "pathName": "S.Umbrella 3 (Blue)"
                       }
                     },
                     {
@@ -150,7 +150,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "S.Umbrella 4"
+                  "pathName": "S.Umbrella 4 (Blue)"
                 }
               },
               {
@@ -198,7 +198,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "S.Umbrella 5"
+                        "pathName": "S.Umbrella 5 (Blue)"
                       }
                     }
                   ]

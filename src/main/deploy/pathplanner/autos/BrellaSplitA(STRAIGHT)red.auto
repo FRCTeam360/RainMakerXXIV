@@ -1,0 +1,82 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 6.993038214104933,
+      "y": 3.8609042538750162
+    },
+    "rotation": 0.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot from subwoofer"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RedBrellaSplitA"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "extend linkage"
+                            }
+                          },
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "RedBrellaSplitA(STRAIGHT)"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RedBrellaSplitA(STRAIGHT)return"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot from subwoofer"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

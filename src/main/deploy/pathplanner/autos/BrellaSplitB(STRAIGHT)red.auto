@@ -20,7 +20,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "UmbrellaSplitA"
+            "pathName": "RedBrellaSplitB"
           }
         },
         {
@@ -44,7 +44,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "UmbrellaSplitA(STRAIGHT)"
+                              "pathName": "RedBrellaSplitB(STRAIGHT)"
                             }
                           }
                         ]
@@ -65,7 +65,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "UmbrellaSplitA(STRAIGHT)return"
+            "pathName": "RedBrellaSplitB(STRAIGHT)return"
           }
         },
         {
