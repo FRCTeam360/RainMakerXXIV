@@ -134,12 +134,12 @@ public class AmpArmIOTalonFX implements AmpArmIO {
 
   @Override
   public void stopArm() {
-    armMotor.stopMotor();
+    armMotor.set(0.0);
   }
 
   @Override
   public void stopWrist() {
-    wristMotor.stopMotor();
+    wristMotor.set(0.0);
   }
 
   public void updateInputs(AmpArmIOInputs inputs) {
