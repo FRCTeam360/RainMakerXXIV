@@ -272,13 +272,14 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     }
 
     // drive robot with field centric angle
-    public void driveFieldCentricFacingAngle(double forward, double left, double angle, double desiredAngle) {
+    public void driveFieldCentricFacingAngle(double forward, double left, double desiredAngle) {
+        
         FieldCentricFacingAngle request = new SwerveRequest.FieldCentricFacingAngle()
                 .withVelocityX(forward * Constants.MAX_SPEED_MPS)
                 .withVelocityY(left * Constants.MAX_SPEED_MPS)
                 .withTargetDirection(Rotation2d.fromDegrees(desiredAngle));
                 request.HeadingController = headingController;
-                request.ForwardReference = SwerveRequest.ForwardReference.RedAlliance;
+                // request.ForwardReference = SwerveRequest.ForwardReference.RedAlliance;
         this.setControl(request);
     }
 
@@ -294,7 +295,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     private void resetPose(Pose2d pose) {
         seedFieldRelative(pose);
-        //this.getPigeon2().setYaw(pose.getRotation().getDegrees());
     }
 
     private ChassisSpeeds getRobotRelativeSpeeds() {
@@ -348,6 +348,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     @Override
     public void periodic() {
+        Logger.recordOutput("Swerve Current Pose", this.getPose());
+        Logger.recordOutput("Swerve Rotation", this.getRotation2d());
+        Logger.recordOutput("Swerve Angle", this.getAngle());
         // String moduleName = "null";
         // for (int i = 0; i < 4; i++) {
         //     switch (i) {

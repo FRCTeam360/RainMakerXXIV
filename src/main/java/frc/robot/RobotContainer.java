@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.RobotType;
 import frc.robot.commands.DiagonalSensorIntake;
+import frc.robot.commands.DriveFieldCentricFacingAngle;
 import frc.robot.commands.RunExtendIntake;
 import frc.robot.commands.RydarsSpinup;
 import frc.robot.commands.SetClimbers;
@@ -76,6 +77,7 @@ import java.util.Optional;
 import javax.management.InstanceNotFoundException;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentricFacingAngle;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -152,6 +154,7 @@ public class RobotContainer {
   private ShuffleboardTab diagnosticTab;
   private FieldOrientedDrive fieldOrientedDrive;
   private RobotOrientedDrive robotOrientedDrive;
+  private DriveFieldCentricFacingAngle passFromSourceAngle;
   private ClimberPIDTuner pidTuner;
   private SetClimbers maxExtend;
   private SetClimbers minExtend;
@@ -164,7 +167,7 @@ public class RobotContainer {
   private LinkageSetpoint linkageSetpoint;
   private TuneFlywheel tuneFlywheel;
   private ShootInSpeaker shootFromSubwoofer;
-  private ShootInSpeaker shootFromFar;
+  private ShootInSpeaker shootFromPodium;
   private TuneSwerveDrive tuneSwerveDrive;
   private AutoPowerCenterNote autoPowerCenterNote;
   private PowerAmpIntakeReverse powerAmpIntakeReverse;
@@ -286,6 +289,7 @@ public class RobotContainer {
     commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, ampArm);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain, linkage, ampArm, false);
     fieldOrientedSlowGuy = new FieldOrientedDrive(drivetrain, linkage, ampArm, true);
+    passFromSourceAngle = new DriveFieldCentricFacingAngle(drivetrain);
     robotOrientedDrive = new RobotOrientedDrive(drivetrain);
     runExtendIntake = commandFactory.runExtendIntake();
     autoPowerCenterNote = new AutoPowerCenterNote(ampArm, intake, linkage, flywheel, 177.0);
@@ -317,7 +321,7 @@ public class RobotContainer {
     // autoCenterNote = commandFactory.shootInSpeaker(160.0, 6000.0);
     shootFromSubwoofer = commandFactory.shootFromSubwoofer();
     rydarSubwoof = new RydarsSpinup(linkage, ampArm, flywheel, 177.0, 5000.0);
-    shootFromFar = commandFactory.shootFromFar();
+    shootFromPodium = commandFactory.shootFromPodium();
 
     deploy = commandFactory.deploy();
 
@@ -427,9 +431,8 @@ public class RobotContainer {
     // DRIVER CONTROLS DO NOT DELETE JUST COMMENT OUT
     driverController.leftBumper().whileTrue(powerIntakeReversed);
     driverController.rightBumper().whileTrue(inny);
-
     driverController.b().whileTrue(stowLinkage);
-    driverController.a().toggleOnTrue(subwoofShotRy);
+    driverController.a().toggleOnTrue(shootFromPodium);
     driverController.y().whileTrue(trapDrive.andThen(sequal.andThen(robotOrientedDrive)));
 
     driverController.rightTrigger().toggleOnTrue(powerIntake);
@@ -507,11 +510,12 @@ public class RobotContainer {
   }
 
   private double fetchAllianceNum() {
-    if (DriverStation.getAlliance().get() == Alliance.Blue) {
-      return -45.0;
-    } else {
-      return 45.0;
-    }
+    return -45.0; 
+    // if (DriverStation.getAlliance().get() == Alliance.Blue) {
+    //   return -45.0;
+    // } else {
+    //   return 45.0;
+    // }
   }
 
   /**
