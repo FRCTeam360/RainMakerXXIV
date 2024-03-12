@@ -261,7 +261,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     }
 
     // drive robot with field centric angle
-    public void driveFieldCentricFacingAngle(double forward, double left, double angle, double desiredAngle) {
+    public void driveFieldCentricFacingAngle(double forward, double left, double desiredAngle) {
         
         FieldCentricFacingAngle request = new SwerveRequest.FieldCentricFacingAngle()
                 .withVelocityX(forward * Constants.MAX_SPEED_MPS)
@@ -283,25 +283,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     }
 
     private void resetPose(Pose2d pose) {
-        // this.getPigeon2().setYaw(getRotation2d().getDegrees()); 
         seedFieldRelative(pose);
-    }
-    /**
-     * Takes the specified location and makes it the current pose for
-     * field-relative maneuvers
-     *
-     * @param location Pose to make the current pose at.
-     */
-    public void resetLocation(Pose2d location) {
-        try {
-            m_stateLock.writeLock().lock();
-            m_odometry.resetPosition(location.getRotation(), m_modulePositions, location);
-            this.getPigeon2().setYaw(getRotation2d().getDegrees());
-            /* We need to update our cached pose immediately so that race conditions don't happen */
-            m_cachedState.Pose = location;
-        } finally {
-            m_stateLock.writeLock().unlock();
-        }
     }
 
     private ChassisSpeeds getRobotRelativeSpeeds() {
@@ -338,9 +320,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     @Override
     public void periodic() {
-        Logger.recordOutput("Current Pose", this.getPose());
-        Logger.recordOutput("Rotation", this.getRotation2d());
-        Logger.recordOutput("Angle", this.getAngle());
+        Logger.recordOutput("Swerve Current Pose", this.getPose());
+        Logger.recordOutput("Swerve Rotation", this.getRotation2d());
+        Logger.recordOutput("Swerve Angle", this.getAngle());
         // String moduleName = "null";
         // for (int i = 0; i < 4; i++) {
         //     switch (i) {
