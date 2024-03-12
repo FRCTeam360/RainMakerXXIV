@@ -53,6 +53,11 @@ public class Vision extends SubsystemBase {
 
   @Override
   public void periodic() {
+    if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
+      setPipeline(0);
+    } else if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+      setPipeline(1);
+    }
     // This method will be called once per scheduler run
   }
 }
