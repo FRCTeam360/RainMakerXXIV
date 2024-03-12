@@ -162,7 +162,7 @@ public class RobotContainer {
   private LinkageSetpoint linkageSetpoint;
   private TuneFlywheel tuneFlywheel;
   private ShootInSpeaker shootFromSubwoofer;
-  private ShootInSpeaker shootFromFar;
+  private ShootInSpeaker shootFromPodium;
   private TuneSwerveDrive tuneSwerveDrive;
   private AutoPowerCenterNote autoPowerCenterNote;
   private PowerAmpIntakeReverse powerAmpIntakeReverse;
@@ -315,7 +315,7 @@ public class RobotContainer {
     // autoCenterNote = commandFactory.shootInSpeaker(160.0, 6000.0);
     shootFromSubwoofer = commandFactory.shootFromSubwoofer();
     rydarSubwoof = new RydarsSpinup(linkage, ampArm, flywheel, 177.0, 5000.0);
-    shootFromFar = commandFactory.shootFromFar();
+    shootFromPodium = commandFactory.shootFromPodium();
 
     deploy = commandFactory.deploy();
 
@@ -424,8 +424,7 @@ public class RobotContainer {
     driverController.leftBumper().whileTrue(powerIntakeReversed);
     driverController.rightBumper().whileTrue(inny);
     driverController.b().whileTrue(stowLinkage);
-    driverController.x().whileTrue(passUnderStage);
-    driverController.a().toggleOnTrue(subwoofShotRy);
+    driverController.a().toggleOnTrue(shootFromPodium);
     driverController.y().whileTrue(trapDrive.andThen(sequal.andThen(robotOrientedDrive)));
 
     driverController.rightTrigger().toggleOnTrue(powerIntake);

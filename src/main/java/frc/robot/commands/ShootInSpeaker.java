@@ -4,11 +4,14 @@
 
 package frc.robot.commands;
 
+import java.sql.Driver;
 import java.util.Objects;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystems.AmpArm;
@@ -97,6 +100,7 @@ public class ShootInSpeaker extends Command {
   public void execute() {
     System.out.println("SHOOTING SHOOTNIG SHOOTING");
     if (!Objects.isNull(drivetrain)) {
+      driveAngleSetpoint = DriverStation.getAlliance().get() == Alliance.Red ? 20.0 : -20.0;
       //drivetrain.turntoCMD(false,  UtilMethods.squareInput(getWithDeadband(driverController.getLeftX())),  UtilMethods.squareInput(getWithDeadband(driverController.getLeftY())), driveAngleSetpoint);
       drivetrain.driveFieldCentricFacingAngle(UtilMethods.squareInput(getWithDeadband(-driverController.getLeftY())), UtilMethods.squareInput(getWithDeadband(-driverController.getLeftX())), driveAngleSetpoint); // drivetrain is rotated in its own
                                                                                   // command ran in // parallel
