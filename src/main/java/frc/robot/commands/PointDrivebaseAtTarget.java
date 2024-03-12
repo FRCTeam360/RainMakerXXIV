@@ -41,8 +41,8 @@ public class PointDrivebaseAtTarget extends Command {
     if(DriverStation.getAlliance().get() == Alliance.Red) {
       x= -1;
     }
-    double left = x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1)),
-    double forward = x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1)),
+    double left = x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1));
+    double forward = x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1));
     // Points the drivebase at the target
     if (Objects.nonNull(vision) && vision.isTargetInView()) {
       drivetrain.pointAtTarget(forward, left, vision.getTX());
