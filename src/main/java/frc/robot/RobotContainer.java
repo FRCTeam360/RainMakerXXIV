@@ -179,6 +179,7 @@ public class RobotContainer {
   private SetClimbers goToZero;
   private SetClimbers fullRetract;
   private SetClimbers soloRaise;
+  private ShootingPrepRyRy kiki;
   private SetClimbers soloRetract;
 
   private SetLinkage deploy;
@@ -292,6 +293,8 @@ public class RobotContainer {
 
     sequal = new TrapSetUpTheSequel(linkage, ampArm, drivetrain, climber);
 
+    kiki = new ShootingPrepRyRy(linkage, flywheel, ampArm, 153.0, 7000.0);
+
     powerIntakeReversed = new PowerIntakeReversed(intake);
     powerIntake = new PowerIntake(intake);
     powerFlywheel = new PowerFlywheel(flywheel);
@@ -372,7 +375,7 @@ public class RobotContainer {
         new ShootInSpeaker(ampArm, linkage, flywheel, intake, 148, 7000.0));
     NamedCommands.registerCommand("blue last guy",
         new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151.5, 7000.0));
-
+    NamedCommands.registerCommand("kiki shot", kiki);
     // NamedCommands.registerCommand("Intake", runExtendIntake);
     // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     // NamedCommands.registerCommand("Wait", new WaitCommand(2));

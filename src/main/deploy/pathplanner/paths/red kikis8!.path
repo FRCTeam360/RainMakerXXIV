@@ -1,0 +1,68 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 13.59362452691651,
+        "y": 2.6519342349848607
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 12.062912486870106,
+        "y": 3.285668519080507
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 10.892941500847373,
+        "y": 4.094898451079563
+      },
+      "prevControl": {
+        "x": 12.249186485759116,
+        "y": 3.4958902494102095
+      },
+      "nextControl": {
+        "x": 9.72297051482464,
+        "y": 4.611635636572936
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.504250737717628,
+        "y": 5.771856864378813
+      },
+      "prevControl": {
+        "x": 9.566974383354944,
+        "y": 5.762107106161956
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.7,
+    "maxAcceleration": 6.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0,
+    "rotateFast": true
+  },
+  "reversed": false,
+  "folder": "KikiSource!!",
+  "previewStartingState": {
+    "rotation": -120.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

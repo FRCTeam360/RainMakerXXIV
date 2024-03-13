@@ -1,0 +1,67 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.6459456149316112,
+      "y": 4.445889746886382
+    },
+    "rotation": -60.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "blue kikis1!"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "blue kikis2!"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "blue kikis3!"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "blue kikis4!"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "blue kikis5!"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "blue kikis6!"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "blue kikis7!"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "blue kikis8!"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
