@@ -7,6 +7,8 @@ package frc.robot.commands;
 import java.sql.Driver;
 import java.util.Objects;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
@@ -110,11 +112,14 @@ public class ShootInSpeaker extends Command {
     flywheel.setBothRPM(flywheelSetpoint);
     System.out.println("left velocity: " + flywheel.getLeftVelocity());
     System.out.println("is above setpoint " + flywheel.isAboveSetpoint());
+    Logger.recordOutput("Shoot in Speaker State: ", state);
     switch (state) {
       case LOADED:
         intake.stop();
         boolean isLinkageAtSetpoint = linkage.isAtSetpoint();
         boolean isFlywheelAtSetpoint = flywheel.isAtSetpoint();
+        Logger.recordOutput("SIS: 1. LOADED linkage", isLinkageAtSetpoint);
+        Logger.recordOutput("SIS: 2. LOADED Flywheel", isFlywheelAtSetpoint);
      //   boolean isDriveReady = Objects.isNull(drivetrain) || drivetrain.isFacingAngle();
         if (isFlywheelAtSetpoint && isLinkageAtSetpoint) { // && isLinkageAtSetpoint
           this.state = ShootState.SHOOT;
@@ -124,6 +129,7 @@ public class ShootInSpeaker extends Command {
       case SHOOT:
         intake.run(1.0);
         boolean hasShot = flywheel.isBelowSetpoint(); // check logic in flywheel subsystem (180 rpm gap)
+        Logger.recordOutput("SIS: 3. SHOOT: hasShoot", hasShot);
         if (hasShot) {
           timer.start();
           state = ShootState.TIMER;

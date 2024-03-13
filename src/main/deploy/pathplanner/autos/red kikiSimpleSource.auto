@@ -16,15 +16,41 @@
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "RedkikiSIMPLEsource"
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "Spinny"
+                }
+              },
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Wait1"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "kiki linkage long prep"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "RedkikiSIMPLEsource"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -33,7 +59,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot without drivetrain"
+            "name": "kikiSimpleShoot"
           }
         }
       ]
