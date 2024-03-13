@@ -366,11 +366,11 @@ public class RobotContainer {
     NamedCommands.registerCommand("linkage long prep",
         new InstantCommand(() -> linkage.setAngle(151, ampArm), linkage));
     NamedCommands.registerCommand("kiki linkage long prep", 
-        new InstantCommand(() -> linkage.setAngle(150, ampArm)));
+        new InstantCommand(() -> linkage.setAngle(149, ampArm)));
     NamedCommands.registerCommand("stay out of way shot",
         new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151, 7000.0));
     NamedCommands.registerCommand("kikiSimpleShoot", 
-        new ShootInSpeaker(ampArm, linkage, flywheel, intake, 150, 7000.0));
+        new ShootInSpeaker(ampArm, linkage, flywheel, intake, 149, 7000.0));
     NamedCommands.registerCommand("long shot inny", longerinny);
     NamedCommands.registerCommand("last guy", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 153, 7000.0));
     NamedCommands.registerCommand("blue linkage long prep",
