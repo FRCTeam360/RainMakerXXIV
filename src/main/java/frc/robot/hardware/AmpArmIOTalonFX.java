@@ -14,8 +14,12 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.SparkAbsoluteEncoder;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalSource;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -26,11 +30,14 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   private final TalonFX armMotor = new TalonFX(Constants.AMP_ARM_ID, Constants.CANIVORE_NAME);
   private final TalonFX wristMotor = new TalonFX(Constants.AMP_WRIST_ID, Constants.CANIVORE_NAME);
 
-  private final double ARM_RATIO = 1.68; // degrees / motor rotation
+  private final double ARM_RATIO = 1.68; // degrees / motor rotation TODO: FIX LMAO
   private final double WRIST_RATIO = 11.25; // degrees / motor rotation
 
   private final double ARM_FORWARD_LIMIT = 120.0;
   private final double ARM_REVERSE_LIMIT = -78.0;
+
+  private final DutyCycleEncoder absEncoder = new DutyCycleEncoder(Constants.AMP_ARM_ABS_ENCODER);
+  private final double zeroOffset = 0.0;
 
   private final double armKP = 0.48;
   private final double armKI = 0.0;
@@ -54,6 +61,8 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   public AmpArmIOTalonFX(DigitalInput zeroButton, DigitalInput brakeButton) {
     this.zeroButton = zeroButton;
     this.brakeButton = brakeButton;
+
+    absEncoder.setPositionOffset(zeroOffset);
 
     armMotor.getConfigurator().apply(new TalonFXConfiguration());
     wristMotor.getConfigurator().apply(new TalonFXConfiguration());
@@ -86,6 +95,7 @@ public class AmpArmIOTalonFX implements AmpArmIO {
     wristMotor.setInverted(false);
     wristMotor.setNeutralMode(NeutralModeValue.Brake);
 
+    armMotor.setPosition(absEncoder.get());
   }
 
   public void enableBrakeMode() {

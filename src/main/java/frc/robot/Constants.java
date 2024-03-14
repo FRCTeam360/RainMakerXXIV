@@ -34,6 +34,8 @@ public class Constants {
         public static final int LINKAGE_ZERO_BUTTON_PORT = 8;
         public static final int LINKAGE_BRAKE_TOGGLE_BUTTON_PORT = 9;
 
+        public static final int AMP_ARM_ABS_ENCODER = 7; //TODO: FIX
+
         public static final Mode currentMode = Mode.REAL;
 
         public static enum Mode {
