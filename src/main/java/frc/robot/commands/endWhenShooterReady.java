@@ -10,13 +10,13 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Linkage;
 
-public class endWhenShooterReady extends Command {
+public class EndWhenShooterReady extends Command {
   private boolean stop;
   private final Linkage linkage;
   private final Flywheel flywheel;
   private final CommandSwerveDrivetrain swerveDrivetrain;
   /** Creates a new endWhenShooterRedy. */
-  public endWhenShooterReady(Linkage linkage, Flywheel flywheel, CommandSwerveDrivetrain swerveDrivetrain) {
+  public EndWhenShooterReady(Linkage linkage, Flywheel flywheel, CommandSwerveDrivetrain swerveDrivetrain) {
     this.linkage = linkage;
     this.flywheel = flywheel;
     this.swerveDrivetrain = swerveDrivetrain;

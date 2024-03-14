@@ -286,7 +286,7 @@ public class RobotContainer {
       ampArmNote = new AmpArmNote(ampIntake);
     }
     diagonalSensorIntakeCloseShot = new DiagonalSensorIntake(ampArm, flywheel, intake, linkage, 6000.0);
-    commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, ampArm);
+    commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, ampArm, vision);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain, linkage, ampArm, false);
     fieldOrientedSlowGuy = new FieldOrientedDrive(drivetrain, linkage, ampArm, true);
     passFromSourceAngle = new DriveFieldCentricFacingAngle(drivetrain);

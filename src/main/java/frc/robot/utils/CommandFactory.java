@@ -120,7 +120,7 @@ public class CommandFactory {
         new SetLinkage(linkage, 0, ampArm, vision),
         new SetFlywheel(flywheel, 0, vision),
         new PointDrivebaseAtTarget(drivetrain, vision),
-        new endWhenShooterReady(linkage, flywheel, drivetrain)
+        new EndWhenShooterReady(linkage, flywheel, drivetrain)
         ).andThen(new ParallelRaceGroup(
             new SetLinkage(linkage, 0, ampArm, vision),
             new SetFlywheel(flywheel, 0, vision),
