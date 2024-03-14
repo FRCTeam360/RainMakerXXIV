@@ -14,6 +14,7 @@ import frc.robot.commands.ScoreInAmp;
 import frc.robot.commands.PowerIntakeReversed;
 import frc.robot.commands.PowerIntake;
 import frc.robot.commands.PowerLinkage;
+import frc.robot.commands.RefineAngle;
 import frc.robot.commands.SetIntake;
 import frc.robot.commands.SetLinkage;
 import frc.robot.commands.ShootInSpeaker;
@@ -38,6 +39,7 @@ import frc.robot.commands.LevelClimbers;
 import frc.robot.commands.ClimberPIDTuner;
 import frc.robot.commands.LinkageSetpoint;
 import frc.robot.commands.LinkageToAmpHandoff;
+import frc.robot.commands.PointDrivebaseAtTarget;
 import frc.robot.commands.PowerAmpArm;
 import frc.robot.commands.PowerAmpIntake;
 import frc.robot.commands.PowerAmpIntakeReverse;
@@ -65,6 +67,7 @@ import frc.robot.subsystems.Intake;
 
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Linkage;
+import frc.robot.subsystems.Vision;
 import frc.robot.utils.CommandFactory;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
@@ -96,6 +99,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -130,6 +134,9 @@ public class RobotContainer {
   private Climber climber;
   private AmpArm ampArm;
   private AmpIntake ampIntake;
+  private Vision vision;
+  private PointDrivebaseAtTarget pointDrivebaseAtTarget;
+
   private CommandFactory commandFactory;
 
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
@@ -180,6 +187,7 @@ public class RobotContainer {
   private SetClimbers fullRetract;
   private SetClimbers soloRaise;
   private ShootingPrepRyRy kiki;
+  private RefineAngle turn;
   private SetClimbers soloRetract;
 
   private SetLinkage deploy;
@@ -237,6 +245,7 @@ public class RobotContainer {
         ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
         climber = new Climber(new ClimberIOSparkMax());
         linkage = new Linkage(new LinkageIOTalonFX(zeroButton, brakeButton));
+        vision = new Vision();
         break;
       case TEST:
 
@@ -281,7 +290,7 @@ public class RobotContainer {
       ampArmNote = new AmpArmNote(ampIntake);
     }
     diagonalSensorIntakeCloseShot = new DiagonalSensorIntake(ampArm, flywheel, intake, linkage, 6000.0);
-    commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, ampArm);
+    commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, ampArm, vision);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain, linkage, ampArm, false);
     fieldOrientedSlowGuy = new FieldOrientedDrive(drivetrain, linkage, ampArm, true);
     passFromSourceAngle = new DriveFieldCentricFacingAngle(drivetrain);
@@ -290,7 +299,7 @@ public class RobotContainer {
     autoPowerCenterNote = new AutoPowerCenterNote(ampArm, intake, linkage, flywheel, 177.0);
     powerCenterNoteIntakeRoutine = commandFactory.powerCenterNote();
     subwoofShotRy = new ShootingPrepRyRy(linkage, flywheel, ampArm, 177.0, 5000.0);
-
+    turn = new RefineAngle(vision, drivetrain);
     sequal = new TrapSetUpTheSequel(linkage, ampArm, drivetrain, climber);
 
     kiki = new ShootingPrepRyRy(linkage, flywheel, ampArm, 153.0, 7000.0);
@@ -332,6 +341,8 @@ public class RobotContainer {
     fullRetract = commandFactory.setClimberShouldFinish(-57);
 
     stopClimber = new StopClimber(climber);
+
+    pointDrivebaseAtTarget = new PointDrivebaseAtTarget(drivetrain, vision);
 
     // COMMENT OUT tuneSwerveDrive WHEN NOT USING, IT WILL SET YOUR SWERVE DRIVE
     // CONSTANTS TO 0 WHEN CONSTRUCTED
@@ -380,6 +391,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("blue last guy",
         new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151.5, 7000.0));
     NamedCommands.registerCommand("kiki shot", kiki);
+    NamedCommands.registerCommand("Turn", pointDrivebaseAtTarget);
     // NamedCommands.registerCommand("Intake", runExtendIntake);
     // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     // NamedCommands.registerCommand("Wait", new WaitCommand(2));
@@ -435,6 +447,7 @@ public class RobotContainer {
     driverController.y().whileTrue(trapDrive.andThen(sequal.andThen(robotOrientedDrive)));
 
     driverController.rightTrigger().toggleOnTrue(powerIntake);
+    driverController.leftTrigger().whileTrue(passFromSourceAngle);
 
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     driverController.pov(0).whileTrue(deploy);

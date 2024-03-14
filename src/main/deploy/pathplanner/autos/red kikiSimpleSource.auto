@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.065838017661786,
-      "y": 1.3942154250104222
+      "x": 15.07,
+      "y": 1.39
     },
     "rotation": 180.0
   },
@@ -26,28 +26,15 @@
                 "data": {
                   "commands": [
                     {
-                      "type": "sequential",
-                      "data": {
-                        "commands": [
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "Wait1"
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "kiki linkage long prep"
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
                       "type": "path",
                       "data": {
                         "pathName": "RedkikiSIMPLEsource"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "kiki linkage long prep"
                       }
                     }
                   ]
@@ -57,9 +44,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "kikiSimpleShoot"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "kikiSimpleShoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Turn"
+                }
+              }
+            ]
           }
         },
         {
@@ -108,9 +108,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "kikiSimpleShoot"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "kikiSimpleShoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Turn"
+                }
+              }
+            ]
           }
         },
         {
@@ -159,9 +172,80 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "kikiSimpleShoot"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "kikiSimpleShoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Turn"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "long shot inny"
+                      }
+                    },
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "red kiki8"
+                            }
+                          },
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "red kiki9"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Spinny"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Turn"
+                }
+              }
+            ]
           }
         }
       ]
