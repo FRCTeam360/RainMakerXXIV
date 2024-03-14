@@ -347,5 +347,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
            
         //}
         // Logger.recordOutput("Rotation2d", this.getPigeon2().getRotation2d());
+        Logger.recordOutput("Swerve CurrentState", this.getState().ModuleStates);
+        Logger.recordOutput("Swerve TargetState", this.getState().ModuleTargets);
     }
 }
