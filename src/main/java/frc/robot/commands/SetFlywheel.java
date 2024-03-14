@@ -4,55 +4,45 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.AmpArm;
-import frc.robot.subsystems.Linkage;
+import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Vision;
 import frc.robot.utils.CommandLogger;
 
-public class SetLinkage extends Command {
-  private final Linkage linkage;
-  private final AmpArm arm;
-  private double setpoint;
-  private final Vision vision;
-  /** Creates a new SetLinkageTa\
-   * lon. */
-  public SetLinkage(Linkage linkage, double setpoint, AmpArm arm) {
-    this.setpoint = setpoint;
+public class SetFlywheel extends Command {
+  private final Flywheel flywheel;
+  private final Vision vision; 
+  private double setpoint; 
+  /** Creates a new SetFlywheel. */
+  public SetFlywheel(Flywheel flywheel, double setpoint) {
+    this.flywheel = flywheel; 
+    this.setpoint = setpoint; 
+    this.vision = null; 
+    addRequirements(flywheel);
     // Use addRequirements() here to declare subsystem dependencies.
-    this.linkage = linkage;
-    this.arm = arm;
-    this.vision = null;
-    addRequirements(linkage);
   }
-
-  public SetLinkage(Linkage linkage, double setpoint, AmpArm arm, Vision vision) {
-    this.setpoint = setpoint;
+  /** Creates a new SetFlywheel. */
+  public SetFlywheel(Flywheel flywheel, double setpoint, Vision vision) {
+    this.flywheel = flywheel; 
+    this.setpoint = setpoint; 
+    this.vision = vision; 
+    addRequirements(flywheel);
     // Use addRequirements() here to declare subsystem dependencies.
-    this.linkage = linkage;
-    this.arm = arm;
-    this.vision = vision;
-    addRequirements(linkage); 
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     CommandLogger.logCommandStart(this);
-    //SmartDashboard.putNumber("error", 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //SmartDashboard.putNumber("error", -7.0 - linkage.getAngle());
     if (vision != null && vision.isTargetInView()) {
-      setpoint = vision.getLinkageSetpoint();
+      setpoint = vision.getFlywheelSetpoint();
     }
-    linkage.setAngle(setpoint, arm);
+    flywheel.setBothRPM(setpoint);
   }
 
   // Called once the command ends or is interrupted.
