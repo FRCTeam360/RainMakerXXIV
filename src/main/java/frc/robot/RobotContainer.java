@@ -99,6 +99,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -186,7 +187,6 @@ public class RobotContainer {
   private SetClimbers fullRetract;
   private SetClimbers soloRaise;
   private ShootingPrepRyRy kiki;
-  private final Vision vision;
   private RefineAngle turn;
   private SetClimbers soloRetract;
 
@@ -213,7 +213,6 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    vision = new Vision();
     switch (Constants.getRobotType()) {
       case WOODBOT:
         // Real robot, instantiate hardware IO implementations
@@ -392,7 +391,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("blue last guy",
         new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151.5, 7000.0));
     NamedCommands.registerCommand("kiki shot", kiki);
-    NamedCommands.registerCommand("Turn", turn);
+    NamedCommands.registerCommand("Turn", pointDrivebaseAtTarget.raceWith(
+      new WaitUntilCommand(() -> vision.isOnTargetTX())
+    ));
     // NamedCommands.registerCommand("Intake", runExtendIntake);
     // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     // NamedCommands.registerCommand("Wait", new WaitCommand(2));
