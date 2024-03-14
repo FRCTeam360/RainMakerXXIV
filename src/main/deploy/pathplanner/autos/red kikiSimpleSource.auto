@@ -26,28 +26,15 @@
                 "data": {
                   "commands": [
                     {
-                      "type": "sequential",
-                      "data": {
-                        "commands": [
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "Wait1"
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "kiki linkage long prep"
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
                       "type": "path",
                       "data": {
                         "pathName": "RedkikiSIMPLEsource"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "kiki linkage long prep"
                       }
                     }
                   ]
@@ -57,9 +44,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "kikiSimpleShoot"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "kikiSimpleShoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Turn"
+                }
+              }
+            ]
           }
         },
         {
@@ -108,9 +108,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "kikiSimpleShoot"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "kikiSimpleShoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Turn"
+                }
+              }
+            ]
           }
         },
         {
@@ -159,9 +172,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "kikiSimpleShoot"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "kikiSimpleShoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Turn"
+                }
+              }
+            ]
           }
         }
       ]

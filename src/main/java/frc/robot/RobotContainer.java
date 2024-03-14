@@ -14,6 +14,7 @@ import frc.robot.commands.ScoreInAmp;
 import frc.robot.commands.PowerIntakeReversed;
 import frc.robot.commands.PowerIntake;
 import frc.robot.commands.PowerLinkage;
+import frc.robot.commands.RefineAngle;
 import frc.robot.commands.SetIntake;
 import frc.robot.commands.SetLinkage;
 import frc.robot.commands.ShootInSpeaker;
@@ -65,6 +66,7 @@ import frc.robot.subsystems.Intake;
 
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Linkage;
+import frc.robot.subsystems.Vision;
 import frc.robot.utils.CommandFactory;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
@@ -180,6 +182,8 @@ public class RobotContainer {
   private SetClimbers fullRetract;
   private SetClimbers soloRaise;
   private ShootingPrepRyRy kiki;
+  private final Vision vision;
+  private RefineAngle turn;
   private SetClimbers soloRetract;
 
   private SetLinkage deploy;
@@ -205,6 +209,7 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    vision = new Vision();
     switch (Constants.getRobotType()) {
       case WOODBOT:
         // Real robot, instantiate hardware IO implementations
@@ -290,7 +295,7 @@ public class RobotContainer {
     autoPowerCenterNote = new AutoPowerCenterNote(ampArm, intake, linkage, flywheel, 177.0);
     powerCenterNoteIntakeRoutine = commandFactory.powerCenterNote();
     subwoofShotRy = new ShootingPrepRyRy(linkage, flywheel, ampArm, 177.0, 5000.0);
-
+    turn = new RefineAngle(vision, drivetrain);
     sequal = new TrapSetUpTheSequel(linkage, ampArm, drivetrain, climber);
 
     kiki = new ShootingPrepRyRy(linkage, flywheel, ampArm, 153.0, 7000.0);
@@ -370,7 +375,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("stay out of way shot",
         new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151, 7000.0));
     NamedCommands.registerCommand("kikiSimpleShoot", 
-        new ShootInSpeaker(ampArm, linkage, flywheel, intake, 149, 7000.0));
+        new ShootInSpeaker(ampArm, linkage, flywheel, intake, 149, 8000.0));
     NamedCommands.registerCommand("long shot inny", longerinny);
     NamedCommands.registerCommand("last guy", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 153, 7000.0));
     NamedCommands.registerCommand("blue linkage long prep",
@@ -380,6 +385,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("blue last guy",
         new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151.5, 7000.0));
     NamedCommands.registerCommand("kiki shot", kiki);
+    NamedCommands.registerCommand("Turn", turn);
     // NamedCommands.registerCommand("Intake", runExtendIntake);
     // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     // NamedCommands.registerCommand("Wait", new WaitCommand(2));
