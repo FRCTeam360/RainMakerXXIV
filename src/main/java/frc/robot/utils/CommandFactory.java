@@ -5,6 +5,10 @@
 package frc.robot.utils;
 
 import frc.robot.subsystems.*;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.*;
 
 /** Add your docs here. */
@@ -15,14 +19,16 @@ public class CommandFactory {
     private final Flywheel flywheel;
     private final Linkage linkage;
     private final AmpArm ampArm;
+    private final Vision vision;
     // create a constructor that will require all files from the "subsystems" folder
-    public CommandFactory(Climber climber, CommandSwerveDrivetrain drivetrain, Intake intake, Flywheel flywheel, Linkage linkage, AmpArm ampArm) {
+    public CommandFactory(Climber climber, CommandSwerveDrivetrain drivetrain, Intake intake, Flywheel flywheel, Linkage linkage, AmpArm ampArm, Vision vision) {
         this.climber = climber;
         this.drivetrain = drivetrain;
         this.intake = intake;
         this.flywheel = flywheel;
         this.linkage = linkage;
         this.ampArm = ampArm;
+        this.vision = vision;
     }
 
     // returns type shootInSpeaker
@@ -108,5 +114,19 @@ public class CommandFactory {
 
     public AmpArmStop ampArmStop() {
         return new AmpArmStop(ampArm, linkage);
+    }
+    public Command shootAtSpeakerUsingVision() {
+        return new ParallelRaceGroup(
+        new SetLinkage(linkage, 0, ampArm, vision),
+        new SetFlywheel(flywheel, 0, vision),
+        new PointDrivebaseAtTarget(drivetrain, vision),
+        new endWhenShooterReady(linkage, flywheel, drivetrain)
+        ).andThen(new ParallelRaceGroup(
+            new SetLinkage(linkage, 0, ampArm, vision),
+            new SetFlywheel(flywheel, 0, vision),
+            new PointDrivebaseAtTarget(drivetrain, vision),
+            new RunCommand(()-> intake.run(1.0), intake),
+            new WaitUntilCommand(0.5)
+        ));
     }
 }
