@@ -64,7 +64,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private double headingKP = 10;
     private double headingKI = 0.2;
     private double headingIZone = 0.17;
-    private double headingKD = 0.0;
+    private double headingKD = 0.069;
 
     // Point to vision target PID gains
     private double visionTargetKP = 0.3;

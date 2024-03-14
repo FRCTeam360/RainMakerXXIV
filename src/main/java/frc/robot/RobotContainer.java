@@ -381,7 +381,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("stay out of way shot",
         new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151, 7000.0));
     NamedCommands.registerCommand("kikiSimpleShoot", 
-        new ShootInSpeaker(ampArm, linkage, flywheel, intake, 149, 8000.0));
+        new ShootInSpeaker(ampArm, linkage, flywheel, intake, 149, 7000.0));
     NamedCommands.registerCommand("long shot inny", longerinny);
     NamedCommands.registerCommand("last guy", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 153, 7000.0));
     NamedCommands.registerCommand("blue linkage long prep",
@@ -391,9 +391,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("blue last guy",
         new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151.5, 7000.0));
     NamedCommands.registerCommand("kiki shot", kiki);
-    NamedCommands.registerCommand("Turn", pointDrivebaseAtTarget.raceWith(
-      new WaitUntilCommand(() -> vision.isOnTargetTX())
-    ));
+    NamedCommands.registerCommand("Turn", pointDrivebaseAtTarget);
     // NamedCommands.registerCommand("Intake", runExtendIntake);
     // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     // NamedCommands.registerCommand("Wait", new WaitCommand(2));
@@ -449,7 +447,7 @@ public class RobotContainer {
     driverController.y().whileTrue(trapDrive.andThen(sequal.andThen(robotOrientedDrive)));
 
     driverController.rightTrigger().toggleOnTrue(powerIntake);
-    driverController.leftTrigger().whileTrue(pointDrivebaseAtTarget);
+    driverController.leftTrigger().whileTrue(passFromSourceAngle);
 
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     driverController.pov(0).whileTrue(deploy);

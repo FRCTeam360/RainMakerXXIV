@@ -3,36 +3,42 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.4649253051475237,
-        "y": 1.4429642160947027
+        "x": 8.05,
+        "y": 2.44
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1279088638937385,
-        "y": 1.9597014015880772
+        "x": 6.844856998987182,
+        "y": 1.1830439700979647
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.8694036335441093,
-        "y": 2.6644207674380267
+        "x": 2.87,
+        "y": 2.66
       },
       "prevControl": {
-        "x": 2.035683787540626,
-        "y": 2.0942447412915985
+        "x": 4.076757686698332,
+        "y": 1.3750553421908853
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": -47.0,
+      "rotateFast": true
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.0,
+    "maxVelocity": 5.7,
     "maxAcceleration": 6.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
@@ -43,10 +49,10 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "kikiSimpleSource!!",
+  "folder": null,
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }
