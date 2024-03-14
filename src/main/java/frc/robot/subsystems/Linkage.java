@@ -55,7 +55,7 @@ public class Linkage extends SubsystemBase {
   }
 
   public boolean isAtSetpoint() {
-	  if(Math.abs(this.getAngle() - positionSetpoint) < 3.0) {
+	  if(Math.abs(this.getAngle() - positionSetpoint) < 1.0) {
       return true;
     } else {
       return false;

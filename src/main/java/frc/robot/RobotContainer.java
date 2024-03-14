@@ -39,6 +39,7 @@ import frc.robot.commands.LevelClimbers;
 import frc.robot.commands.ClimberPIDTuner;
 import frc.robot.commands.LinkageSetpoint;
 import frc.robot.commands.LinkageToAmpHandoff;
+import frc.robot.commands.PointDrivebaseAtTarget;
 import frc.robot.commands.PowerAmpArm;
 import frc.robot.commands.PowerAmpIntake;
 import frc.robot.commands.PowerAmpIntakeReverse;
@@ -132,6 +133,9 @@ public class RobotContainer {
   private Climber climber;
   private AmpArm ampArm;
   private AmpIntake ampIntake;
+  private Vision vision;
+  private PointDrivebaseAtTarget pointDrivebaseAtTarget;
+
   private CommandFactory commandFactory;
 
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
@@ -242,6 +246,7 @@ public class RobotContainer {
         ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
         climber = new Climber(new ClimberIOSparkMax());
         linkage = new Linkage(new LinkageIOTalonFX(zeroButton, brakeButton));
+        vision = new Vision();
         break;
       case TEST:
 
@@ -286,7 +291,7 @@ public class RobotContainer {
       ampArmNote = new AmpArmNote(ampIntake);
     }
     diagonalSensorIntakeCloseShot = new DiagonalSensorIntake(ampArm, flywheel, intake, linkage, 6000.0);
-    commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, ampArm);
+    commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, ampArm, vision);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain, linkage, ampArm, false);
     fieldOrientedSlowGuy = new FieldOrientedDrive(drivetrain, linkage, ampArm, true);
     passFromSourceAngle = new DriveFieldCentricFacingAngle(drivetrain);
@@ -337,6 +342,8 @@ public class RobotContainer {
     fullRetract = commandFactory.setClimberShouldFinish(-57);
 
     stopClimber = new StopClimber(climber);
+
+    pointDrivebaseAtTarget = new PointDrivebaseAtTarget(drivetrain, vision);
 
     // COMMENT OUT tuneSwerveDrive WHEN NOT USING, IT WILL SET YOUR SWERVE DRIVE
     // CONSTANTS TO 0 WHEN CONSTRUCTED
@@ -441,6 +448,7 @@ public class RobotContainer {
     driverController.y().whileTrue(trapDrive.andThen(sequal.andThen(robotOrientedDrive)));
 
     driverController.rightTrigger().toggleOnTrue(powerIntake);
+    driverController.leftTrigger().whileTrue(pointDrivebaseAtTarget);
 
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     driverController.pov(0).whileTrue(deploy);
