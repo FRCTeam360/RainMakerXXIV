@@ -8,11 +8,19 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.io.VisionIO;
+import frc.robot.io.VisionIOInputsAutoLogged;
+import frc.robot.io.VisionIO.VisionIOInputs;
+import frc.robot.utils.CommandLogger;
 
 public class Vision extends SubsystemBase {
   private final NetworkTable lime = NetworkTableInstance.getDefault().getTable("limelight");
+  private final VisionIO io;
+  private final VisionIOInputsAutoLogged inputs = new VisionIOInputsAutoLogged();
   /** Creates a new Limelight. */
-  public Vision() {}
+  public Vision (VisionIO io) {
+    this.io = io;
+  }
 
   public double getTX() {
     return lime.getEntry("tx").getDouble(0);
