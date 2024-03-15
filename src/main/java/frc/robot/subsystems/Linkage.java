@@ -143,6 +143,8 @@ public class Linkage extends SubsystemBase {
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("Linkage", inputs);
+    System.out.println("Zero Button:" + io.getZeroButton());
+    System.out.println("Brake Button:" + io.getBrakeButton());
 
     if(RobotState.isDisabled()){
       if(io.getBrakeButton()){

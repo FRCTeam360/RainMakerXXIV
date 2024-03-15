@@ -63,7 +63,7 @@ import frc.robot.subsystems.AmpIntake;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Intake;
-
+import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Linkage;
 import frc.robot.subsystems.Vision;
@@ -133,6 +133,7 @@ public class RobotContainer {
   private AmpArm ampArm;
   private AmpIntake ampIntake;
   private Vision vision;
+  private Lights lights;
   private PointDrivebaseAtTarget pointDrivebaseAtTarget;
 
   private CommandFactory commandFactory;
@@ -213,7 +214,7 @@ public class RobotContainer {
       case WOODBOT:
         // Real robot, instantiate hardware IO implementations
         flywheel = new Flywheel(new FlywheelIOSparkFlex());
-        intake = new Intake(new IntakeIOSparkMax());
+        intake = new Intake(new IntakeIOSparkMax(), lights);
         linkage = new Linkage(new LinkageIOSparkMax());
         drivetrain = WoodbotConstants.DriveTrain;
         // ampArm = new AmpArm(new AmpArmIOTalonFX());
@@ -221,7 +222,7 @@ public class RobotContainer {
         break;
       case PRACTICE:
         flywheel = new Flywheel(new FlywheelIOSparkFlex());
-        intake = new Intake(new IntakeIOSparkFlex());
+        intake = new Intake(new IntakeIOSparkFlex(), lights);
         linkage = new Linkage(new LinkageIOTalonFX(zeroButton, brakeButton));
         drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
         climber = new Climber(new ClimberIOSparkMax());
@@ -236,12 +237,13 @@ public class RobotContainer {
         drivetrain.configNeutralMode(NeutralModeValue.Brake);
 
         flywheel = new Flywheel(new FlywheelIOSparkFlex());
-        intake = new Intake(new IntakeIOSparkFlex());
+        intake = new Intake(new IntakeIOSparkFlex(), lights);
         ampArm = new AmpArm(new AmpArmIOTalonFX(zeroButton, brakeButton));
         ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
         climber = new Climber(new ClimberIOSparkMax());
         linkage = new Linkage(new LinkageIOTalonFX(zeroButton, brakeButton));
         vision = new Vision();
+        lights = new Lights();
         break;
       case TEST:
 
@@ -286,7 +288,7 @@ public class RobotContainer {
       ampArmNote = new AmpArmNote(ampIntake);
     }
     diagonalSensorIntakeCloseShot = new DiagonalSensorIntake(ampArm, flywheel, intake, linkage, 6000.0);
-    commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, ampArm, vision);
+    commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, ampArm, vision, lights);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain, linkage, ampArm, false);
     fieldOrientedSlowGuy = new FieldOrientedDrive(drivetrain, linkage, ampArm, true);
     passFromSourceAngle = new DriveFieldCentricFacingAngle(drivetrain);
@@ -298,8 +300,8 @@ public class RobotContainer {
 
     sequal = new TrapSetUpTheSequel(linkage, ampArm, drivetrain, climber);
 
-    powerIntakeReversed = new PowerIntakeReversed(intake);
-    powerIntake = new PowerIntake(intake);
+    powerIntakeReversed = new PowerIntakeReversed(intake, lights);
+    powerIntake = new PowerIntake(intake, lights);
     powerFlywheel = new PowerFlywheel(flywheel);
     powerClimber = new PowerClimber(climber);
     shootRoutine = new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
@@ -313,9 +315,9 @@ public class RobotContainer {
     powerLinkage = new PowerLinkage(linkage, ampArm);
     stowLinkage = commandFactory.stowLinkage();
     powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
-    inny = new IntakeCOmmand(intake, linkage, ampArm, 177.0, true);
-    longerinny = new IntakeCOmmand(intake, linkage, ampArm, 144.0, true);
-    ryryinny = new IntakeCOmmand(intake, linkage, ampArm, 0.0, false);
+    inny = new IntakeCOmmand(intake, linkage, ampArm, lights, 177.0, true);
+    longerinny = new IntakeCOmmand(intake, linkage, ampArm, lights, 144.0, true);
+    ryryinny = new IntakeCOmmand(intake, linkage, ampArm, lights, 0.0, false);
     powerLinkage = commandFactory.powerLinkage();
     shootRoutine = commandFactory.shootInSpeaker(177.0, 6000.0);
     // autoCenterNote = commandFactory.shootInSpeaker(160.0, 6000.0);
@@ -336,7 +338,7 @@ public class RobotContainer {
 
     stopClimber = new StopClimber(climber);
 
-    pointDrivebaseAtTarget = new PointDrivebaseAtTarget(drivetrain, vision);
+    pointDrivebaseAtTarget = new PointDrivebaseAtTarget(drivetrain, vision, lights);
 
     // COMMENT OUT tuneSwerveDrive WHEN NOT USING, IT WILL SET YOUR SWERVE DRIVE
     // CONSTANTS TO 0 WHEN CONSTRUCTED
@@ -398,18 +400,18 @@ public class RobotContainer {
   private void configureDefaultCommands() {
 
     // DRIVER CONTROLS DO NOT DELETE
-    drivetrain.setDefaultCommand(fieldOrientedDrive);
+    //drivetrain.setDefaultCommand(fieldOrientedDrive);
 
     // OPERATOR CONTROLS DO NOT DELETE
     // climber.setDefaultCommand(powerClimber);
-    intake.setDefaultCommand(powerIntake);
+    //intake.setDefaultCommand(powerIntake);
     // linkage.setDefaultCommand(powerLinkage);
 
     // linkage.setDefaultCommand(powerLinkage);
     // if (Objects.nonNull(ampArm)) {
     // ampArm.setDefaultCommand(powerAmpArm);
     // }
-    climber.setDefaultCommand(powerClimber);
+    //climber.setDefaultCommand(powerClimber);
   }
 
   /**

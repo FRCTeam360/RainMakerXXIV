@@ -6,6 +6,7 @@ package frc.robot.hardware;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.AudioConfigs;
@@ -34,6 +35,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.io.LinkageIO;
+import frc.robot.subsystems.Lights;
 
 
 public class LinkageIOTalonFX implements LinkageIO {
@@ -42,6 +44,7 @@ public class LinkageIOTalonFX implements LinkageIO {
   // private final RelativeEncoder encoder = talonFX.getEncoder();
   // private final SparkPIDController pidController = talonFX.getPIDController();
   private Orchestra updateSound;
+  private Lights lights; 
   private NeutralModeValue neutralMode = NeutralModeValue.Brake;
   
 
@@ -149,6 +152,8 @@ public class LinkageIOTalonFX implements LinkageIO {
     inputs.linkageSupplyCurrent = talonFX.getSupplyCurrent().getValueAsDouble();
     inputs.linkageVelocity = talonFX.getVelocity().getValueAsDouble() * GEAR_RATIO;
     inputs.linkagePosition = talonFX.getPosition().getValueAsDouble() * GEAR_RATIO;
+    inputs.zeroButton = getZeroButton();
+    inputs.brakeButton = getBrakeButton();
   }
 
   public void set(double speed) {
@@ -196,6 +201,7 @@ public class LinkageIOTalonFX implements LinkageIO {
     if(angle == 0.0){
       updateSound.stop();
       updateSound.play();
+      // lights.isZeroed();
     }
     angle = angle / GEAR_RATIO;
     talonFX.setPosition(angle);

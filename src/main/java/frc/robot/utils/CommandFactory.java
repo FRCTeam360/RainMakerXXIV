@@ -20,8 +20,9 @@ public class CommandFactory {
     private final Linkage linkage;
     private final AmpArm ampArm;
     private final Vision vision;
+    private final Lights lights;
     // create a constructor that will require all files from the "subsystems" folder
-    public CommandFactory(Climber climber, CommandSwerveDrivetrain drivetrain, Intake intake, Flywheel flywheel, Linkage linkage, AmpArm ampArm, Vision vision) {
+    public CommandFactory(Climber climber, CommandSwerveDrivetrain drivetrain, Intake intake, Flywheel flywheel, Linkage linkage, AmpArm ampArm, Vision vision, Lights lights) {
         this.climber = climber;
         this.drivetrain = drivetrain;
         this.intake = intake;
@@ -29,6 +30,7 @@ public class CommandFactory {
         this.linkage = linkage;
         this.ampArm = ampArm;
         this.vision = vision;
+        this.lights = lights;
     }
 
     // returns type shootInSpeaker
@@ -67,12 +69,12 @@ public class CommandFactory {
 
     // returns type powerIntake
     public PowerIntake powerIntake() {
-        return new PowerIntake(intake);
+        return new PowerIntake(intake, lights);
     }
 
     // returns type powerIntakeReversed
     public PowerIntakeReversed powerIntakeReversed() {
-        return new PowerIntakeReversed(intake);
+        return new PowerIntakeReversed(intake, lights);
     }
 
     // returns type powerLinkage
@@ -119,12 +121,12 @@ public class CommandFactory {
         return new ParallelRaceGroup(
         new SetLinkage(linkage, 0, ampArm, vision),
         new SetFlywheel(flywheel, 0, vision),
-        new PointDrivebaseAtTarget(drivetrain, vision),
+        new PointDrivebaseAtTarget(drivetrain, vision, lights),
         new EndWhenShooterReady(linkage, flywheel, drivetrain)
         ).andThen(new ParallelRaceGroup(
             new SetLinkage(linkage, 0, ampArm, vision),
             new SetFlywheel(flywheel, 0, vision),
-            new PointDrivebaseAtTarget(drivetrain, vision),
+            new PointDrivebaseAtTarget(drivetrain, vision, lights),
             new RunCommand(()-> intake.run(1.0), intake),
             new WaitUntilCommand(0.5)
         ));

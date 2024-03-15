@@ -7,17 +7,20 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Lights;
 import frc.robot.utils.CommandLogger;
 
 public class PowerIntake extends Command {
   private XboxController operatorCont = new XboxController(1);
 
   private Intake intake;
+  private Lights lights; 
 
   /** Creates a new ManualIntake. */
-  public PowerIntake(Intake intake) {
+  public PowerIntake(Intake intake, Lights lights) {
     addRequirements(intake);
     this.intake = intake;
+    this.lights = lights; 
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -45,7 +48,9 @@ public class PowerIntake extends Command {
     } else {
       intake.stop();
     }
-
+    if(!intake.getSideSensor()){
+      // lights.hasNote();
+    }
     CommandLogger.logCommandRunning(this);
   }
 

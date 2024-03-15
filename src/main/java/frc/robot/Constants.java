@@ -24,13 +24,14 @@ public class Constants {
         public static final int CLIMBER_RIGHT_ID = 7;
 
         public static final int AMP_INTAKE_ID = 8;
+        public static final int CANDLE_ID = 9;
 
         public static final int AMP_ARM_ID = 15;
         public static final int AMP_WRIST_ID = 16;
 
         public static final int INTAKE_HIGH_SENSOR_PORT = 0;
-        public static final int INTAKE_SIDE_SENSOR_PORT = 1;
-        public static final int INTAKE_DIAGONAL_SENSOR_PORT = 2;
+        public static final int INTAKE_SIDE_SENSOR_PORT = 5; //1
+        public static final int INTAKE_DIAGONAL_SENSOR_PORT = 4; //2
         public static final int LINKAGE_ZERO_BUTTON_PORT = 8;
         public static final int LINKAGE_BRAKE_TOGGLE_BUTTON_PORT = 9;
 

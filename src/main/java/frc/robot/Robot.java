@@ -64,7 +64,7 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotInit() {
-     Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
+    Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
 
     if (isReal()) {
         if (isDriveWriteable()){
@@ -148,6 +148,16 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void disabledPeriodic() {
+        // if(DriverStation.isFMSAttached() && !wasOnFMS){
+    //   if(DriverStation.getMatchType() == MatchType.Elimination){
+    //     lights.fireball();
+    //   }else if(DriverStation.getAlliance() == Alliance.Red){
+    //     lights.setRedTwinkle();
+    //   }else{
+    //     lights.setBlueTwinkle();
+    //   }
+    //   wasOnFMS = true;
+    // }
   }
 
   /**

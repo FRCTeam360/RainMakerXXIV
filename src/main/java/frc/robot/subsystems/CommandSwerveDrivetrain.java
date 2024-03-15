@@ -360,8 +360,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     @Override
     public void periodic() {
         Logger.recordOutput("Swerve Current Pose", this.getPose());
-        Logger.recordOutput("Swerve Rotation", this.getRotation2d());
-        Logger.recordOutput("Swerve Angle", this.getAngle());
         // String moduleName = "null";
         // for (int i = 0; i < 4; i++) {
         //     switch (i) {

@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Vision;
 import frc.robot.utils.UtilMethods;
 
@@ -20,13 +21,15 @@ public class PointDrivebaseAtTarget extends Command {
 
   private final CommandSwerveDrivetrain drivetrain;
   private final Vision vision;
+  private final Lights lights;
 
 
   /** Creates a new pointDrivebaseatTarget. */
-  public PointDrivebaseAtTarget(CommandSwerveDrivetrain drivetrain, Vision vision) {
+  public PointDrivebaseAtTarget(CommandSwerveDrivetrain drivetrain, Vision vision, Lights lights) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.drivetrain = drivetrain;
     this.vision = vision;
+    this.lights = lights;
     addRequirements(drivetrain);
   }
 
@@ -50,6 +53,7 @@ public class PointDrivebaseAtTarget extends Command {
     // Points the drivebase at the target
     if (Objects.nonNull(vision) && vision.isTargetInView()) {
       drivetrain.pointAtTarget(forward, left, vision.getTX());
+      // lights.limelight();
     } else{
       drivetrain.fieldCentricDrive(left, forward, rotation);
     }

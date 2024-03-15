@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AmpArm;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Lights;
 import frc.robot.utils.CommandLogger;
 import frc.robot.subsystems.Linkage;
 
@@ -14,14 +15,16 @@ public class IntakeCOmmand extends Command {
   private final Intake intake;
   private final Linkage linkage;
   private AmpArm ampArm;
+  private Lights lights; 
   private boolean stop = false;
   private double setthatguy;
   private boolean retracts;
   /** Creates a new IntakeCOmmand. */
-  public IntakeCOmmand(Intake intake, Linkage linkage, AmpArm ampArm, double setthatguy, boolean retracts) {
+  public IntakeCOmmand(Intake intake, Linkage linkage, AmpArm ampArm, Lights lights, double setthatguy, boolean retracts) {
     this.intake = intake;
     this.linkage = linkage;
     this.ampArm = ampArm;
+    this.lights = lights; 
     this.setthatguy = setthatguy;
     this.retracts = retracts;
     
@@ -47,6 +50,7 @@ public class IntakeCOmmand extends Command {
       System.out.println("runnin at .5");
     }
     if(!intake.getSideSensor()) {
+      // lights.hasNote();
       stop = true;
     }
   }

@@ -15,6 +15,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,14 +30,15 @@ import org.littletonrobotics.junction.inputs.LoggableInputs;
 public class Intake extends SubsystemBase {
   private final IntakeIO io;
   private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
-
+  private final Lights lights; 
   public void setupShuffleboard() {
     ShuffleboardTab tab = Shuffleboard.getTab("intake");
     tab.addNumber("Encoder position", () -> io.getEncoderValue());
   }
   /** Creates a new Intake. */
-  public Intake(IntakeIO io) {
+  public Intake(IntakeIO io, Lights lights) {
     this.io = io;
+    this.lights = lights; 
     setupShuffleboard();
   }
 
@@ -92,7 +94,21 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    System.out.println("Side Sensor:" + !io.getSideSensor());
+    System.out.println("Diagonal Sensor:" + !io.getDiagonalSensor());
+    System.out.println("High Sensor:" + !io.getHighSensor());
     io.updateInputs(inputs);
     Logger.processInputs("Intake", inputs);
+    if(RobotState.isDisabled()){
+      if(io.getSideSensor()){
+        // lights.setLEDsIndex(0, 0, 0, 255, 0, 3);
+      }
+      if(io.getDiagonalSensor()){
+        // lights.setLEDsIndex(0, 0, 0, 255, 3, 6);
+      }
+      if(io.getHighSensor()){
+        // lights.setLEDsIndex(0, 0, 0, 255, 6, 8);
+      }
+    }
   }
 }
