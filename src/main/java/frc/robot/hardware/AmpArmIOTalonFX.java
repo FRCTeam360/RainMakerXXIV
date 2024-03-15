@@ -6,6 +6,8 @@ package frc.robot.hardware;
 
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix6.Orchestra;
+import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
@@ -48,6 +50,7 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   private boolean zeroPrev = false;
   private boolean brakePrev = false;
 
+  private Orchestra updateSound;
   private NeutralModeValue neutralMode = NeutralModeValue.Brake;
 
   /** Creates a new AmpArmIOTalonFX. */
@@ -57,6 +60,11 @@ public class AmpArmIOTalonFX implements AmpArmIO {
 
     armMotor.getConfigurator().apply(new TalonFXConfiguration());
     wristMotor.getConfigurator().apply(new TalonFXConfiguration());
+    
+    updateSound = new Orchestra();
+    updateSound.addInstrument(armMotor);
+    updateSound.addInstrument(wristMotor);
+    StatusCode status = updateSound.loadMusic("TetrisTheme.chrp")
 
     TalonFXConfiguration armConfig = new TalonFXConfiguration();
 
@@ -119,12 +127,20 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   public void setArm(double angle) {
     PositionVoltage positionVoltage = new PositionVoltage(angle);
     armMotor.setControl(positionVoltage);
+    if(angle == 0.0){
+      updateSound.stop();
+      updateSound.play();
+    }
   }
 
   @Override
   public void setWrist(double angle) {
     PositionVoltage positionVoltage = new PositionVoltage(angle);
     wristMotor.setControl(positionVoltage);
+    if(angle == 0.0){
+      updateSound.stop();
+      updateSound.play();
+    }
   }
 
   @Override
@@ -191,5 +207,10 @@ public class AmpArmIOTalonFX implements AmpArmIO {
 
   public boolean isBrakeMode(){
     return neutralMode == NeutralModeValue.Brake;
+  }
+  public void stopSound(){
+    if(updateSound.isPlaying()){
+      updateSound.stop();
+    }
   }
 }
