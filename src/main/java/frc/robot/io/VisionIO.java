@@ -16,5 +16,8 @@ public interface VisionIO {
         public boolean tv;
     }
 
+    public double getDistance();
+
+
 }
 

@@ -9,7 +9,7 @@ import frc.robot.subsystems.Vision;
 
 /** Add your docs here. */
 public class VisionIOHardware implements VisionIO{
-  Vision vision = new Vision();
+  Vision vision = new Vision(this);
     public void updateInputs(VisionIOInputs inputs) {
         inputs.tv = vision.getTV() == 1 ? true : false;
         inputs.tx = vision.getTX();

@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import org.photonvision.PhotonUtils;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -57,6 +59,70 @@ public class Vision extends SubsystemBase {
   // Returns true if the target is in view
   public boolean isTargetInView() {
     return getTV() == 1;
+  }
+
+  public double getDistanceBlueSourceRight1() {
+    return PhotonUtils.calculateDistanceToTargetMeters(0.3467, 1.22, .5235, 0.0);
+  }
+
+  public double getDistanceBlueSourceLeft2() {
+    return PhotonUtils.calculateDistanceToTargetMeters(0.3467, 1.22, .5235, 0.0);
+  }
+
+  public double getDistanceRedSpeakerRight3() {
+    return PhotonUtils.calculateDistanceToTargetMeters(0.3467, 1.32, .5235, 0.0);
+  }
+
+  public double getDistanceRedSpeakerCenter4() {
+    return PhotonUtils.calculateDistanceToTargetMeters(0.3467, 1.32, .5235, 0.0);
+  }
+
+  public double getDistanceRedAmp5() {
+    return PhotonUtils.calculateDistanceToTargetMeters(0.3467, 1.22, .5235, 0.0);
+  }
+
+  public double getDistanceBlueAmp6() {
+    return PhotonUtils.calculateDistanceToTargetMeters(0.3467, 1.22, .5235, 0.0);
+  }
+
+  public double getDistanceBlueSpeakerCenter7() {
+    return PhotonUtils.calculateDistanceToTargetMeters(0.3467, 1.32, .5235, 0.0);
+  }
+
+  public double getDistanceBlueSpeakerRight8() {
+    return PhotonUtils.calculateDistanceToTargetMeters(0.3467, 1.32, .5235, 0.0);
+  }
+
+  public double getDistanceRedSourceRight9() {
+    return PhotonUtils.calculateDistanceToTargetMeters(0.3467, 1.22, .5235, 0.0);
+  }
+
+  public double getDistanceRedSourceLeft10() {
+    return PhotonUtils.calculateDistanceToTargetMeters(0.3467, 1.22, .5235, 0.0);
+  }
+
+  public double getDistanceRedStage11() {
+    return PhotonUtils.calculateDistanceToTargetMeters(0.3467, 1.21, .5235, 0.0);
+  }
+
+  public double getDistanceRedStage12() {
+    return PhotonUtils.calculateDistanceToTargetMeters(0.3467, 1.21, .5235, 0.0);
+  }
+
+  public double getDistanceRedStage13() {
+    return PhotonUtils.calculateDistanceToTargetMeters(0.3467, 1.21, .5235, 0.0);
+  }
+
+  public double getDistanceBlueStage14() {
+    return PhotonUtils.calculateDistanceToTargetMeters(0.3467, 1.21, .5235, 0.0);
+  }
+
+  public double getDistanceBlueStage15() {
+    return PhotonUtils.calculateDistanceToTargetMeters(0.3467, 1.21, .5235, 0.0);
+  }
+
+  public double getDistanceBlueStage16() {
+    return PhotonUtils.calculateDistanceToTargetMeters(0.3467, 1.21, .5235, 0.0);
   }
 
   @Override
