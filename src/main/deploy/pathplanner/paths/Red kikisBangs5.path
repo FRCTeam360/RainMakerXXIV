@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 13.92511630628962,
+        "y": 5.596361216475402
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 14.705096963638107,
+        "y": 5.849854930113661
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 13.92511630628962,
+        "y": 6.8833293011004075
+      },
+      "prevControl": {
+        "x": 14.744095996505534,
+        "y": 5.859604688330517
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.7,
+    "maxAcceleration": 6.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 154.65382405805326,
+    "rotateFast": true
+  },
+  "reversed": false,
+  "folder": "kikisBangs",
+  "previewStartingState": {
+    "rotation": 180.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}
