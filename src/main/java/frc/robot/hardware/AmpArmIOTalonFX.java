@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.io.AmpArmIO;
 
 public class AmpArmIOTalonFX implements AmpArmIO {
@@ -39,10 +40,15 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   private final DutyCycleEncoder absEncoder = new DutyCycleEncoder(Constants.AMP_ARM_ABS_ENCODER);
   private final double zeroOffset = 0.0;
 
-  private final double armKP = 0.48;
-  private final double armKI = 0.0;
-  private final double armKD = 0.0;
-  private final double armKF = 0.0;
+  private final double practiceArmKP = 0.48;
+  private final double practiceArmKD = 0.0;
+  private final double practiceArmKF = 0.0;
+  private final double practiceArmKI = 0.0;
+
+  private final double compArmKP = 0.0;
+  private final double compArmKD = 0.0;
+  private final double compArmKF = 0.0;
+  private final double compArmKI = 0.0;
 
   private final double wristKP = 0.6;
   private final double wristKI = 0.0;
@@ -85,10 +91,13 @@ public class AmpArmIOTalonFX implements AmpArmIO {
     wristSlot0.kP = wristKP;
 
     Slot0Configs armSlot0 = armConfig.Slot0;
-    armSlot0.kP = armKP;
+
+    Constants.isCompBot() ? armSlot0.kP = compArmKP :  armSlot0.kP = practiceArmKP;
 
     armMotor.getConfigurator().apply(armConfig);
     wristMotor.getConfigurator().apply(wristConfig);
+
+
 
     armMotor.setNeutralMode(NeutralModeValue.Brake);
 
