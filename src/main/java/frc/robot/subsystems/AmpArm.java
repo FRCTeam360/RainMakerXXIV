@@ -161,6 +161,10 @@ public class AmpArm extends SubsystemBase {
     io.zeroArm();
   }
 
+  public boolean getSensor() {
+    return io.getSensor();
+  }
+
   public boolean isWristAtZero() {
     return Math.abs(getWristPosition()) < 2.0;
   }

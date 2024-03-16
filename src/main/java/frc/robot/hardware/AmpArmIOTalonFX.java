@@ -44,6 +44,7 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   
   private DigitalInput zeroButton;
   private DigitalInput brakeButton;
+  private DigitalInput sensor = new DigitalInput(239874);
 
   private boolean zeroPrev = false;
   private boolean brakePrev = false;
@@ -93,6 +94,10 @@ public class AmpArmIOTalonFX implements AmpArmIO {
     armMotor.setNeutralMode(NeutralModeValue.Brake);
     wristMotor.setNeutralMode(NeutralModeValue.Brake);
 
+  }
+
+  public boolean getSensor() {
+    return sensor.get();
   }
 
   public void disableBrakeMode() {
