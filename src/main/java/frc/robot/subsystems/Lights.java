@@ -28,11 +28,10 @@ public class Lights extends SubsystemBase {
   private final CANdle lights = new CANdle(14);
   
   public Lights() {
-    lights.configLEDType(LEDStripType.RGB);
+    lights.configLEDType(LEDStripType.GRB);
     lights.configBrightnessScalar(1);
     
   }
-  
   public void setGreen(){
     lights.setLEDs(4,212,132);
   }
@@ -44,6 +43,22 @@ public class Lights extends SubsystemBase {
   }
   public void setOrange(){
     lights.setLEDs(250,40,0);
+  }
+  public void setAnimation(int r, int g, int b,String animationString){
+    lights.clearAnimation(0);
+    lights.setLEDs(r, g, b);
+    
+    if(animationString.equals("Fire")){
+      lights.animate(new FireAnimation());
+    }else if(animationString.equals("Larson")){
+      lights.animate(new LarsonAnimation(r,g,b));
+    }else if(animationString.equals("Twinkle")){
+      lights.animate(new TwinkleAnimation(r,g,b));
+    }else if(animationString.equals("Fade")){
+      lights.animate(new SingleFadeAnimation(r,g,b));
+    }else if(animationString.equals("ColorFlow")){
+      lights.animate(new ColorFlowAnimation(r, g, b));
+    }
   }
 
 
