@@ -59,7 +59,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "4 Wing & center over",
+  "folder": null,
   "previewStartingState": {
     "rotation": 151.99,
     "velocity": 0

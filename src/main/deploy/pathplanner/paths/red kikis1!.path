@@ -78,7 +78,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "KikiSource!!",
+  "folder": null,
   "previewStartingState": {
     "rotation": -120.0,
     "velocity": 0
