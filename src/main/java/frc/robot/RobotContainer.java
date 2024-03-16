@@ -63,7 +63,7 @@ import frc.robot.subsystems.AmpIntake;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Intake;
-
+import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Linkage;
 import frc.robot.subsystems.Vision;
@@ -243,7 +243,7 @@ public class RobotContainer {
         climber = new Climber(new ClimberIOSparkMax());
         linkage = new Linkage(new LinkageIOTalonFX(zeroButton, brakeButton));
         vision = new Vision();
-        lights = new LIghts();
+        lights = new Lights();
         break;
       case TEST:
 
@@ -488,7 +488,6 @@ public class RobotContainer {
   }
 
   public void onDisable() {
-
     climber.stop();
     flywheel.stop();
     intake.stop();
@@ -511,12 +510,33 @@ public class RobotContainer {
     ampArm.enableBrakeMode();
   }
 
+  public void onRobotInit() {
+
+    if (DriverStation.getAlliance().get() == Alliance.Blue) {
+      lights.setBlue();
+    } else {
+      lights.setRed();
+    }
+
+    if (zeroButton.getChannel() != 0) {
+      lights.setGreen();
+    } else if (zeroButton.getChannel() == 0) {
+      if (DriverStation.getAlliance().get() == Alliance.Blue) {
+        lights.setBlue();
+      } else {
+        lights.setRed();
+      }
+    } else if (intake.getSideSensor() == true && intake.getDiagonalSensor() == true) {
+      lights.setOrange();
+    }
+  }
+
   private double fetchAllianceNum() {
-    return -45.0; 
+    return -45.0;
     // if (DriverStation.getAlliance().get() == Alliance.Blue) {
-    //   return -45.0;
+    // return -45.0;
     // } else {
-    //   return 45.0;
+    // return 45.0;
     // }
   }
 

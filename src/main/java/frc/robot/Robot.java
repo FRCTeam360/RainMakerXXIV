@@ -64,6 +64,7 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotInit() {
+    m_robotContainer.onRobotInit();
      Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
 
     if (isReal()) {
