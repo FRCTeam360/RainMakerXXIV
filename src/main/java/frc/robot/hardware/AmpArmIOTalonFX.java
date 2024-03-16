@@ -31,7 +31,8 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   private final TalonFX armMotor = new TalonFX(Constants.AMP_ARM_ID, Constants.CANIVORE_NAME);
   private final TalonFX wristMotor = new TalonFX(Constants.AMP_WRIST_ID, Constants.CANIVORE_NAME);
 
-  private final double ARM_RATIO = 1.68; // degrees / motor rotation TODO: FIX LMAO
+  private final double PRACTICE_ARM_RATIO = 1.68; // degrees / motor rotation
+  private final double COMP_ARM_RATIO = 8.208; // degrees / motor rotation
   private final double WRIST_RATIO = 11.25; // degrees / motor rotation
 
   private final double ARM_FORWARD_LIMIT = 120.0;
@@ -45,7 +46,7 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   private final double practiceArmKF = 0.0;
   private final double practiceArmKI = 0.0;
 
-  private final double compArmKP = 0.0;
+  private final double compArmKP = 0.0; // TODO: TUNE
   private final double compArmKD = 0.0;
   private final double compArmKF = 0.0;
   private final double compArmKI = 0.0;
@@ -54,7 +55,7 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   private final double wristKI = 0.0;
   private final double wristKD = 0.0;
   private final double wristKF = 0.0;
-  
+
   private DigitalInput zeroButton;
   private DigitalInput brakeButton;
 
@@ -81,7 +82,13 @@ public class AmpArmIOTalonFX implements AmpArmIO {
         .withForwardSoftLimitEnable(true)
         .withReverseSoftLimitEnable(true);
 
-    armConfig.Feedback.withSensorToMechanismRatio(1 / ARM_RATIO);
+    if (Constants.isCompBot()) {
+      armConfig.Feedback.withSensorToMechanismRatio(1 / COMP_ARM_RATIO);
+    } else {
+      armConfig.Feedback.withSensorToMechanismRatio(1 / PRACTICE_ARM_RATIO);
+    }
+
+    
     armConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // SAME AS SET INVERTED LOL
 
     TalonFXConfiguration wristConfig = new TalonFXConfiguration();
@@ -92,12 +99,11 @@ public class AmpArmIOTalonFX implements AmpArmIO {
 
     Slot0Configs armSlot0 = armConfig.Slot0;
 
-    Constants.isCompBot() ? armSlot0.kP = compArmKP :  armSlot0.kP = practiceArmKP;
+    // Constants.isCompBot() ? armSlot0.kP = compArmKP : armSlot0.kP =
+    // practiceArmKP;
 
     armMotor.getConfigurator().apply(armConfig);
     wristMotor.getConfigurator().apply(wristConfig);
-
-
 
     armMotor.setNeutralMode(NeutralModeValue.Brake);
 
@@ -194,22 +200,22 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   public void zeroArm() {
     armMotor.setPosition(0.0);
   }
-  
-  public boolean getZeroButton(){
+
+  public boolean getZeroButton() {
     boolean zeroCurr = !this.zeroButton.get();
     boolean risingEdge = zeroCurr && !zeroPrev;
     zeroPrev = zeroCurr;
     return risingEdge;
   }
 
-  public boolean getBrakeButton(){
+  public boolean getBrakeButton() {
     boolean brakeCurr = !this.brakeButton.get();
     boolean risingEdge = brakeCurr && !brakePrev;
     brakePrev = brakeCurr;
     return risingEdge;
   }
 
-  public boolean isBrakeMode(){
+  public boolean isBrakeMode() {
     return neutralMode == NeutralModeValue.Brake;
   }
 }
