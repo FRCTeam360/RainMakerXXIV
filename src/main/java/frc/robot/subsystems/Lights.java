@@ -27,23 +27,23 @@ public class Lights extends SubsystemBase {
   /** Creates a new Lights. */
   private final CANdle lights = new CANdle(14);
   
-
-
   public Lights() {
     lights.configLEDType(LEDStripType.RGB);
+    lights.configBrightnessScalar(1);
+    
   }
   
   public void setGreen(){
-    lights.setLEDs(85,240,101);
+    lights.setLEDs(4,212,132);
   }
   public void setRed(){
-    lights.setLEDs(239,36,36);
+    lights.setLEDs(255, 0, 0);
   }
   public void setBlue(){
-    lights.setLEDs(02,0,225);
+    lights.setLEDs(0,0,255);
   }
   public void setOrange(){
-    lights.setLEDs(252,186,3);
+    lights.setLEDs(250,40,0);
   }
 
 
