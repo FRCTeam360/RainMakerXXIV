@@ -37,7 +37,7 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "sequential",
           "data": {
             "commands": [
               {
@@ -47,18 +47,37 @@
                 }
               },
               {
+                "type": "path",
+                "data": {
+                  "pathName": "blue kikiDeliveryService3!!"
+                }
+              },
+              {
                 "type": "named",
                 "data": {
-                  "name": "Intake"
+                  "name": "extend linkage"
                 }
               }
             ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "blue kikiDeliveryService3!!"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "blue kikiDeliveryService4!!"
+                }
+              }
+            ]
           }
         },
         {
@@ -68,7 +87,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "blue kikiDeliveryService4!!"
+                  "pathName": "blue kikiDeliveryService5!!"
                 }
               },
               {
@@ -83,7 +102,7 @@
         {
           "type": "named",
           "data": {
-            "name": "kiki shot"
+            "name": "blue stay out of way shot"
           }
         }
       ]
