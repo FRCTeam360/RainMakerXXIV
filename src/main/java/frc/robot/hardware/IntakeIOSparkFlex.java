@@ -19,8 +19,8 @@ public class IntakeIOSparkFlex implements IntakeIO {
     private final RelativeEncoder encoder = sparkFlex.getEncoder();
     private final SparkPIDController pidController = sparkFlex.getPIDController();
     // Sensors: ports?
-    private final DigitalInput sideSensor = new DigitalInput(Constants.INTAKE_SIDE_SENSOR_PORT);
-    private final DigitalInput highSensor = new DigitalInput(Constants.INTAKE_HIGH_SENSOR_PORT);
+    private final DigitalInput sideSensor = new DigitalInput(Constants.SIDE_SENSOR_PORT);
+    private final DigitalInput highSensor = new DigitalInput(Constants.INTAKE_SENSOR_PORT);
     private final DigitalInput diagonalSensor = new DigitalInput(Constants.INTAKE_DIAGONAL_SENSOR_PORT);
     
     public IntakeIOSparkFlex(){

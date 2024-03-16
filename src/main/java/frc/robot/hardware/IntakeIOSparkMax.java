@@ -27,8 +27,8 @@ public class IntakeIOSparkMax implements IntakeIO {
     private final RelativeEncoder encoder = sparkMax.getEncoder();
     private final SparkPIDController pid = sparkMax.getPIDController();
     // new hardware class for sensor?
-    private final DigitalInput sideSensor = new DigitalInput(Constants.INTAKE_SIDE_SENSOR_PORT); // update port later idk what it is
-    private final DigitalInput highSensor = new DigitalInput(Constants.INTAKE_HIGH_SENSOR_PORT); // update port later idk what it is
+    private final DigitalInput sideSensor = new DigitalInput(Constants.SIDE_SENSOR_PORT); // update port later idk what it is
+    private final DigitalInput highSensor = new DigitalInput(Constants.INTAKE_SENSOR_PORT); // update port later idk what it is
     private final DigitalInput diagonalSensor = new DigitalInput(Constants.INTAKE_DIAGONAL_SENSOR_PORT);
 
   public IntakeIOSparkMax() {
