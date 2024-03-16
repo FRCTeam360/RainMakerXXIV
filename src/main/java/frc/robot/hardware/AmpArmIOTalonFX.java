@@ -82,13 +82,6 @@ public class AmpArmIOTalonFX implements AmpArmIO {
         .withForwardSoftLimitEnable(true)
         .withReverseSoftLimitEnable(true);
 
-    if (Constants.isCompBot()) {
-      armConfig.Feedback.withSensorToMechanismRatio(1 / COMP_ARM_RATIO);
-    } else {
-      armConfig.Feedback.withSensorToMechanismRatio(1 / PRACTICE_ARM_RATIO);
-    }
-
-    
     armConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // SAME AS SET INVERTED LOL
 
     TalonFXConfiguration wristConfig = new TalonFXConfiguration();
@@ -99,8 +92,13 @@ public class AmpArmIOTalonFX implements AmpArmIO {
 
     Slot0Configs armSlot0 = armConfig.Slot0;
 
-    // Constants.isCompBot() ? armSlot0.kP = compArmKP : armSlot0.kP =
-    // practiceArmKP;
+    if (Constants.isCompBot()) {
+      armConfig.Feedback.withSensorToMechanismRatio(1 / COMP_ARM_RATIO);
+      armSlot0.kP = compArmKP;
+    } else {
+      armConfig.Feedback.withSensorToMechanismRatio(1 / PRACTICE_ARM_RATIO);
+      armSlot0.kP = practiceArmKP;
+    }
 
     armMotor.getConfigurator().apply(armConfig);
     wristMotor.getConfigurator().apply(wristConfig);
