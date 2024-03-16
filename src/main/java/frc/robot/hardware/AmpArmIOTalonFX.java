@@ -43,7 +43,6 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   private final double wristKI = 0.0;
   private final double wristKD = 0.0;
   private final double wristKF = 0.0;
-  
   private DigitalInput zeroButton;
   private DigitalInput brakeButton;
 
@@ -64,13 +63,17 @@ public class AmpArmIOTalonFX implements AmpArmIO {
     updateSound = new Orchestra();
     updateSound.addInstrument(armMotor);
     updateSound.addInstrument(wristMotor);
-    StatusCode status = updateSound.loadMusic("TetrisTheme.chrp")
+    StatusCode status = updateSound.loadMusic("TetrisTheme.chrp");
+
+    if(status != StatusCode.OK){
+      System.out.println("Error loading sound");
+    }
 
     TalonFXConfiguration armConfig = new TalonFXConfiguration();
 
     armConfig.SoftwareLimitSwitch
         .withForwardSoftLimitThreshold(ARM_FORWARD_LIMIT)
-        .withReverseSoftLimitThreshold(ARM_REVERSE_LIMIT)
+        .withReverseSoftLimitThreshold(ARM_REVERSE_LIMIT) 
         .withForwardSoftLimitEnable(true)
         .withReverseSoftLimitEnable(true);
 
