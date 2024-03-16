@@ -40,10 +40,10 @@ public class Lights extends SubsystemBase {
     lights.setLEDs(239,36,36);
   }
   public void setBlue(){
-    lights.setLEDs(0,0,0);
+    lights.setLEDs(02,0,225);
   }
   public void setOrange(){
-    lights.setLEDs(0,0,0);
+    lights.setLEDs(252,186,3);
   }
 
 

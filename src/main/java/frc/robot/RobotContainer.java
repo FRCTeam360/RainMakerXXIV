@@ -133,6 +133,7 @@ public class RobotContainer {
   private AmpArm ampArm;
   private AmpIntake ampIntake;
   private Vision vision;
+  private Lights lights;
   private PointDrivebaseAtTarget pointDrivebaseAtTarget;
 
   private CommandFactory commandFactory;
@@ -242,6 +243,7 @@ public class RobotContainer {
         climber = new Climber(new ClimberIOSparkMax());
         linkage = new Linkage(new LinkageIOTalonFX(zeroButton, brakeButton));
         vision = new Vision();
+        lights = new LIghts();
         break;
       case TEST:
 
