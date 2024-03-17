@@ -41,7 +41,7 @@ public class DiagonalSensorIntake extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
+  public void initialize() { //DONT USE I THIN? NO DIAGONAL SENSOR ANYMORE
     CommandLogger.logCommandStart(this);
     state = IntakeCases.EXTEND_INTAKE;
   }

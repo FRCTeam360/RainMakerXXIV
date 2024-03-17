@@ -34,8 +34,6 @@ public interface AmpArmIO {
 
   public void runWrist(double speed);
 
-  public boolean getSensor();
-
   public void setArm(double angle);
 
   public void setWrist(double angle);
@@ -52,6 +50,8 @@ public interface AmpArmIO {
 
   public void zeroArm();
 
+  public boolean getSensor();
+  
   public void resetArmWristPos();
 
   public void enableBrakeMode();
