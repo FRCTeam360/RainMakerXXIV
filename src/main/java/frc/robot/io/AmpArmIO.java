@@ -63,4 +63,6 @@ public interface AmpArmIO {
   public boolean isBrakeMode();
 
   public boolean getZeroButton();
+
+  public void stopSound();
 }

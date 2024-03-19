@@ -6,6 +6,8 @@ package frc.robot.hardware;
 
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix6.Orchestra;
+import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
@@ -53,7 +55,6 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   private final double wristKI = 0.0;
   private final double wristKD = 0.0;
   private final double wristKF = 0.0;
-  
   private DigitalInput zeroButton;
   private DigitalInput brakeButton;
   private DigitalInput sensor = new DigitalInput(Constants.AMP_INTAKE_SENSOR_PORT);
@@ -61,6 +62,7 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   private boolean zeroPrev = false;
   private boolean brakePrev = false;
 
+  private Orchestra updateSound;
   private NeutralModeValue neutralMode = NeutralModeValue.Brake;
 
   /** Creates a new AmpArmIOTalonFX. */
@@ -70,12 +72,21 @@ public class AmpArmIOTalonFX implements AmpArmIO {
 
     armMotor.getConfigurator().apply(new TalonFXConfiguration());
     wristMotor.getConfigurator().apply(new TalonFXConfiguration());
+    
+    updateSound = new Orchestra();
+    updateSound.addInstrument(armMotor);
+    updateSound.addInstrument(wristMotor);
+    StatusCode status = updateSound.loadMusic("TetrisTheme.chrp");
+
+    if(status != StatusCode.OK){
+      System.out.println("Error loading sound");
+    }
 
     TalonFXConfiguration armConfig = new TalonFXConfiguration();
 
     armConfig.SoftwareLimitSwitch
         .withForwardSoftLimitThreshold(ARM_FORWARD_LIMIT)
-        .withReverseSoftLimitThreshold(ARM_REVERSE_LIMIT)
+        .withReverseSoftLimitThreshold(ARM_REVERSE_LIMIT) 
         .withForwardSoftLimitEnable(true)
         .withReverseSoftLimitEnable(true);
 
@@ -131,10 +142,11 @@ public class AmpArmIOTalonFX implements AmpArmIO {
 
   @Override
   public void resetArmWristPos() {
-
     armMotor.setPosition(-78.0);
     wristMotor.setPosition(70.0);
-
+    
+    updateSound.stop();
+    updateSound.play();
   }
 
   @Override
@@ -152,6 +164,10 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   public void setWrist(double angle) {
     PositionVoltage positionVoltage = new PositionVoltage(angle);
     wristMotor.setControl(positionVoltage);
+    if(angle == 0.0){
+      updateSound.stop();
+      updateSound.play();
+    }
   }
 
   @Override
@@ -218,5 +234,10 @@ public class AmpArmIOTalonFX implements AmpArmIO {
 
   public boolean isBrakeMode(){
     return neutralMode == NeutralModeValue.Brake;
+  }
+  public void stopSound(){
+    if(updateSound.isPlaying()){
+      updateSound.stop();
+    }
   }
 }
