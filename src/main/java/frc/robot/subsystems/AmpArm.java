@@ -88,7 +88,7 @@ public class AmpArm extends SubsystemBase {
     double armAngle = io.getArmPosition();
     double linkageAngle = linkage.getAngle();
 
-    if (armAngle > -6.5) {
+    if (armAngle > -10.0) {
       safeFromCollision = true;
     } else if (armAngle <= -73.5) {
       safeFromCollision = true;
@@ -161,6 +161,10 @@ public class AmpArm extends SubsystemBase {
     io.zeroArm();
   }
 
+  public boolean getSensor() {
+    return io.getSensor();
+  }
+
   public boolean isWristAtZero() {
     return Math.abs(getWristPosition()) < 2.0;
   }
@@ -219,25 +223,28 @@ public class AmpArm extends SubsystemBase {
     io.updateInputs(inputs);
     Logger.processInputs("AmpArm", inputs);
     
-    if(RobotState.isDisabled()){
-      if(io.getBrakeButton()){
-        if(io.isBrakeMode()){
-          io.disableBrakeMode();
-        } else {
-          io.enableBrakeMode();
-        }
-      }
-      if (io.getZeroButton()) {
+    System.out.println(io.isBrakeMode());
+
+     if (io.getZeroButton()) {
         io.resetArmWristPos();
       }
-    } else {
-      if(!io.isBrakeMode()){
-        io.enableBrakeMode();
-      }
-       // DO NOT REMOVE
-      // This is neccessary to run the linkage after playing the update sound
-      io.stopSound();
-    }
+      io.enableBrakeMode();
+    // if(RobotState.isDisabled()){ //TODO: FIX?
+    //   if(io.getBrakeButton()){
+    //     if(io.isBrakeMode()){
+    //       io.disableBrakeMode();
+    //     } else {
+    //       io.enableBrakeMode();
+    //     }
+    //   }
+    //   if (io.getZeroButton()) {
+    //     io.resetArmWristPos();
+    //   }
+    // } else {
+    //   if(!io.isBrakeMode()){
+    //     io.enableBrakeMode();
+    //   }
+    // }
   }
 
 }

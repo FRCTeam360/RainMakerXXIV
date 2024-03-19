@@ -25,7 +25,7 @@ public class LinkageToAmpHandoff extends Command {
 
   private States state;
 
-  //private double ampThreshold;
+  // private double ampThreshold;
 
   private final Timer timer = new Timer();
 
@@ -52,13 +52,13 @@ public class LinkageToAmpHandoff extends Command {
     state = States.LINKAGE_DOWN;
     timer.reset();
     done = false;
-    //ampThreshold = 20;
+    // ampThreshold = 20;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //drivetrain.getRobotRelativeSpeeds() > 0.1
+    // drivetrain.getRobotRelativeSpeeds() > 0.1
 
     System.out.println(state);
     switch (state) {
@@ -78,23 +78,24 @@ public class LinkageToAmpHandoff extends Command {
         break;
       case INTAKING:
         intake.run(0.7);
-        flywheel.handoff(250.0);
+        flywheel.handoff(1000.0);
         ampIntake.runIntake(0.70);
-        if (timer.get() > 0.2) {
-          if (ampIntake.getAmps() > 20) {
-            ampIntake.stop();
-            state = States.HAS_NOTE;
-          }
+
+        if (!ampArm.getSensor()) {
+          ampIntake.stop();
+          state = States.HAS_NOTE;
         }
+
         break;
       case HAS_NOTE:
-        ampArm.setArm(-6.0, linkage);
-        if (Math.abs(ampArm.getArmPosition()) < -6.0) {
+        ampArm.setArm(-8.0, linkage);
+        if (ampArm.getArmPosition() > -10.0) {
           state = States.RETRACTED;
         }
         break;
       case RETRACTED:
         linkage.setAngle(174.0, ampArm);
+        ampArm.setWrist(82.0);
         System.out.println(linkage.getAngle());
         if (Math.abs(linkage.getAngle() - 174) < 1.0) {
           done = true;

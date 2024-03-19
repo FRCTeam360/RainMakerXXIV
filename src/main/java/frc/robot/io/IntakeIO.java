@@ -34,11 +34,11 @@ public interface IntakeIO {
 
   public double getOutputCurrent();
 
+  public boolean getShooterSensor();
+
   public boolean getSideSensor();
-
-  public boolean getHighSensor();
-
-  public boolean getDiagonalSensor();
+  
+  public boolean getIntakeSensor();
 
   public double getEncoderValue();
 

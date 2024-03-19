@@ -16,6 +16,8 @@ public class IntakeCOmmand extends Command {
   private AmpArm ampArm;
   private boolean stop = false;
   private double setthatguy;
+  private double x = 0;
+  private boolean bringup = false;
   private boolean retracts;
   /** Creates a new IntakeCOmmand. */
   public IntakeCOmmand(Intake intake, Linkage linkage, AmpArm ampArm, double setthatguy, boolean retracts) {
@@ -31,22 +33,31 @@ public class IntakeCOmmand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    bringup = false;
     CommandLogger.logCommandStart(this);
     linkage.setAngle(0.0, ampArm);
     stop = false;
+    x=0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(bringup) {
+      linkage.setAngle(110.0, ampArm);
+    }
     if(intake.getAmps() > 20 && intake.getVelocity() <= .05) {
-      intake.run(.9);
+      intake.run(.9-x);
       System.out.println("runnin at 90");
     } else {
-      intake.run(.5);
+      intake.run(.5-x);
       System.out.println("runnin at .5");
     }
     if(!intake.getSideSensor()) {
+      bringup = true;
+      x = .25;
+    }
+    if(!intake.getShooterSensor()) {
       stop = true;
     }
   }
