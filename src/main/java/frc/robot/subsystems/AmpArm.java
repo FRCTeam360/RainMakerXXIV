@@ -234,6 +234,9 @@ public class AmpArm extends SubsystemBase {
       if(!io.isBrakeMode()){
         io.enableBrakeMode();
       }
+       // DO NOT REMOVE
+      // This is neccessary to run the linkage after playing the update sound
+      io.stopSound();
     }
   }
 

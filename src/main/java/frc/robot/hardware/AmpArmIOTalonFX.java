@@ -115,10 +115,11 @@ public class AmpArmIOTalonFX implements AmpArmIO {
 
   @Override
   public void resetArmWristPos() {
-
     armMotor.setPosition(-78.0);
     wristMotor.setPosition(70.0);
-
+    
+    updateSound.stop();
+    updateSound.play();
   }
 
   @Override
@@ -130,10 +131,6 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   public void setArm(double angle) {
     PositionVoltage positionVoltage = new PositionVoltage(angle);
     armMotor.setControl(positionVoltage);
-    if(angle == 0.0){
-      updateSound.stop();
-      updateSound.play();
-    }
   }
 
   @Override
