@@ -46,7 +46,7 @@ public class AmpArm extends SubsystemBase {
     boolean safeFromCollision = false;
     if (armAngle > -10.0) {
       if (wristAngle > armAngle + 105.0) {
-        io.setWrist(armAngle + 105.0);
+        io.setWrist(armAngle + 100.0);
         safeFromCollision = false;
       } else if (wristAngle < armAngle - 105.0) {
         io.setWrist(armAngle - 100.0);
@@ -68,7 +68,7 @@ public class AmpArm extends SubsystemBase {
       } else {
         safeFromCollision = true;
       }
-    }System.out.println("safe: " + safeFromCollision);
+    }
     return safeFromCollision;
   }
 
@@ -110,23 +110,25 @@ public class AmpArm extends SubsystemBase {
   }
 
   /**
-   * Avoid collisions between the arm and the linakge while running a position set point
+   * Avoid collisions between the arm and the linakge while running a position set
+   * point
+   * 
    * @param angle The angle to set the arm to
    */
-  private boolean avoidCollisionWithLinkage(double angleSetpoint, Linkage linkage){
+  private boolean avoidCollisionWithLinkage(double angleSetpoint, Linkage linkage) {
     boolean safeFromCollision = true;
-    if (Objects.isNull(linkage)){
+    if (Objects.isNull(linkage)) {
       safeFromCollision = true;
       return safeFromCollision;
     }
     double linkageAngle = linkage.getAngle();
     double armAngle = io.getArmPosition();
 
-    if(linkageAngle > 5.0){
-      if(angleSetpoint < -6.5 && armAngle >= -6.5){
+    if (linkageAngle > 5.0) {
+      if (angleSetpoint < -6.5 && armAngle >= -6.5) {
         safeFromCollision = false;
         io.setArm(-6.0);
-      } else if(angleSetpoint > -73.5 && armAngle <= -73.5){
+      } else if (angleSetpoint > -73.5 && armAngle <= -73.5) {
         safeFromCollision = false;
         io.setArm(-74.0);
       }
@@ -135,10 +137,10 @@ public class AmpArm extends SubsystemBase {
 
   }
 
-  public void setArm(double angle, Linkage linkage){
+  public void setArm(double angle, Linkage linkage) {
     boolean safeFromCollisionPower = avoidCollisionWithLinkage(linkage);
     boolean safeFromCollisionSetpoint = avoidCollisionWithLinkage(angle, linkage);
-    if(safeFromCollisionPower && safeFromCollisionSetpoint) {
+    if (safeFromCollisionPower && safeFromCollisionSetpoint) {
       avoidWristCollision();
       io.setArm(angle);
     } else {
@@ -174,7 +176,7 @@ public class AmpArm extends SubsystemBase {
   }
 
   public void runArm(double speed, Linkage linkage) {
-    if(speed == 0) {
+    if (speed == 0) {
       io.stopArm();
     }
     if (avoidCollisionWithLinkage(linkage)) {
@@ -220,30 +222,29 @@ public class AmpArm extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putBoolean("Is arm at home", isArmAtZero());
     SmartDashboard.putBoolean("is wrist at home", isWristAtZero());
+
     io.updateInputs(inputs);
     Logger.processInputs("AmpArm", inputs);
-    
-    System.out.println(io.isBrakeMode());
 
-     if (io.getZeroButton()) {
-        io.resetArmWristPos();
-      }
-      io.enableBrakeMode();
+    if (io.getZeroButton()) {
+      io.resetArmWristPos();
+    }
+    // io.enableBrakeMode();
     // if(RobotState.isDisabled()){ //TODO: FIX?
-    //   if(io.getBrakeButton()){
-    //     if(io.isBrakeMode()){
-    //       io.disableBrakeMode();
-    //     } else {
-    //       io.enableBrakeMode();
-    //     }
-    //   }
-    //   if (io.getZeroButton()) {
-    //     io.resetArmWristPos();
-    //   }
+    // if(io.getBrakeButton()){
+    // if(io.isBrakeMode()){
+    // io.disableBrakeMode();
     // } else {
-    //   if(!io.isBrakeMode()){
-    //     io.enableBrakeMode();
-    //   }
+    // io.enableBrakeMode();
+    // }
+    // }
+    // if (io.getZeroButton()) {
+    // io.resetArmWristPos();
+    // }
+    // } else {
+    // if(!io.isBrakeMode()){
+    // io.enableBrakeMode();
+    // }
     // }
   }
 

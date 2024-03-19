@@ -11,6 +11,7 @@ import frc.robot.commands.RunExtendIntake;
 import frc.robot.commands.RydarsSpinup;
 import frc.robot.commands.SetClimbers;
 import frc.robot.commands.ScoreInAmp;
+import frc.robot.commands.SetArmWrist;
 import frc.robot.commands.PowerIntakeReversed;
 import frc.robot.commands.PowerIntake;
 import frc.robot.commands.PowerLinkage;
@@ -33,6 +34,7 @@ import frc.robot.commands.AmpArmStop;
 import frc.robot.commands.AutoPowerCenterNote;
 import frc.robot.commands.BasicClimb;
 import frc.robot.commands.FieldOrientedDrive;
+import frc.robot.commands.HoldArmPosition;
 import frc.robot.commands.HomeAmpArmWrist;
 import frc.robot.commands.IntakeCOmmand;
 import frc.robot.commands.LevelClimbers;
@@ -200,6 +202,9 @@ public class RobotContainer {
   private TrapClimb trapClimb;
   private ShootingPrepRyRy subwoofShotRy;
 
+  private HoldArmPosition holdArmPosition;
+  private SetArmWrist ampSetpoint;
+
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
   /* Setting up bindings for necessary control of the swerve drive platform */
@@ -339,6 +344,7 @@ public class RobotContainer {
 
     stopClimber = new StopClimber(climber);
 
+
     pointDrivebaseAtTarget = new PointDrivebaseAtTarget(drivetrain, vision);
 
     // COMMENT OUT tuneSwerveDrive WHEN NOT USING, IT WILL SET YOUR SWERVE DRIVE
@@ -349,6 +355,8 @@ public class RobotContainer {
       ampArmStop = commandFactory.ampArmStop();
       homeAmpArmWrist = new HomeAmpArmWrist(ampArm, linkage);
       ampArmGoToZero = new AmpArmGoToZero(ampArm, linkage);
+      holdArmPosition = new HoldArmPosition(ampArm, linkage);
+      ampSetpoint = new SetArmWrist(ampArm, linkage, 108.5, 140.3);
     }
     if (!Objects.isNull(ampIntake)) {
       powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
@@ -409,9 +417,9 @@ public class RobotContainer {
     // linkage.setDefaultCommand(powerLinkage);
 
     // linkage.setDefaultCommand(powerLinkage);
-    // if (Objects.nonNull(ampArm)) {
-    // ampArm.setDefaultCommand(powerAmpArm);
-    // }
+    if (Objects.nonNull(ampArm)) {
+    ampArm.setDefaultCommand(holdArmPosition);
+    }
     climber.setDefaultCommand(powerClimber);
   }
 
@@ -455,8 +463,10 @@ public class RobotContainer {
               trapDrive);
       operatorController.x().onTrue(linkageToAmpHandoff.alongWith(fieldOrientedSlowGuy));
 
-      operatorController.a().toggleOnTrue(new InstantCommand(() -> ampArm.setArm(108.5, linkage)));
-      operatorController.a().toggleOnTrue(new InstantCommand(() -> ampArm.setWrist(140.3)));
+      // operatorController.a().toggleOnTrue(new InstantCommand(() -> ampArm.setArm(108.5, linkage)));
+      // operatorController.a().toggleOnTrue(new InstantCommand(() -> ampArm.setWrist(140.3)));
+
+      operatorController.a().toggleOnTrue(ampSetpoint);
 
       operatorController.y().toggleOnTrue(new InstantCommand(() -> {
       ampArm.setArm(-6.0, linkage);
@@ -509,7 +519,6 @@ public class RobotContainer {
   public void onTeleInit() {
     drivetrain.configNeutralMode(NeutralModeValue.Brake);
     linkage.enableBrakeMode();
-    ampArm.enableBrakeMode();
   }
 
   private double fetchAllianceNum() {

@@ -30,14 +30,14 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   private final DigitalInput intakeSensor = new DigitalInput(Constants.AMP_INTAKE_SENSOR_PORT);
 
   private final double PRACTICE_ARM_RATIO = 1.68; // degrees / motor rotation
-  private final double COMP_ARM_RATIO = 8.3;
+  private final double COMP_ARM_RATIO =  360.0/((5.0/1.0) * (36.0/14.0) * (60.0/18.0));
   private final double WRIST_RATIO = 11.25; // degrees / motor rotation
 
   private final double ARM_FORWARD_LIMIT = 120.0;
   private final double ARM_REVERSE_LIMIT = -78.0;
 
   private final DutyCycleEncoder absEncoder = new DutyCycleEncoder(Constants.AMP_ARM_ABS_ENCODER);
-  private final double zeroOffset = 0.874;
+  private final double zeroOffset = 0.0; //needs to be retuned
 
   private final double practiceArmKP = 0.48;
   private final double practiceArmKD = 0.0;
@@ -56,7 +56,6 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   
   private DigitalInput zeroButton;
   private DigitalInput brakeButton;
-  private DigitalInput sensor = new DigitalInput(Constants.AMP_INTAKE_SENSOR_PORT);
 
   private boolean zeroPrev = false;
   private boolean brakePrev = false;
@@ -111,6 +110,7 @@ public class AmpArmIOTalonFX implements AmpArmIO {
 
   }
 
+
   public void enableBrakeMode() {
     neutralMode = NeutralModeValue.Brake;
     armMotor.setNeutralMode(NeutralModeValue.Brake);
@@ -131,10 +131,8 @@ public class AmpArmIOTalonFX implements AmpArmIO {
 
   @Override
   public void resetArmWristPos() {
-
     armMotor.setPosition(-78.0);
     wristMotor.setPosition(70.0);
-
   }
 
   @Override

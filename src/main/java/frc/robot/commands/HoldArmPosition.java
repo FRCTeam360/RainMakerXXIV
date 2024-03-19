@@ -4,46 +4,37 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AmpArm;
-import frc.robot.subsystems.AmpIntake;
 import frc.robot.subsystems.Linkage;
-import frc.robot.utils.CommandLogger;
 
-public class ScoreInAmp extends Command {
-  private final AmpArm ampArm;
-  private final AmpIntake ampIntake;
+public class HoldArmPosition extends Command {
+   private final AmpArm ampArm;
   private final Linkage linkage;
-  
-  /** Creates a new ScoreInAmp. */
-  public ScoreInAmp(AmpArm ampArm, AmpIntake ampIntake, Linkage linkage) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  private double position;
+  /** Creates a new HoldArmPosition. */
+  public HoldArmPosition(AmpArm ampArm, Linkage linkage) {
     this.ampArm = ampArm;
-    this.ampIntake = ampIntake;
     this.linkage = linkage;
-    addRequirements(ampArm, ampIntake);
+    addRequirements(ampArm);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    CommandLogger.logCommandStart(this);
+    position = ampArm.getArmPosition();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ampArm.setArm(108.5, linkage);
-    ampArm.setWrist(140.3);
+    System.out.println("HOLDING ARM POSITION");
+    ampArm.setArm(position, linkage);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    ampIntake.stop();
-    CommandLogger.logCommandEnd(this);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
