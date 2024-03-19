@@ -233,11 +233,12 @@ public class RobotContainer {
         linkage = new Linkage(new LinkageIOTalonFX(zeroButton, brakeButton));
         drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
         climber = new Climber(new ClimberIOSparkMax());
-        // ampArm = new AmpArm(new AmpArmIOTalonFX());
-        // ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
+        ampArm = new AmpArm(new AmpArmIOTalonFX(zeroButton, brakeButton));
+        ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
 
         drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
         drivetrain.configNeutralMode(NeutralModeValue.Brake);
+        vision = new Vision();
         break;
       case COMPETITION:
         drivetrain = CompBotConstants.DriveTrain;
