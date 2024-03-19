@@ -204,6 +204,7 @@ public class RobotContainer {
 
   private HoldArmPosition holdArmPosition;
   private SetArmWrist ampSetpoint;
+  private SetArmWrist homeArmWrist;
 
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
@@ -353,10 +354,10 @@ public class RobotContainer {
     if (!Objects.isNull(ampArm)) {
       powerAmpArm = new PowerAmpArm(ampArm, linkage);
       ampArmStop = commandFactory.ampArmStop();
-      homeAmpArmWrist = new HomeAmpArmWrist(ampArm, linkage);
       ampArmGoToZero = new AmpArmGoToZero(ampArm, linkage);
       holdArmPosition = new HoldArmPosition(ampArm, linkage);
       ampSetpoint = new SetArmWrist(ampArm, linkage, 108.5, 140.3);
+      homeArmWrist = new SetArmWrist(ampArm, linkage, -6.0, 80.0);
     }
     if (!Objects.isNull(ampIntake)) {
       powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
@@ -462,16 +463,9 @@ public class RobotContainer {
           .toggleOnTrue(
               trapDrive);
       operatorController.x().onTrue(linkageToAmpHandoff.alongWith(fieldOrientedSlowGuy));
-
-      // operatorController.a().toggleOnTrue(new InstantCommand(() -> ampArm.setArm(108.5, linkage)));
-      // operatorController.a().toggleOnTrue(new InstantCommand(() -> ampArm.setWrist(140.3)));
-
       operatorController.a().toggleOnTrue(ampSetpoint);
 
-      operatorController.y().toggleOnTrue(new InstantCommand(() -> {
-      ampArm.setArm(-6.0, linkage);
-      ampArm.setWrist(45);
-      }, ampArm));
+      operatorController.y().toggleOnTrue(homeArmWrist);
 
       // operatorController.a().toggleOnTrue(new InstantCommand(() ->
       // ampIntake.runIntake(.5)));
