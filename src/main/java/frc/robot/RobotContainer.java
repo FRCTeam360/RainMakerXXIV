@@ -445,11 +445,10 @@ public class RobotContainer {
     driverController.rightBumper().whileTrue(inny);
     driverController.b().whileTrue(stowLinkage);
     driverController.a().toggleOnTrue(shootFromPodium);
-    driverController.y().whileTrue(trapDrive.andThen(sequal.andThen(robotOrientedDrive)));
-
+    
     driverController.rightTrigger().toggleOnTrue(powerIntake);
     driverController.leftTrigger().whileTrue(pointDrivebaseAtTarget);
-
+    
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     driverController.pov(0).whileTrue(deploy);
 
@@ -459,9 +458,8 @@ public class RobotContainer {
     operatorController.rightBumper().whileTrue(powerAmpIntake);
 
     if (Objects.nonNull(ampArm)) {
-      driverController.pov(90)
-          .toggleOnTrue(
-              trapDrive);
+      driverController.y().whileTrue(trapDrive.andThen(sequal.andThen(robotOrientedDrive)));
+      
       operatorController.x().onTrue(linkageToAmpHandoff.alongWith(fieldOrientedSlowGuy));
       operatorController.a().toggleOnTrue(ampSetpoint);
 

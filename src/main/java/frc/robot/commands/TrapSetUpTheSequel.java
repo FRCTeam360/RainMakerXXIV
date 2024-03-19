@@ -59,7 +59,7 @@ public class TrapSetUpTheSequel extends Command {
     }
 
     if (arm.getArmPosition() > 10.0) {
-      arm.setWrist(-45.0);
+      arm.setWrist(0.0);
     }
 
     if (Math.abs(arm.getArmPosition() - 90
