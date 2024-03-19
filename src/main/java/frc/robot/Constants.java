@@ -34,6 +34,8 @@ public class Constants {
 
         public static final int AMP_INTAKE_SENSOR_PORT = 4;
 
+        public static final int AMP_ARM_ABS_ENCODER = 3;
+
         public static final int LINKAGE_ZERO_BUTTON_PORT = 8;
         public static final int LINKAGE_BRAKE_TOGGLE_BUTTON_PORT = 9;
 

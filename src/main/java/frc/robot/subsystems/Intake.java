@@ -49,16 +49,12 @@ public class Intake extends SubsystemBase {
     return io.getSideSensor();
   }
 
-  public boolean getHighSensor() {
-    return io.getHighSensor();
+  public boolean getShooterSensor() {
+    return io.getShooterSensor();
   }
 
-  public boolean getDiagonalSensor() {
-    return io.getDiagonalSensor();
-  }
-
-  public boolean getDiagonalSensor() {
-    return false;
+  public boolean getIntakeSensor() {
+    return io.getIntakeSensor();
   }
 
   public void run(double speed) {
@@ -96,7 +92,7 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("intake sensor", getIntakeSensor());
+    SmartDashboard.putBoolean("intake sensor", getShooterSensor());
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("Intake", inputs);

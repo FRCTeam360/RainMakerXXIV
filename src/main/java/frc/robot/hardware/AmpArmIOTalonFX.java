@@ -16,6 +16,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -26,18 +27,15 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   private final TalonFX armMotor = new TalonFX(Constants.AMP_ARM_ID, Constants.CANIVORE_NAME);
   private final TalonFX wristMotor = new TalonFX(Constants.AMP_WRIST_ID, Constants.CANIVORE_NAME);
 
-  private final double ARM_RATIO = 1.68; // degrees / motor rotation
+  private final DigitalInput intakeSensor = new DigitalInput(Constants.AMP_INTAKE_SENSOR_PORT);
+
+  private final double PRACTICE_ARM_RATIO = 1.68; // degrees / motor rotation
+  private final double COMP_ARM_RATIO = 8.3;
   private final double WRIST_RATIO = 11.25; // degrees / motor rotation
 
   private final double ARM_FORWARD_LIMIT = 120.0;
   private final double ARM_REVERSE_LIMIT = -78.0;
 
-<<<<<<< Updated upstream
-  private final double armKP = 0.48;
-  private final double armKI = 0.0;
-  private final double armKD = 0.0;
-  private final double armKF = 0.0;
-=======
   private final DutyCycleEncoder absEncoder = new DutyCycleEncoder(Constants.AMP_ARM_ABS_ENCODER);
   private final double zeroOffset = 0.874;
 
@@ -46,11 +44,10 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   private final double practiceArmKF = 0.0;
   private final double practiceArmKI = 0.0;
 
-  private final double compArmKP = 0.3; // TODO: TUNE
+  private final double compArmKP = 0.3; 
   private final double compArmKD = 0.0;
   private final double compArmKF = 0.0;
   private final double compArmKI = 0.0;
->>>>>>> Stashed changes
 
   private final double wristKP = 0.6;
   private final double wristKI = 0.0;
@@ -82,7 +79,7 @@ public class AmpArmIOTalonFX implements AmpArmIO {
         .withForwardSoftLimitEnable(true)
         .withReverseSoftLimitEnable(true);
 
-    armConfig.Feedback.withSensorToMechanismRatio(1 / ARM_RATIO);
+    armConfig.Feedback.withSensorToMechanismRatio(1 / PRACTICE_ARM_RATIO);
     armConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // SAME AS SET INVERTED LOL
 
     TalonFXConfiguration wristConfig = new TalonFXConfiguration();
@@ -92,9 +89,6 @@ public class AmpArmIOTalonFX implements AmpArmIO {
     wristSlot0.kP = wristKP;
 
     Slot0Configs armSlot0 = armConfig.Slot0;
-<<<<<<< Updated upstream
-    armSlot0.kP = armKP;
-=======
 
     armConfig.Feedback.withSensorToMechanismRatio(1 / COMP_ARM_RATIO);
     armSlot0.kP = compArmKP;
@@ -106,7 +100,6 @@ public class AmpArmIOTalonFX implements AmpArmIO {
     // armConfig.Feedback.withSensorToMechanismRatio(1 / PRACTICE_ARM_RATIO);
     // armSlot0.kP = practiceArmKP;
     // }
->>>>>>> Stashed changes
 
     armMotor.getConfigurator().apply(armConfig);
     wristMotor.getConfigurator().apply(wristConfig);
@@ -126,7 +119,7 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   }
 
   public boolean getSensor() {
-    return sensor.get();
+    return intakeSensor.get();
   }
 
   public void disableBrakeMode() {

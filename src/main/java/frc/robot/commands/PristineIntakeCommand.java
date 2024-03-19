@@ -19,6 +19,7 @@ public class PristineIntakeCommand extends Command {
     GENESIS,
     NO_NOTE,
     INTAKE_SENSOR,
+    SIDE_SENSOR,
     SHOOTER_SENSOR,
     END
   }
@@ -45,30 +46,21 @@ public class PristineIntakeCommand extends Command {
   public void execute() {
     switch(state) {
       case GENESIS:
-        if(!intake.getSideSensor() || !intake.getHighSensor()) {
+        if(!intake.getSideSensor() || !intake.getShooterSensor()) {
           state = NoteState.END;
-        } else if(intake.getSideSensor() && intake.getHighSensor()) {
+        } else if(intake.getSideSensor() && intake.getShooterSensor()) {
           state = NoteState.NO_NOTE;
         }
         break;
       case NO_NOTE:
         linkage.setAngle(0.0, ampArm);
-<<<<<<< Updated upstream
-        intake.run(.6);
-        if(!intake.getSideSensor()) {
-=======
         intake.run(1.0);
         if(!intake.getIntakeSensor()) {
->>>>>>> Stashed changes
           state = NoteState.INTAKE_SENSOR;
         }
         break;
       case INTAKE_SENSOR:
         linkage.setAngle(90.0, ampArm);
-<<<<<<< Updated upstream
-        intake.run(.3);
-        if(!intake.getHighSensor()) {
-=======
         intake.run(.4);
         if(!intake.getSideSensor()) {
           state = NoteState.SIDE_SENSOR;
@@ -78,7 +70,6 @@ public class PristineIntakeCommand extends Command {
         intake.run(.15);
         linkage.setAngle(linkageSetpoint, ampArm);
         if(!intake.getShooterSensor()) {
->>>>>>> Stashed changes
           state = NoteState.SHOOTER_SENSOR;
         }
         break;

@@ -58,14 +58,14 @@ public class DiagonalSensorIntake extends Command {
       case EXTEND_INTAKE:
         linkage.setAngle(0.0, arm);
         intake.run(.4);
-        if(!intake.getDiagonalSensor()) {
+        if(!intake.getShooterSensor()) {
           state = IntakeCases.SPIN_UP_FLYWHEEL;
         }
         break;
       case MOVE_UP_INTAKE:
         linkage.setAngle(90.0, arm);
         intake.run(.5);
-        if(!intake.getDiagonalSensor()) {
+        if(!intake.getShooterSensor()) {
           state = IntakeCases.REVERSE_INTAKE;
         }
         break;

@@ -135,7 +135,7 @@ public class ShootInSpeaker extends Command {
         break;
       case TIMER:
         intake.run(1.0);
-        if (timer.hasElapsed(0.3) && intake.getSideSensor() && intake.getDiagonalSensor()) {
+        if (timer.hasElapsed(0.3) && intake.getSideSensor() && intake.getShooterSensor()) {
           this.state = ShootState.END;
         }
         break;
