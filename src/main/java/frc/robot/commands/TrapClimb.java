@@ -36,10 +36,12 @@ public class TrapClimb extends Command {
   @Override
   public void execute() {
     ampArm.setWrist(165.0);
-
-    climber.setLeftHeight(climbHeight, 1);
-    climber.setRightHeight(climbHeight, 1);
-    ampArm.setArm(ampSetpoint, linkage);
+    if(Math.abs(ampArm.getWristPosition() - 165.0) < 2.0 ){
+      climber.setLeftHeight(climbHeight, 1);
+      climber.setRightHeight(climbHeight, 1);
+      ampArm.setArm(ampSetpoint, linkage);
+    }
+    
 
 
     boolean leftClimbCheck = Math.abs(climber.getLeftPosition() - climbHeight) < 1.0;

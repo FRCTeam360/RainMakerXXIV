@@ -473,7 +473,7 @@ public class RobotContainer {
       // operatorController.pov(90).onTrue(homeAmpArmWrist);
       // operatorController.pov(180).onTrue(ampArmGoToZero);
     }
-    operatorController.b().toggleOnTrue(trapClimb);
+    // operatorController.b().toggleOnTrue(trapClimb);
     operatorController.start().whileTrue(stopClimber);
     operatorController.start().whileTrue(powerAmpArm);
     operatorController.pov(0).onTrue(soloRaise);
