@@ -63,8 +63,8 @@ public class TrapSetUpTheSequel extends Command {
     }
 
     if (Math.abs(arm.getArmPosition() - 90
-    ) < 2.0 && Math.abs(arm.getWristPosition() + 45.0) < 2.0
-        && distance > Units.inchesToMeters(8.0)) {
+    ) < 2.0 && Math.abs(arm.getWristPosition()) < 2.0
+        && distance > Units.inchesToMeters(7.5)) {
       stop = true;
     }
 
