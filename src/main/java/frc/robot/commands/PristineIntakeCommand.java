@@ -19,6 +19,7 @@ public class PristineIntakeCommand extends Command {
     GENESIS,
     NO_NOTE,
     INTAKE_SENSOR,
+    SIDE_SENSOR,
     SHOOTER_SENSOR,
     END
   }
@@ -29,7 +30,6 @@ public class PristineIntakeCommand extends Command {
     this.linkage = linkage;
     this.ampArm = ampArm;
     this.linkageSetpoint = linkageSetpoint;
-    state = NoteState.GENESIS;
     addRequirements(intake, linkage);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -38,6 +38,7 @@ public class PristineIntakeCommand extends Command {
   @Override
   public void initialize() {
     CommandLogger.logCommandStart(this);
+    state = NoteState.GENESIS;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -45,23 +46,30 @@ public class PristineIntakeCommand extends Command {
   public void execute() {
     switch(state) {
       case GENESIS:
-        if(!intake.getSideSensor() || !intake.getHighSensor()) {
+        if(!intake.getSideSensor() || !intake.getShooterSensor()) {
           state = NoteState.END;
-        } else if(intake.getSideSensor() && intake.getHighSensor()) {
+        } else if(intake.getSideSensor() && intake.getShooterSensor()) {
           state = NoteState.NO_NOTE;
         }
         break;
       case NO_NOTE:
         linkage.setAngle(0.0, ampArm);
-        intake.run(.6);
-        if(!intake.getSideSensor()) {
+        intake.run(1.0);
+        if(!intake.getIntakeSensor()) {
           state = NoteState.INTAKE_SENSOR;
         }
         break;
       case INTAKE_SENSOR:
         linkage.setAngle(90.0, ampArm);
-        intake.run(.3);
-        if(!intake.getHighSensor()) {
+        intake.run(.4);
+        if(!intake.getSideSensor()) {
+          state = NoteState.SIDE_SENSOR;
+        }
+        break;
+      case SIDE_SENSOR:
+        intake.run(.15);
+        linkage.setAngle(linkageSetpoint, ampArm);
+        if(!intake.getShooterSensor()) {
           state = NoteState.SHOOTER_SENSOR;
         }
         break;

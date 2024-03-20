@@ -14,6 +14,7 @@ import frc.robot.commands.ScoreInAmp;
 import frc.robot.commands.PowerIntakeReversed;
 import frc.robot.commands.PowerIntake;
 import frc.robot.commands.PowerLinkage;
+import frc.robot.commands.PristineIntakeCommand;
 import frc.robot.commands.SetIntake;
 import frc.robot.commands.SetLinkage;
 import frc.robot.commands.ShootInSpeaker;
@@ -128,6 +129,7 @@ public class RobotContainer {
   private CommandSwerveDrivetrain drivetrain; // My drivetrain
   private Flywheel flywheel;
   private Linkage linkage;
+  private PristineIntakeCommand intakeMe;
   private Intake intake;
   private Climber climber;
   private AmpArm ampArm;
@@ -299,6 +301,7 @@ public class RobotContainer {
     subwoofShotRy = new ShootingPrepRyRy(linkage, flywheel, ampArm, 177.0, 5000.0);
 
     sequal = new TrapSetUpTheSequel(linkage, ampArm, drivetrain, climber);
+    intakeMe = new PristineIntakeCommand(intake, linkage, ampArm, 145.0);
 
     powerIntakeReversed = new PowerIntakeReversed(intake);
     powerIntake = new PowerIntake(intake);
@@ -453,16 +456,17 @@ public class RobotContainer {
           .toggleOnTrue(
               trapDrive);
       operatorController.x().onTrue(linkageToAmpHandoff.alongWith(fieldOrientedSlowGuy));
-      // operatorController.a().onTrue(scoreInAmp);
-      // operatorController.a().toggleOnTrue(new InstantCommand(() ->
-      // ampArm.setArm(108.5, linkage)));
-      // operatorController.a().toggleOnTrue(new InstantCommand(() ->
-      // ampArm.setWrist(140.3)));
+
+      operatorController.a().toggleOnTrue(new InstantCommand(() -> ampArm.setArm(108.5, linkage)));
+      operatorController.a().toggleOnTrue(new InstantCommand(() -> ampArm.setWrist(140.3)));
+
       operatorController.y().toggleOnTrue(new InstantCommand(() -> {
-        ampArm.setArm(-6.0, linkage);
-        ampArm.setWrist(45);
+      ampArm.setArm(-6.0, linkage);
+      ampArm.setWrist(45);
       }, ampArm));
-      operatorController.a().toggleOnTrue(new InstantCommand(() -> ampIntake.runIntake(.5)));
+
+      // operatorController.a().toggleOnTrue(new InstantCommand(() ->
+      // ampIntake.runIntake(.5)));
       operatorController.pov(90).toggleOnTrue(trapClimb);
 
       // operatorController.pov(90).onTrue(homeAmpArmWrist);
@@ -492,7 +496,6 @@ public class RobotContainer {
     flywheel.stop();
     intake.stop();
     linkage.disableBrakeMode();
-    ampArm.disableBrakeMode();
 
     linkage.stop();
     drivetrain.robotCentricDrive(0, 0, 0);
