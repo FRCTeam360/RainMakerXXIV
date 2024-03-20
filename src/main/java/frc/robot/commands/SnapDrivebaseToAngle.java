@@ -4,12 +4,16 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.utils.UtilMethods;
 
 public class SnapDrivebaseToAngle extends Command {
+  private final XboxController driverController = new XboxController(0);
   private CommandSwerveDrivetrain swerveDrivetrain;
 
   /** Creates a new SnapDrivebaseToAngle. */
@@ -22,6 +26,12 @@ public class SnapDrivebaseToAngle extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    double x = 1;
+    if(DriverStation.getAlliance().get() == Alliance.Red) {
+      x= -1;
+    } else {
+      x=1;
+    }
     double angleToFace = 0.0;
     if (DriverStation.getAlliance().get() == Alliance.Blue) {
       if (swerveDrivetrain.getAngle() >= 60 && swerveDrivetrain.getAngle() < 180) {
@@ -42,7 +52,9 @@ public class SnapDrivebaseToAngle extends Command {
       } else if (swerveDrivetrain.getAngle() < 120.0 && swerveDrivetrain.getAngle() > 0.0) {
         angleToFace = 60.0;
       }
-      swerveDrivetrain.driveFieldCentricFacingAngle(0.0, 0.0, angleToFace);
+      swerveDrivetrain.driveFieldCentricFacingAngle(
+        x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1)),
+        x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1)), angleToFace);
 
     }
   }
@@ -61,6 +73,6 @@ public class SnapDrivebaseToAngle extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return Math.abs(MathUtil.applyDeadband(driverController.getRightX(), 0.1)) > 0.0;
   }
 }
