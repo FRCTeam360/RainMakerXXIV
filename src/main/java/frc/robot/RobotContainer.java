@@ -521,15 +521,15 @@ public class RobotContainer {
       lights.setRed();
     }
 
-    if (zeroButton.getChannel() != 0) {
+    if (zeroButton.getChannel() != 0 || brakeButton.getChannel() != 0) {
       lights.setGreen();
-    } else if (zeroButton.getChannel() == 0) {
+    } else if (zeroButton.getChannel() == 0 || brakeButton.getChannel() != 0) {
       if (DriverStation.getAlliance().get() == Alliance.Blue) {
         lights.setBlue();
       } else {
         lights.setRed();
       }
-    } else if (intake.getSideSensor() == true && intake.getDiagonalSensor() == true) {
+    } else if (intake.getSideSensor() == true && intake.getShooterSensor() == true) {
       lights.setOrange();
     }
   }
