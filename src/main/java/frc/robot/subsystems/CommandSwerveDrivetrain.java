@@ -243,11 +243,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     }
 
     public double getAngle() {
-        return this.getPigeon2().getAngle();
+        return getPose().getRotation().getDegrees();
     }
 
     public Rotation2d getRotation2d() {
-        return this.getPigeon2().getRotation2d();
+        return getPose().getRotation();
     }
 
     public void zero() {
