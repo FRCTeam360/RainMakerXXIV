@@ -20,6 +20,7 @@ import frc.robot.commands.SetIntake;
 import frc.robot.commands.SetLinkage;
 import frc.robot.commands.ShootInSpeaker;
 import frc.robot.commands.ShootingPrepRyRy;
+import frc.robot.commands.SnapDrivebaseToAngle;
 import frc.robot.commands.TrapClimb;
 import frc.robot.commands.TrapSetUp;
 import frc.robot.commands.TrapSetUpTheSequel;
@@ -159,6 +160,7 @@ public class RobotContainer {
   private FieldOrientedDrive fieldOrientedDrive;
   private RobotOrientedDrive robotOrientedDrive;
   private DriveFieldCentricFacingAngle passFromSourceAngle;
+  private SnapDrivebaseToAngle snapDrivebaseToAngle;
   private ClimberPIDTuner pidTuner;
   private SetClimbers maxExtend;
   private SetClimbers minExtend;
@@ -196,7 +198,7 @@ public class RobotContainer {
   private StopClimber stopClimber;
 
   private HomeAmpArmWrist homeAmpArmWrist;
-  private AmpArmGoToZero ampArmGoToZero;
+  private AmpArmGoToZero ampArmGoToZero; 
 
   private TrapSetUp trapDrive;
   private TrapClimb trapClimb;
@@ -205,6 +207,7 @@ public class RobotContainer {
   private HoldArmPosition holdArmPosition;
   private SetArmWrist ampSetpoint;
   private SetArmWrist homeArmWrist;
+  private SetArmWrist stowArm; 
 
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
@@ -348,6 +351,7 @@ public class RobotContainer {
 
 
     pointDrivebaseAtTarget = new PointDrivebaseAtTarget(drivetrain, vision);
+    snapDrivebaseToAngle = new SnapDrivebaseToAngle(drivetrain);
 
     // COMMENT OUT tuneSwerveDrive WHEN NOT USING, IT WILL SET YOUR SWERVE DRIVE
     // CONSTANTS TO 0 WHEN CONSTRUCTED
@@ -357,7 +361,8 @@ public class RobotContainer {
       ampArmStop = commandFactory.ampArmStop();
       ampArmGoToZero = new AmpArmGoToZero(ampArm, linkage);
       holdArmPosition = new HoldArmPosition(ampArm, linkage);
-      ampSetpoint = new SetArmWrist(ampArm, linkage, 108.5, 140.3);
+      stowArm = new SetArmWrist(ampArm, linkage, -75, 65);
+      ampSetpoint = new SetArmWrist(ampArm, linkage, 95.0, 135.0);
       homeArmWrist = new SetArmWrist(ampArm, linkage, -6.0, 80.0);
     }
     if (!Objects.isNull(ampIntake)) {
@@ -446,6 +451,7 @@ public class RobotContainer {
     driverController.rightBumper().whileTrue(inny);
     driverController.b().whileTrue(stowLinkage);
     driverController.a().toggleOnTrue(shootFromPodium);
+    driverController.x().whileTrue(snapDrivebaseToAngle);
     
     driverController.rightTrigger().toggleOnTrue(powerIntake);
     driverController.leftTrigger().whileTrue(pointDrivebaseAtTarget);
@@ -465,6 +471,7 @@ public class RobotContainer {
       operatorController.a().toggleOnTrue(ampSetpoint);
 
       operatorController.y().toggleOnTrue(homeArmWrist);
+      operatorController.b().toggleOnTrue(stowArm);
 
       // operatorController.a().toggleOnTrue(new InstantCommand(() ->
       // ampIntake.runIntake(.5)));

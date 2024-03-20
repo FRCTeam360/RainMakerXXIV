@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -15,7 +17,8 @@ import frc.robot.utils.UtilMethods;
 public class SnapDrivebaseToAngle extends Command {
   private final XboxController driverController = new XboxController(0);
   private CommandSwerveDrivetrain swerveDrivetrain;
-
+  double x = 1;
+  double angleToFace = 5.0;
   /** Creates a new SnapDrivebaseToAngle. */
   public SnapDrivebaseToAngle(CommandSwerveDrivetrain swerveDrivetrain) {
     this.swerveDrivetrain = swerveDrivetrain;
@@ -26,43 +29,47 @@ public class SnapDrivebaseToAngle extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double x = 1;
     if(DriverStation.getAlliance().get() == Alliance.Red) {
       x= -1;
     } else {
       x=1;
     }
-    double angleToFace = 0.0;
-    if (DriverStation.getAlliance().get() == Alliance.Blue) {
-      if (swerveDrivetrain.getAngle() >= 60 && swerveDrivetrain.getAngle() < 180) {
-        angleToFace = 120.0;
-      } else if (swerveDrivetrain.getAngle() >= 180 && swerveDrivetrain.getAngle() < 300) {
-        angleToFace = 240.0;
-      } else if (swerveDrivetrain.getAngle() < 60 && swerveDrivetrain.getAngle() > 300) {
-        angleToFace = 0.0;
-      }
+    if (DriverStation.getAlliance().get() == Alliance.Red) {
 
-      swerveDrivetrain.driveFieldCentricFacingAngle(0.0, 0.0, angleToFace);
-
-    } else if (DriverStation.getAlliance().get() == Alliance.Red) {
-      if (swerveDrivetrain.getAngle() >= 120 && swerveDrivetrain.getAngle() < 240) {
-        angleToFace = 180.0;
-      } else if (swerveDrivetrain.getAngle() >= 240 && swerveDrivetrain.getAngle() <= 0.0) {
-        angleToFace = 300.0;
-      } else if (swerveDrivetrain.getAngle() < 120.0 && swerveDrivetrain.getAngle() > 0.0) {
+      if (swerveDrivetrain.getAngle() >= 0 && swerveDrivetrain.getAngle() <= 90) {
         angleToFace = 60.0;
+      } else if (swerveDrivetrain.getAngle() >= 90 && swerveDrivetrain.getAngle() <= 150) {
+        angleToFace = 120.0;
+      } else if (swerveDrivetrain.getAngle() >= 150 || swerveDrivetrain.getAngle() <= -150.0) {
+        angleToFace = 180.0;
+      } else if (swerveDrivetrain.getAngle() >= -150 && swerveDrivetrain.getAngle() <= -90.0) {
+        angleToFace = -120.0;
+      } else if (swerveDrivetrain.getAngle() >= -90.0 && swerveDrivetrain.getAngle() <= 0.0) {
+        angleToFace = -60.0;
       }
-      swerveDrivetrain.driveFieldCentricFacingAngle(
-        x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1)),
-        x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1)), angleToFace);
 
+    } else {
+      if (swerveDrivetrain.getAngle() >= -30 && swerveDrivetrain.getAngle() <= 30) {
+        angleToFace = 0.0;
+      } else if (swerveDrivetrain.getAngle() >= 30 && swerveDrivetrain.getAngle() <= 90) {
+        angleToFace = 60.0;
+      } else if (swerveDrivetrain.getAngle() >= 90 && swerveDrivetrain.getAngle() <= 180.0) {
+        angleToFace = 120.0;
+      } else if (swerveDrivetrain.getAngle() >= -180 && swerveDrivetrain.getAngle() <= -90.0) {
+        angleToFace = -120.0;
+      } else if (swerveDrivetrain.getAngle() >= -90.0 && swerveDrivetrain.getAngle() <= -30.0) {
+        angleToFace = -60.0;
+      }
     }
+    Logger.recordOutput("Swerve angle to face", angleToFace);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
+    swerveDrivetrain.driveFieldCentricFacingAngle(
+      x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1)),
+      x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1)), angleToFace);
   }
 
   // Called once the command ends or is interrupted.

@@ -19,7 +19,7 @@ public class CommandLogger {
      */
     public static void logCommandStart(Command command) {
         Logger.recordOutput("Command Running: " + command.getClass().getName(), true);
-        System.out.println("Print Command Start: " + command.getClass().getName());
+        //System.out.println("Print Command Start: " + command.getClass().getName());
     }
 
     /**
