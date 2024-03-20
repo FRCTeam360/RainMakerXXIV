@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.hardware.AmpArmIOTalonFX;
 import frc.robot.io.AmpArmIO;
 import frc.robot.io.AmpArmIOInputsAutoLogged;
@@ -31,6 +32,9 @@ public class AmpArm extends SubsystemBase {
         SmartDashboard.putBoolean("amp intake sensor", getIntakeSensor());
 
     setupShuffleboard();
+    if(Constants.isPracticeBot()){
+      io.resetArmWristPos();
+    }
   }
 
   public void enableBrakeMode() {
