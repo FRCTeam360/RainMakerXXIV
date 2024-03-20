@@ -19,6 +19,7 @@ public class AmpIntakeIOSparkMax implements AmpIntakeIO {
   private CANSparkMax motor = new CANSparkMax(Constants.AMP_INTAKE_ID, MotorType.kBrushless);
   private RelativeEncoder encoder = motor.getEncoder();
 
+
   private final double GEAR_RATIO = 1.0;
 
   /** Creates a new AmpIntakeIOSparkMax. */
@@ -44,6 +45,7 @@ public class AmpIntakeIOSparkMax implements AmpIntakeIO {
   public double getEncoderPosition() {
     return motor.getEncoder().getPosition();
   }
+
 
   public void updateInputs(AmpIntakeIOInputs inputs) {
     inputs.ampIntakeStatorCurrent = motor.getOutputCurrent();

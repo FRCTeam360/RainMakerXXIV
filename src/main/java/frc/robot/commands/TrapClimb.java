@@ -35,8 +35,8 @@ public class TrapClimb extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ampArm.setWrist(165.0);
-    if(Math.abs(ampArm.getWristPosition() - 165.0) < 2.0 ){
+    ampArm.setWrist(145.0);
+    if(Math.abs(ampArm.getWristPosition() - 145.0) < 2.0 ){
       climber.setLeftHeight(climbHeight, 1);
       climber.setRightHeight(climbHeight, 1);
       ampArm.setArm(ampSetpoint, linkage);

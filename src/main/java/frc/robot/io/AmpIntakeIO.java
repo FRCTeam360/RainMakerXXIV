@@ -31,4 +31,5 @@ public interface AmpIntakeIO {
   public double getIntakeSpeed();
 
   public double getAmps();
+
 }

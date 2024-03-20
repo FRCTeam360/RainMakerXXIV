@@ -47,7 +47,7 @@ public class TrapSetUpTheSequel extends Command {
     Translation2d currentTranslation2d = drive.getPose().getTranslation();
     drive.robotCentricDrive(0.0, .04, 0.0);
     double distance = Math.abs(currentTranslation2d.getDistance(initialTranslation));
-    if (distance > Units.inchesToMeters(8.0)) {
+    if (distance > Units.inchesToMeters(10.0)) {
       drive.robotCentricDrive(0, 0, 0);
     }
     if (distance > Units.inchesToMeters(1.0) && distance < 0) {

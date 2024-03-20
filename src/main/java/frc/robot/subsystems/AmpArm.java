@@ -28,6 +28,8 @@ public class AmpArm extends SubsystemBase {
     this.io = io;
     SmartDashboard.putBoolean("Is arm at home", isArmAtZero());
     SmartDashboard.putBoolean("is wrist at home", isWristAtZero());
+        SmartDashboard.putBoolean("amp intake sensor", getIntakeSensor());
+
     setupShuffleboard();
   }
 
@@ -163,8 +165,8 @@ public class AmpArm extends SubsystemBase {
     io.zeroArm();
   }
 
-  public boolean getSensor() {
-    return io.getSensor();
+  public boolean getIntakeSensor() {
+    return io.getIntakeSensor();
   }
 
   public boolean isWristAtZero() {
@@ -222,6 +224,7 @@ public class AmpArm extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putBoolean("Is arm at home", isArmAtZero());
     SmartDashboard.putBoolean("is wrist at home", isWristAtZero());
+    SmartDashboard.putBoolean("amp intake sensor", getIntakeSensor());
 
     io.updateInputs(inputs);
     Logger.processInputs("AmpArm", inputs);

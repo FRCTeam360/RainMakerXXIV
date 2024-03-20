@@ -81,7 +81,7 @@ public class LinkageToAmpHandoff extends Command {
         flywheel.handoff(1000.0);
         ampIntake.runIntake(0.70);
 
-        if (!ampArm.getSensor()) {
+        if (!ampArm.getIntakeSensor()) {
           ampIntake.stop();
           state = States.HAS_NOTE;
         }

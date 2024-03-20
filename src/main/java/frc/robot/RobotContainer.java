@@ -342,7 +342,7 @@ public class RobotContainer {
     soloRaise = commandFactory.setClimberShouldntFinish(40);
     soloRetract = commandFactory.setClimberShouldntFinish(-20);
 
-    fullRetract = commandFactory.setClimberShouldFinish(-57);
+    fullRetract = commandFactory.setClimberShouldntFinish(-57);
 
     stopClimber = new StopClimber(climber);
 
@@ -478,6 +478,7 @@ public class RobotContainer {
     operatorController.start().whileTrue(powerAmpArm);
     operatorController.pov(0).onTrue(soloRaise);
     operatorController.pov(270).onTrue(goToZero);
+    operatorController.rightStick().onTrue(fullRetract);
     operatorController.pov(180).toggleOnTrue(soloRetract);
     operatorController.back().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
 

@@ -118,7 +118,8 @@ public class AmpArmIOTalonFX implements AmpArmIO {
 
   }
 
-  public boolean getSensor() {
+  @Override
+  public boolean getIntakeSensor() {
     return intakeSensor.get();
   }
 

@@ -50,8 +50,8 @@ public interface AmpArmIO {
 
   public void zeroArm();
 
-  public boolean getSensor();
-  
+  public boolean getIntakeSensor();
+
   public void resetArmWristPos();
 
   public void enableBrakeMode();
