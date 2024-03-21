@@ -70,7 +70,7 @@ public class Vision extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (Objects.nonNull(DriverStation.getAlliance()) {
+    if (Objects.nonNull(DriverStation.getAlliance())) {
       if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
         setPipeline(0);
       }   else if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
