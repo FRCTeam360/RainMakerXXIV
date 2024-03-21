@@ -68,6 +68,10 @@ public class CommandFactory {
         );
     }
 
+    public PointDrivebaseAtTarget pointDriveBaseAtTarget(){
+        return new PointDrivebaseAtTarget(drivetrain, vision);
+    }
+
     public ShootInSpeaker shootFromPodium() {
         return new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake,  0.0, 0.0, 20.0);
     }
@@ -75,6 +79,7 @@ public class CommandFactory {
     public PowerFlywheel powerFlywheel() {
         return new PowerFlywheel(flywheel);
     }
+
 
     // returns type powerIntake
     public PowerIntake powerIntake() {
@@ -125,6 +130,23 @@ public class CommandFactory {
 
     public AmpArmStop ampArmStop() {
         return new AmpArmStop(ampArm, linkage);
+    }
+    public Command shootAtSpeakerFromDistance(){
+        Command setLinkage = new SetLinkage(linkage, 148, ampArm);
+        Command setFlywheel = new SetFlywheel(flywheel, 7500);
+        Command pointDrivebaseAtTarget = new PointDrivebaseAtTarget(drivetrain, vision);
+        return new ParallelRaceGroup(
+            setLinkage,
+            setFlywheel,
+            pointDrivebaseAtTarget,
+            new EndWhenShooterReady(linkage, flywheel, drivetrain)
+        ).andThen( new ParallelRaceGroup(
+            setLinkage, 
+            setFlywheel, 
+            pointDrivebaseAtTarget, 
+            new RunCommand(()-> intake.run(1.0), intake),
+            new WaitUntilCommand(0.5)
+        ));
     }
     public Command shootAtSpeakerUsingVision() {
         return new ParallelRaceGroup(

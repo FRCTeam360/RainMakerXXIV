@@ -147,6 +147,7 @@ public class RobotContainer {
   private ShootInSpeaker shootRoutine;
   private RunExtendIntake runExtendIntake;
   private DiagonalSensorIntake diagonalSensorIntakeCloseShot;
+  private Command shootAtSpeakerFromDistance; 
 
   private PowerCenterNote powerCenterNoteIntakeRoutine;
   private PowerIntakeReversed powerIntakeReversed;
@@ -340,6 +341,8 @@ public class RobotContainer {
     shootFromSubwoofer = commandFactory.shootFromSubwoofer();
     rydarSubwoof = new RydarsSpinup(linkage, ampArm, flywheel, 177.0, 5000.0);
     shootFromPodium = commandFactory.shootFromPodium();
+    pointDrivebaseAtTarget = commandFactory.pointDriveBaseAtTarget();
+    shootAtSpeakerFromDistance = commandFactory.shootAtSpeakerFromDistance();
 
     deploy = commandFactory.deploy();
 
@@ -460,8 +463,8 @@ public class RobotContainer {
     driverController.a().and(driverController.rightTrigger().negate()).whileTrue(shootFromSubwooferSpinUp);
     driverController.x().whileTrue(snapDrivebaseToAngle);
     
-    driverController.rightTrigger().whileTrue(shootFromSubwoofer);
-    driverController.leftTrigger().whileTrue(pointDrivebaseAtTarget);
+    driverController.rightTrigger().and(driverController.leftTrigger().negate()).whileTrue(shootFromSubwoofer);
+    driverController.rightTrigger().and(driverController.leftTrigger()).whileTrue(shootAtSpeakerFromDistance);
     
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     driverController.pov(0).whileTrue(deploy);
