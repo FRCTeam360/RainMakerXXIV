@@ -113,7 +113,7 @@ public class ShootInSpeaker extends Command {
     } 
     linkage.setAngle(linkageSetpoint, arm);
     System.out.println("this is the robot state: " + this.state);
-    Logger.recordOutput("ShootInSpeakerState", this.state);
+    Logger.recordOutput("ShootInSpeaker: State", this.state);
     flywheel.setBothRPM(flywheelSetpoint);
     // System.out.println("left velocity: " + flywheel.getLeftVelocity());
     // System.out.println("is above setpoint " + flywheel.isAtSetpoint());
@@ -134,6 +134,7 @@ public class ShootInSpeaker extends Command {
       case SHOOT:
         intake.run(1.0);
         boolean hasShot = flywheel.isBelowSetpoint(); // check logic in flywheel subsystem (180 rpm gap)
+        Logger.recordOutput("ShootInSpeaker: hasShot", hasShot);
         if (hasShot) {
           timer.start();
           state = ShootState.TIMER;

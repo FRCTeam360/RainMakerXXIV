@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.Objects;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -53,6 +55,13 @@ public class Vision extends SubsystemBase {
   public double getFlywheelSetpoint() {
     return 0.0; // add flywheel regression equation thing
   }
+
+  public boolean isOnTargetTX() {
+    if(Math.abs(getTX()) < 3.0) {
+      return true;
+    }
+    return false;
+  }
   
   // Returns true if the target is in view
   public boolean isTargetInView() {
@@ -61,7 +70,7 @@ public class Vision extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (RobotState.isEnabled()) {
+    if (Objects.nonNull(DriverStation.getAlliance())) {
       if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
         setPipeline(0);
       }   else if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {

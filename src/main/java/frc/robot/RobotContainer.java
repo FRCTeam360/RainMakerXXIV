@@ -103,6 +103,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -194,6 +195,7 @@ public class RobotContainer {
   private SetClimbers goToZero;
   private SetClimbers fullRetract;
   private SetClimbers soloRaise;
+  private ShootingPrepRyRy kiki;
   private SetClimbers soloRetract;
 
   private SetLinkage deploy;
@@ -311,9 +313,10 @@ public class RobotContainer {
     autoPowerCenterNote = new AutoPowerCenterNote(ampArm, intake, linkage, flywheel, 177.0);
     powerCenterNoteIntakeRoutine = commandFactory.powerCenterNote();
     subwoofShotRy = new ShootingPrepRyRy(linkage, flywheel, ampArm, 177.0, 5000.0);
-
     sequal = new TrapSetUpTheSequel(linkage, ampArm, drivetrain, climber);
     intakeMe = new PristineIntakeCommand(intake, linkage, ampArm, 145.0);
+
+    kiki = new ShootingPrepRyRy(linkage, flywheel, ampArm, 153.0, 7000.0);
 
     powerIntakeReversed = new PowerIntakeReversed(intake);
     powerIntake = new PowerIntake(intake);
@@ -397,8 +400,12 @@ public class RobotContainer {
     NamedCommands.registerCommand("extend linkage", new InstantCommand(() -> linkage.setAngle(0.0, ampArm), linkage));
     NamedCommands.registerCommand("linkage long prep",
         new InstantCommand(() -> linkage.setAngle(151, ampArm), linkage));
+    NamedCommands.registerCommand("kiki linkage long prep", 
+        new InstantCommand(() -> linkage.setAngle(149, ampArm)));
     NamedCommands.registerCommand("stay out of way shot",
         new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151, 7000.0));
+    NamedCommands.registerCommand("kikiSimpleShoot", 
+        new ShootInSpeaker(ampArm, linkage, flywheel, intake, 149, 7000.0));
     NamedCommands.registerCommand("long shot inny", longerinny);
     NamedCommands.registerCommand("last guy", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 153, 7000.0));
     NamedCommands.registerCommand("blue linkage long prep",
@@ -407,7 +414,8 @@ public class RobotContainer {
         new ShootInSpeaker(ampArm, linkage, flywheel, intake, 148, 7000.0));
     NamedCommands.registerCommand("blue last guy",
         new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151.5, 7000.0));
-
+    NamedCommands.registerCommand("kiki shot", kiki);
+    NamedCommands.registerCommand("Turn", pointDrivebaseAtTarget);
     // NamedCommands.registerCommand("Intake", runExtendIntake);
     // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     // NamedCommands.registerCommand("Wait", new WaitCommand(2));
