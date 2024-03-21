@@ -6,18 +6,31 @@ package frc.robot.io;
 
 import org.littletonrobotics.junction.AutoLog;
 
-import frc.robot.io.LinkageIO.LinkageIOInputs;
+import edu.wpi.first.math.geometry.Pose2d;
 
 public interface VisionIO {
     @AutoLog
-     public static class VisionIOInputs {
+    public static class VisionIOInputs {
         public double tx;
         public double ty;
-        public boolean tv;
+        public double tyFudgeFactor;
+        public double tv;
+        public double pipeline;
     }
 
-    public double getDistance();
+    public double getTX();
 
+    public double getTY();
 
+    public double getTV();
+
+    public Pose2d getBotPose();
+
+    public double getPipeline();
+
+    public void setPipeline(int pipeline);
+
+    public void setLEDMode(int mode);
+
+    public void takeSnapshot();
 }
-
