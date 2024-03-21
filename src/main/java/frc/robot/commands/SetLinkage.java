@@ -58,6 +58,7 @@ public class SetLinkage extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    linkage.run(0.0, arm);
     CommandLogger.logCommandEnd(this);
   }
 
