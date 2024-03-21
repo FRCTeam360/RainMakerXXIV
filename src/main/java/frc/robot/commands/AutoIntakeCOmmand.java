@@ -11,7 +11,7 @@ import frc.robot.utils.CommandLogger;
 import frc.robot.subsystems.Linkage;
 import frc.robot.subsystems.Vision;
 
-public class IntakeCOmmand extends Command {
+public class AutoIntakeCOmmand extends Command {
   private final Intake intake;
   private final Linkage linkage;
   private AmpArm ampArm;
@@ -21,22 +21,9 @@ public class IntakeCOmmand extends Command {
   private double x = 0;
   private boolean bringup = false;
   private boolean retracts;
-  private boolean reversing = false;
-  private boolean shouldEnd = true; 
+  private boolean reversing = false; 
   /** Creates a new IntakeCOmmand. */
-  public IntakeCOmmand(Intake intake, Linkage linkage, AmpArm ampArm, Vision vision, double setthatguy, boolean retracts, boolean shouldEnd) {
-    this.intake = intake;
-    this.linkage = linkage;
-    this.ampArm = ampArm;
-    this.vision = vision; 
-    this.setthatguy = setthatguy;
-    this.retracts = retracts;
-    this.shouldEnd = shouldEnd; 
-    
-    // Use addRequirements() here to declare subsystem dependencies.
-  }
-  /** Creates a new IntakeCOmmand. */
-  public IntakeCOmmand(Intake intake, Linkage linkage, AmpArm ampArm, Vision vision, double setthatguy, boolean retracts) {
+  public AutoIntakeCOmmand(Intake intake, Linkage linkage, AmpArm ampArm, Vision vision, double setthatguy, boolean retracts) {
     this.intake = intake;
     this.linkage = linkage;
     this.ampArm = ampArm;
@@ -65,26 +52,14 @@ public class IntakeCOmmand extends Command {
       linkage.setAngle(110.0, ampArm);
     }
     if(!intake.getIntakeSensor() && !bringup) {
-      vision.blink();
-      intake.run(.9);
-      bringup = true;
+      intake.run(.4);
       System.out.println("runnin at 90");
     } else {
       intake.run(.5);
       System.out.println("runnin at .5");
     }
     if(!intake.getSideSensor()) {
-      vision.lightsOut();
-      intake.run(.2);
-      // stop = true;
-      // x = .35;
-    }
-    if(!intake.getShooterSensor()) {
-      intake.run(-.2);
-      reversing = true;
-    }
-    if(intake.getShooterSensor() && reversing){
-      intake.run(0.0);
+      bringup = true; 
       stop = true;
     }
 
@@ -104,6 +79,6 @@ public class IntakeCOmmand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return stop && shouldEnd;
+    return stop;
   }
 }

@@ -32,6 +32,7 @@ import frc.robot.commands.RobotOrientedDrive;
 import frc.robot.commands.AmpArmGoToZero;
 import frc.robot.commands.AmpArmNote;
 import frc.robot.commands.AmpArmStop;
+import frc.robot.commands.AutoIntakeCOmmand;
 import frc.robot.commands.AutoPowerCenterNote;
 import frc.robot.commands.BasicClimb;
 import frc.robot.commands.FieldOrientedDrive;
@@ -165,7 +166,7 @@ public class RobotContainer {
   private SetClimbers maxExtend;
   private SetClimbers minExtend;
 
-  private IntakeCOmmand longerinny;
+  private AutoIntakeCOmmand longerinny;
   // private SetLinkageTalon setLinkageTalon = new SetLinkageTalon(linkage);
   private SetLinkage setLinkage;
   private IntakeCOmmand ryryinny;
@@ -180,6 +181,7 @@ public class RobotContainer {
   private PowerAmpIntakeReverse powerAmpIntakeReverse;
   private AmpArmNote ampArmNote;
   private IntakeCOmmand inny;
+  private AutoIntakeCOmmand autoinny;
   private ScoreInAmp scoreInAmp;
   private LinkageToAmpHandoff linkageToAmpHandoff;
   private AmpArmStop ampArmStop;
@@ -328,7 +330,8 @@ public class RobotContainer {
     stowLinkage = commandFactory.stowLinkage();
     powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
     inny = new IntakeCOmmand(intake, linkage, ampArm, vision, 110.0, true);
-    longerinny = new IntakeCOmmand(intake, linkage, ampArm, vision, 144.0, true);
+    autoinny = new AutoIntakeCOmmand(intake, linkage, ampArm, vision, 177.0, true);
+    longerinny = new AutoIntakeCOmmand(intake, linkage, ampArm, vision, 144.0, true);
     ryryinny = new IntakeCOmmand(intake, linkage, ampArm, vision, 0.0, false);
     powerLinkage = commandFactory.powerLinkage();
     shootRoutine = commandFactory.shootInSpeaker(177.0, 6000.0);
@@ -378,7 +381,8 @@ public class RobotContainer {
 
     Command shootRoutineWithDrivetrain = new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, 0.0, 5000.0,
         0.0);
-    NamedCommands.registerCommand("Intake", inny);
+    NamedCommands.registerCommand("Intake", autoinny);
+
     NamedCommands.registerCommand("Auto Center Note", new AutoPowerCenterNote(ampArm, intake, linkage, flywheel, 163));
     NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     NamedCommands.registerCommand("Shoot", shootRoutineWithDrivetrain);

@@ -37,6 +37,7 @@ public class ShootInSpeaker extends Command {
   private final XboxController driverController = new XboxController(0);
 
   private Timer timer = new Timer();
+  private Timer loadedtimer = new Timer();
   private Intake intake;
 
   private ShootState state = ShootState.LOADED;
@@ -71,6 +72,9 @@ public class ShootInSpeaker extends Command {
     state = ShootState.LOADED;
     timer.stop();
     timer.reset();
+    loadedtimer.stop();
+    loadedtimer.reset();
+    loadedtimer.start();
   }
 
   public ShootInSpeaker(AmpArm ampArm, Linkage linkage, Flywheel flywheel, Intake intake,
@@ -122,7 +126,7 @@ public class ShootInSpeaker extends Command {
         Logger.recordOutput("ShootInSpeaker: Linkage Setpoint", isLinkageAtSetpoint);
         Logger.recordOutput("ShootInSpeaker: Flywheel Setpoint", isFlywheelAtSetpoint);
      //   boolean isDriveReady = Objects.isNull(drivetrain) || drivetrain.isFacingAngle();
-        if (isFlywheelAtSetpoint && isLinkageAtSetpoint) { // && isLinkageAtSetpoint
+        if (isFlywheelAtSetpoint && (loadedtimer.get() > 0.3 || isLinkageAtSetpoint)) { // && isLinkageAtSetpoint
           this.state = ShootState.SHOOT;
         }
         break;
