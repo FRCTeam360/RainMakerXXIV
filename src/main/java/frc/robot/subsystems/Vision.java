@@ -14,6 +14,13 @@ public class Vision extends SubsystemBase {
   /** Creates a new Limelight. */
   public Vision() {}
 
+  public void blink(){
+    lime.getEntry("ledMode").setNumber(2);
+  }
+  public void lightsOut(){
+    lime.getEntry("ledMode").setNumber(1);
+  }
+
   public double getTX() {
     return lime.getEntry("tx").getDouble(0);
   }

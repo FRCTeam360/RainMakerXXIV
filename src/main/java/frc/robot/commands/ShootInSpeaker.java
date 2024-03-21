@@ -7,6 +7,8 @@ package frc.robot.commands;
 import java.sql.Driver;
 import java.util.Objects;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
@@ -107,14 +109,18 @@ public class ShootInSpeaker extends Command {
     } 
     linkage.setAngle(linkageSetpoint, arm);
     System.out.println("this is the robot state: " + this.state);
+    Logger.recordOutput("ShootInSpeakerState", this.state);
     flywheel.setBothRPM(flywheelSetpoint);
-    System.out.println("left velocity: " + flywheel.getLeftVelocity());
-    System.out.println("is above setpoint " + flywheel.isAboveSetpoint());
+    // System.out.println("left velocity: " + flywheel.getLeftVelocity());
+    // System.out.println("is above setpoint " + flywheel.isAtSetpoint());
+    System.out.println("linkage is at SETPOINT" + linkage.isAtSetpoint());
     switch (state) {
       case LOADED:
         intake.stop();
         boolean isLinkageAtSetpoint = linkage.isAtSetpoint();
-        boolean isFlywheelAtSetpoint = flywheel.isAtSetpoint();
+        boolean isFlywheelAtSetpoint = flywheel.isAboveSetpoint();
+        Logger.recordOutput("ShootInSpeaker: Linkage Setpoint", isLinkageAtSetpoint);
+        Logger.recordOutput("ShootInSpeaker: Flywheel Setpoint", isFlywheelAtSetpoint);
      //   boolean isDriveReady = Objects.isNull(drivetrain) || drivetrain.isFacingAngle();
         if (isFlywheelAtSetpoint && isLinkageAtSetpoint) { // && isLinkageAtSetpoint
           this.state = ShootState.SHOOT;

@@ -174,6 +174,7 @@ public class RobotContainer {
   private TuneFlywheel tuneFlywheel;
   private ShootInSpeaker shootFromSubwoofer;
   private ShootInSpeaker shootFromPodium;
+  private Command shootFromSubwooferSpinUp;
   private TuneSwerveDrive tuneSwerveDrive;
   private AutoPowerCenterNote autoPowerCenterNote;
   private PowerAmpIntakeReverse powerAmpIntakeReverse;
@@ -315,7 +316,7 @@ public class RobotContainer {
     powerIntake = new PowerIntake(intake);
     powerFlywheel = new PowerFlywheel(flywheel);
     powerClimber = new PowerClimber(climber);
-    shootRoutine = new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, 0.0, 5000.0, 90.0);
+    shootRoutine = new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, 174.0, 5000.0, 90.0);
     maxExtend = new SetClimbers(climber, 70.0);
     passUnderStage = new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, 106.0, 4000.0,
         fetchAllianceNum());
@@ -326,11 +327,12 @@ public class RobotContainer {
     powerLinkage = new PowerLinkage(linkage, ampArm);
     stowLinkage = commandFactory.stowLinkage();
     powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
-    inny = new IntakeCOmmand(intake, linkage, ampArm, 177.0, true);
-    longerinny = new IntakeCOmmand(intake, linkage, ampArm, 144.0, true);
-    ryryinny = new IntakeCOmmand(intake, linkage, ampArm, 0.0, false);
+    inny = new IntakeCOmmand(intake, linkage, ampArm, vision, 110.0, true);
+    longerinny = new IntakeCOmmand(intake, linkage, ampArm, vision, 144.0, true);
+    ryryinny = new IntakeCOmmand(intake, linkage, ampArm, vision, 0.0, false);
     powerLinkage = commandFactory.powerLinkage();
     shootRoutine = commandFactory.shootInSpeaker(177.0, 6000.0);
+    shootFromSubwooferSpinUp = commandFactory.shootFromSubwooferSpinUp();
     // autoCenterNote = commandFactory.shootInSpeaker(160.0, 6000.0);
     shootFromSubwoofer = commandFactory.shootFromSubwoofer();
     rydarSubwoof = new RydarsSpinup(linkage, ampArm, flywheel, 177.0, 5000.0);
@@ -443,6 +445,7 @@ public class RobotContainer {
    * PS4} controllers or
    * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
+   * 
    */
 
   private void configureBindings() {
@@ -450,14 +453,15 @@ public class RobotContainer {
     driverController.leftBumper().whileTrue(powerIntakeReversed);
     driverController.rightBumper().whileTrue(inny);
     driverController.b().whileTrue(stowLinkage);
-    driverController.a().toggleOnTrue(shootFromPodium);
+    driverController.a().and(driverController.rightTrigger().negate()).whileTrue(shootFromSubwooferSpinUp);
     driverController.x().whileTrue(snapDrivebaseToAngle);
     
-    driverController.rightTrigger().toggleOnTrue(powerIntake);
+    driverController.rightTrigger().whileTrue(shootFromSubwoofer);
     driverController.leftTrigger().whileTrue(pointDrivebaseAtTarget);
     
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     driverController.pov(0).whileTrue(deploy);
+    driverController.pov(90).whileTrue(powerIntake);
 
     // OPERATOR CONTROLS DO NOT DELETE JUST COMMENT OUT
 

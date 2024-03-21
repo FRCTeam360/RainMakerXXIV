@@ -9,21 +9,25 @@ import frc.robot.subsystems.AmpArm;
 import frc.robot.subsystems.Intake;
 import frc.robot.utils.CommandLogger;
 import frc.robot.subsystems.Linkage;
+import frc.robot.subsystems.Vision;
 
 public class IntakeCOmmand extends Command {
   private final Intake intake;
   private final Linkage linkage;
   private AmpArm ampArm;
+  private Vision vision; 
   private boolean stop = false;
   private double setthatguy;
   private double x = 0;
   private boolean bringup = false;
   private boolean retracts;
+  private boolean reversing = false;
   /** Creates a new IntakeCOmmand. */
-  public IntakeCOmmand(Intake intake, Linkage linkage, AmpArm ampArm, double setthatguy, boolean retracts) {
+  public IntakeCOmmand(Intake intake, Linkage linkage, AmpArm ampArm, Vision vision, double setthatguy, boolean retracts) {
     this.intake = intake;
     this.linkage = linkage;
     this.ampArm = ampArm;
+    this.vision = vision; 
     this.setthatguy = setthatguy;
     this.retracts = retracts;
     
@@ -38,6 +42,7 @@ public class IntakeCOmmand extends Command {
     linkage.setAngle(0.0, ampArm);
     stop = false;
     x=0;
+    reversing = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -46,20 +51,29 @@ public class IntakeCOmmand extends Command {
     if(bringup) {
       linkage.setAngle(110.0, ampArm);
     }
-    if(intake.getAmps() > 20 && intake.getVelocity() <= .05) {
-      intake.run(.9-x);
+    if(!intake.getIntakeSensor() && !bringup) {
+      vision.blink();
+      intake.run(.9);
+      bringup = true;
       System.out.println("runnin at 90");
     } else {
-      intake.run(.5-x);
+      intake.run(.5);
       System.out.println("runnin at .5");
     }
     if(!intake.getSideSensor()) {
-      bringup = true;
-      x = .25;
+      vision.lightsOut();
+      intake.run(.2);
+      // stop = true;
+      // x = .35;
     }
     if(!intake.getShooterSensor()) {
+      intake.run(-.2);
+      reversing = true;
+    }
+    if(intake.getShooterSensor() && reversing){
       stop = true;
     }
+
   }
   
 
