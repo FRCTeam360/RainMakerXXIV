@@ -243,11 +243,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     }
 
     public double getAngle() {
-        return this.getPigeon2().getAngle();
+        return getPose().getRotation().getDegrees();
     }
 
     public Rotation2d getRotation2d() {
-        return this.getPigeon2().getRotation2d();
+        return getPose().getRotation();
     }
 
     public void zero() {
@@ -280,7 +280,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                 .withVelocityY(left * Constants.MAX_SPEED_MPS)
                 .withTargetDirection(Rotation2d.fromDegrees(desiredAngle));
                 request.HeadingController = headingController;
-                // request.ForwardReference = SwerveRequest.ForwardReference.RedAlliance;
+                //request.ForwardReference = SwerveRequest.ForwardReference.RedAlliance;
         this.setControl(request);
     }
 

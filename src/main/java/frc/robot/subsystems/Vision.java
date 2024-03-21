@@ -9,12 +9,20 @@ import java.util.Objects;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Vision extends SubsystemBase {
   private final NetworkTable lime = NetworkTableInstance.getDefault().getTable("limelight");
   /** Creates a new Limelight. */
   public Vision() {}
+
+  public void blink(){
+    lime.getEntry("ledMode").setNumber(2);
+  }
+  public void lightsOut(){
+    lime.getEntry("ledMode").setNumber(1);
+  }
 
   public double getTX() {
     return lime.getEntry("tx").getDouble(0);
@@ -62,13 +70,13 @@ public class Vision extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if(Objects.nonNull(DriverStation.getAlliance())){
+    if (Objects.nonNull(DriverStation.getAlliance()) {
       if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
         setPipeline(0);
-      } else if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+      }   else if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
         setPipeline(1);
       }
-    }
+   }
     // This method will be called once per scheduler run
   }
 }

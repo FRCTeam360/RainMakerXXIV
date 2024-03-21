@@ -26,6 +26,7 @@ public interface AmpArmIO {
     public double wristVelocity = 0.0;
     public double armPosition = 0.0;
     public double wristPosition = 0.0;
+    public boolean ampIntakeSensor = false;
   }
 
   public default void updateInputs(AmpArmIOInputs inputs) {}
@@ -50,15 +51,19 @@ public interface AmpArmIO {
 
   public void zeroArm();
 
+  public boolean getIntakeSensor();
+
   public void resetArmWristPos();
 
   public void enableBrakeMode();
 
   public void disableBrakeMode();
 
-public boolean getBrakeButton();
+  public boolean getBrakeButton();
 
-public boolean isBrakeMode();
+  public boolean isBrakeMode();
 
-public boolean getZeroButton();
+  public boolean getZeroButton();
+
+ // public double getAbsEncoder();
 }

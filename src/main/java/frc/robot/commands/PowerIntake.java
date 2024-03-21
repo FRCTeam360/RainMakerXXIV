@@ -37,10 +37,8 @@ public class PowerIntake extends Command {
     // }
 
     if (operatorCont.getRightTriggerAxis() > 0.1) {
-
       intake.run(operatorCont.getRightTriggerAxis());
     } else if (operatorCont.getLeftTriggerAxis() > 0.1) {
-
       intake.run(-1.0 * operatorCont.getLeftTriggerAxis());
     } else {
       intake.stop();

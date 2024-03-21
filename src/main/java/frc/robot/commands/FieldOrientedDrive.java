@@ -58,7 +58,7 @@ public class FieldOrientedDrive extends Command {
     } else {
       x=1;
     }
-    if(linkage.getAngle() <90.0 || ampArm.getArmPosition() > 45.0 || isSlow) {
+    if(linkage.getAngle() <90.0 || ampArm.getArmPosition() > 5.0 || isSlow) {
       driveTrain.fieldCentricDrive(
         x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftX()*.5, 0.1)),
         x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftY()*.5, 0.1)),

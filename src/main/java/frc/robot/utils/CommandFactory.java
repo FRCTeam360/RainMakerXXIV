@@ -6,6 +6,7 @@ package frc.robot.utils;
 
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
@@ -48,6 +49,9 @@ public class CommandFactory {
         return new ShootInSpeaker(ampArm, linkage, flywheel, intake, linkageSetpoint, flywheelSetpoint);
     }
 
+
+    private final double SUBWOOFER_LINKAGE = 177.0; 
+    private final double SUBWOOFER_FLYWHEEL = 5000.0;
     // returns type shootInSpeaker
     public ShootInSpeaker shootInSpeaker(double linkageSetpoint, double flywheelSetpoint) {
         return new ShootInSpeaker(ampArm, linkage, flywheel, intake, linkageSetpoint, flywheelSetpoint);
@@ -56,6 +60,13 @@ public class CommandFactory {
     public ShootInSpeaker shootFromSubwoofer() {
         return new ShootInSpeaker(ampArm, linkage, flywheel, intake, 177, 5000);
     } 
+
+    public Command shootFromSubwooferSpinUp(){
+        return new ParallelCommandGroup(
+            new SetLinkage(linkage, SUBWOOFER_LINKAGE, ampArm),
+            new SetFlywheel(flywheel, SUBWOOFER_FLYWHEEL)
+        );
+    }
 
     public ShootInSpeaker shootFromPodium() {
         return new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake,  0.0, 0.0, 20.0);

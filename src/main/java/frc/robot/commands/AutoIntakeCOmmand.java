@@ -9,49 +9,60 @@ import frc.robot.subsystems.AmpArm;
 import frc.robot.subsystems.Intake;
 import frc.robot.utils.CommandLogger;
 import frc.robot.subsystems.Linkage;
+import frc.robot.subsystems.Vision;
 
-public class JujuIntake extends Command {
+public class AutoIntakeCOmmand extends Command {
   private final Intake intake;
   private final Linkage linkage;
   private AmpArm ampArm;
+  private Vision vision; 
   private boolean stop = false;
   private double setthatguy;
+  private double x = 0;
+  private boolean bringup = false;
   private boolean retracts;
-  private boolean noNote;
+  private boolean reversing = false; 
   /** Creates a new IntakeCOmmand. */
-  public JujuIntake(Intake intake, Linkage linkage, AmpArm ampArm, double setthatguy, boolean retracts) {
+  public AutoIntakeCOmmand(Intake intake, Linkage linkage, AmpArm ampArm, Vision vision, double setthatguy, boolean retracts) {
     this.intake = intake;
     this.linkage = linkage;
     this.ampArm = ampArm;
+    this.vision = vision; 
     this.setthatguy = setthatguy;
-    this.retracts = retracts;
-    noNote = true;
-    addRequirements(intake, linkage);
+    this.retracts = retracts; 
+    
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    bringup = false;
     CommandLogger.logCommandStart(this);
     linkage.setAngle(0.0, ampArm);
     stop = false;
+    x=0;
+    reversing = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(intake.getSideSensor() && intake.getHighSensor() && noNote) {
-      intake.run(.9);
-    } else if(!intake.getSideSensor() && intake.getHighSensor()) {
+    if(bringup) {
+      linkage.setAngle(110.0, ampArm);
+    }
+    if(!intake.getIntakeSensor() && !bringup) {
+      intake.run(.4);
+      System.out.println("runnin at 90");
+    } else {
       intake.run(.5);
-      noNote = false;
-    } else if(intake.getSideSensor() && !intake.getHighSensor()) {
+      System.out.println("runnin at .5");
+    }
+    if(!intake.getSideSensor()) {
+      bringup = true; 
       stop = true;
     }
-    else if(intake.getSideSensor() && intake.getHighSensor()) {
-      intake.run(.2);
-    }
+
   }
   
 
