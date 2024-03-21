@@ -179,8 +179,8 @@ public class AmpArmIOTalonFX implements AmpArmIO {
     inputs.armPosition = armMotor.getPosition().getValueAsDouble();
     inputs.wristPosition = wristMotor.getPosition().getValueAsDouble();
     inputs.ampIntakeSensor = this.getIntakeSensor();
-    inputs.zeroButton = this.getZeroButton();
-    inputs.brakeButton = this.getBrakeButton();
+    inputs.zeroButton = this.getRawZeroButton();
+    inputs.brakeButton = this.getRawBrakeButton();
   }
 
   @Override
@@ -202,16 +202,24 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   public void zeroArm() {
     armMotor.setPosition(0.0);
   }
+
+  private boolean getRawZeroButton() {
+    return !this.zeroButton.get();
+  }
   
   public boolean getZeroButton(){
-    boolean zeroCurr = !this.zeroButton.get();
+    boolean zeroCurr = getRawZeroButton();
     boolean risingEdge = zeroCurr && !zeroPrev;
     zeroPrev = zeroCurr;
     return risingEdge;
   }
 
+  private boolean getRawBrakeButton() {
+    return !this.brakeButton.get();
+  }
+
   public boolean getBrakeButton(){
-    boolean brakeCurr = !this.brakeButton.get();
+    boolean brakeCurr = getRawBrakeButton();
     boolean risingEdge = brakeCurr && !brakePrev;
     brakePrev = brakeCurr;
     return risingEdge;
