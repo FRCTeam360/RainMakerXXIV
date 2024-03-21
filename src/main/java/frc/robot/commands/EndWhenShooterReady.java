@@ -4,6 +4,9 @@
 
 package frc.robot.commands;
 
+import org.littletonrobotics.junction.Logger;
+
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.PowerFlywheel;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -18,6 +21,7 @@ public class EndWhenShooterReady extends Command {
   private final CommandSwerveDrivetrain swerveDrivetrain;
   // Vision subsystem
   private final Vision vision;
+  private Timer timer = new Timer();
   /** Creates a new endWhenShooterRedy. */
   public EndWhenShooterReady(Linkage linkage, Flywheel flywheel, CommandSwerveDrivetrain swerveDrivetrain, Vision vision) {
     this.linkage = linkage;
@@ -31,19 +35,29 @@ public class EndWhenShooterReady extends Command {
   @Override
   public void initialize() {
     stop = false;
+    timer.reset();
+    timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (linkage.isAtSetpoint() && flywheel.isAtSetpoint() && swerveDrivetrain.isFacingAngle()) {
+    boolean isLinkageAtSetpoint = linkage.isAtSetpoint();
+    boolean isFlywheelAboveSetpoint = flywheel.isAboveSetpoint();
+    boolean isDrivetrainOnTarget = swerveDrivetrain.isFacingAngle();
+    Logger.recordOutput("EndWhenShooterReady: isLinkageAtSetpoint", isLinkageAtSetpoint);
+    Logger.recordOutput("EndWhenShooterReady: isFlywheelAboveSetpoint", isFlywheelAboveSetpoint);
+    Logger.recordOutput("EndWhenShooterReady: isDrivetrainOnTarget", isDrivetrainOnTarget);
+    if ((isLinkageAtSetpoint || timer.get() > 0.3) && ((isFlywheelAboveSetpoint && isDrivetrainOnTarget) || timer.get() > 0.5)) {
       stop = true;
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    timer.stop();
+  }
 
   // Returns true when the command should end.
   @Override

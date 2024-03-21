@@ -145,8 +145,12 @@ public class CommandFactory {
     }
 
     public Command spinUpSpeakerVision() {
-        Command setLinkage = new SetLinkage(linkage, 148, ampArm);
-        Command setFlywheel = new SetFlywheel(flywheel, 7500);
+        return spinUpShooterSetpoint(160, 7500);
+    }
+
+    public Command spinUpShooterSetpoint(double linkageSetpoint, double flywheelSetpoint) {
+        Command setLinkage = new SetLinkage(linkage, linkageSetpoint, ampArm);
+        Command setFlywheel = new SetFlywheel(flywheel, flywheelSetpoint);
         Command pointDrivebaseAtTarget = new PointDrivebaseAtTarget(drivetrain, vision);
         return new ParallelCommandGroup(
                 setLinkage,

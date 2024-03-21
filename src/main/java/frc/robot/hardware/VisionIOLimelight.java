@@ -92,6 +92,9 @@ public class VisionIOLimelight implements VisionIO {
 
   public void takeSnapshot() {
     table.getEntry("snapshot").setNumber(1);
+  }
+
+  public void resetSnapshot() {
     table.getEntry("snapshot").setNumber(0);
   }
 }

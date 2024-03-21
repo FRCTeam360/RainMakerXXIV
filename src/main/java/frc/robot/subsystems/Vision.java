@@ -13,6 +13,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotState;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.io.VisionIO;
 import frc.robot.io.VisionIOInputsAutoLogged;
@@ -22,6 +23,9 @@ import frc.robot.utils.CommandLogger;
 public class Vision extends SubsystemBase {
   private final VisionIO io;
   private final VisionIOInputsAutoLogged inputs = new VisionIOInputsAutoLogged();
+  private Timer snapshotTimer = new Timer();
+
+  private final String VISION_LOGGING_PREFIX = "Vision: ";
 
   /** Creates a new Limelight. */
   public Vision(VisionIO io) {
@@ -30,6 +34,10 @@ public class Vision extends SubsystemBase {
 
   public void blink() {
     io.setLEDMode(2);
+  }
+
+  public void lightsOn() {
+    io.setLEDMode(3);
   }
 
   public void lightsOut() {
@@ -72,6 +80,16 @@ public class Vision extends SubsystemBase {
 
   public void takeSnapshot() {
     io.takeSnapshot();
+    Logger.recordOutput(VISION_LOGGING_PREFIX + "snapshot", true);
+    snapshotTimer.stop();
+    snapshotTimer.reset();
+    snapshotTimer.start();
+  }
+
+  public void resetSnapshot() {
+    io.resetSnapshot();
+    Logger.recordOutput(VISION_LOGGING_PREFIX + "snapshot", false);
+    snapshotTimer.stop();
   }
 
   public boolean isOnTargetTX() {
@@ -94,6 +112,9 @@ public class Vision extends SubsystemBase {
       } else if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
         setPipeline(1);
       }
+    }
+    if(snapshotTimer.get() > 0.2){
+      resetSnapshot();
     }
     io.updateInputs(inputs);
     Logger.processInputs("Limelight", inputs);

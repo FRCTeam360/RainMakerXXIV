@@ -35,4 +35,6 @@ public interface VisionIO {
     public void setLEDMode(int mode);
 
     public void takeSnapshot();
+
+    public void resetSnapshot();
 }

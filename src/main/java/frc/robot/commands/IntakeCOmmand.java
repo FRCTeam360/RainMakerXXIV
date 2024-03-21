@@ -65,7 +65,7 @@ public class IntakeCOmmand extends Command {
       linkage.setAngle(110.0, ampArm);
     }
     if(!intake.getIntakeSensor() && !bringup) {
-      vision.blink();
+      vision.lightsOn();
       intake.run(.9);
       bringup = true;
       System.out.println("runnin at 90");
