@@ -208,7 +208,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                 .withVelocityX(velocityX)
                 .withVelocityY(velocityY);
         facingAngleCommand.HeadingController = headingController;
-        System.out.println("turntoCMD");
 
         if (shouldEnd) {
             return this.applyRequest(() -> facingAngleCommand)
@@ -285,12 +284,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     }
 
     public Pose2d getPose() {
-        // double x = this.getState().Pose.getX();
-        // double y = this.getState().Pose.getY();
-        // Rotation2d rot = this.getState().Pose.getRotation();
-        // System.out.println("CURRENT POSE X: " + x);
-        // System.out.println("CURRENT POSE Y: " + y);
-        // System.out.println("CURRENT POSE ROTATION: " + rot);
         return this.getState().Pose;
     }
 
@@ -310,10 +303,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     }
 
     private void driveRobotRelative(ChassisSpeeds speed) {
-        // print x and y speeds and rotation rate
-        // System.out.println("X VELOCITY: " + speed.vxMetersPerSecond);
-        // System.out.println("Y VELOCITY: " + speed.vyMetersPerSecond);
-        // System.out.println("ROTATION RATE: " + speed.omegaRadiansPerSecond);
         this.setControl(new SwerveRequest.ApplyChassisSpeeds().withSpeeds(speed));
     }
 

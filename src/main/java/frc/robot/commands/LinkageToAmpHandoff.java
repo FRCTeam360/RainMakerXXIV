@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AmpArm;
@@ -60,7 +62,7 @@ public class LinkageToAmpHandoff extends Command {
   public void execute() {
     // drivetrain.getRobotRelativeSpeeds() > 0.1
 
-    System.out.println(state);
+    Logger.recordOutput(this.getName() + ": state", state);
     switch (state) {
       case LINKAGE_DOWN:
         linkage.setAngle(0.0, ampArm);
@@ -96,7 +98,6 @@ public class LinkageToAmpHandoff extends Command {
       case RETRACTED:
         linkage.setAngle(174.0, ampArm);
         ampArm.setWrist(82.0);
-        System.out.println(linkage.getAngle());
         if (Math.abs(linkage.getAngle() - 174) < 1.0) {
           done = true;
         }

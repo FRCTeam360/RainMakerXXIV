@@ -104,7 +104,7 @@ public class ShootInSpeaker extends Command {
   
   @Override
   public void execute() {
-    System.out.println("SHOOTING SHOOTNIG SHOOTING");
+    // System.out.println("SHOOTING SHOOTNIG SHOOTING");
     if (!Objects.isNull(drivetrain)) {
       driveAngleSetpoint = DriverStation.getAlliance().get() == Alliance.Red ? 20.0 : -20.0;
       //drivetrain.turntoCMD(false,  UtilMethods.squareInput(getWithDeadband(driverController.getLeftX())),  UtilMethods.squareInput(getWithDeadband(driverController.getLeftY())), driveAngleSetpoint);
@@ -112,12 +112,12 @@ public class ShootInSpeaker extends Command {
                                                                                   // command ran in // parallel
     } 
     linkage.setAngle(linkageSetpoint, arm);
-    System.out.println("this is the robot state: " + this.state);
+    // System.out.println("this is the robot state: " + this.state);
     Logger.recordOutput("ShootInSpeaker: State", this.state);
     flywheel.setBothRPM(flywheelSetpoint);
     // System.out.println("left velocity: " + flywheel.getLeftVelocity());
     // System.out.println("is above setpoint " + flywheel.isAtSetpoint());
-    System.out.println("linkage is at SETPOINT" + linkage.isAtSetpoint());
+    // System.out.println("linkage is at SETPOINT" + linkage.isAtSetpoint());
     switch (state) {
       case LOADED:
         intake.stop();
@@ -138,7 +138,7 @@ public class ShootInSpeaker extends Command {
         if (hasShot) {
           timer.start();
           state = ShootState.TIMER;
-          System.out.println(state);
+          // System.out.println(state);
           // timer.start();
           // if (timer.hasElapsed(0.3)) { // TUNE!!!
           // this.state = ShootState.END;

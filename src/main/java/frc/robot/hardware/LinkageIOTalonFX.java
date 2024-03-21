@@ -163,7 +163,6 @@ public class LinkageIOTalonFX implements LinkageIO {
 
   public void set(double speed) {
     speed = speed / GEAR_RATIO;
-    System.out.println("hardware speed " + speed);
     talonFX.setControl(dutyCycleOut.withOutput(speed));
   }
 

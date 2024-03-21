@@ -47,8 +47,8 @@ public class TrapClimb extends Command {
     boolean leftClimbCheck = Math.abs(climber.getLeftPosition() - climbHeight) < 1.0;
     boolean rightClimbCheck = Math.abs(climber.getRightPosition() - climbHeight) < 1.0;
     
-    System.out.println(Math.abs(climber.getLeftPosition() - climbHeight));
-    System.out.println(Math.abs(climber.getRightPosition() - climbHeight));
+    // System.out.println(Math.abs(climber.getLeftPosition() - climbHeight));
+    // System.out.println(Math.abs(climber.getRightPosition() - climbHeight));
 
     if(leftClimbCheck && rightClimbCheck) {
       ampArm.runWrist(getWithDeadband(-operatorCont.getRightY()) * 0.1);
