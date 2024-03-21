@@ -15,7 +15,6 @@ import frc.robot.commands.SetArmWrist;
 import frc.robot.commands.PowerIntakeReversed;
 import frc.robot.commands.PowerIntake;
 import frc.robot.commands.PowerLinkage;
-import frc.robot.commands.RefineAngle;
 import frc.robot.commands.PristineIntakeCommand;
 import frc.robot.commands.SetIntake;
 import frc.robot.commands.SetLinkage;
@@ -196,7 +195,6 @@ public class RobotContainer {
   private SetClimbers fullRetract;
   private SetClimbers soloRaise;
   private ShootingPrepRyRy kiki;
-  private RefineAngle turn;
   private SetClimbers soloRetract;
 
   private SetLinkage deploy;
@@ -314,7 +312,6 @@ public class RobotContainer {
     autoPowerCenterNote = new AutoPowerCenterNote(ampArm, intake, linkage, flywheel, 177.0);
     powerCenterNoteIntakeRoutine = commandFactory.powerCenterNote();
     subwoofShotRy = new ShootingPrepRyRy(linkage, flywheel, ampArm, 177.0, 5000.0);
-    turn = new RefineAngle(vision, drivetrain);
     sequal = new TrapSetUpTheSequel(linkage, ampArm, drivetrain, climber);
     intakeMe = new PristineIntakeCommand(intake, linkage, ampArm, 145.0);
 
