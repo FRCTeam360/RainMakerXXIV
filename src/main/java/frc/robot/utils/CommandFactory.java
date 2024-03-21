@@ -6,6 +6,7 @@ package frc.robot.utils;
 
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
@@ -48,6 +49,9 @@ public class CommandFactory {
         return new ShootInSpeaker(ampArm, linkage, flywheel, intake, linkageSetpoint, flywheelSetpoint);
     }
 
+
+    private final double SUBWOOFER_LINKAGE = 177.0; 
+    private final double SUBWOOFER_FLYWHEEL = 5000.0;
     // returns type shootInSpeaker
     public ShootInSpeaker shootInSpeaker(double linkageSetpoint, double flywheelSetpoint) {
         return new ShootInSpeaker(ampArm, linkage, flywheel, intake, linkageSetpoint, flywheelSetpoint);
@@ -57,6 +61,17 @@ public class CommandFactory {
         return new ShootInSpeaker(ampArm, linkage, flywheel, intake, 177, 5000);
     } 
 
+    public Command shootFromSubwooferSpinUp(){
+        return new ParallelCommandGroup(
+            new SetLinkage(linkage, SUBWOOFER_LINKAGE, ampArm),
+            new SetFlywheel(flywheel, SUBWOOFER_FLYWHEEL)
+        );
+    }
+
+    public PointDrivebaseAtTarget pointDriveBaseAtTarget(){
+        return new PointDrivebaseAtTarget(drivetrain, vision);
+    }
+
     public ShootInSpeaker shootFromPodium() {
         return new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake,  0.0, 0.0, 20.0);
     }
@@ -64,6 +79,7 @@ public class CommandFactory {
     public PowerFlywheel powerFlywheel() {
         return new PowerFlywheel(flywheel);
     }
+
 
     // returns type powerIntake
     public PowerIntake powerIntake() {
@@ -115,18 +131,21 @@ public class CommandFactory {
     public AmpArmStop ampArmStop() {
         return new AmpArmStop(ampArm, linkage);
     }
-    public Command shootAtSpeakerUsingVision() {
-        return new ParallelRaceGroup(
-        new SetLinkage(linkage, 0, ampArm, vision),
-        new SetFlywheel(flywheel, 0, vision),
-        new PointDrivebaseAtTarget(drivetrain, vision),
-        new EndWhenShooterReady(linkage, flywheel, drivetrain)
-        ).andThen(new ParallelRaceGroup(
-            new SetLinkage(linkage, 0, ampArm, vision),
-            new SetFlywheel(flywheel, 0, vision),
-            new PointDrivebaseAtTarget(drivetrain, vision),
-            new RunCommand(()-> intake.run(1.0), intake),
-            new WaitUntilCommand(0.5)
-        ));
+
+    public Command shootAtSpeakerVision() {
+        return new ParallelCommandGroup(
+                spinUpSpeakerVision(),
+                new EndWhenShooterReady(linkage, flywheel, drivetrain, vision)
+                        .andThen(new RunCommand(() -> intake.run(1.0), intake)));
+    }
+
+    public Command spinUpSpeakerVision() {
+        Command setLinkage = new SetLinkage(linkage, 148, ampArm);
+        Command setFlywheel = new SetFlywheel(flywheel, 7500);
+        Command pointDrivebaseAtTarget = new PointDrivebaseAtTarget(drivetrain, vision);
+        return new ParallelCommandGroup(
+                setLinkage,
+                setFlywheel,
+                pointDrivebaseAtTarget);
     }
 }

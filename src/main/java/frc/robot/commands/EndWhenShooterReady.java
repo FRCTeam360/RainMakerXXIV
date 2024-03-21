@@ -9,17 +9,21 @@ import frc.robot.commands.PowerFlywheel;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Linkage;
+import frc.robot.subsystems.Vision;
 
 public class EndWhenShooterReady extends Command {
   private boolean stop;
   private final Linkage linkage;
   private final Flywheel flywheel;
   private final CommandSwerveDrivetrain swerveDrivetrain;
+  // Vision subsystem
+  private final Vision vision;
   /** Creates a new endWhenShooterRedy. */
-  public EndWhenShooterReady(Linkage linkage, Flywheel flywheel, CommandSwerveDrivetrain swerveDrivetrain) {
+  public EndWhenShooterReady(Linkage linkage, Flywheel flywheel, CommandSwerveDrivetrain swerveDrivetrain, Vision vision) {
     this.linkage = linkage;
     this.flywheel = flywheel;
     this.swerveDrivetrain = swerveDrivetrain;
+    this.vision = vision;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -44,6 +48,6 @@ public class EndWhenShooterReady extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return stop;
   }
 }

@@ -5,10 +5,12 @@
 package frc.robot.subsystems;
 
 import org.photonvision.PhotonUtils;
+import java.util.Objects;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.io.VisionIO;
 import frc.robot.io.VisionIOInputsAutoLogged;
@@ -22,6 +24,13 @@ public class Vision extends SubsystemBase {
   /** Creates a new Limelight. */
   public Vision (VisionIO io) {
     this.io = io;
+  }
+
+  public void blink(){
+    lime.getEntry("ledMode").setNumber(2);
+  }
+  public void lightsOut(){
+    lime.getEntry("ledMode").setNumber(1);
   }
 
   public double getTX() {
@@ -54,6 +63,13 @@ public class Vision extends SubsystemBase {
 
   public double getFlywheelSetpoint() {
     return 0.0; // add flywheel regression equation thing
+  }
+
+  public boolean isOnTargetTX() {
+    if(Math.abs(getTX()) < 3.0) {
+      return true;
+    }
+    return false;
   }
   
   // Returns true if the target is in view
@@ -127,11 +143,13 @@ public class Vision extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
-      setPipeline(0);
-    } else if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
-      setPipeline(1);
-    }
+    if (Objects.nonNull(DriverStation.getAlliance())) {
+      if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
+        setPipeline(0);
+      }   else if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+        setPipeline(1);
+      }
+   }
     // This method will be called once per scheduler run
   }
 }
