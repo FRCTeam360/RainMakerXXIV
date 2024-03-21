@@ -12,15 +12,15 @@ public interface VisionIO {
     @AutoLog
     public static class VisionIOInputs {
         public double tx;
-        public double ty;
-        public double tyFudgeFactor;
+        public double tyBase;
+        public double tyAdjusted;
         public double tv;
         public double pipeline;
     }
 
     public double getTX();
 
-    public double getTY();
+    public double getTYAdjusted();
 
     public double getTV();
 

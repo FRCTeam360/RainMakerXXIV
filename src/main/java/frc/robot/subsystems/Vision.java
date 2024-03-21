@@ -40,7 +40,7 @@ public class Vision extends SubsystemBase {
   }
 
   public double getTY() {
-    return io.getTY();
+    return io.getTYAdjusted();
   }
 
   public double getTV() {

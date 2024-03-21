@@ -42,8 +42,8 @@ public class VisionIOLimelight implements VisionIO {
   public void updateInputs(VisionIOInputs inputs) {
     inputs.tv = getTV();
     inputs.tx = getTX();
-    inputs.ty = getTYBase();
-    inputs.tyFudgeFactor = getTY();
+    inputs.tyBase = getTYBase();
+    inputs.tyAdjusted = getTYAdjusted();
     inputs.pipeline = getPipeline();
   }
 
@@ -58,7 +58,7 @@ public class VisionIOLimelight implements VisionIO {
     return table.getEntry("ty").getDouble(0);
   }
 
-  public double getTY() {
+  public double getTYAdjusted() {
     return getTYBase() - pitchFudgeFactor;
   }
 
