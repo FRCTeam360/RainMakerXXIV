@@ -26,6 +26,7 @@ public interface AmpArmIO {
     public double wristVelocity = 0.0;
     public double armPosition = 0.0;
     public double wristPosition = 0.0;
+    public boolean ampIntakeSensor = false;
   }
 
   public default void updateInputs(AmpArmIOInputs inputs) {}

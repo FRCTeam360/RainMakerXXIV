@@ -78,7 +78,6 @@ public class AmpArmIOTalonFX implements AmpArmIO {
         .withForwardSoftLimitEnable(true)
         .withReverseSoftLimitEnable(true);
 
-    armConfig.Feedback.withSensorToMechanismRatio(1 / PRACTICE_ARM_RATIO);
     armConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // SAME AS SET INVERTED LOL
 
     TalonFXConfiguration wristConfig = new TalonFXConfiguration();
@@ -179,6 +178,7 @@ public class AmpArmIOTalonFX implements AmpArmIO {
     inputs.wristVelocity = wristMotor.getVelocity().getValueAsDouble();
     inputs.armPosition = armMotor.getPosition().getValueAsDouble();
     inputs.wristPosition = wristMotor.getPosition().getValueAsDouble();
+    inputs.ampIntakeSensor = this.getIntakeSensor();
   }
 
   @Override
