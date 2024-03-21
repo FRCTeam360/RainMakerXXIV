@@ -64,7 +64,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private double headingKP = 10;
     private double headingKI = 0.2;
     private double headingIZone = 0.17;
-    private double headingKD = 0.0;
+    private double headingKD = 0.069;
 
     // Point to vision target PID gains
     private double visionTargetKP = 0.3;
@@ -359,9 +359,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     @Override
     public void periodic() {
-        Logger.recordOutput("Swerve Current Pose", this.getPose());
-        Logger.recordOutput("Swerve Rotation", this.getRotation2d());
-        Logger.recordOutput("Swerve Angle", this.getAngle());
+        Logger.recordOutput("Swerve: Current Pose", this.getPose());
+        Logger.recordOutput("Swerve: Rotation", this.getRotation2d());
+        Logger.recordOutput("Swerve: Angle", this.getAngle());
         // String moduleName = "null";
         // for (int i = 0; i < 4; i++) {
         //     switch (i) {
@@ -386,5 +386,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
            
         //}
         // Logger.recordOutput("Rotation2d", this.getPigeon2().getRotation2d());
+        Logger.recordOutput("Swerve: CurrentState", this.getState().ModuleStates);
+        Logger.recordOutput("Swerve: TargetState", this.getState().ModuleTargets);
     }
 }
