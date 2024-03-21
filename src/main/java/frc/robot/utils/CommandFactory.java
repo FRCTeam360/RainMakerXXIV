@@ -131,35 +131,21 @@ public class CommandFactory {
     public AmpArmStop ampArmStop() {
         return new AmpArmStop(ampArm, linkage);
     }
-    public Command shootAtSpeakerFromDistance(){
+
+    public Command shootAtSpeakerVision() {
+        return new ParallelCommandGroup(
+                spinUpSpeakerVision(),
+                new EndWhenShooterReady(linkage, flywheel, drivetrain, vision)
+                        .andThen(new RunCommand(() -> intake.run(1.0), intake)));
+    }
+
+    public Command spinUpSpeakerVision() {
         Command setLinkage = new SetLinkage(linkage, 148, ampArm);
         Command setFlywheel = new SetFlywheel(flywheel, 7500);
         Command pointDrivebaseAtTarget = new PointDrivebaseAtTarget(drivetrain, vision);
-        return new ParallelRaceGroup(
-            setLinkage,
-            setFlywheel,
-            pointDrivebaseAtTarget,
-            new EndWhenShooterReady(linkage, flywheel, drivetrain)
-        ).andThen( new ParallelRaceGroup(
-            setLinkage, 
-            setFlywheel, 
-            pointDrivebaseAtTarget, 
-            new RunCommand(()-> intake.run(1.0), intake),
-            new WaitUntilCommand(0.5)
-        ));
-    }
-    public Command shootAtSpeakerUsingVision() {
-        return new ParallelRaceGroup(
-        new SetLinkage(linkage, 0, ampArm, vision),
-        new SetFlywheel(flywheel, 0, vision),
-        new PointDrivebaseAtTarget(drivetrain, vision),
-        new EndWhenShooterReady(linkage, flywheel, drivetrain)
-        ).andThen(new ParallelRaceGroup(
-            new SetLinkage(linkage, 0, ampArm, vision),
-            new SetFlywheel(flywheel, 0, vision),
-            new PointDrivebaseAtTarget(drivetrain, vision),
-            new RunCommand(()-> intake.run(1.0), intake),
-            new WaitUntilCommand(0.5)
-        ));
+        return new ParallelCommandGroup(
+                setLinkage,
+                setFlywheel,
+                pointDrivebaseAtTarget);
     }
 }
