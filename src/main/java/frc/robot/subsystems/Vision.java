@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Vision extends SubsystemBase {
@@ -60,11 +61,13 @@ public class Vision extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
-      setPipeline(0);
-    } else if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
-      setPipeline(1);
-    }
+    if (RobotState.isEnabled()) {
+      if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
+        setPipeline(0);
+      }   else if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+        setPipeline(1);
+      }
+   }
     // This method will be called once per scheduler run
   }
 }
