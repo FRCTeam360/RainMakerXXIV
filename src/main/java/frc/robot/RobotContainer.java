@@ -59,6 +59,7 @@ import frc.robot.hardware.FlywheelIOSparkFlex;
 import frc.robot.hardware.IntakeIOSparkFlex;
 import frc.robot.hardware.IntakeIOSparkMax;
 import frc.robot.hardware.LinkageIOTalonFX;
+import frc.robot.hardware.VisionIOLimelight;
 import frc.robot.hardware.LinkageIOSparkMax;
 import frc.robot.io.FlywheelIO;
 import frc.robot.io.IntakeIO;
@@ -205,7 +206,7 @@ public class RobotContainer {
   private StopClimber stopClimber;
 
   private HomeAmpArmWrist homeAmpArmWrist;
-  private AmpArmGoToZero ampArmGoToZero; 
+  private AmpArmGoToZero ampArmGoToZero;
 
   private TrapSetUp trapDrive;
   private TrapClimb trapClimb;
@@ -214,7 +215,7 @@ public class RobotContainer {
   private HoldArmPosition holdArmPosition;
   private SetArmWrist ampSetpoint;
   private SetArmWrist homeArmWrist;
-  private SetArmWrist stowArm; 
+  private SetArmWrist stowArm;
 
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
@@ -248,7 +249,12 @@ public class RobotContainer {
 
         drivetrain = PracticebotConstants.DriveTrain; // My drivetrain
         drivetrain.configNeutralMode(NeutralModeValue.Brake);
-        vision = new Vision();
+        vision = new Vision(new VisionIOLimelight(
+            Constants.VisionConstants.PRACTICE_LIMELIGHT_NAME,
+            Constants.VisionConstants.PRACTICE_LIMELIGHT_HEIGHT_METERS,
+            Constants.VisionConstants.PRACTICE_LIMELIGHT_PITCH_DEGREES,
+            Constants.VisionConstants.PRACTICE_LIMELIGHT_HEIGHT_FUDGE_FACTOR_METERS,
+            Constants.VisionConstants.PRACTICE_LIMELIGHT_PITCH_FUDGE_FACTOR_DEGREES));
         break;
       case COMPETITION:
         drivetrain = CompBotConstants.DriveTrain;
@@ -260,7 +266,12 @@ public class RobotContainer {
         ampIntake = new AmpIntake(new AmpIntakeIOSparkMax());
         climber = new Climber(new ClimberIOSparkMax());
         linkage = new Linkage(new LinkageIOTalonFX(zeroButton, brakeButton));
-        vision = new Vision();
+        vision = new Vision(new VisionIOLimelight(
+            Constants.VisionConstants.COMP_LIMELIGHT_NAME,
+            Constants.VisionConstants.COMP_LIMELIGHT_HEIGHT_METERS,
+            Constants.VisionConstants.COMP_LIMELIGHT_PITCH_DEGREES,
+            Constants.VisionConstants.COMP_LIMELIGHT_HEIGHT_FUDGE_FACTOR_METERS,
+            Constants.VisionConstants.COMP_LIMELIGHT_PITCH_FUDGE_FACTOR_DEGREES));
         break;
       case TEST:
 
@@ -362,7 +373,6 @@ public class RobotContainer {
 
     stopClimber = new StopClimber(climber);
 
-
     pointDrivebaseAtTarget = new PointDrivebaseAtTarget(drivetrain, vision);
     snapDrivebaseToAngle = new SnapDrivebaseToAngle(drivetrain);
 
@@ -402,11 +412,11 @@ public class RobotContainer {
     NamedCommands.registerCommand("extend linkage", new InstantCommand(() -> linkage.setAngle(0.0, ampArm), linkage));
     NamedCommands.registerCommand("linkage long prep",
         new InstantCommand(() -> linkage.setAngle(151, ampArm), linkage));
-    NamedCommands.registerCommand("kiki linkage long prep", 
+    NamedCommands.registerCommand("kiki linkage long prep",
         new InstantCommand(() -> linkage.setAngle(149, ampArm)));
     NamedCommands.registerCommand("stay out of way shot",
         new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151, 7000.0));
-    NamedCommands.registerCommand("kikiSimpleShoot", 
+    NamedCommands.registerCommand("kikiSimpleShoot",
         new ShootInSpeaker(ampArm, linkage, flywheel, intake, 149, 7000.0));
     NamedCommands.registerCommand("long shot inny", longerinny);
     NamedCommands.registerCommand("last guy", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 153, 7000.0));
@@ -444,7 +454,7 @@ public class RobotContainer {
 
     // linkage.setDefaultCommand(powerLinkage);
     if (Objects.nonNull(ampArm)) {
-    ampArm.setDefaultCommand(holdArmPosition);
+      ampArm.setDefaultCommand(holdArmPosition);
     }
     climber.setDefaultCommand(powerClimber);
   }
@@ -472,11 +482,11 @@ public class RobotContainer {
     driverController.b().whileTrue(stowLinkage);
     driverController.a().and(driverController.rightTrigger().negate()).whileTrue(shootFromSubwooferSpinUp);
     driverController.x().whileTrue(snapDrivebaseToAngle);
-    
+
     driverController.rightTrigger().and(driverController.leftTrigger().negate()).whileTrue(shootFromSubwoofer);
     driverController.rightTrigger().and(driverController.leftTrigger()).whileTrue(shootAtSpeakerVision);
     driverController.leftTrigger().and(driverController.rightTrigger().negate()).whileTrue(spinUpSpeakerVision);
-    
+
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     driverController.pov(0).whileTrue(deploy);
     driverController.pov(90).whileTrue(powerIntake);
@@ -488,7 +498,7 @@ public class RobotContainer {
 
     if (Objects.nonNull(ampArm)) {
       driverController.y().whileTrue(trapDrive.andThen(sequal.andThen(robotOrientedDrive)));
-      
+
       operatorController.x().onTrue(linkageToAmpHandoff.alongWith(fieldOrientedSlowGuy));
       operatorController.a().toggleOnTrue(ampSetpoint);
 

@@ -6,6 +6,8 @@ package frc.robot.utils;
 
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -136,7 +138,10 @@ public class CommandFactory {
         return new ParallelCommandGroup(
                 spinUpSpeakerVision(),
                 new EndWhenShooterReady(linkage, flywheel, drivetrain, vision)
-                        .andThen(new RunCommand(() -> intake.run(1.0), intake)));
+                        .andThen(
+                                new ParallelCommandGroup(
+                                        new RunCommand(() -> intake.run(1.0), intake),
+                                        takeSnapshot())));
     }
 
     public Command spinUpSpeakerVision() {
@@ -147,5 +152,15 @@ public class CommandFactory {
                 setLinkage,
                 setFlywheel,
                 pointDrivebaseAtTarget);
+    }
+
+    public Command takeSnapshot() {
+        return new TakeSnapshot(vision);
+    }
+
+    private class TakeSnapshot extends InstantCommand {
+        public TakeSnapshot(Vision vision) {
+            super(() -> vision.takeSnapshot());
+        }
     }
 }
