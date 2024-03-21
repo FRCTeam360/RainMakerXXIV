@@ -134,7 +134,7 @@ public class ShootInSpeaker extends Command {
       case SHOOT:
         intake.run(1.0);
         boolean hasShot = flywheel.isBelowSetpoint(); // check logic in flywheel subsystem (180 rpm gap)
-        Logger.recordOutput("SIS: 3. SHOOT: hasShoot", hasShot);
+        Logger.recordOutput("ShootInSpeaker: hasShot", hasShot);
         if (hasShot) {
           timer.start();
           state = ShootState.TIMER;
