@@ -56,7 +56,9 @@ public class Vision extends SubsystemBase {
   }
 
   public void setPipeline(int pipeline) {
-    io.setPipeline(pipeline);
+    if (io.getPipeline() != pipeline) {
+      io.setPipeline(pipeline);
+    }
   }
 
   public double getLinkageSetpoint() {
@@ -65,6 +67,10 @@ public class Vision extends SubsystemBase {
 
   public double getFlywheelSetpoint() {
     return 0.0; // add flywheel regression equation thing
+  }
+
+  public void takeSnapshot() {
+    io.takeSnapshot();
   }
 
   public boolean isOnTargetTX() {

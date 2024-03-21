@@ -136,7 +136,10 @@ public class CommandFactory {
         return new ParallelCommandGroup(
                 spinUpSpeakerVision(),
                 new EndWhenShooterReady(linkage, flywheel, drivetrain, vision)
-                        .andThen(new RunCommand(() -> intake.run(1.0), intake)));
+                        .andThen(
+                                new ParallelCommandGroup(
+                                        new RunCommand(() -> intake.run(1.0), intake),
+                                        takeSnapshot())));
     }
 
     public Command spinUpSpeakerVision() {
@@ -147,5 +150,9 @@ public class CommandFactory {
                 setLinkage,
                 setFlywheel,
                 pointDrivebaseAtTarget);
+    }
+
+    public Command takeSnapshot() {
+        return Commands.runOnce(() -> vision.takeSnapshot());
     }
 }
