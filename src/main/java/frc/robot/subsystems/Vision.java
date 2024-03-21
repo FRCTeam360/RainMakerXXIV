@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
 import org.photonvision.PhotonUtils;
 import java.util.Objects;
 
@@ -94,6 +95,8 @@ public class Vision extends SubsystemBase {
         setPipeline(1);
       }
     }
+    io.updateInputs(inputs);
+    Logger.processInputs("Limelight", inputs);
     // This method will be called once per scheduler run
   }
 }

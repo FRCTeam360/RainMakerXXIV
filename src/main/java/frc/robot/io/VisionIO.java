@@ -18,6 +18,8 @@ public interface VisionIO {
         public double pipeline;
     }
 
+    public void updateInputs(VisionIOInputs inputs);
+
     public double getTX();
 
     public double getTYAdjusted();
