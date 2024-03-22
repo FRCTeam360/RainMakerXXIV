@@ -124,6 +124,7 @@ public class RobotContainer {
 
   private final CommandXboxController operatorController = new CommandXboxController(Constants.OPERATOR_CONTROLLER);
   private final CommandXboxController driverController = new CommandXboxController(Constants.DRIVER_CONTROLLER);
+  private final CommandXboxController testController = new CommandXboxController(Constants.TEST_CONTROLLER);
 
   final double MAX_SPEED_MPS = Constants.MAX_SPEED_MPS; // used to be 6 meters per second desired top speed
   final double MaxAngularRate = Math.PI * 3; // Half a rotation per second max angular velocity
@@ -527,8 +528,13 @@ public class RobotContainer {
     operatorController.back().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
 
     drivetrain.registerTelemetry(logger::telemeterize);
+    configureTestBindings();
   }
-
+  public void configureTestBindings(){
+    testController.rightBumper().whileTrue(inny);
+    testController.leftTrigger().whileTrue(commandFactory.tuneLinkageSetpoint());
+    testController.rightTrigger().whileTrue(intake.runEnd(()-> intake.run(1.0), ()-> intake.run(0.0)));
+  }
   public void configureCharacterizationBindings() {
     // The methods below return Command objects
     driverController.rightTrigger().whileTrue(drivetrain.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward));

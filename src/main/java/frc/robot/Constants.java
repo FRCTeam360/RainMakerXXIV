@@ -47,6 +47,7 @@ public class Constants {
         public static final String CANIVORE_NAME = "Default Name";
         public static final int DRIVER_CONTROLLER = 0;
         public static final int OPERATOR_CONTROLLER = 1;
+        public static final int TEST_CONTROLLER = 2; 
 
         public static final int LINKAGE_ID = 14;
 

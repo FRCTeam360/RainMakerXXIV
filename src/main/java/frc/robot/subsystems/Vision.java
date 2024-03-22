@@ -76,7 +76,8 @@ public class Vision extends SubsystemBase {
   }
 
   public double getLinkageSetpoint() {
-    return 0.0; // add linkage regression equation thing
+    double ty = this.getTY();
+    return (-0.000182*Math.pow(ty, 4)+0.000622*Math.pow(ty, 3)+0.039998*Math.pow(ty, 2)+0.944848*(ty)+162.557); // add linkage regression equation thing
   }
 
   public double getFlywheelSetpoint() {

@@ -119,6 +119,13 @@ public class CommandFactory {
         return new SetLinkage(linkage, setPoint, ampArm, shouldEnd);
     }
 
+    public Command tuneLinkageSetpoint(){
+        return new ParallelCommandGroup(
+            new LinkageSetpoint(linkage, ampArm),
+            new SetFlywheel(flywheel, 7500)
+        );
+    }
+
     public SetLinkage stowLinkage() {
         return new SetLinkage(linkage, 130.0, ampArm, false);
     }
@@ -147,7 +154,11 @@ public class CommandFactory {
     }
 
     public Command spinUpSpeakerVision() {
-        return spinUpShooterSetpointWithDrivebase(159, 7500);
+        Command pointDrivebaseAtTarget = new PointDrivebaseAtTarget(drivetrain, vision);
+        return new ParallelCommandGroup(
+            new SetLinkage(linkage, 170, ampArm, vision, false),
+            new SetFlywheel(flywheel, 7500),
+            pointDrivebaseAtTarget);
     }
 
     public Command spinUpShooterSetpoint(double linkageSetpoint, double flywheelSetpoint) {
