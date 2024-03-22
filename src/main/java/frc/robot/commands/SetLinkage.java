@@ -18,37 +18,44 @@ public class SetLinkage extends Command {
   private final AmpArm arm;
   private double setpoint;
   private final Vision vision;
-  /** Creates a new SetLinkageTa\
-   * lon. */
-  public SetLinkage(Linkage linkage, double setpoint, AmpArm arm) {
+  private boolean shouldEnd;
+
+  /**
+   * Creates a new SetLinkageTa\
+   * lon.
+   */
+  public SetLinkage(Linkage linkage, double setpoint, AmpArm arm, boolean shouldEnd) {
     this.setpoint = setpoint;
     // Use addRequirements() here to declare subsystem dependencies.
     this.linkage = linkage;
     this.arm = arm;
     this.vision = null;
+    this.shouldEnd = shouldEnd;
     addRequirements(linkage);
   }
 
-  public SetLinkage(Linkage linkage, double setpoint, AmpArm arm, Vision vision) {
+  public SetLinkage(Linkage linkage, double setpoint, AmpArm arm, Vision vision, boolean shouldEnd) {
     this.setpoint = setpoint;
     // Use addRequirements() here to declare subsystem dependencies.
     this.linkage = linkage;
     this.arm = arm;
     this.vision = vision;
-    addRequirements(linkage); 
+    this.shouldEnd = shouldEnd;
+
+    addRequirements(linkage);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     CommandLogger.logCommandStart(this);
-    //SmartDashboard.putNumber("error", 0);
+    // SmartDashboard.putNumber("error", 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //SmartDashboard.putNumber("error", -7.0 - linkage.getAngle());
+    // SmartDashboard.putNumber("error", -7.0 - linkage.getAngle());
     if (vision != null && vision.isTargetInView()) {
       setpoint = vision.getLinkageSetpoint();
     }
@@ -58,13 +65,20 @@ public class SetLinkage extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    linkage.run(0.0, arm);
+    linkage.setAngle(130.0, arm);
     CommandLogger.logCommandEnd(this);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if (shouldEnd) {
+      if (Math.abs(linkage.getAngle() - setpoint) < 2.0) {
+        return true;
+      }
+
+    }
     return false;
   }
+
 }

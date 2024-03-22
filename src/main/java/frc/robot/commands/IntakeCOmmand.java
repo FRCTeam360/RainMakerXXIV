@@ -43,7 +43,7 @@ public class IntakeCOmmand extends Command {
     this.vision = vision; 
     this.setthatguy = setthatguy;
     this.retracts = retracts; 
-    
+    addRequirements(intake, linkage);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -65,7 +65,7 @@ public class IntakeCOmmand extends Command {
       linkage.setAngle(110.0, ampArm);
     }
     if(!intake.getIntakeSensor() && !bringup) {
-      vision.lightsOn();
+      vision.blink();
       intake.run(.9);
       bringup = true;
       System.out.println("runnin at 90");
@@ -74,7 +74,6 @@ public class IntakeCOmmand extends Command {
       System.out.println("runnin at .5");
     }
     if(!intake.getSideSensor()) {
-      vision.lightsOut();
       intake.run(.2);
       // stop = true;
       // x = .35;

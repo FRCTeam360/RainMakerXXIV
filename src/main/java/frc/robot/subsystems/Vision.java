@@ -24,6 +24,7 @@ public class Vision extends SubsystemBase {
   private final VisionIO io;
   private final VisionIOInputsAutoLogged inputs = new VisionIOInputsAutoLogged();
   private Timer snapshotTimer = new Timer();
+  private Timer blinkTimer = new Timer();
 
   private final String VISION_LOGGING_PREFIX = "Vision: ";
 
@@ -34,6 +35,9 @@ public class Vision extends SubsystemBase {
 
   public void blink() {
     io.setLEDMode(2);
+    blinkTimer.stop();
+    blinkTimer.reset();
+    blinkTimer.start();
   }
 
   public void lightsOn() {
@@ -42,6 +46,7 @@ public class Vision extends SubsystemBase {
 
   public void lightsOut() {
     io.setLEDMode(1);
+    blinkTimer.stop();
   }
 
   public double getTX() {
@@ -115,6 +120,9 @@ public class Vision extends SubsystemBase {
     }
     if(snapshotTimer.get() > 0.2){
       resetSnapshot();
+    }
+    if(blinkTimer.get() > 0.5) {
+      lightsOut();
     }
     io.updateInputs(inputs);
     Logger.processInputs("Limelight", inputs);

@@ -4,16 +4,24 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.utils.UtilMethods;
 
 public class DriveFieldCentricFacingAngle extends Command {
   private final CommandSwerveDrivetrain drivetrain; 
+  private double red;
+  private XboxController driverController = new XboxController(0);
+  private double blue;
   /** Creates a new FieldCentricFacingAngle. */
-  public DriveFieldCentricFacingAngle(CommandSwerveDrivetrain drivetrain) {
+  public DriveFieldCentricFacingAngle(CommandSwerveDrivetrain drivetrain, double red, double blue) {
     this.drivetrain = drivetrain; 
+    this.red = red;
+    this.blue = blue;
     addRequirements(drivetrain);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -25,11 +33,15 @@ public class DriveFieldCentricFacingAngle extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    double x = 1;
+    double angle = blue;
     if(DriverStation.getAlliance().get() == Alliance.Red){
-      drivetrain.driveFieldCentricFacingAngle(0, 0, 225.0);
-    }else{
-      drivetrain.driveFieldCentricFacingAngle(0, 0, 315.0);
+      angle = red;
+      x=-1;
     }
+    double left = x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1));
+    double forward = x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1));
+    drivetrain.driveFieldCentricFacingAngle(forward, left, angle);
   }
 
   // Called once the command ends or is interrupted.

@@ -191,7 +191,7 @@ public class RobotContainer {
   private AmpArmStop ampArmStop;
   private BasicClimb basicClimb;
   private TrapSetUpTheSequel sequal;
-  private ShootInSpeaker passUnderStage;
+  private Command passUnderStage;
   private RydarsSpinup rydarSubwoof;
 
   private SetClimbers goToZero;
@@ -319,7 +319,8 @@ public class RobotContainer {
     commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, ampArm, vision);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain, linkage, ampArm, false);
     fieldOrientedSlowGuy = new FieldOrientedDrive(drivetrain, linkage, ampArm, true);
-    passFromSourceAngle = new DriveFieldCentricFacingAngle(drivetrain);
+    
+    passFromSourceAngle = new DriveFieldCentricFacingAngle(drivetrain, 225.0, 315.0);
     robotOrientedDrive = new RobotOrientedDrive(drivetrain);
     runExtendIntake = commandFactory.runExtendIntake();
     autoPowerCenterNote = new AutoPowerCenterNote(ampArm, intake, linkage, flywheel, 177.0);
@@ -336,8 +337,7 @@ public class RobotContainer {
     powerClimber = new PowerClimber(climber);
     shootRoutine = new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, 174.0, 5000.0, 90.0);
     maxExtend = new SetClimbers(climber, 70.0);
-    passUnderStage = new ShootInSpeaker(ampArm, linkage, flywheel, drivetrain, intake, 106.0, 4000.0,
-        fetchAllianceNum());
+    passUnderStage = commandFactory.spinUpForUnderPassAndShoot();
     minExtend = new SetClimbers(climber, -35.0);
     // levelClimbers = new LevelClimbers(climber, drivetrain);
     tuneFlywheel = new TuneFlywheel(flywheel);
@@ -479,16 +479,21 @@ public class RobotContainer {
     // DRIVER CONTROLS DO NOT DELETE JUST COMMENT OUT
     driverController.leftBumper().whileTrue(powerIntakeReversed);
     driverController.rightBumper().whileTrue(inny);
-    driverController.b().whileTrue(stowLinkage);
+    driverController.b().onTrue(stowLinkage);
     driverController.a().and(driverController.rightTrigger().negate()).whileTrue(shootFromSubwooferSpinUp);
     driverController.x().whileTrue(snapDrivebaseToAngle);
 
-    driverController.rightTrigger().and(driverController.leftTrigger().negate()).whileTrue(shootFromSubwoofer);
-    driverController.rightTrigger().and(driverController.leftTrigger()).whileTrue(shootAtSpeakerVision);
-    driverController.leftTrigger().and(driverController.rightTrigger().negate()).whileTrue(spinUpSpeakerVision);
+    driverController.rightTrigger().and(driverController.leftTrigger().negate()).and(driverController.back().negate()).whileTrue(shootFromSubwoofer);
+    driverController.rightTrigger().and(driverController.leftTrigger()).and(driverController.back().negate()).whileTrue(shootAtSpeakerVision);
+    driverController.leftTrigger().and(driverController.rightTrigger().negate()).and(driverController.back().negate
+    ()).whileTrue(spinUpSpeakerVision);
 
+    driverController.start().whileTrue(commandFactory.spinUpForOverPassAndShoot());
+
+    driverController.back().and(driverController.rightTrigger().negate()).and(driverController.leftTrigger().negate()).whileTrue(commandFactory.spinUpForUnderPass());
+    driverController.back().and(driverController.rightTrigger()).and(driverController.leftTrigger().negate()).whileTrue(commandFactory.spinUpForUnderPassAndShoot());
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
-    driverController.pov(0).whileTrue(deploy);
+    driverController.pov(0).toggleOnTrue(deploy);
     driverController.pov(90).whileTrue(powerIntake);
 
     // OPERATOR CONTROLS DO NOT DELETE JUST COMMENT OUT

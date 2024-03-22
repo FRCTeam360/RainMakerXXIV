@@ -48,7 +48,7 @@ public class EndWhenShooterReady extends Command {
     Logger.recordOutput("EndWhenShooterReady: isLinkageAtSetpoint", isLinkageAtSetpoint);
     Logger.recordOutput("EndWhenShooterReady: isFlywheelAboveSetpoint", isFlywheelAboveSetpoint);
     Logger.recordOutput("EndWhenShooterReady: isDrivetrainOnTarget", isDrivetrainOnTarget);
-    if ((isLinkageAtSetpoint || timer.get() > 0.3) && ((isFlywheelAboveSetpoint && isDrivetrainOnTarget) || timer.get() > 0.5)) {
+    if ((isLinkageAtSetpoint || timer.get() > 0.3) && ((isFlywheelAboveSetpoint && isDrivetrainOnTarget) || timer.get() > 0.75)) {
       stop = true;
     }
   }
@@ -58,6 +58,7 @@ public class EndWhenShooterReady extends Command {
   public void end(boolean interrupted) {
     timer.stop();
   }
+
 
   // Returns true when the command should end.
   @Override

@@ -5,6 +5,9 @@
 package frc.robot.commands;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
+
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import edu.wpi.first.math.MathUtil;
@@ -58,7 +61,9 @@ public class FieldOrientedDrive extends Command {
     } else {
       x=1;
     }
-    if(linkage.getAngle() <90.0 || ampArm.getArmPosition() > 5.0 || isSlow) {
+    boolean isSlowDrive = linkage.getAngle() < 10.0 || ampArm.getArmPosition() > 45.0 || isSlow;
+    Logger.recordOutput("Swerve: is slow", isSlowDrive);
+    if(linkage.getAngle() < 10.0 || ampArm.getArmPosition() > 45.0 || isSlow) {
       driveTrain.fieldCentricDrive(
         x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftX()*.5, 0.1)),
         x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftY()*.5, 0.1)),
