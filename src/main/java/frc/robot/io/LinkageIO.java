@@ -24,6 +24,7 @@ public interface LinkageIO {
     public double linkageSupplyCurrent =  0.0;
     public boolean zeroButton = false;
     public boolean brakeButton = false;
+    public double linkageSetpoint = 0.0;
   }
 
   public default void updateInputs(LinkageIOInputs inputs) {}

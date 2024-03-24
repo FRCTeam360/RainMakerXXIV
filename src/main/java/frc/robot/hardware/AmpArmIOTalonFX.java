@@ -181,6 +181,8 @@ public class AmpArmIOTalonFX implements AmpArmIO {
     inputs.ampIntakeSensor = this.getIntakeSensor();
     inputs.zeroButton = this.getRawZeroButton();
     inputs.brakeButton = this.getRawBrakeButton();
+    inputs.armSetpoint = armMotor.getClosedLoopReference().getValueAsDouble();
+    inputs.wristSetpoint = wristMotor.getClosedLoopReference().getValueAsDouble();
   }
 
   @Override

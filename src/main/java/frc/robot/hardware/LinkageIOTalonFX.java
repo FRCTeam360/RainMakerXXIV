@@ -159,6 +159,7 @@ public class LinkageIOTalonFX implements LinkageIO {
     inputs.linkagePosition = talonFX.getPosition().getValueAsDouble() * GEAR_RATIO;
     inputs.zeroButton = this.getRawZeroButton();
     inputs.brakeButton = this.getRawBrakeButton();
+    inputs.linkageSetpoint = talonFX.getClosedLoopReference().getValueAsDouble();
   }
 
   public void set(double speed) {
