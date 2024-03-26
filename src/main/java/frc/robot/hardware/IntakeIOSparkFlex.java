@@ -45,6 +45,7 @@ public class IntakeIOSparkFlex implements IntakeIO {
         inputs.intakeVelocity = encoder.getVelocity();
         inputs.intakePosition = encoder.getPosition();
         inputs.shooterSensor = getShooterSensor();
+        // inputs.intakeSetpoint = ???
     }
 
     @Override
