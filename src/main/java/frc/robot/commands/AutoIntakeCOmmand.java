@@ -49,9 +49,9 @@ public class AutoIntakeCOmmand extends Command {
   @Override
   public void execute() {
     if(bringup) {
-      linkage.setAngle(110.0, ampArm);
+      linkage.setAngle(setthatguy, ampArm);
     }
-    if(!intake.getIntakeSensor() && !bringup) {
+    else if(!intake.getIntakeSensor() && !bringup) {
       intake.run(.4);
       // System.out.println("runnin at 90");
     } else {
@@ -60,7 +60,7 @@ public class AutoIntakeCOmmand extends Command {
     }
     if(!intake.getSideSensor()) {
       bringup = true; 
-      stop = true;
+      intake.stop();
     }
 
   }

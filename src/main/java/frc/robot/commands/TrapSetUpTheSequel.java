@@ -50,9 +50,9 @@ public class TrapSetUpTheSequel extends Command {
     if (distance > Units.inchesToMeters(10.0)) {
       drive.robotCentricDrive(0, 0, 0);
     }
-    if (distance > Units.inchesToMeters(1.0) && distance < 0) {
+    if (distance < Units.inchesToMeters(0.2) && distance > 0) {
       arm.setArm(25.0, linkage);
-    } else if (distance > Units.inchesToMeters(3.0) && distance < Units.inchesToMeters(2.0)) {
+    } else if (distance < Units.inchesToMeters(3.0) && distance > Units.inchesToMeters(2.0)) {
       arm.setArm(45.0, linkage);
     } else if (distance > Units.inchesToMeters(4.0)) {
       arm.setArm(90.0, linkage);

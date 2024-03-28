@@ -67,5 +67,9 @@ public interface AmpArmIO {
 
   public boolean getZeroButton();
 
+  public void setWrist70();
+
+  public void setArm78();
+
  // public double getAbsEncoder();
 }

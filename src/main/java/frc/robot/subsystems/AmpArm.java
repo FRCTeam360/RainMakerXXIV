@@ -168,6 +168,14 @@ public class AmpArm extends SubsystemBase {
     io.zeroArm();
   }
 
+  public void setArm78() {
+    io.setArm78();;
+  }
+
+  public void setWrist70() {
+    io.setWrist70();
+  }
+  
   public boolean getIntakeSensor() {
     return io.getIntakeSensor();
   }

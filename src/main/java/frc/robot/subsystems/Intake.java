@@ -89,6 +89,10 @@ public class Intake extends SubsystemBase {
     io.moveEncoder(setpoint);
   }
 
+  public boolean hasNote() {
+    return !this.getIntakeSensor() || !this.getShooterSensor() || !this.getSideSensor();
+  }
+
 
   @Override
   public void periodic() {

@@ -208,6 +208,7 @@ public class RobotContainer {
 
   private HomeAmpArmWrist homeAmpArmWrist;
   private AmpArmGoToZero ampArmGoToZero;
+  private Command visionBoy;
 
   private TrapSetUp trapDrive;
   private TrapClimb trapClimb;
@@ -320,7 +321,7 @@ public class RobotContainer {
     commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, ampArm, vision);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain, linkage, ampArm, false);
     fieldOrientedSlowGuy = new FieldOrientedDrive(drivetrain, linkage, ampArm, true);
-    
+
     passFromSourceAngle = new DriveFieldCentricFacingAngle(drivetrain, 225.0, 315.0);
     robotOrientedDrive = new RobotOrientedDrive(drivetrain);
     runExtendIntake = commandFactory.runExtendIntake();
@@ -329,7 +330,7 @@ public class RobotContainer {
     subwoofShotRy = new ShootingPrepRyRy(linkage, flywheel, ampArm, 177.0, 5000.0);
     sequal = new TrapSetUpTheSequel(linkage, ampArm, drivetrain, climber);
     intakeMe = new PristineIntakeCommand(intake, linkage, ampArm, 145.0);
-
+    visionBoy = commandFactory.shootAtSpeakerVision();
     kiki = new ShootingPrepRyRy(linkage, flywheel, ampArm, 153.0, 7000.0);
 
     powerIntakeReversed = new PowerIntakeReversed(intake);
@@ -370,7 +371,7 @@ public class RobotContainer {
     soloRaise = commandFactory.setClimberShouldntFinish(40);
     soloRetract = commandFactory.setClimberShouldntFinish(-20);
 
-    fullRetract = commandFactory.setClimberShouldntFinish(-57);
+    fullRetract = commandFactory.setClimberShouldntFinish(-58);
 
     stopClimber = new StopClimber(climber);
 
@@ -416,7 +417,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("kiki linkage long prep",
         new InstantCommand(() -> linkage.setAngle(149, ampArm)));
     NamedCommands.registerCommand("stay out of way shot",
-        new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151, 7000.0));
+        new ShootInSpeaker(ampArm, linkage, flywheel, intake, 150, 7000.0));
     NamedCommands.registerCommand("kikiSimpleShoot",
         new ShootInSpeaker(ampArm, linkage, flywheel, intake, 149, 7000.0));
     NamedCommands.registerCommand("long shot inny", longerinny);
@@ -429,6 +430,8 @@ public class RobotContainer {
         new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151.5, 7000.0));
     NamedCommands.registerCommand("kiki shot", kiki);
     NamedCommands.registerCommand("Turn", pointDrivebaseAtTarget);
+
+    NamedCommands.registerCommand("vision shoot", visionBoy);
     // NamedCommands.registerCommand("Intake", runExtendIntake);
     // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     // NamedCommands.registerCommand("Wait", new WaitCommand(2));
@@ -484,15 +487,19 @@ public class RobotContainer {
     driverController.a().and(driverController.rightTrigger().negate()).whileTrue(shootFromSubwooferSpinUp);
     driverController.x().whileTrue(snapDrivebaseToAngle);
 
-    driverController.rightTrigger().and(driverController.leftTrigger().negate()).and(driverController.back().negate()).whileTrue(shootFromSubwoofer);
-    driverController.rightTrigger().and(driverController.leftTrigger()).and(driverController.back().negate()).whileTrue(shootAtSpeakerVision);
-    driverController.leftTrigger().and(driverController.rightTrigger().negate()).and(driverController.back().negate
-    ()).whileTrue(spinUpSpeakerVision);
+    driverController.rightTrigger().and(driverController.leftTrigger().negate()).and(driverController.back().negate())
+        .whileTrue(shootFromSubwoofer);
+    driverController.rightTrigger().and(driverController.leftTrigger()).and(driverController.back().negate())
+        .whileTrue(shootAtSpeakerVision);
+    driverController.leftTrigger().and(driverController.rightTrigger().negate()).and(driverController.back().negate())
+        .whileTrue(spinUpSpeakerVision);
 
     driverController.start().whileTrue(commandFactory.spinUpForOverPassAndShoot());
 
-    driverController.back().and(driverController.rightTrigger().negate()).and(driverController.leftTrigger().negate()).whileTrue(commandFactory.spinUpForUnderPass());
-    driverController.back().and(driverController.rightTrigger()).and(driverController.leftTrigger().negate()).whileTrue(commandFactory.spinUpForUnderPassAndShoot());
+    driverController.back().and(driverController.rightTrigger().negate()).and(driverController.leftTrigger().negate())
+        .whileTrue(commandFactory.spinUpForUnderPass());
+    driverController.back().and(driverController.rightTrigger()).and(driverController.leftTrigger().negate())
+        .whileTrue(commandFactory.spinUpForUnderPassAndShoot());
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     driverController.pov(0).toggleOnTrue(deploy);
     driverController.pov(90).whileTrue(powerIntake);
@@ -518,23 +525,30 @@ public class RobotContainer {
       // operatorController.pov(90).onTrue(homeAmpArmWrist);
       // operatorController.pov(180).onTrue(ampArmGoToZero);
     }
+
     // operatorController.b().toggleOnTrue(trapClimb);
     operatorController.start().whileTrue(stopClimber);
     operatorController.start().whileTrue(powerAmpArm);
     operatorController.pov(0).onTrue(soloRaise);
     operatorController.pov(270).onTrue(goToZero);
-    operatorController.rightStick().onTrue(fullRetract);
+    // operatorController.leftStick().onTrue(fullRetract);
     operatorController.pov(180).toggleOnTrue(soloRetract);
     operatorController.back().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
+    operatorController.leftStick().onTrue(new InstantCommand(() -> {
+      ampArm.setArm78();
+      ampArm.setWrist70();
+    }, ampArm));
 
     drivetrain.registerTelemetry(logger::telemeterize);
     configureTestBindings();
   }
-  public void configureTestBindings(){
+
+  public void configureTestBindings() {
     testController.rightBumper().whileTrue(inny);
     testController.leftTrigger().whileTrue(commandFactory.tuneLinkageSetpoint());
-    testController.rightTrigger().whileTrue(intake.runEnd(()-> intake.run(1.0), ()-> intake.run(0.0)));
+    testController.rightTrigger().whileTrue(intake.runEnd(() -> intake.run(1.0), () -> intake.run(0.0)));
   }
+
   public void configureCharacterizationBindings() {
     // The methods below return Command objects
     driverController.rightTrigger().whileTrue(drivetrain.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward));

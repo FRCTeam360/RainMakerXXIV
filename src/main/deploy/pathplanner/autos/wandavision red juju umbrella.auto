@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.07,
-      "y": 1.39
+      "x": 15.34,
+      "y": 5.57
     },
     "rotation": 180.0
   },
@@ -12,54 +12,15 @@
     "data": {
       "commands": [
         {
-          "type": "race",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Spinny"
-                }
-              },
-              {
-                "type": "parallel",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "RedkikiSIMPLEsource"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "kiki linkage long prep"
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
+            "name": "Shoot without drivetrain"
           }
         },
         {
-          "type": "race",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "kikiSimpleShoot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Turn"
-                }
-              }
-            ]
+            "name": "extend linkage"
           }
         },
         {
@@ -73,7 +34,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "long shot inny"
+                        "name": "Intake"
                       }
                     },
                     {
@@ -83,13 +44,13 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "red kiki4"
+                              "pathName": "bulletproof 1"
                             }
                           },
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "red kiki5"
+                              "pathName": "bulletproof 2"
                             }
                           }
                         ]
@@ -108,22 +69,9 @@
           }
         },
         {
-          "type": "race",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "kikiSimpleShoot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Turn"
-                }
-              }
-            ]
+            "name": "Shoot without drivetrain"
           }
         },
         {
@@ -137,7 +85,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "long shot inny"
+                        "name": "Intake"
                       }
                     },
                     {
@@ -147,13 +95,13 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "red kiki6"
+                              "pathName": "bulletproof 3"
                             }
                           },
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "red kiki7"
+                              "pathName": "bulletproof 4"
                             }
                           }
                         ]
@@ -172,22 +120,9 @@
           }
         },
         {
-          "type": "race",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "kikiSimpleShoot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Turn"
-                }
-              }
-            ]
+            "name": "Shoot without drivetrain"
           }
         },
         {
@@ -201,7 +136,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "long shot inny"
+                        "name": "Intake"
                       }
                     },
                     {
@@ -211,13 +146,13 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "red kiki8"
+                              "pathName": "bulletproof 5"
                             }
                           },
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "red kiki9"
+                              "pathName": "bulletproof 6"
                             }
                           }
                         ]
@@ -236,16 +171,60 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Shoot without drivetrain"
+          }
+        },
+        {
           "type": "race",
           "data": {
             "commands": [
               {
+                "type": "race",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake"
+                      }
+                    },
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "bulletproof 7"
+                            }
+                          },
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "visionbulletproof 8"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
                 "type": "named",
                 "data": {
-                  "name": "Turn"
+                  "name": "Spinny"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "vision shoot"
           }
         }
       ]
