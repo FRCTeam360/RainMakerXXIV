@@ -75,6 +75,9 @@ public class ShootInSpeaker extends Command {
     loadedtimer.stop();
     loadedtimer.reset();
     loadedtimer.start();
+    if(!intake.hasNote()){
+      state = ShootState.END;
+    }
   }
 
   public ShootInSpeaker(AmpArm ampArm, Linkage linkage, Flywheel flywheel, Intake intake,

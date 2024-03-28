@@ -57,10 +57,9 @@ public class AutoIntakeCOmmand extends Command {
     } else {
       intake.run(.5);
       // System.out.println("runnin at .5");
-    }
+  }
     if(!intake.getSideSensor()) {
-      bringup = true; 
-      stop = true;
+      bringup = true;
     }
 
   }

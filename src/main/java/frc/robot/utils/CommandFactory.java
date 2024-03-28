@@ -161,6 +161,7 @@ public class CommandFactory {
             pointDrivebaseAtTarget);
     }
 
+
     public Command spinUpShooterSetpoint(double linkageSetpoint, double flywheelSetpoint) {
         return new ParallelCommandGroup(
                 new SetLinkage(linkage, linkageSetpoint, ampArm, false),
