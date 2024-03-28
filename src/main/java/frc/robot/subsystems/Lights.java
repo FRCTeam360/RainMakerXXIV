@@ -28,7 +28,7 @@ public class Lights extends SubsystemBase {
   private final CANdle lights = new CANdle(14);
   
   public Lights() {
-    lights.configLEDType(LEDStripType.GRB);
+    //lights.configLEDType(LEDStripType.GRB);
     lights.configBrightnessScalar(1);
     
   }
