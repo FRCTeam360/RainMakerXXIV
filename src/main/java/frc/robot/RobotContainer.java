@@ -514,7 +514,6 @@ public class RobotContainer {
   }
 
   public void onRobotInit() {
-
     if (DriverStation.isDSAttached() && DriverStation.getAlliance().get() == Alliance.Blue) {
       lights.setBlue();
     } else {
@@ -522,7 +521,6 @@ public class RobotContainer {
     }
   }
   public void onDisablePeriodic(){
-    
     if (zeroButton.get()) {
       lights.setGreen();
     } else if (zeroButton.get()) {
