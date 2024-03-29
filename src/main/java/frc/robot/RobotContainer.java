@@ -521,6 +521,9 @@ public class RobotContainer {
       lights.setRed();
     }
 
+    
+  }
+  public void onDisablePeriodic(){
     if (zeroButton.getChannel() != 0 || brakeButton.getChannel() != 0) {
       lights.setGreen();
     } else if (zeroButton.getChannel() == 0 || brakeButton.getChannel() != 0) {
@@ -532,6 +535,7 @@ public class RobotContainer {
     } else if (intake.getSideSensor() == true && intake.getShooterSensor() == true) {
       lights.setOrange();
     }
+
   }
 
   private double fetchAllianceNum() {
