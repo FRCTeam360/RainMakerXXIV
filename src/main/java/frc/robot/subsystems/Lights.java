@@ -30,19 +30,19 @@ public class Lights extends SubsystemBase {
   public Lights() {
     //lights.configLEDType(LEDStripType.GRB);
     lights.configBrightnessScalar(1);
-    
+
   }
   public void setGreen(){
-    lights.setLEDs(4,212,132);
+    lights.setLEDs(4,212,132,0,0,9);
   }
   public void setRed(){
-    lights.setLEDs(255, 0, 0);
+    lights.setLEDs(255, 0, 0,0,0,9);
   }
   public void setBlue(){
-    lights.setLEDs(0,0,255);
+    lights.setLEDs(0,0,255,0,0,9);
   }
   public void setOrange(){
-    lights.setLEDs(250,40,0);
+    lights.setLEDs(250,40,0,0,0,9);
   }
   public void setAnimation(int r, int g, int b,String animationString){
     lights.clearAnimation(0);

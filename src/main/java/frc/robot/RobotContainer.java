@@ -515,24 +515,23 @@ public class RobotContainer {
 
   public void onRobotInit() {
 
-    if (DriverStation.getAlliance().get() == Alliance.Blue) {
+    if (DriverStation.isDSAttached() && DriverStation.getAlliance().get() == Alliance.Blue) {
       lights.setBlue();
     } else {
       lights.setRed();
     }
-
-    
   }
   public void onDisablePeriodic(){
+    
     if (zeroButton.get()) {
       lights.setGreen();
     } else if (zeroButton.get()) {
-      if (DriverStation.getAlliance().get() == Alliance.Blue) {
+      if (DriverStation.isDSAttached() && DriverStation.getAlliance().get() == Alliance.Blue) {
         lights.setBlue();
       } else {
-        lights.setRed();
+        lights.setOrange();
       }
-    } else if (intake.getSideSensor() == true && intake.getShooterSensor() == true) {
+    } else if (vision.isTargetInView()) {
       lights.setOrange();
     }
 
