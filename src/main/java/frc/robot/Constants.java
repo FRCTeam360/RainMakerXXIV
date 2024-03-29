@@ -66,8 +66,8 @@ public class Constants {
         public static final int AMP_WRIST_ID = 16;
 
         public static final int INTAKE_SENSOR_PORT = isCompBot() ? 5 : 1;
-        public static final int SIDE_SENSOR_PORT = 0;
-        public static final int SHOOTER_SENSOR_PORT = isCompBot() ? 1 : 5;
+        public static final int SIDE_SENSOR_PORT = isCompBot() ? 0 : 2;
+        public static final int SHOOTER_SENSOR_PORT = isCompBot() ? 1 : 0;
 
         public static final int AMP_INTAKE_SENSOR_PORT = 4;
 

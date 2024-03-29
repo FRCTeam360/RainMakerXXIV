@@ -308,6 +308,7 @@ public class RobotContainer {
     SmartDashboard.putData("Auto Chooser", autoChooser);
     configureBindings();
     configureDefaultCommands();
+    configureTestBindings();
   }
 
   private final void initializeCommands() {
@@ -519,21 +520,21 @@ public class RobotContainer {
       // operatorController.pov(180).onTrue(ampArmGoToZero);
     }
     // operatorController.b().toggleOnTrue(trapClimb);
-    operatorController.start().whileTrue(stopClimber);
+    //operatorController.start().whileTrue(stopClimber);
     operatorController.start().whileTrue(powerAmpArm);
     operatorController.pov(0).onTrue(soloRaise);
     operatorController.pov(270).onTrue(goToZero);
     operatorController.rightStick().onTrue(fullRetract);
     operatorController.pov(180).toggleOnTrue(soloRetract);
     operatorController.back().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
-
     drivetrain.registerTelemetry(logger::telemeterize);
-    configureTestBindings();
+
   }
   public void configureTestBindings(){
     testController.rightBumper().whileTrue(inny);
     testController.leftTrigger().whileTrue(commandFactory.tuneLinkageSetpoint());
     testController.rightTrigger().whileTrue(intake.runEnd(()-> intake.run(1.0), ()-> intake.run(0.0)));
+    testController.x().onTrue(linkageToAmpHandoff.alongWith(fieldOrientedSlowGuy));
   }
   public void configureCharacterizationBindings() {
     // The methods below return Command objects
