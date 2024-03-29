@@ -75,7 +75,7 @@ public class ShootInSpeaker extends Command {
     loadedtimer.stop();
     loadedtimer.reset();
     loadedtimer.start();
-    if(!intake.hasNote()) {
+    if(!intake.hasNote()){
       state = ShootState.END;
     }
   }

@@ -90,7 +90,7 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean hasNote() {
-    return !this.getIntakeSensor() || !this.getShooterSensor() || !this.getSideSensor();
+    return !this.getIntakeSensor() || !this.getSideSensor() || !this.getShooterSensor();
   }
 
 
