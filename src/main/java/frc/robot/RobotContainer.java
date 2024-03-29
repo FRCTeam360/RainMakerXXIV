@@ -524,9 +524,9 @@ public class RobotContainer {
     
   }
   public void onDisablePeriodic(){
-    if (zeroButton.getChannel() != 0 || brakeButton.getChannel() != 0) {
+    if (zeroButton.get()) {
       lights.setGreen();
-    } else if (zeroButton.getChannel() == 0 || brakeButton.getChannel() != 0) {
+    } else if (zeroButton.get()) {
       if (DriverStation.getAlliance().get() == Alliance.Blue) {
         lights.setBlue();
       } else {
