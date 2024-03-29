@@ -90,7 +90,6 @@ public class LinkageIOTalonFX implements LinkageIO {
     StatusCode status = updateSound.loadMusic("TetrisTheme.chrp");
 
     if(status != StatusCode.OK){
-      System.out.println("Error loading sound");
     }
     // need to add offset??? 43.0 rn
 
