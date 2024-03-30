@@ -532,13 +532,13 @@ public class RobotContainer {
     operatorController.start().whileTrue(powerAmpArm);
     operatorController.pov(0).onTrue(soloRaise);
     operatorController.pov(270).onTrue(goToZero);
-    // operatorController.leftStick().onTrue(fullRetract);
+    operatorController.leftStick().onTrue(fullRetract);
     operatorController.pov(180).toggleOnTrue(soloRetract);
     operatorController.back().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
-    operatorController.leftStick().onTrue(new InstantCommand(() -> {
-      ampArm.setArm78();
-      ampArm.setWrist70();
-    }, ampArm));
+    // operatorController.leftStick().onTrue(new InstantCommand(() -> {
+    //   ampArm.setArm78();
+    //   ampArm.setWrist70();
+    // }, ampArm));
 
     drivetrain.registerTelemetry(logger::telemeterize);
 

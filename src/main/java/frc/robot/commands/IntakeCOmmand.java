@@ -68,10 +68,10 @@ public class IntakeCOmmand extends Command {
       vision.blink();
       intake.run(.9);
       bringup = true;
-      System.out.println("runnin at 90");
+      //System.out.println("runnin at 90");
     } else {
       intake.run(.5);
-      System.out.println("runnin at .5");
+      //System.out.println("runnin at .5");
     }
     if(!intake.getSideSensor()) {
       intake.run(.2);
