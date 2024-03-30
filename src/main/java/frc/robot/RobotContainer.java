@@ -519,17 +519,12 @@ public class RobotContainer {
     } else {
       lights.setRed();
     }
+    if (vision.isTargetInView()) {
+      lights.setOrange();
+    }
   }
   public void onDisablePeriodic(){
-    if (zeroButton.get()) {
-      lights.setGreen();
-    } else if (zeroButton.get()) {
-      if (DriverStation.isDSAttached() && DriverStation.getAlliance().get() == Alliance.Blue) {
-        lights.setBlue();
-      } else {
-        lights.setOrange();
-      }
-    } else if (vision.isTargetInView()) {
+    if (vision.isTargetInView()) {
       lights.setOrange();
     }
 

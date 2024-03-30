@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.ctre.phoenix.led.CANdle;
@@ -32,17 +35,33 @@ public class Lights extends SubsystemBase {
     lights.configBrightnessScalar(1);
 
   }
+  public void isZero(DigitalInput zeroButton){
+   if (!zeroButton.get()) {
+      lights.setLEDs(255, 0, 0,0,0,1);
+    } else if (zeroButton.get()) {
+      if (DriverStation.isDSAttached() && DriverStation.getAlliance().get() == Alliance.Blue) {
+        setBlue();
+      } else {
+        setOrange();
+      }
+    }
+  }
+  // public void linkageRange(Linkage linkage){
+  //   if(linkage.getAngle() >= 120){
+  //     lights.setLEDs(4,212,132,0,0,7);
+  //   }
+  // }
   public void setGreen(){
-    lights.setLEDs(4,212,132,0,0,9);
+    lights.setLEDs(4,212,132,0,0,7);
   }
   public void setRed(){
-    lights.setLEDs(255, 0, 0,0,0,9);
+    lights.setLEDs(255, 0, 0,0,0,7);
   }
   public void setBlue(){
-    lights.setLEDs(0,0,255,0,0,9);
+    lights.setLEDs(0,0,255,0,0,7);
   }
   public void setOrange(){
-    lights.setLEDs(250,40,0,0,0,9);
+    lights.setLEDs(250,40,0,0,0,7);
   }
   public void setAnimation(int r, int g, int b,String animationString){
     lights.clearAnimation(0);
