@@ -73,13 +73,22 @@ public class FlywheelIOSparkFlex implements FlywheelIO {
 
   @Override
   public void setLeftReference(double rpm, ControlType kvelocity) {
-  leftPIDController.setReference(rpm, kvelocity);
+    leftPIDController.setReference(rpm, kvelocity);
   }
 
   @Override
   public void setRightReference(double rpm, ControlType kvelocity) {
     rightPIDController.setReference(rpm, kvelocity);
   }
+
+  public double getLeftReference(double rpm) {
+    return rpm;
+  }
+
+  public double getRightReference(double rpm) {
+    return rpm;
+  }
+
 
   @Override
   public void stopLeftMotor() {
@@ -119,6 +128,5 @@ public class FlywheelIOSparkFlex implements FlywheelIO {
     inputs.flywheelRightVelocity = rightEncoder.getVelocity();
     inputs.flywheelLeftVoltage = leftMotor.getAppliedOutput() * leftMotor.getBusVoltage();
     inputs.flywheelRightVoltage = rightMotor.getAppliedOutput() * rightMotor.getBusVoltage();
-    
   }
 }
