@@ -153,6 +153,31 @@ public class CommandFactory {
                                         takeSnapshot())));
     }
 
+    public Command shootAtSpeakerVisionAuto() {
+        return shootAtSpeakerVision().raceWith(new InterruptWhenNoNote(intake));
+    }
+
+    private class InterruptWhenNoNote extends Command {
+        boolean shouldEnd = false;
+        private final Intake intake;
+        @Override
+        public void initialize() {
+            shouldEnd = !intake.hasNote();
+        }
+
+        @Override
+        public boolean isFinished() {
+            return shouldEnd;
+        }
+
+        public InterruptWhenNoNote(Intake intake) {
+            this.intake = intake;
+        }
+    }
+
+    
+    
+
     public Command spinUpSpeakerVision() {
         Command pointDrivebaseAtTarget = new PointDrivebaseAtTarget(drivetrain, vision);
         return new ParallelCommandGroup(
