@@ -10,6 +10,7 @@ import frc.robot.commands.DriveFieldCentricFacingAngle;
 import frc.robot.commands.RunExtendIntake;
 import frc.robot.commands.RydarsSpinup;
 import frc.robot.commands.SetClimbers;
+import frc.robot.commands.SetFlywheel;
 import frc.robot.commands.ScoreInAmp;
 import frc.robot.commands.SetArmWrist;
 import frc.robot.commands.PowerIntakeReversed;
@@ -39,6 +40,7 @@ import frc.robot.commands.FieldOrientedDrive;
 import frc.robot.commands.HoldArmPosition;
 import frc.robot.commands.HomeAmpArmWrist;
 import frc.robot.commands.IntakeCOmmand;
+import frc.robot.commands.IntakeForevsRun;
 import frc.robot.commands.LevelClimbers;
 import frc.robot.commands.ClimberPIDTuner;
 import frc.robot.commands.LinkageSetpoint;
@@ -88,6 +90,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.hal.HALUtil;
 import edu.wpi.first.math.MathUtil;
@@ -98,7 +101,9 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -119,6 +124,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  private final Field2d field;
   // declared as final in example code, but gives error in our code
   private SendableChooser<Command> autoChooser;
 
@@ -230,6 +236,27 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    field = new Field2d();
+        SmartDashboard.putData("Field", field);
+
+        // Logging callback for current robot pose
+        PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
+            // Do whatever you want with the pose here
+            field.setRobotPose(pose);
+        });
+
+        // Logging callback for target robot pose
+        PathPlannerLogging.setLogTargetPoseCallback((pose) -> {
+            // Do whatever you want with the pose here
+            field.getObject("target pose").setPose(pose);
+        });
+
+        // Logging callback for the active path, this is sent as a list of poses
+        PathPlannerLogging.setLogActivePathCallback((poses) -> {
+            // Do whatever you want with the poses here
+            field.getObject("path").setPoses(poses);
+        });
+
     switch (Constants.getRobotType()) {
       case WOODBOT:
         // Real robot, instantiate hardware IO implementations
@@ -432,11 +459,15 @@ public class RobotContainer {
     NamedCommands.registerCommand("Turn", pointDrivebaseAtTarget);
 
     NamedCommands.registerCommand("vision shoot", visionBoy);
+    NamedCommands.registerCommand("run intake forevs <3", new IntakeForevsRun(intake, flywheel, linkage, ampArm));
+    //NamedCommands.registerCommand("yake shot", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 0.0, 7000.0));
+    NamedCommands.registerCommand("real far shot", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 148.0, 9000.0));
+    NamedCommands.registerCommand("BIG spinny", new SetFlywheel(flywheel,9000.0));
     // NamedCommands.registerCommand("Intake", runExtendIntake);
     // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     // NamedCommands.registerCommand("Wait", new WaitCommand(2));
     // NamedCommands.registerCommand("Shoot", shootRoutine);
-    // NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0,
+    // NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0,s
     // 0));
     // NamedCommands.registerCommand("Shoot without drivetrain", new
     // ShootInSpeaker(linkage, flywheel, drivetrain, intake, MAX_SPEED_MPS,
