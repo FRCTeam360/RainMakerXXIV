@@ -91,7 +91,7 @@ public class LinkageToAmpHandoff extends Command {
         break;
       case MOVE_UP:
         ampIntake.runIntake(.1);
-        if(ampIntake.getEncoderPosition() - lastPosition >= 1.0){
+        if(ampIntake.getEncoderPosition() - lastPosition >= 2.0){
           ampIntake.stop();
           state = States.HAS_NOTE;
         }

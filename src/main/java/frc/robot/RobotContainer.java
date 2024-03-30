@@ -309,7 +309,6 @@ public class RobotContainer {
     SmartDashboard.putData("Auto Chooser", autoChooser);
     configureBindings();
     configureDefaultCommands();
-    configureTestBindings();
   }
 
   private final void initializeCommands() {
@@ -459,7 +458,7 @@ public class RobotContainer {
 
     // linkage.setDefaultCommand(powerLinkage);
     if (Objects.nonNull(ampArm)) {
-      ampArm.setDefaultCommand(holdArmPosition);
+      // ampArm.setDefaultCommand(holdArmPosition);
     }
     climber.setDefaultCommand(powerClimber);
   }
@@ -487,6 +486,7 @@ public class RobotContainer {
     driverController.b().onTrue(stowLinkage);
     driverController.a().and(driverController.rightTrigger().negate()).whileTrue(shootFromSubwooferSpinUp);
     driverController.x().whileTrue(snapDrivebaseToAngle);
+    
 
     driverController.rightTrigger().and(driverController.leftTrigger().negate()).and(driverController.back().negate())
         .whileTrue(shootFromSubwoofer);
@@ -548,7 +548,7 @@ public class RobotContainer {
     testController.rightBumper().whileTrue(inny);
     testController.leftTrigger().whileTrue(commandFactory.tuneLinkageSetpoint());
     testController.rightTrigger().whileTrue(intake.runEnd(()-> intake.run(1.0), ()-> intake.run(0.0)));
-    testController.x().onTrue(linkageToAmpHandoff.alongWith(fieldOrientedSlowGuy));
+   // testController.x().onTrue(linkageToAmpHandoff.alongWith(fieldOrientedSlowGuy));
   }
 
   public void configureCharacterizationBindings() {
