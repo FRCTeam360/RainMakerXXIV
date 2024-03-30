@@ -43,10 +43,8 @@ public class PowerIntake extends Command {
     } else {
       intake.stop();
     }
-
-    CommandLogger.logCommandRunning(this);
   }
-
+  
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {

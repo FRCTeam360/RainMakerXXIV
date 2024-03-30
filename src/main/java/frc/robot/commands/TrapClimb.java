@@ -16,7 +16,7 @@ public class TrapClimb extends Command {
   private final Climber climber; 
   private final Linkage linkage; 
   private final XboxController operatorCont = new XboxController(1);
-  private double climbHeight = -57.0; 
+  private double climbHeight = -58.0; 
   private double ampSetpoint = 115.0;
   /** Creates a new TrapClimb. */
   public TrapClimb(AmpArm ampArm, Climber climber, Linkage linkage) {
@@ -44,8 +44,8 @@ public class TrapClimb extends Command {
     
 
 
-    boolean leftClimbCheck = Math.abs(climber.getLeftPosition() - climbHeight) < 1.0;
-    boolean rightClimbCheck = Math.abs(climber.getRightPosition() - climbHeight) < 1.0;
+    boolean leftClimbCheck = Math.abs(climber.getLeftPosition() - climbHeight) < 3.0;
+    boolean rightClimbCheck = Math.abs(climber.getRightPosition() - climbHeight) < 3.0;
     
     // System.out.println(Math.abs(climber.getLeftPosition() - climbHeight));
     // System.out.println(Math.abs(climber.getRightPosition() - climbHeight));

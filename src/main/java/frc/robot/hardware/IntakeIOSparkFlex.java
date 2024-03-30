@@ -25,7 +25,7 @@ public class IntakeIOSparkFlex implements IntakeIO {
     
     public IntakeIOSparkFlex(){
         sparkFlex.restoreFactoryDefaults(); 
-        sparkFlex.setInverted(false);
+        sparkFlex.setInverted(Constants.isCompBot() ? false : true);
 
         sparkFlex.setIdleMode(IdleMode.kBrake);
         sparkFlex.setSmartCurrentLimit(120, 50);

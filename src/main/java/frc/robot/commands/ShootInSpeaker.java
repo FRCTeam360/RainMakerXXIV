@@ -75,6 +75,9 @@ public class ShootInSpeaker extends Command {
     loadedtimer.stop();
     loadedtimer.reset();
     loadedtimer.start();
+    if(!intake.hasNote()){
+      state = ShootState.END;
+    }
   }
 
   public ShootInSpeaker(AmpArm ampArm, Linkage linkage, Flywheel flywheel, Intake intake,
@@ -121,7 +124,7 @@ public class ShootInSpeaker extends Command {
     switch (state) {
       case LOADED:
         intake.stop();
-        boolean isLinkageAtSetpoint = linkage.isAtSetpoint();
+        boolean isLinkageAtSetpoint = linkage.isAtSetpoint() && Math.abs(linkage.getVelocity()) < 2;
         boolean isFlywheelAtSetpoint = flywheel.isAboveSetpoint();
         Logger.recordOutput("ShootInSpeaker: Linkage Setpoint", isLinkageAtSetpoint);
         Logger.recordOutput("ShootInSpeaker: Flywheel Setpoint", isFlywheelAtSetpoint);

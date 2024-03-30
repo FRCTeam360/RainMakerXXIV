@@ -30,11 +30,7 @@ public class AmpArm extends SubsystemBase {
     SmartDashboard.putBoolean("Is arm at home", isArmAtZero());
     SmartDashboard.putBoolean("is wrist at home", isWristAtZero());
         SmartDashboard.putBoolean("amp intake sensor", getIntakeSensor());
-
     setupShuffleboard();
-    if(Constants.isPracticeBot()){
-      io.resetArmWristPos();
-    }
   }
 
   public void enableBrakeMode() {
@@ -168,6 +164,14 @@ public class AmpArm extends SubsystemBase {
     io.zeroArm();
   }
 
+  public void setArm78() {
+    io.setArm78();;
+  }
+
+  public void setWrist70() {
+    io.setWrist70();
+  }
+  
   public boolean getIntakeSensor() {
     return io.getIntakeSensor();
   }

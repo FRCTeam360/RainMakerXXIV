@@ -2,64 +2,25 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.07,
-      "y": 1.39
+      "x": 1.3,
+      "y": 5.53
     },
-    "rotation": 180.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "race",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Spinny"
-                }
-              },
-              {
-                "type": "parallel",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "RedkikiSIMPLEsource"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "kiki linkage long prep"
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
+            "name": "Shoot without drivetrain"
           }
         },
         {
-          "type": "race",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "kikiSimpleShoot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Turn"
-                }
-              }
-            ]
+            "name": "extend linkage"
           }
         },
         {
@@ -73,7 +34,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "long shot inny"
+                        "name": "Intake"
                       }
                     },
                     {
@@ -83,13 +44,13 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "red kiki4"
+                              "pathName": "bluebullet 1"
                             }
                           },
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "red kiki5"
+                              "pathName": "bluebullet 2"
                             }
                           }
                         ]
@@ -108,22 +69,9 @@
           }
         },
         {
-          "type": "race",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "kikiSimpleShoot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Turn"
-                }
-              }
-            ]
+            "name": "Shoot without drivetrain"
           }
         },
         {
@@ -137,7 +85,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "long shot inny"
+                        "name": "Intake"
                       }
                     },
                     {
@@ -147,13 +95,13 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "red kiki6"
+                              "pathName": "bluebullet 3"
                             }
                           },
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "red kiki7"
+                              "pathName": "bluebullet 4"
                             }
                           }
                         ]
@@ -172,22 +120,9 @@
           }
         },
         {
-          "type": "race",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "kikiSimpleShoot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Turn"
-                }
-              }
-            ]
+            "name": "Shoot without drivetrain"
           }
         },
         {
@@ -201,7 +136,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "long shot inny"
+                        "name": "Intake"
                       }
                     },
                     {
@@ -211,13 +146,13 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "red kiki8"
+                              "pathName": "bluebullet 5"
                             }
                           },
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "red kiki9"
+                              "pathName": "bluebullet 6"
                             }
                           }
                         ]
@@ -236,16 +171,60 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Shoot without drivetrain"
+          }
+        },
+        {
           "type": "race",
           "data": {
             "commands": [
               {
+                "type": "race",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake"
+                      }
+                    },
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "bluebullet 7"
+                            }
+                          },
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "vis bluebullet 8"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
                 "type": "named",
                 "data": {
-                  "name": "Turn"
+                  "name": "Spinny"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "vision shoot"
           }
         }
       ]

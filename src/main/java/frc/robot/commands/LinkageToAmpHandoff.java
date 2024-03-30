@@ -26,13 +26,14 @@ public class LinkageToAmpHandoff extends Command {
   private boolean done;
 
   private States state;
+  private double lastPosition;
 
   // private double ampThreshold;
 
   private final Timer timer = new Timer();
 
   private enum States {
-    LINKAGE_DOWN, AMP_ARM_UP, INTAKING, HAS_NOTE, RETRACTED, SET_ARM
+    LINKAGE_DOWN, AMP_ARM_UP, INTAKING, HAS_NOTE, MOVE_UP, RETRACTED, SET_ARM
   }
 
   /** Creates a new LinkageToAmpHandoff. */
@@ -71,9 +72,9 @@ public class LinkageToAmpHandoff extends Command {
         }
         break;
       case SET_ARM:
-        ampArm.setArm(-45.0, linkage);
+        ampArm.setArm(-42.0, linkage);
         ampArm.setWrist(45.0);
-        if (Math.abs(ampArm.getArmPosition() + 45.0) < 2.0 && Math.abs(ampArm.getWristPosition() - 45.0) < 2.0) {
+        if (Math.abs(ampArm.getArmPosition() + 42.0) < 2.0 && Math.abs(ampArm.getWristPosition() - 45.0) < 2.0) {
           timer.start();
           state = States.INTAKING;
         }
@@ -84,10 +85,16 @@ public class LinkageToAmpHandoff extends Command {
         ampIntake.runIntake(0.70);
 
         if (!ampArm.getIntakeSensor()) {
+          state = States.MOVE_UP;
+        }
+        lastPosition =ampIntake.getEncoderPosition();
+        break;
+      case MOVE_UP:
+        ampIntake.runIntake(.1);
+        if(ampIntake.getEncoderPosition() - lastPosition >= 2.0){
           ampIntake.stop();
           state = States.HAS_NOTE;
         }
-
         break;
       case HAS_NOTE:
         ampArm.setArm(-8.0, linkage);
@@ -95,6 +102,7 @@ public class LinkageToAmpHandoff extends Command {
           state = States.RETRACTED;
         }
         break;
+      
       case RETRACTED:
         linkage.setAngle(174.0, ampArm);
         ampArm.setWrist(82.0);
@@ -102,8 +110,9 @@ public class LinkageToAmpHandoff extends Command {
           done = true;
         }
         break;
+      }
     }
-  }
+  
 
   // Called once the command ends or is interrupted.
   @Override

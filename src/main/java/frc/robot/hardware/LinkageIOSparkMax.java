@@ -62,6 +62,10 @@ public class LinkageIOSparkMax implements LinkageIO {
     sparkMax.set(speed);
   }
 
+  public double getVelocity() {
+    return 1.0;
+  }
+
   public void stopMotor() {
     sparkMax.stopMotor(); 
   }

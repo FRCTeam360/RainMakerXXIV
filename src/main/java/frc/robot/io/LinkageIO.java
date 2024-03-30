@@ -44,6 +44,8 @@ public interface LinkageIO {
 
   public void setPosition(double angle);
 
+  public double getVelocity();
+
   public void enableBrakeMode();
 
   public void disableBrakeMode();

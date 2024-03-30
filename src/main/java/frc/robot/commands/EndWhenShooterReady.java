@@ -42,7 +42,7 @@ public class EndWhenShooterReady extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean isLinkageAtSetpoint = linkage.isAtSetpoint();
+    boolean isLinkageAtSetpoint = linkage.isAtSetpoint() && Math.abs(linkage.getVelocity()) < 2;
     boolean isFlywheelAboveSetpoint = flywheel.isAboveSetpoint();
     boolean isDrivetrainOnTarget = swerveDrivetrain.isFacingAngle();
     Logger.recordOutput("EndWhenShooterReady: isLinkageAtSetpoint", isLinkageAtSetpoint);
