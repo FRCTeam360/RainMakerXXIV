@@ -14,6 +14,8 @@ public class PowerAmpArm extends Command {
   private final AmpArm ampArm;
   private final Linkage linkage;
   private final XboxController operatorCont = new XboxController(1);
+  private final XboxController testCont = new XboxController(2);
+  private double position;
 
   /** Creates a new PowerArm. */
   public PowerAmpArm(AmpArm ampArm, Linkage linkage) {
@@ -27,14 +29,39 @@ public class PowerAmpArm extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    position = ampArm.getArmPosition();
     CommandLogger.logCommandStart(this);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ampArm.runWrist(getWithDeadband(-operatorCont.getRightY()) * 0.1);
-    ampArm.runArm(getWithDeadband(operatorCont.getLeftY()) * -0.5, linkage);
+    double operatorContRightY = getWithDeadband(-operatorCont.getRightY() * 0.1);
+    double testContRightY = getWithDeadband(-testCont.getRightY() * 0.1);
+    if(operatorContRightY != 0){
+      ampArm.runWrist(operatorContRightY);
+    } else if(testContRightY != 0){
+      ampArm.runWrist(testContRightY);
+    }else{
+      ampArm.runWrist(0.0);
+    }
+    
+    
+    //ampArm.runArm(getWithDeadband(operatorCont.getLeftY()) * -0.5, linkage);
+    System.out.println("position = " + position);
+
+    if (Math.abs(operatorCont.getLeftY()) > 0.1) {
+      System.out.println("manual");
+      ampArm.runArm(getWithDeadband(operatorCont.getLeftY()) * -0.5, linkage);
+      position = ampArm.getArmPosition();
+    }else if(Math.abs(testCont.getLeftY()) > 0.1){
+      System.out.println("manual");
+      ampArm.runArm(getWithDeadband(testCont.getLeftY()) * -0.5, linkage);
+      position = ampArm.getArmPosition();
+    } else {
+      System.out.println("setpoint");
+      ampArm.setArm(position, linkage);
+    }
 
     // FOR CHARLIE
     // if (operatorCont.getBackButton()) {

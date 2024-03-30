@@ -16,7 +16,7 @@ public class TrapClimb extends Command {
   private final Climber climber; 
   private final Linkage linkage; 
   private final XboxController operatorCont = new XboxController(1);
-  private double climbHeight = -57.0; 
+  private double climbHeight = -58.0; 
   private double ampSetpoint = 115.0;
   /** Creates a new TrapClimb. */
   public TrapClimb(AmpArm ampArm, Climber climber, Linkage linkage) {
@@ -35,16 +35,23 @@ public class TrapClimb extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climber.setLeftHeight(climbHeight, 1);
-    climber.setRightHeight(climbHeight, 1);
-    ampArm.setArm(ampSetpoint, linkage);
-    ampArm.runWrist(getWithDeadband(-operatorCont.getRightY()) * 0.1);
-    boolean leftClimbCheck = Math.abs(climber.getLeftPosition() - climbHeight) < 1.0;
-    System.out.println(Math.abs(climber.getLeftPosition() - climbHeight));
-    boolean rightClimbCheck = Math.abs(climber.getRightPosition() - climbHeight) < 1.0;
-    System.out.println(Math.abs(climber.getRightPosition() - climbHeight));
+    ampArm.setWrist(145.0);
+    if(Math.abs(ampArm.getWristPosition() - 145.0) < 2.0 ){
+      climber.setLeftHeight(climbHeight, 1);
+      climber.setRightHeight(climbHeight, 1);
+      ampArm.setArm(ampSetpoint, linkage);
+    }
+    
+
+
+    boolean leftClimbCheck = Math.abs(climber.getLeftPosition() - climbHeight) < 3.0;
+    boolean rightClimbCheck = Math.abs(climber.getRightPosition() - climbHeight) < 3.0;
+    
+    // System.out.println(Math.abs(climber.getLeftPosition() - climbHeight));
+    // System.out.println(Math.abs(climber.getRightPosition() - climbHeight));
+
     if(leftClimbCheck && rightClimbCheck) {
-      ampArm.setWrist(180.0);
+      ampArm.runWrist(getWithDeadband(-operatorCont.getRightY()) * 0.1);
     }
     // if(leftClimbCheck && rightClimbCheck){
     //   System.out.println(leftClimbCheck);

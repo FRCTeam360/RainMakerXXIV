@@ -64,7 +64,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private double headingKP = 10;
     private double headingKI = 0.2;
     private double headingIZone = 0.17;
-    private double headingKD = 0.0;
+    private double headingKD = 0.069;
 
     // Point to vision target PID gains
     private double visionTargetKP = 0.3;
@@ -208,7 +208,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                 .withVelocityX(velocityX)
                 .withVelocityY(velocityY);
         facingAngleCommand.HeadingController = headingController;
-        System.out.println("turntoCMD");
 
         if (shouldEnd) {
             return this.applyRequest(() -> facingAngleCommand)
@@ -243,11 +242,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     }
 
     public double getAngle() {
-        return this.getPigeon2().getAngle();
+        return getPose().getRotation().getDegrees();
     }
 
     public Rotation2d getRotation2d() {
-        return this.getPigeon2().getRotation2d();
+        return getPose().getRotation();
     }
 
     public void zero() {
@@ -280,17 +279,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                 .withVelocityY(left * Constants.MAX_SPEED_MPS)
                 .withTargetDirection(Rotation2d.fromDegrees(desiredAngle));
                 request.HeadingController = headingController;
-                // request.ForwardReference = SwerveRequest.ForwardReference.RedAlliance;
+                //request.ForwardReference = SwerveRequest.ForwardReference.RedAlliance;
         this.setControl(request);
     }
 
     public Pose2d getPose() {
-        // double x = this.getState().Pose.getX();
-        // double y = this.getState().Pose.getY();
-        // Rotation2d rot = this.getState().Pose.getRotation();
-        // System.out.println("CURRENT POSE X: " + x);
-        // System.out.println("CURRENT POSE Y: " + y);
-        // System.out.println("CURRENT POSE ROTATION: " + rot);
         return this.getState().Pose;
     }
 
@@ -310,10 +303,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     }
 
     private void driveRobotRelative(ChassisSpeeds speed) {
-        // print x and y speeds and rotation rate
-        // System.out.println("X VELOCITY: " + speed.vxMetersPerSecond);
-        // System.out.println("Y VELOCITY: " + speed.vyMetersPerSecond);
-        // System.out.println("ROTATION RATE: " + speed.omegaRadiansPerSecond);
         this.setControl(new SwerveRequest.ApplyChassisSpeeds().withSpeeds(speed));
     }
 
@@ -359,9 +348,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     @Override
     public void periodic() {
-        Logger.recordOutput("Swerve Current Pose", this.getPose());
-        Logger.recordOutput("Swerve Rotation", this.getRotation2d());
-        Logger.recordOutput("Swerve Angle", this.getAngle());
+        Logger.recordOutput("Swerve: Current Pose", this.getPose());
+        Logger.recordOutput("Swerve: Rotation", this.getRotation2d());
+        Logger.recordOutput("Swerve: Angle", this.getAngle());
         // String moduleName = "null";
         // for (int i = 0; i < 4; i++) {
         //     switch (i) {
@@ -386,5 +375,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
            
         //}
         // Logger.recordOutput("Rotation2d", this.getPigeon2().getRotation2d());
+        Logger.recordOutput("Swerve: CurrentState", this.getState().ModuleStates);
+        Logger.recordOutput("Swerve: TargetState", this.getState().ModuleTargets);
     }
 }

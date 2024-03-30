@@ -47,24 +47,24 @@ public class TrapSetUpTheSequel extends Command {
     Translation2d currentTranslation2d = drive.getPose().getTranslation();
     drive.robotCentricDrive(0.0, .04, 0.0);
     double distance = Math.abs(currentTranslation2d.getDistance(initialTranslation));
-    if (distance > Units.inchesToMeters(8.0)) {
+    if (distance > Units.inchesToMeters(10.0)) {
       drive.robotCentricDrive(0, 0, 0);
     }
-    if (distance > Units.inchesToMeters(1.0) && distance < 0) {
+    if (distance < Units.inchesToMeters(0.2) && distance > 0) {
       arm.setArm(25.0, linkage);
-    } else if (distance > Units.inchesToMeters(3.0) && distance < Units.inchesToMeters(2.0)) {
+    } else if (distance < Units.inchesToMeters(3.0) && distance > Units.inchesToMeters(2.0)) {
       arm.setArm(45.0, linkage);
     } else if (distance > Units.inchesToMeters(4.0)) {
       arm.setArm(90.0, linkage);
     }
 
     if (arm.getArmPosition() > 10.0) {
-      arm.setWrist(-45.0);
+      arm.setWrist(0.0);
     }
 
     if (Math.abs(arm.getArmPosition() - 90
-    ) < 2.0 && Math.abs(arm.getWristPosition() + 45.0) < 2.0
-        && distance > Units.inchesToMeters(8.0)) {
+    ) < 2.0 && Math.abs(arm.getWristPosition()) < 2.0
+        && distance > Units.inchesToMeters(7.5)) {
       stop = true;
     }
 

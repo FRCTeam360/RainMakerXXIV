@@ -36,10 +36,6 @@ public class ScoreInAmp extends Command {
   public void execute() {
     ampArm.setArm(108.5, linkage);
     ampArm.setWrist(140.3);
-
-    if (ampArm.getArmPosition() >= 107.0 && ampArm.getWristPosition() >= 139.0) {
-      ampIntake.runIntake(0.5);
-    }
   }
 
   // Called once the command ends or is interrupted.

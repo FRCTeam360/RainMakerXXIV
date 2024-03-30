@@ -95,6 +95,10 @@ public class Linkage extends SubsystemBase {
     io.stopMotor();
   }
 
+  public double getVelocity() {
+    return io.getVelocity();
+  }
+
   public double getAngle() {
     return io.getPosition();
   }
