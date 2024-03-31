@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.32,
+      "x": 15.32,
       "y": 5.6
     },
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "command": {
     "type": "sequential",
@@ -44,7 +44,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "blue bloody grievance, primary"
+                              "pathName": "bulletproof 1"
                             }
                           },
                           {
@@ -79,13 +79,13 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "blue bloody grievance, secondary"
+                        "pathName": "juju red grievance 2"
                       }
                     },
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "blue bloody grievance, tertiary"
+                        "pathName": "juju red grievance 3"
                       }
                     }
                   ]
@@ -142,13 +142,13 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "blue bloody grievance, quarternary"
+                        "pathName": "juju red grievance 4"
                       }
                     },
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "blue bloody grievance, fitty"
+                        "pathName": "juju red grievance 5"
                       }
                     }
                   ]
@@ -199,13 +199,13 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "blue bloody grievance, sixiary"
+                        "pathName": "juju red grievance 6"
                       }
                     },
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "blue bloody grievance, sevean"
+                        "pathName": "juju red grievance 7"
                       }
                     }
                   ]

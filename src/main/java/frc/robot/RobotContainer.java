@@ -28,6 +28,7 @@ import frc.robot.commands.TrapSetUpTheSequel;
 import frc.robot.commands.StopClimber;
 import frc.robot.commands.TuneFlywheel;
 import frc.robot.commands.TuneSwerveDrive;
+import frc.robot.commands.WereSafeAndSound;
 import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.RobotOrientedDrive;
 import frc.robot.commands.AmpArmGoToZero;
@@ -457,14 +458,16 @@ public class RobotContainer {
         new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151.5, 7000.0));
     NamedCommands.registerCommand("kiki shot", kiki);
     NamedCommands.registerCommand("Turn", pointDrivebaseAtTarget);
+    NamedCommands.registerCommand("bloody intake", new WereSafeAndSound(intake, linkage, ampArm, vision, 140.5, true));
 
     NamedCommands.registerCommand("vision shoot", visionBoy);
     NamedCommands.registerCommand("run intake forevs <3", new IntakeForevsRun(intake, flywheel, linkage, ampArm));
     //NamedCommands.registerCommand("yake shot", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 0.0, 7000.0));
-    NamedCommands.registerCommand("real far shot", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 142.0, 8000.0));
+    NamedCommands.registerCommand("real far shot", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 140.5, 8000.0));
     NamedCommands.registerCommand("BIG spinny", new SetFlywheel(flywheel,9000.0));
     // NamedCommands.registerCommand("Intake", runExtendIntake);
     // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
+
     // NamedCommands.registerCommand("Wait", new WaitCommand(2));
     // NamedCommands.registerCommand("Shoot", shootRoutine);
     // NamedCommands.registerCommand("Rotate", drivetrain.turntoCMD(false, 45.0, 0,s
