@@ -118,6 +118,63 @@
               }
             ]
           }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "BIG spinny"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "blue bloody grievance, quarternary"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "blue bloody grievance, fitty"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Turn"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "real far shot"
+                }
+              }
+            ]
+          }
         }
       ]
     }
