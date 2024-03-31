@@ -22,6 +22,7 @@ public interface IntakeIO {
     // public double intakeSupplyCurrent = 0.0;
     public double intakePosition = 0.0;
     public double intakeVelocity = 0.0;
+    public double intakeSetpoint = 0.0;
   }
   
   public default void updateInputs(IntakeIOInputs inputs) {}

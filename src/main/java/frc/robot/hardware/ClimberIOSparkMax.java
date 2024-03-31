@@ -41,6 +41,9 @@ public class ClimberIOSparkMax implements ClimberIO {
     private final float rightRetractLimit = -57;
     private final float rightExtensionLimit = 60;
 
+    public double leftSetpoint = 0.0;
+    public double rightSetpoint = 0.0;
+
     private static class UnloadedConstants {
         static final double leftkP = 1.0;
         static final double leftkI = 0.0001;
@@ -148,6 +151,7 @@ public class ClimberIOSparkMax implements ClimberIO {
     public void setLeftHeight(double height, int pidSlot) { // height should be in inches
         height = height / POSITION_CONVERSION;
         leftPIDController.setReference(height, ControlType.kPosition, pidSlot);
+        leftSetpoint = height;
     }
 
     /**
@@ -157,6 +161,7 @@ public class ClimberIOSparkMax implements ClimberIO {
     public void setRightHeight(double height, int pidSlot) {
         height = height / POSITION_CONVERSION;
         rightPIDController.setReference(height, ControlType.kPosition, pidSlot);
+        rightSetpoint = height;
     }
 
     @Override
@@ -213,5 +218,7 @@ public class ClimberIOSparkMax implements ClimberIO {
         inputs.climberRightVoltage = rightMotor.getAppliedOutput() * rightMotor.getBusVoltage();
         inputs.climberLeftDutyCycle = leftMotor.getAppliedOutput();
         inputs.climberRightDutyCycle = rightMotor.getAppliedOutput();
+        inputs.climberLeftSetpoint = leftSetpoint;
+        inputs.climberRightSetpoint = rightSetpoint;
     }
 }

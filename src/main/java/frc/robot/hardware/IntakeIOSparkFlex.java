@@ -22,10 +22,12 @@ public class IntakeIOSparkFlex implements IntakeIO {
     private final DigitalInput sideSensor = new DigitalInput(Constants.SIDE_SENSOR_PORT);
     private final DigitalInput intakeSensor = new DigitalInput(Constants.INTAKE_SENSOR_PORT);
     private final DigitalInput shooterSensor = new DigitalInput(Constants.SHOOTER_SENSOR_PORT);
+
+    public double setpoint;
     
     public IntakeIOSparkFlex(){
         sparkFlex.restoreFactoryDefaults(); 
-        sparkFlex.setInverted(false);
+        sparkFlex.setInverted(Constants.isCompBot() ? false : true);
 
         sparkFlex.setIdleMode(IdleMode.kBrake);
         sparkFlex.setSmartCurrentLimit(120, 50);
@@ -45,7 +47,7 @@ public class IntakeIOSparkFlex implements IntakeIO {
         inputs.intakeVelocity = encoder.getVelocity();
         inputs.intakePosition = encoder.getPosition();
         inputs.shooterSensor = getShooterSensor();
-        // inputs.intakeSetpoint = ???
+        inputs.intakeSetpoint = setpoint;
     }
 
     @Override
@@ -101,5 +103,6 @@ public class IntakeIOSparkFlex implements IntakeIO {
     @Override
     public void setEncoderValue(double encoderPosition) {
         sparkFlex.getEncoder().setPosition(encoderPosition);
+        setpoint = encoderPosition;
     }
 }

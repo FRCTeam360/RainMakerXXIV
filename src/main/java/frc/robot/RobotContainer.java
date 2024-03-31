@@ -232,7 +232,7 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    field = new Field2d();
+        field = new Field2d();
         SmartDashboard.putData("Field", field);
 
         // Logging callback for current robot pose
@@ -252,7 +252,7 @@ public class RobotContainer {
             // Do whatever you want with the poses here
             field.getObject("path").setPoses(poses);
         });
-        
+
     switch (Constants.getRobotType()) {
       case WOODBOT:
         // Real robot, instantiate hardware IO implementations
