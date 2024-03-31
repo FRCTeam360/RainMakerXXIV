@@ -461,7 +461,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("vision shoot", visionBoy);
     NamedCommands.registerCommand("run intake forevs <3", new IntakeForevsRun(intake, flywheel, linkage, ampArm));
     //NamedCommands.registerCommand("yake shot", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 0.0, 7000.0));
-    NamedCommands.registerCommand("real far shot", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 148.0, 9000.0));
+    NamedCommands.registerCommand("real far shot", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 142.0, 8000.0));
     NamedCommands.registerCommand("BIG spinny", new SetFlywheel(flywheel,9000.0));
     // NamedCommands.registerCommand("Intake", runExtendIntake);
     // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
