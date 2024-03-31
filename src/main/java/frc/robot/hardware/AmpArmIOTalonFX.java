@@ -183,6 +183,8 @@ public class AmpArmIOTalonFX implements AmpArmIO {
     inputs.brakeButton = this.getRawBrakeButton();
     inputs.armSetpoint = armMotor.getClosedLoopReference().getValueAsDouble();
     inputs.wristSetpoint = wristMotor.getClosedLoopReference().getValueAsDouble();
+    inputs.armZeroed = armZeroed();
+    inputs.wristZeroed = wristZeroed();
   }
 
   @Override
@@ -195,6 +197,21 @@ public class AmpArmIOTalonFX implements AmpArmIO {
     return wristMotor.getPosition().getValueAsDouble();
   }
 
+  public boolean armZeroed() {
+    if (armMotor.getPosition().getValueAsDouble() == 0.0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public boolean wristZeroed() {
+    if (wristMotor.getPosition().getValueAsDouble() == 0.0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   @Override
   public void zeroWrist() {
     wristMotor.setPosition(0.0);

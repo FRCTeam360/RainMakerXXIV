@@ -45,6 +45,7 @@ public class VisionIOLimelight implements VisionIO {
     inputs.tyBase = getTYBase();
     inputs.tyAdjusted = getTYAdjusted();
     inputs.pipeline = getPipeline();
+    inputs.botpose = getBotPose();
   }
 
   public double getTX() {

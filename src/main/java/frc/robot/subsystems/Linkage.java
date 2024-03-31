@@ -36,7 +36,7 @@ public class Linkage extends SubsystemBase {
   private final LinkageIO io;
   private final LinkageIOInputsAutoLogged inputs = new LinkageIOInputsAutoLogged();
   private double positionSetpoint;
-  
+    
   private static final double STARTING_ANGLE = 50.0;
   static XboxController driverCont = new XboxController(0);
 

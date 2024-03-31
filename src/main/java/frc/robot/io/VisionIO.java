@@ -16,6 +16,7 @@ public interface VisionIO {
         public double tyAdjusted;
         public double tv;
         public double pipeline;
+        public Pose2d botpose;
     }
 
     public void updateInputs(VisionIOInputs inputs);
@@ -37,4 +38,5 @@ public interface VisionIO {
     public void takeSnapshot();
 
     public void resetSnapshot();
+
 }
