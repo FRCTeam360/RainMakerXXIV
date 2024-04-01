@@ -82,6 +82,8 @@ import java.util.Optional;
 
 import javax.management.InstanceNotFoundException;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentricFacingAngle;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -245,6 +247,7 @@ public class RobotContainer {
         PathPlannerLogging.setLogTargetPoseCallback((pose) -> {
             // Do whatever you want with the pose here
             field.getObject("target pose").setPose(pose);
+            Logger.recordOutput("target pose", field.getObject("target pose").getPose());
         });
 
         // Logging callback for the active path, this is sent as a list of poses
