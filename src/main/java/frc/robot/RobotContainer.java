@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.RobotType;
 import frc.robot.commands.DiagonalSensorIntake;
 import frc.robot.commands.DriveFieldCentricFacingAngle;
+import frc.robot.commands.DropNote;
 import frc.robot.commands.RunExtendIntake;
 import frc.robot.commands.RydarsSpinup;
 import frc.robot.commands.SetClimbers;
@@ -26,6 +27,7 @@ import frc.robot.commands.TrapSetUp;
 import frc.robot.commands.TrapSetUpTheSequel;
 import frc.robot.commands.StopClimber;
 import frc.robot.commands.TrapBackHook;
+import frc.robot.commands.TrapBackHookSequel;
 import frc.robot.commands.TuneFlywheel;
 import frc.robot.commands.TuneSwerveDrive;
 import frc.robot.commands.PowerFlywheel;
@@ -42,6 +44,7 @@ import frc.robot.commands.HomeAmpArmWrist;
 import frc.robot.commands.IntakeCOmmand;
 import frc.robot.commands.LevelClimbers;
 import frc.robot.commands.ClimberPIDTuner;
+import frc.robot.commands.DefenseFieldOrientedDrive;
 import frc.robot.commands.LinkageSetpoint;
 import frc.robot.commands.LinkageToAmpHandoff;
 import frc.robot.commands.PointDrivebaseAtTarget;
@@ -167,6 +170,9 @@ public class RobotContainer {
   private ShuffleboardTab diagnosticTab;
   private FieldOrientedDrive fieldOrientedDrive;
   private RobotOrientedDrive robotOrientedDrive;
+  private DefenseFieldOrientedDrive defenseFieldOrientedDrive;
+
+
   private DriveFieldCentricFacingAngle passFromSourceAngle;
   private SnapDrivebaseToAngle snapDrivebaseToAngle;
   private ClimberPIDTuner pidTuner;
@@ -196,6 +202,7 @@ public class RobotContainer {
   private TrapSetUpTheSequel sequal;
   private Command passUnderStage;
   private RydarsSpinup rydarSubwoof;
+  private DropNote dropNote;
 
   private SetClimbers goToZero;
   private SetClimbers fullRetract;
@@ -224,6 +231,7 @@ public class RobotContainer {
   private SetArmWrist stowArm;
 
   private TrapBackHook trapBackHook;
+  private TrapBackHookSequel trapBackHookSequel;
 
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
@@ -322,6 +330,7 @@ public class RobotContainer {
     commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, ampArm, vision);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain, linkage, ampArm, false);
     fieldOrientedSlowGuy = new FieldOrientedDrive(drivetrain, linkage, ampArm, true);
+    defenseFieldOrientedDrive = new DefenseFieldOrientedDrive(drivetrain, linkage, ampArm);
 
     passFromSourceAngle = new DriveFieldCentricFacingAngle(drivetrain, 225.0, 315.0);
     robotOrientedDrive = new RobotOrientedDrive(drivetrain);
@@ -348,7 +357,7 @@ public class RobotContainer {
     powerLinkage = new PowerLinkage(linkage, ampArm);
     stowLinkage = commandFactory.stowLinkage();
     powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
-    inny = new IntakeCOmmand(intake, linkage, ampArm, vision, 110.0, true);
+    inny = new IntakeCOmmand(intake, linkage, ampArm, vision, 140.0, true);
     autoinny = new AutoIntakeCOmmand(intake, linkage, ampArm, vision, 177.0, true);
     longerinny = new AutoIntakeCOmmand(intake, linkage, ampArm, vision, 144.0, true);
     ryryinny = new IntakeCOmmand(intake, linkage, ampArm, vision, 0.0, false);
@@ -362,12 +371,16 @@ public class RobotContainer {
     pointDrivebaseAtTarget = commandFactory.pointDriveBaseAtTarget();
     shootAtSpeakerVision = commandFactory.shootAtSpeakerVision();
     spinUpSpeakerVision = commandFactory.spinUpSpeakerVision();
+    dropNote = new DropNote(intake, flywheel);
 
     deploy = commandFactory.deploy();
 
     trapDrive = new TrapSetUp(drivetrain, linkage, ampArm, climber);
     trapClimb = new TrapClimb(ampArm, climber, linkage);
     trapBackHook = new TrapBackHook(climber, drivetrain, ampArm, linkage);
+
+    trapBackHook = new TrapBackHook(climber, drivetrain, ampArm, linkage);
+    trapBackHookSequel = new TrapBackHookSequel(climber, drivetrain, ampArm, linkage);
 
     goToZero = commandFactory.setClimberShouldFinish(0);
     soloRaise = commandFactory.setClimberShouldntFinish(40);
@@ -441,6 +454,8 @@ public class RobotContainer {
         new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151.5, 7000.0));
     NamedCommands.registerCommand("kiki shot", kiki);
     NamedCommands.registerCommand("Turn", pointDrivebaseAtTarget);
+    NamedCommands.registerCommand("drop note", dropNote);
+    
 
     NamedCommands.registerCommand("vision shoot", visionBoy);
     // NamedCommands.registerCommand("Intake", runExtendIntake);
@@ -498,6 +513,8 @@ public class RobotContainer {
     driverController.b().onTrue(stowLinkage);
     driverController.a().and(driverController.rightTrigger().negate()).whileTrue(shootFromSubwooferSpinUp);
     driverController.x().whileTrue(snapDrivebaseToAngle);
+    driverController.rightStick().whileTrue(defenseFieldOrientedDrive);
+    
 
     driverController.rightTrigger().and(driverController.leftTrigger().negate()).and(driverController.back().negate())
         .whileTrue(shootFromSubwoofer);
@@ -539,14 +556,14 @@ public class RobotContainer {
 
     
     if (Objects.nonNull(ampArm)) {
-      driverController.y().whileTrue(new SequentialCommandGroup(trapDrive, robotOrientedDrive));
+      driverController.y().whileTrue(new SequentialCommandGroup(trapBackHook, robotOrientedDrive));
 
       operatorController.a().toggleOnTrue(ampSetpoint);
       operatorController.x().onTrue(linkageToAmpHandoff);
       operatorController.b().toggleOnTrue(stowArm);
       operatorController.y().toggleOnTrue(homeArmWrist);
 
-      operatorController.pov(90).toggleOnTrue(trapClimb);
+      operatorController.pov(90).toggleOnTrue(trapBackHookSequel);
 
       // operatorController.pov(90).onTrue(homeAmpArmWrist);
       // operatorController.pov(180).onTrue(ampArmGoToZero);

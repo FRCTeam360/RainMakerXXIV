@@ -257,11 +257,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         this.setControl(new SwerveRequest.SwerveDriveBrake());
     }
 
-    public void fieldCentricDrive(double left, double forward, double rotation) {
+    public void fieldCentricDrive(double left, double forward, double rotation, double MAX_SPEED, double MAX_ANGULAR) {
         this.setControl(new SwerveRequest.FieldCentric()
-                .withVelocityX(forward * Constants.MAX_SPEED_MPS)
-                .withVelocityY(left * Constants.MAX_SPEED_MPS)
-                .withRotationalRate(-rotation * Constants.MAX_ANGULAR_RATE));
+                .withVelocityX(forward * MAX_SPEED)
+                .withVelocityY(left * MAX_SPEED)
+                .withRotationalRate(-rotation * MAX_ANGULAR));
     }
 
     public void robotCentricDrive(double left, double forward, double rotation) {

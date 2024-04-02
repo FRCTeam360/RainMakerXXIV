@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Vision;
 import frc.robot.utils.UtilMethods;
@@ -51,7 +52,7 @@ public class PointDrivebaseAtTarget extends Command {
     if (Objects.nonNull(vision) && vision.isTargetInView()) {
       drivetrain.pointAtTarget(forward, left, vision.getTX());
     } else{
-      drivetrain.fieldCentricDrive(left, forward, rotation);
+      drivetrain.fieldCentricDrive(left, forward, rotation, Constants.MAX_SPEED_MPS, Constants.MAX_ANGULAR_RATE);
     }
 
   }

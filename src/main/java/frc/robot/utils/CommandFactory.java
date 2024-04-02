@@ -127,7 +127,7 @@ public class CommandFactory {
     }
 
     public SetLinkage stowLinkage() {
-        return new SetLinkage(linkage, 130.0, ampArm, false);
+        return new SetLinkage(linkage, 140.0, ampArm, false); //was 130
     }
 
     public SetLinkage deploy() {

@@ -30,7 +30,7 @@ public class FieldOrientedDrive extends Command {
   private final AmpArm ampArm;
   private double x = 1;
   private boolean isSlow;
-  
+
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(Constants.MAX_SPEED_MPS).withRotationalDeadband(Constants.MAX_ANGULAR_RATE)
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
@@ -56,25 +56,25 @@ public class FieldOrientedDrive extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(DriverStation.getAlliance().get() == Alliance.Red) {
-      x= -1;
+    if (DriverStation.getAlliance().get() == Alliance.Red) {
+      x = -1;
     } else {
-      x=1;
+      x = 1;
     }
     boolean isSlowDrive = linkage.getAngle() < 10.0 || ampArm.getArmPosition() > 45.0 || isSlow;
     Logger.recordOutput("Swerve: is slow", isSlowDrive);
-    if(linkage.getAngle() < 10.0 || ampArm.getArmPosition() > 45.0 || isSlow) {
+    if (linkage.getAngle() < 10.0 || ampArm.getArmPosition() > 45.0 || isSlow) {
       driveTrain.fieldCentricDrive(
-        x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftX()*.5, 0.1)),
-        x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftY()*.5, 0.1)),
-        UtilMethods.squareInput(MathUtil.applyDeadband(driverController.getRightX()*.75, 0.1))
-    );
+          x * UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftX() * .5, 0.1)),
+          x * UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftY() * .5, 0.1)),
+          UtilMethods.squareInput(MathUtil.applyDeadband(driverController.getRightX() * .75, 0.1)),
+          Constants.MAX_SPEED_MPS, Constants.MAX_ANGULAR_RATE);
     } else {
-    driveTrain.fieldCentricDrive(
-        x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1)),
-        x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1)),
-        UtilMethods.squareInput(MathUtil.applyDeadband(driverController.getRightX(), 0.1))
-    );
+      driveTrain.fieldCentricDrive(
+          x * UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1)),
+          x * UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1)),
+          UtilMethods.squareInput(MathUtil.applyDeadband(driverController.getRightX(), 0.1)),
+          Constants.MAX_SPEED_MPS, Constants.MAX_ANGULAR_RATE);
     }
 
     CommandLogger.logCommandRunning(this);
