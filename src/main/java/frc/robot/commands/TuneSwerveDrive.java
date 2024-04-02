@@ -85,7 +85,7 @@ public class TuneSwerveDrive extends Command {
   public void execute() {
     updateGains(false);
     double velocity = velocityEntry.getDouble(0.0);
-    System.out.println(velocity);
+    //System.out.println(velocity);
 
     if(driverCont.getAButton()){
       drivetrain.fieldCentricDrive(0, velocity/Constants.MAX_SPEED_MPS, 0, Constants.MAX_SPEED_MPS, Constants.MAX_ANGULAR_RATE);

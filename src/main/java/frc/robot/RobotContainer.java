@@ -107,6 +107,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
@@ -147,11 +148,10 @@ public class RobotContainer {
   private AmpArm ampArm;
   private AmpIntake ampIntake;
   private Vision vision;
-  private PointDrivebaseAtTarget pointDrivebaseAtTarget;
-
-  private CommandFactory commandFactory;
-
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
+  
+  private CommandFactory commandFactory;
+  private PointDrivebaseAtTarget pointDrivebaseAtTarget;
   private ShootInSpeaker shootRoutine;
   private RunExtendIntake runExtendIntake;
   private DiagonalSensorIntake diagonalSensorIntakeCloseShot;
@@ -196,7 +196,7 @@ public class RobotContainer {
   private IntakeCOmmand inny;
   private AutoIntakeCOmmand autoinny;
   private ScoreInAmp scoreInAmp;
-  private LinkageToAmpHandoff linkageToAmpHandoff;
+  private Command linkageToAmpHandoff;
   private AmpArmStop ampArmStop;
   private BasicClimb basicClimb;
   private TrapSetUpTheSequel sequal;
@@ -207,8 +207,10 @@ public class RobotContainer {
   private SetClimbers goToZero;
   private SetClimbers fullRetract;
   private SetClimbers soloRaise;
-  private ShootingPrepRyRy kiki;
+  private SetClimbers trap2Up;
   private SetClimbers soloRetract;
+  
+  private ShootingPrepRyRy kiki;
 
   private SetLinkage deploy;
   private FieldOrientedDrive fieldOrientedSlowGuy;
@@ -324,11 +326,6 @@ public class RobotContainer {
   }
 
   private final void initializeCommands() {
-    if (Objects.nonNull(ampArm) && Objects.nonNull(ampIntake)) {
-      scoreInAmp = new ScoreInAmp(ampArm, ampIntake, linkage);
-      linkageToAmpHandoff = new LinkageToAmpHandoff(linkage, ampArm, ampIntake, flywheel, intake);
-      ampArmNote = new AmpArmNote(ampIntake);
-    }
     diagonalSensorIntakeCloseShot = new DiagonalSensorIntake(ampArm, flywheel, intake, linkage, 6000.0);
     commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, ampArm, vision);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain, linkage, ampArm, false);
@@ -380,6 +377,7 @@ public class RobotContainer {
 
     trapDrive = new TrapSetUp(drivetrain, linkage, ampArm, climber);
     trapClimb = new TrapClimb(ampArm, climber, linkage);
+    trapBackHook = new TrapBackHook(climber, drivetrain, ampArm, linkage);
 
     trapBackHook = new TrapBackHook(climber, drivetrain, ampArm, linkage);
     trapBackHookSequel = new TrapBackHookSequel(climber, drivetrain, ampArm, linkage);
@@ -387,6 +385,8 @@ public class RobotContainer {
     goToZero = commandFactory.setClimberShouldFinish(0);
     soloRaise = commandFactory.setClimberShouldntFinish(40);
     soloRetract = commandFactory.setClimberShouldntFinish(-20);
+
+    trap2Up = commandFactory.setClimberShouldntFinish(50);
 
     fullRetract = commandFactory.setClimberShouldntFinish(-58);
 
@@ -404,13 +404,20 @@ public class RobotContainer {
       ampArmGoToZero = new AmpArmGoToZero(ampArm, linkage);
       holdArmPosition = new HoldArmPosition(ampArm, linkage);
       stowArm = new SetArmWrist(ampArm, linkage, -75, 65);
-      ampSetpoint = new SetArmWrist(ampArm, linkage, 95.0, 135.0);
+      ampSetpoint = new SetArmWrist(ampArm, linkage, 105.0, 135.0);
       homeArmWrist = new SetArmWrist(ampArm, linkage, -6.0, 80.0);
     }
     if (!Objects.isNull(ampIntake)) {
       powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
       powerAmpIntake = new PowerAmpIntake(ampIntake);
       powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
+    }
+
+    if (Objects.nonNull(ampArm) && Objects.nonNull(ampIntake)) {
+      scoreInAmp = new ScoreInAmp(ampArm, ampIntake, linkage);
+      linkageToAmpHandoff = new LinkageToAmpHandoff(linkage, ampArm, ampIntake, flywheel, intake)
+          .alongWith(fieldOrientedSlowGuy);
+      ampArmNote = new AmpArmNote(ampIntake);
     }
 
     // powerAmpArm = new PowerAmpArm(ampArm);
@@ -499,6 +506,7 @@ public class RobotContainer {
    */
 
   private void configureBindings() {
+
     // DRIVER CONTROLS DO NOT DELETE JUST COMMENT OUT
     driverController.leftBumper().whileTrue(powerIntakeReversed);
     driverController.rightBumper().whileTrue(inny);
@@ -515,26 +523,45 @@ public class RobotContainer {
     driverController.leftTrigger().and(driverController.rightTrigger().negate()).and(driverController.back().negate())
         .whileTrue(spinUpSpeakerVision);
 
-    driverController.start().whileTrue(commandFactory.spinUpForOverPassAndShoot());
+    driverController.start().and(driverController.rightTrigger().negate()).and(driverController.leftTrigger().negate())
+        .whileTrue(commandFactory.spinUpForOverPass());
+    driverController.start().and(driverController.rightTrigger()).and(driverController.leftTrigger().negate())
+        .whileTrue(commandFactory.spinUpForOverPassAndShoot());
 
     driverController.back().and(driverController.rightTrigger().negate()).and(driverController.leftTrigger().negate())
         .whileTrue(commandFactory.spinUpForUnderPass());
     driverController.back().and(driverController.rightTrigger()).and(driverController.leftTrigger().negate())
         .whileTrue(commandFactory.spinUpForUnderPassAndShoot());
-    driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
+
+    driverController.start().whileTrue(commandFactory.spinUpForOverPassAndShoot());
+
     driverController.pov(0).toggleOnTrue(deploy);
     driverController.pov(90).whileTrue(powerIntake);
+    driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
 
     // OPERATOR CONTROLS DO NOT DELETE JUST COMMENT OUT
-
     operatorController.leftBumper().whileTrue(powerAmpIntakeReverse);
     operatorController.rightBumper().whileTrue(powerAmpIntake);
 
+    operatorController.back().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
+    operatorController.start().whileTrue(powerAmpArm);
+
+    //right stick is slow mode for amp intake
+    operatorController.leftStick().onTrue(fullRetract);
+
+    // operatorController.pov(0).onTrue(soloRaise);
+    operatorController.pov(0).onTrue(trap2Up);
+    operatorController.pov(180).toggleOnTrue(soloRetract);
+    operatorController.pov(270).onTrue(goToZero);
+
+    
     if (Objects.nonNull(ampArm)) {
       driverController.y().whileTrue(new SequentialCommandGroup(trapBackHook, robotOrientedDrive));
 
-      operatorController.x().onTrue(linkageToAmpHandoff.alongWith(fieldOrientedSlowGuy));
       operatorController.a().toggleOnTrue(ampSetpoint);
+      operatorController.x().onTrue(linkageToAmpHandoff);
+      operatorController.b().toggleOnTrue(stowArm);
+      operatorController.y().toggleOnTrue(homeArmWrist);
 
       operatorController.pov(90).toggleOnTrue(trapBackHookSequel);
 
@@ -542,18 +569,10 @@ public class RobotContainer {
       // operatorController.pov(180).onTrue(ampArmGoToZero);
     }
 
-    // operatorController.b().toggleOnTrue(trapClimb);
-    //operatorController.start().whileTrue(stopClimber);
-    operatorController.start().whileTrue(powerAmpArm);
-    operatorController.pov(0).onTrue(soloRaise);
-    operatorController.pov(270).onTrue(goToZero);
-    // operatorController.leftStick().onTrue(fullRetract);
-    operatorController.pov(180).toggleOnTrue(soloRetract);
-    operatorController.back().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
-    operatorController.leftStick().onTrue(new InstantCommand(() -> {
-      ampArm.setArm78();
-      ampArm.setWrist70();
-    }, ampArm));
+    // operatorController.leftStick().onTrue(new InstantCommand(() -> {
+    // ampArm.setArm78();
+    // ampArm.setWrist70();
+    // }, ampArm));
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
@@ -562,8 +581,8 @@ public class RobotContainer {
   public void configureTestBindings() {
     testController.rightBumper().whileTrue(inny);
     testController.leftTrigger().whileTrue(commandFactory.tuneLinkageSetpoint());
-    testController.rightTrigger().whileTrue(intake.runEnd(()-> intake.run(1.0), ()-> intake.run(0.0)));
-   // testController.x().onTrue(linkageToAmpHandoff.alongWith(fieldOrientedSlowGuy));
+    testController.rightTrigger().whileTrue(intake.runEnd(() -> intake.run(1.0), () -> intake.run(0.0)));
+    testController.x().onTrue(linkageToAmpHandoff);
   }
 
   public void configureCharacterizationBindings() {

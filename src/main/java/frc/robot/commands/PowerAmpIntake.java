@@ -31,8 +31,9 @@ public class PowerAmpIntake extends Command {
   @Override
   public void execute() {
     if(opCont.getRightStickButton()) {
-      ampIntake.runIntake(.25);
+      ampIntake.runIntake(0.25);
     } else {
+
     ampIntake.runIntake(1.0);
     }
   }

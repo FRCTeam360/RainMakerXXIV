@@ -153,6 +153,31 @@ public class CommandFactory {
                                         takeSnapshot())));
     }
 
+    public Command shootAtSpeakerVisionAuto() {
+        return shootAtSpeakerVision().raceWith(new InterruptWhenNoNote(intake));
+    }
+
+    private class InterruptWhenNoNote extends Command {
+        boolean shouldEnd = false;
+        private final Intake intake;
+        @Override
+        public void initialize() {
+            shouldEnd = !intake.hasNote();
+        }
+
+        @Override
+        public boolean isFinished() {
+            return shouldEnd;
+        }
+
+        public InterruptWhenNoNote(Intake intake) {
+            this.intake = intake;
+        }
+    }
+
+    
+    
+
     public Command spinUpSpeakerVision() {
         Command pointDrivebaseAtTarget = new PointDrivebaseAtTarget(drivetrain, vision);
         return new ParallelCommandGroup(
@@ -180,7 +205,7 @@ public class CommandFactory {
 
     public Command spinUpForOverPass() {
         return new ParallelCommandGroup(
-                spinUpShooterSetpoint(170.0, 5000.0),
+                spinUpShooterSetpoint(170.0, 5000.0 * 0.85),
                 new DriveFieldCentricFacingAngle(drivetrain, -150.0, -40.0));
     }
 
@@ -194,7 +219,7 @@ public class CommandFactory {
 
     public Command spinUpForUnderPass() {
         return new ParallelCommandGroup(
-                spinUpShooterSetpoint(82.0, 4500.0),
+                spinUpShooterSetpoint(82.0, 4500.0 * 0.85),
                 new DriveFieldCentricFacingAngle(drivetrain, -140.0, -40.0));
     }
 
