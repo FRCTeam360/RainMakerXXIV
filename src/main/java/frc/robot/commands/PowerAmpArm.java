@@ -48,18 +48,18 @@ public class PowerAmpArm extends Command {
     
     
     //ampArm.runArm(getWithDeadband(operatorCont.getLeftY()) * -0.5, linkage);
-    System.out.println("position = " + position);
+    //System.out.println("position = " + position);
 
     if (Math.abs(operatorCont.getLeftY()) > 0.1) {
-      System.out.println("manual");
+     // System.out.println("manual");
       ampArm.runArm(getWithDeadband(operatorCont.getLeftY()) * -0.5, linkage);
       position = ampArm.getArmPosition();
     }else if(Math.abs(testCont.getLeftY()) > 0.1){
-      System.out.println("manual");
+      //System.out.println("manual");
       ampArm.runArm(getWithDeadband(testCont.getLeftY()) * -0.5, linkage);
       position = ampArm.getArmPosition();
     } else {
-      System.out.println("setpoint");
+     // System.out.println("setpoint");
       ampArm.setArm(position, linkage);
     }
 
