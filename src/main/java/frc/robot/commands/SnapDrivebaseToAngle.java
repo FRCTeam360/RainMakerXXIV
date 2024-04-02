@@ -19,6 +19,7 @@ public class SnapDrivebaseToAngle extends Command {
   private CommandSwerveDrivetrain swerveDrivetrain;
   double x = 1;
   double angleToFace = 5.0;
+
   /** Creates a new SnapDrivebaseToAngle. */
   public SnapDrivebaseToAngle(CommandSwerveDrivetrain swerveDrivetrain) {
     this.swerveDrivetrain = swerveDrivetrain;
@@ -29,38 +30,44 @@ public class SnapDrivebaseToAngle extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(DriverStation.getAlliance().get() == Alliance.Red) {
-      x= -1;
-    } else {
-      x=1;
-    }
     if (DriverStation.getAlliance().get() == Alliance.Red) {
-
-      if (swerveDrivetrain.getAngle() >= 0 && swerveDrivetrain.getAngle() <= 90) {
-        angleToFace = 60.0;
-      } else if (swerveDrivetrain.getAngle() >= 90 && swerveDrivetrain.getAngle() <= 150) {
-        angleToFace = 120.0;
-      } else if (swerveDrivetrain.getAngle() >= 150 || swerveDrivetrain.getAngle() <= -150.0) {
-        angleToFace = 180.0;
-      } else if (swerveDrivetrain.getAngle() >= -150 && swerveDrivetrain.getAngle() <= -90.0) {
-        angleToFace = -120.0;
-      } else if (swerveDrivetrain.getAngle() >= -90.0 && swerveDrivetrain.getAngle() <= 0.0) {
-        angleToFace = -60.0;
-      }
-
+      x = -1;
     } else {
-      if (swerveDrivetrain.getAngle() >= -30 && swerveDrivetrain.getAngle() <= 30) {
-        angleToFace = 0.0;
-      } else if (swerveDrivetrain.getAngle() >= 30 && swerveDrivetrain.getAngle() <= 90) {
-        angleToFace = 60.0;
-      } else if (swerveDrivetrain.getAngle() >= 90 && swerveDrivetrain.getAngle() <= 180.0) {
-        angleToFace = 120.0;
-      } else if (swerveDrivetrain.getAngle() >= -180 && swerveDrivetrain.getAngle() <= -90.0) {
-        angleToFace = -120.0;
-      } else if (swerveDrivetrain.getAngle() >= -90.0 && swerveDrivetrain.getAngle() <= -30.0) {
-        angleToFace = -60.0;
-      }
+      x = 1;
     }
+    // if (DriverStation.getAlliance().get() == Alliance.Red) {
+
+    // if (swerveDrivetrain.getAngle() >= 0 && swerveDrivetrain.getAngle() <= 90) {
+    // angleToFace = 60.0;
+    // } else if (swerveDrivetrain.getAngle() >= 90 && swerveDrivetrain.getAngle()
+    // <= 150) {
+    // angleToFace = 120.0;
+    // } else if (swerveDrivetrain.getAngle() >= 150 || swerveDrivetrain.getAngle()
+    // <= -150.0) {
+    // angleToFace = 180.0;
+    // } else if (swerveDrivetrain.getAngle() >= -150 && swerveDrivetrain.getAngle()
+    // <= -90.0) {
+    // angleToFace = -120.0;
+    // } else if (swerveDrivetrain.getAngle() >= -90.0 &&
+    // swerveDrivetrain.getAngle() <= 0.0) {
+    // angleToFace = -60.0;
+    // }
+
+    // } else {
+    if (swerveDrivetrain.getAngle() >= -30 && swerveDrivetrain.getAngle() <= 30) {
+      angleToFace = 0.0;
+    } else if (swerveDrivetrain.getAngle() >= 30 && swerveDrivetrain.getAngle() <= 90) {
+      angleToFace = 60.0;
+    } else if (swerveDrivetrain.getAngle() >= 90 && swerveDrivetrain.getAngle() <= 150.0) {
+      angleToFace = 120.0;
+    } else if (swerveDrivetrain.getAngle() >= -150 && swerveDrivetrain.getAngle() <= -90.0) {
+      angleToFace = -120.0;
+    } else if (swerveDrivetrain.getAngle() >= 150 || swerveDrivetrain.getAngle() <= -150) {
+      angleToFace = 180.0;
+    } else if (swerveDrivetrain.getAngle() >= -90.0 && swerveDrivetrain.getAngle() <= -30.0) {
+      angleToFace = -60.0;
+    }
+
     Logger.recordOutput("Swerve angle to face", angleToFace);
   }
 
@@ -68,8 +75,8 @@ public class SnapDrivebaseToAngle extends Command {
   @Override
   public void execute() {
     swerveDrivetrain.driveFieldCentricFacingAngle(
-      x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1)),
-      x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1)), angleToFace);
+        x * UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftY(), 0.1)),
+        x * UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1)), angleToFace);
   }
 
   // Called once the command ends or is interrupted.
