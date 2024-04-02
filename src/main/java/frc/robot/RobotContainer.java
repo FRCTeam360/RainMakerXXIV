@@ -25,6 +25,11 @@ import frc.robot.commands.TrapClimb;
 import frc.robot.commands.TrapSetUp;
 import frc.robot.commands.TrapSetUpTheSequel;
 import frc.robot.commands.StopClimber;
+<<<<<<< Updated upstream
+=======
+import frc.robot.commands.TrapBackHook;
+import frc.robot.commands.TrapBackHookSequel;
+>>>>>>> Stashed changes
 import frc.robot.commands.TuneFlywheel;
 import frc.robot.commands.TuneSwerveDrive;
 import frc.robot.commands.PowerFlywheel;
@@ -219,6 +224,12 @@ public class RobotContainer {
   private SetArmWrist homeArmWrist;
   private SetArmWrist stowArm;
 
+<<<<<<< Updated upstream
+=======
+  private TrapBackHook trapBackHook;
+  private TrapBackHookSequel trapBackHookSequel;
+
+>>>>>>> Stashed changes
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
   /* Setting up bindings for necessary control of the swerve drive platform */
@@ -366,6 +377,12 @@ public class RobotContainer {
 
     trapDrive = new TrapSetUp(drivetrain, linkage, ampArm, climber);
     trapClimb = new TrapClimb(ampArm, climber, linkage);
+<<<<<<< Updated upstream
+=======
+
+    trapBackHook = new TrapBackHook(climber, drivetrain, ampArm, linkage);
+    trapBackHookSequel = new TrapBackHookSequel(climber, drivetrain, ampArm, linkage);
+>>>>>>> Stashed changes
 
     goToZero = commandFactory.setClimberShouldFinish(0);
     soloRaise = commandFactory.setClimberShouldntFinish(40);
@@ -511,17 +528,25 @@ public class RobotContainer {
     operatorController.rightBumper().whileTrue(powerAmpIntake);
 
     if (Objects.nonNull(ampArm)) {
+<<<<<<< Updated upstream
       driverController.y().whileTrue(trapDrive.andThen(sequal.andThen(robotOrientedDrive)));
+=======
+      driverController.y().whileTrue(new SequentialCommandGroup(trapBackHook, robotOrientedDrive));
+>>>>>>> Stashed changes
 
       operatorController.x().onTrue(linkageToAmpHandoff.alongWith(fieldOrientedSlowGuy));
       operatorController.a().toggleOnTrue(ampSetpoint);
 
+<<<<<<< Updated upstream
       operatorController.y().toggleOnTrue(homeArmWrist);
       operatorController.b().toggleOnTrue(stowArm);
 
       // operatorController.a().toggleOnTrue(new InstantCommand(() ->
       // ampIntake.runIntake(.5)));
       operatorController.pov(90).toggleOnTrue(trapClimb);
+=======
+      operatorController.pov(90).toggleOnTrue(trapBackHookSequel);
+>>>>>>> Stashed changes
 
       // operatorController.pov(90).onTrue(homeAmpArmWrist);
       // operatorController.pov(180).onTrue(ampArmGoToZero);
