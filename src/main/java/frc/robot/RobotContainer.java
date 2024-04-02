@@ -391,7 +391,7 @@ public class RobotContainer {
       ampArmGoToZero = new AmpArmGoToZero(ampArm, linkage);
       holdArmPosition = new HoldArmPosition(ampArm, linkage);
       stowArm = new SetArmWrist(ampArm, linkage, -75, 65);
-      ampSetpoint = new SetArmWrist(ampArm, linkage, 95.0, 135.0);
+      ampSetpoint = new SetArmWrist(ampArm, linkage, 105.0, 135.0);
       homeArmWrist = new SetArmWrist(ampArm, linkage, -6.0, 80.0);
     }
     if (!Objects.isNull(ampIntake)) {
@@ -505,6 +505,11 @@ public class RobotContainer {
         .whileTrue(shootAtSpeakerVision);
     driverController.leftTrigger().and(driverController.rightTrigger().negate()).and(driverController.back().negate())
         .whileTrue(spinUpSpeakerVision);
+
+    driverController.start().and(driverController.rightTrigger().negate()).and(driverController.leftTrigger().negate())
+        .whileTrue(commandFactory.spinUpForOverPass());
+    driverController.start().and(driverController.rightTrigger()).and(driverController.leftTrigger().negate())
+        .whileTrue(commandFactory.spinUpForOverPassAndShoot());
 
     driverController.back().and(driverController.rightTrigger().negate()).and(driverController.leftTrigger().negate())
         .whileTrue(commandFactory.spinUpForUnderPass());

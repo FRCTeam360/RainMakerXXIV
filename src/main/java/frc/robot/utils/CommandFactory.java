@@ -205,7 +205,7 @@ public class CommandFactory {
 
     public Command spinUpForOverPass() {
         return new ParallelCommandGroup(
-                spinUpShooterSetpoint(170.0, 5000.0),
+                spinUpShooterSetpoint(170.0, 5000.0 * 0.85),
                 new DriveFieldCentricFacingAngle(drivetrain, -150.0, -40.0));
     }
 
@@ -219,7 +219,7 @@ public class CommandFactory {
 
     public Command spinUpForUnderPass() {
         return new ParallelCommandGroup(
-                spinUpShooterSetpoint(82.0, 4500.0),
+                spinUpShooterSetpoint(82.0, 4500.0 * 0.85),
                 new DriveFieldCentricFacingAngle(drivetrain, -140.0, -40.0));
     }
 

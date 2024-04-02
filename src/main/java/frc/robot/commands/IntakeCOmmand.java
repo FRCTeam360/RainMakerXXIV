@@ -74,9 +74,10 @@ public class IntakeCOmmand extends Command {
       //System.out.println("runnin at .5");
     }
     if(!intake.getSideSensor()) {
-      intake.run(.2);
+      intake.run(0.2); 
       // stop = true;
       // x = .35;
+
     }
     if(!intake.getShooterSensor()) {
       intake.run(-.2);

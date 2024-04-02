@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.io.VisionIO;
 import frc.robot.io.VisionIOInputsAutoLogged;
 import frc.robot.io.VisionIO.VisionIOInputs;
@@ -77,7 +79,13 @@ public class Vision extends SubsystemBase {
 
   public double getLinkageSetpoint() {
     double ty = this.getTY();
-    return (-0.000182*Math.pow(ty, 4)+0.000622*Math.pow(ty, 3)+0.039998*Math.pow(ty, 2)+0.944848*(ty)+162.557); // add linkage regression equation thing
+    double lastBit = 0;
+    if (Constants.isCompBot()) {
+      lastBit = 162.557;
+    } else {
+      lastBit = 164.5;
+    }
+    return (-0.000182*Math.pow(ty, 4)+0.000622*Math.pow(ty, 3)+0.039998*Math.pow(ty, 2)+0.944848*(ty)+lastBit); // comp OLD 162.557 // add linkage regression equation thing
   }
 
   public double getFlywheelSetpoint() {
