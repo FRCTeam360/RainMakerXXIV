@@ -88,9 +88,9 @@ public class TuneSwerveDrive extends Command {
     System.out.println(velocity);
 
     if(driverCont.getAButton()){
-      drivetrain.fieldCentricDrive(0, velocity/Constants.MAX_SPEED_MPS, 0);
+      drivetrain.fieldCentricDrive(0, velocity/Constants.MAX_SPEED_MPS, 0, Constants.MAX_SPEED_MPS, Constants.MAX_ANGULAR_RATE);
     } else if(driverCont.getXButton()){
-      drivetrain.fieldCentricDrive(0, -velocity/Constants.MAX_SPEED_MPS, 0);
+      drivetrain.fieldCentricDrive(0, -velocity/Constants.MAX_SPEED_MPS, 0, Constants.MAX_SPEED_MPS, Constants.MAX_ANGULAR_RATE);
     }
   }
 

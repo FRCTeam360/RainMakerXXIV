@@ -25,11 +25,8 @@ import frc.robot.commands.TrapClimb;
 import frc.robot.commands.TrapSetUp;
 import frc.robot.commands.TrapSetUpTheSequel;
 import frc.robot.commands.StopClimber;
-<<<<<<< Updated upstream
-=======
 import frc.robot.commands.TrapBackHook;
 import frc.robot.commands.TrapBackHookSequel;
->>>>>>> Stashed changes
 import frc.robot.commands.TuneFlywheel;
 import frc.robot.commands.TuneSwerveDrive;
 import frc.robot.commands.PowerFlywheel;
@@ -46,6 +43,7 @@ import frc.robot.commands.HomeAmpArmWrist;
 import frc.robot.commands.IntakeCOmmand;
 import frc.robot.commands.LevelClimbers;
 import frc.robot.commands.ClimberPIDTuner;
+import frc.robot.commands.DefenseFieldOrientedDrive;
 import frc.robot.commands.LinkageSetpoint;
 import frc.robot.commands.LinkageToAmpHandoff;
 import frc.robot.commands.PointDrivebaseAtTarget;
@@ -108,6 +106,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -170,6 +169,9 @@ public class RobotContainer {
   private ShuffleboardTab diagnosticTab;
   private FieldOrientedDrive fieldOrientedDrive;
   private RobotOrientedDrive robotOrientedDrive;
+  private DefenseFieldOrientedDrive defenseFieldOrientedDrive;
+
+
   private DriveFieldCentricFacingAngle passFromSourceAngle;
   private SnapDrivebaseToAngle snapDrivebaseToAngle;
   private ClimberPIDTuner pidTuner;
@@ -224,12 +226,9 @@ public class RobotContainer {
   private SetArmWrist homeArmWrist;
   private SetArmWrist stowArm;
 
-<<<<<<< Updated upstream
-=======
   private TrapBackHook trapBackHook;
   private TrapBackHookSequel trapBackHookSequel;
 
->>>>>>> Stashed changes
   final Rotation2d setAngle = Rotation2d.fromDegrees(0);
 
   /* Setting up bindings for necessary control of the swerve drive platform */
@@ -332,6 +331,7 @@ public class RobotContainer {
     commandFactory = new CommandFactory(climber, drivetrain, intake, flywheel, linkage, ampArm, vision);
     fieldOrientedDrive = new FieldOrientedDrive(drivetrain, linkage, ampArm, false);
     fieldOrientedSlowGuy = new FieldOrientedDrive(drivetrain, linkage, ampArm, true);
+    defenseFieldOrientedDrive = new DefenseFieldOrientedDrive(drivetrain, linkage, ampArm);
 
     passFromSourceAngle = new DriveFieldCentricFacingAngle(drivetrain, 225.0, 315.0);
     robotOrientedDrive = new RobotOrientedDrive(drivetrain);
@@ -358,7 +358,7 @@ public class RobotContainer {
     powerLinkage = new PowerLinkage(linkage, ampArm);
     stowLinkage = commandFactory.stowLinkage();
     powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
-    inny = new IntakeCOmmand(intake, linkage, ampArm, vision, 110.0, true);
+    inny = new IntakeCOmmand(intake, linkage, ampArm, vision, 140.0, true);
     autoinny = new AutoIntakeCOmmand(intake, linkage, ampArm, vision, 177.0, true);
     longerinny = new AutoIntakeCOmmand(intake, linkage, ampArm, vision, 144.0, true);
     ryryinny = new IntakeCOmmand(intake, linkage, ampArm, vision, 0.0, false);
@@ -377,12 +377,9 @@ public class RobotContainer {
 
     trapDrive = new TrapSetUp(drivetrain, linkage, ampArm, climber);
     trapClimb = new TrapClimb(ampArm, climber, linkage);
-<<<<<<< Updated upstream
-=======
 
     trapBackHook = new TrapBackHook(climber, drivetrain, ampArm, linkage);
     trapBackHookSequel = new TrapBackHookSequel(climber, drivetrain, ampArm, linkage);
->>>>>>> Stashed changes
 
     goToZero = commandFactory.setClimberShouldFinish(0);
     soloRaise = commandFactory.setClimberShouldntFinish(40);
@@ -503,6 +500,7 @@ public class RobotContainer {
     driverController.b().onTrue(stowLinkage);
     driverController.a().and(driverController.rightTrigger().negate()).whileTrue(shootFromSubwooferSpinUp);
     driverController.x().whileTrue(snapDrivebaseToAngle);
+    driverController.rightStick().whileTrue(defenseFieldOrientedDrive);
     
 
     driverController.rightTrigger().and(driverController.leftTrigger().negate()).and(driverController.back().negate())
@@ -528,25 +526,12 @@ public class RobotContainer {
     operatorController.rightBumper().whileTrue(powerAmpIntake);
 
     if (Objects.nonNull(ampArm)) {
-<<<<<<< Updated upstream
-      driverController.y().whileTrue(trapDrive.andThen(sequal.andThen(robotOrientedDrive)));
-=======
       driverController.y().whileTrue(new SequentialCommandGroup(trapBackHook, robotOrientedDrive));
->>>>>>> Stashed changes
 
       operatorController.x().onTrue(linkageToAmpHandoff.alongWith(fieldOrientedSlowGuy));
       operatorController.a().toggleOnTrue(ampSetpoint);
 
-<<<<<<< Updated upstream
-      operatorController.y().toggleOnTrue(homeArmWrist);
-      operatorController.b().toggleOnTrue(stowArm);
-
-      // operatorController.a().toggleOnTrue(new InstantCommand(() ->
-      // ampIntake.runIntake(.5)));
-      operatorController.pov(90).toggleOnTrue(trapClimb);
-=======
       operatorController.pov(90).toggleOnTrue(trapBackHookSequel);
->>>>>>> Stashed changes
 
       // operatorController.pov(90).onTrue(homeAmpArmWrist);
       // operatorController.pov(180).onTrue(ampArmGoToZero);
