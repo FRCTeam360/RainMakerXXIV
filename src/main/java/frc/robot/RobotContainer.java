@@ -545,6 +545,7 @@ public class RobotContainer {
 
     operatorController.back().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
     operatorController.start().whileTrue(powerAmpArm);
+  
 
     //right stick is slow mode for amp intake
     operatorController.leftStick().onTrue(fullRetract);
@@ -555,16 +556,16 @@ public class RobotContainer {
     operatorController.pov(270).onTrue(goToZero);
 
     
+    
     if (Objects.nonNull(ampArm)) {
       driverController.y().whileTrue(new SequentialCommandGroup(trapBackHook, robotOrientedDrive));
+
+      operatorController.pov(90).toggleOnTrue(trapBackHookSequel);
 
       operatorController.a().toggleOnTrue(ampSetpoint);
       operatorController.x().onTrue(linkageToAmpHandoff);
       operatorController.b().toggleOnTrue(stowArm);
       operatorController.y().toggleOnTrue(homeArmWrist);
-
-      operatorController.pov(90).toggleOnTrue(trapBackHookSequel);
-
       // operatorController.pov(90).onTrue(homeAmpArmWrist);
       // operatorController.pov(180).onTrue(ampArmGoToZero);
     }

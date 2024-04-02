@@ -6,7 +6,9 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.AmpArm;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -18,12 +20,12 @@ public class TrapBackHookSequel extends Command {
   private final CommandSwerveDrivetrain driveTrain;
   private final AmpArm ampArm;
   private final Linkage linkage;
-  private Translation2d intialTranslation2d;
 
-  private double climbUp = 50.0;
   private double climbDown = -57.0;
 
   private boolean isDone;
+
+  private XboxController operatorCont = new XboxController(Constants.OPERATOR_CONTROLLER);
 
   /** Creates a new TrapBackHookSequel. */
   public TrapBackHookSequel(Climber climber, CommandSwerveDrivetrain driveTrain, AmpArm ampArm, Linkage linkage) {
@@ -39,8 +41,7 @@ public class TrapBackHookSequel extends Command {
   @Override
   public void initialize() {
     CommandLogger.logCommandStart(this);
-    intialTranslation2d = driveTrain.getPose().getTranslation();
-    driveTrain.robotCentricDrive(0, 0, 0);
+
     isDone = false;
   }
 
@@ -49,28 +50,42 @@ public class TrapBackHookSequel extends Command {
   public void execute() {
     climber.setLeftHeight(climbDown, 1);
     climber.setRightHeight(climbDown, 1);
-    ampArm.setArm(80.0, linkage);
-    ampArm.setWrist(80.0);
+
+    if (!isDone) {
+      ampArm.setArm(90, linkage);
+      ampArm.setWrist(90.0);
+    }
 
     if (Math.abs(climber.getLeftPosition() - climbDown) < 1.0
         && Math.abs(climber.getRightPosition() - climbDown) < 1.0) {
       isDone = true;
     }
+
+    if (isDone) {
+      ampArm.runArm(getWithDeadband(operatorCont.getLeftY()) * -0.5, linkage);
+      ampArm.runWrist(getWithDeadband(operatorCont.getRightY()));
+
+    }
+
+  }
+
+  public double getWithDeadband(double input) {
+    if (Math.abs(input) < 0.1) {
+      input = 0.0;
+    }
+    return input;
   }
 
   // Called once the command ends or is interrupted.
   @Override
 
   public void end(boolean interrupted) {
-    climber.setLeftHeight(climbDown, 1);
-    climber.setRightHeight(climbDown, 1);
     CommandLogger.logCommandEnd(this);
-
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return isDone;
+    return false;
   }
 }

@@ -43,7 +43,7 @@ public class RobotOrientedDrive extends Command {
     driveTrain.robotCentricDrive(
       UtilMethods.squareInput(MathUtil.applyDeadband(driverController.getLeftX()* .25, 0.1)),
       UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftY() * .25, 0.1)),
-      UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getRightX() * .25, 0.1))
+      UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getRightX() * .50, 0.1))
     );
   }
 
