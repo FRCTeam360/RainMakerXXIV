@@ -237,7 +237,7 @@ public class RobotContainer {
         field = new Field2d();
         SmartDashboard.putData("Field", field);
         Logger.recordOutput("target pose", field.getObject("target pose").getPose());
-        Logger.recordOutput("path", (String[]) field.getObject("path").getPoses().toArray());
+        // Logger.recordOutput("path", field.getObject("path").getPoses());
 
     switch (Constants.getRobotType()) {
       case WOODBOT:
