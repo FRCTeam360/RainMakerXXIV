@@ -12,6 +12,7 @@ import frc.robot.utils.CommandLogger;
 public class DropNote extends Command {
   private Intake intake;
   private Flywheel flywheel;
+  private boolean stop;
 
   
   /** Creates a new DropNote. */
@@ -26,6 +27,7 @@ public class DropNote extends Command {
   @Override
   public void initialize() {
     CommandLogger.logCommandStart(this);
+    stop = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,6 +35,9 @@ public class DropNote extends Command {
   public void execute() {
     intake.run(1.0);
     flywheel.setBothRPM(2000.0);
+    if(intake.getSideSensor() && intake.getIntakeSensor() && intake.getShooterSensor() == true) {
+      stop = true;
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -46,6 +51,7 @@ public class DropNote extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return stop;
   }
 }
+
