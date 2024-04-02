@@ -31,8 +31,8 @@ public class DropNote extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.run(1);
-    flywheel.setBothRPM(2000);
+    intake.run(1.0);
+    flywheel.setBothRPM(2000.0);
   }
 
   // Called once the command ends or is interrupted.
