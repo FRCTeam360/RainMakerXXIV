@@ -248,6 +248,7 @@ public class RobotContainer {
             // Do whatever you want with the pose here
             field.getObject("target pose").setPose(pose);
             Logger.recordOutput("target pose", field.getObject("target pose").getPose());
+            Logger.recordOutput("path", (String[]) field.getObject("path").getPoses().toArray());
         });
 
         // Logging callback for the active path, this is sent as a list of poses
