@@ -12,9 +12,22 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "blue source evil spinny 1"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "blue source evil spinny 1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "drop note"
+                }
+              }
+            ]
           }
         },
         {
