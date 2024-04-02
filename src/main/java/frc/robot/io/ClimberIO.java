@@ -14,6 +14,8 @@ public interface ClimberIO {
     public double climberRightStatorCurrent = 0.0;
     public double climberLeftVoltage = 0.0;
     public double climberRightVoltage = 0.0;
+    public double climberLeftDutyCycle = 0.0;
+    public double climberRightDutyCycle = 0.0;
     public double climberLeftVelocity = 0.0;
     public double climberRightVelocity = 0.0;
     public double climberLeftPosition = 0.0;
@@ -46,10 +48,10 @@ public interface ClimberIO {
   /**
    * @param height is in inches :D
    */
-  public void setLeftHeight(double height);
+  public void setLeftHeight(double height, int pidSlot); // height should be in inches
 
   /**
    * @param height is in inches :D
    */
-  public void setRightHeight(double height);
-}
+  public void setRightHeight(double height, int pidSlot); // height should be in inches
+  }

@@ -40,6 +40,10 @@ public class AmpIntake extends SubsystemBase {
     return io.getIntakeSpeed();
   }
 
+  public double getEncoderPosition() {
+    return io.getEncoderPosition();
+  }
+
   private void setupShuffleboard() {
     ShuffleboardTab tab = Shuffleboard.getTab("Arm");
     tab.addNumber("Intake Speed", () -> this.getIntakeSpeed());

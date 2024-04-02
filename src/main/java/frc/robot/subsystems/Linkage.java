@@ -55,7 +55,7 @@ public class Linkage extends SubsystemBase {
   }
 
   public boolean isAtSetpoint() {
-	  if(Math.abs(this.getAngle() - positionSetpoint) < 3.0) {
+	  if(Math.abs(this.getAngle() - positionSetpoint) < 1.0) {
       return true;
     } else {
       return false;
@@ -74,7 +74,7 @@ public class Linkage extends SubsystemBase {
     }
     double armAngle = ampArm.getArmPosition();
     double linkageAngle = io.getPosition();
-    if (armAngle > 0.0) {
+    if (armAngle > -10.0) {
       safeFromCollision = true;
     } else if (armAngle < -70.0) {
       safeFromCollision = true;
@@ -93,6 +93,10 @@ public class Linkage extends SubsystemBase {
 
   public void stop() {
     io.stopMotor();
+  }
+
+  public double getVelocity() {
+    return io.getVelocity();
   }
 
   public double getAngle() {

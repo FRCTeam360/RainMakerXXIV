@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AmpArm;
@@ -24,13 +26,14 @@ public class LinkageToAmpHandoff extends Command {
   private boolean done;
 
   private States state;
+  private double lastPosition;
 
-  //private double ampThreshold;
+  // private double ampThreshold;
 
   private final Timer timer = new Timer();
 
   private enum States {
-    LINKAGE_DOWN, AMP_ARM_UP, INTAKING, HAS_NOTE, RETRACTED, SET_ARM
+    LINKAGE_DOWN, AMP_ARM_UP, INTAKING, HAS_NOTE, MOVE_UP, RETRACTED, SET_ARM
   }
 
   /** Creates a new LinkageToAmpHandoff. */
@@ -52,15 +55,15 @@ public class LinkageToAmpHandoff extends Command {
     state = States.LINKAGE_DOWN;
     timer.reset();
     done = false;
-    //ampThreshold = 20;
+    // ampThreshold = 20;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //drivetrain.getRobotRelativeSpeeds() > 0.1
+    // drivetrain.getRobotRelativeSpeeds() > 0.1
 
-    System.out.println(state);
+    Logger.recordOutput(this.getName() + ": state", state);
     switch (state) {
       case LINKAGE_DOWN:
         linkage.setAngle(0.0, ampArm);
@@ -69,39 +72,47 @@ public class LinkageToAmpHandoff extends Command {
         }
         break;
       case SET_ARM:
-        ampArm.setArm(-45.0, linkage);
+        ampArm.setArm(-42.0, linkage);
         ampArm.setWrist(45.0);
-        if (Math.abs(ampArm.getArmPosition() + 45.0) < 2.0 && Math.abs(ampArm.getWristPosition() - 45.0) < 2.0) {
+        if (Math.abs(ampArm.getArmPosition() + 42.0) < 2.0 && Math.abs(ampArm.getWristPosition() - 45.0) < 2.0) {
           timer.start();
           state = States.INTAKING;
         }
         break;
       case INTAKING:
         intake.run(0.7);
-        flywheel.handoff(250.0);
+        flywheel.handoff(1000.0);
         ampIntake.runIntake(0.70);
-        if (timer.get() > 0.2) {
-          if (ampIntake.getAmps() > 20) {
-            ampIntake.stop();
-            state = States.HAS_NOTE;
-          }
+
+        if (!ampArm.getIntakeSensor()) {
+          state = States.MOVE_UP;
+        }
+        lastPosition =ampIntake.getEncoderPosition();
+        break;
+      case MOVE_UP:
+        ampIntake.runIntake(.1);
+        if(ampIntake.getEncoderPosition() - lastPosition >= 2.0){
+          ampIntake.stop();
+          state = States.HAS_NOTE;
         }
         break;
       case HAS_NOTE:
-        ampArm.setArm(5.0, linkage);
-        if (Math.abs(ampArm.getArmPosition()) < 1.0) {
+        ampArm.setArm(-8.0, linkage);
+        if (ampArm.getArmPosition() > -10.0) {
           state = States.RETRACTED;
         }
         break;
+      
       case RETRACTED:
         linkage.setAngle(174.0, ampArm);
-        System.out.println(linkage.getAngle());
+        ampArm.setWrist(82.0);
         if (Math.abs(linkage.getAngle() - 174) < 1.0) {
           done = true;
         }
         break;
+      }
     }
-  }
+  
 
   // Called once the command ends or is interrupted.
   @Override

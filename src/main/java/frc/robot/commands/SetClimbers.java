@@ -41,8 +41,8 @@ public class SetClimbers extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climber.setLeftHeight(setPoint);
-    climber.setRightHeight(setPoint);
+    climber.setLeftHeight(setPoint, 1); //might need to be changed pre sammamy
+    climber.setRightHeight(setPoint, 1);
 
     if (shouldFinish && Math.abs(climber.getLeftPosition() - setPoint) < 1.0 && Math.abs(climber.getRightPosition() - setPoint) < 1.0) {
       isDone = true;

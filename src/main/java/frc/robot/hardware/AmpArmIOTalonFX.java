@@ -16,6 +16,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -26,22 +27,33 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   private final TalonFX armMotor = new TalonFX(Constants.AMP_ARM_ID, Constants.CANIVORE_NAME);
   private final TalonFX wristMotor = new TalonFX(Constants.AMP_WRIST_ID, Constants.CANIVORE_NAME);
 
-  private final double ARM_RATIO = 1.68; // degrees / motor rotation
+  private final DigitalInput intakeSensor = new DigitalInput(Constants.AMP_INTAKE_SENSOR_PORT);
+
+  private final double PRACTICE_ARM_RATIO = 1.68; // degrees / motor rotation
+  private final double COMP_ARM_RATIO = 360.0 / ((5.0 / 1.0) * (36.0 / 14.0) * (60.0 / 18.0));
   private final double WRIST_RATIO = 11.25; // degrees / motor rotation
 
   private final double ARM_FORWARD_LIMIT = 120.0;
   private final double ARM_REVERSE_LIMIT = -78.0;
 
-  private final double armKP = 0.48;
-  private final double armKI = 0.0;
-  private final double armKD = 0.0;
-  private final double armKF = 0.0;
+  private final DutyCycleEncoder absEncoder = new DutyCycleEncoder(Constants.AMP_ARM_ABS_ENCODER);
+  private final double zeroOffset = 0.0; // needs to be retuned
+
+  private final double practiceArmKP = 0.48;
+  private final double practiceArmKD = 0.0;
+  private final double practiceArmKF = 0.0;
+  private final double practiceArmKI = 0.0;
+
+  private final double compArmKP = 0.3;
+  private final double compArmKD = 0.0;
+  private final double compArmKF = 0.0;
+  private final double compArmKI = 0.0;
 
   private final double wristKP = 0.6;
   private final double wristKI = 0.0;
   private final double wristKD = 0.0;
   private final double wristKF = 0.0;
-  
+
   private DigitalInput zeroButton;
   private DigitalInput brakeButton;
 
@@ -66,7 +78,6 @@ public class AmpArmIOTalonFX implements AmpArmIO {
         .withForwardSoftLimitEnable(true)
         .withReverseSoftLimitEnable(true);
 
-    armConfig.Feedback.withSensorToMechanismRatio(1 / ARM_RATIO);
     armConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // SAME AS SET INVERTED LOL
 
     TalonFXConfiguration wristConfig = new TalonFXConfiguration();
@@ -76,7 +87,17 @@ public class AmpArmIOTalonFX implements AmpArmIO {
     wristSlot0.kP = wristKP;
 
     Slot0Configs armSlot0 = armConfig.Slot0;
-    armSlot0.kP = armKP;
+
+    armConfig.Feedback.withSensorToMechanismRatio(1 / COMP_ARM_RATIO);
+    armSlot0.kP = compArmKP;
+
+    // if (Constants.isCompBot()) {
+    // armConfig.Feedback.withSensorToMechanismRatio(1 / COMP_ARM_RATIO);
+    // armSlot0.kP = compArmKP;
+    // } else {
+    // armConfig.Feedback.withSensorToMechanismRatio(1 / PRACTICE_ARM_RATIO);
+    // armSlot0.kP = practiceArmKP;
+    // }
 
     armMotor.getConfigurator().apply(armConfig);
     wristMotor.getConfigurator().apply(wristConfig);
@@ -95,6 +116,11 @@ public class AmpArmIOTalonFX implements AmpArmIO {
 
   }
 
+  @Override
+  public boolean getIntakeSensor() {
+    return intakeSensor.get();
+  }
+
   public void disableBrakeMode() {
     neutralMode = NeutralModeValue.Coast;
     armMotor.setNeutralMode(NeutralModeValue.Coast);
@@ -104,10 +130,8 @@ public class AmpArmIOTalonFX implements AmpArmIO {
 
   @Override
   public void resetArmWristPos() {
-
     armMotor.setPosition(-78.0);
     wristMotor.setPosition(70.0);
-
   }
 
   @Override
@@ -134,12 +158,12 @@ public class AmpArmIOTalonFX implements AmpArmIO {
 
   @Override
   public void stopArm() {
-    armMotor.stopMotor();
+    armMotor.set(0.0);
   }
 
   @Override
   public void stopWrist() {
-    wristMotor.stopMotor();
+    wristMotor.set(0.0);
   }
 
   public void updateInputs(AmpArmIOInputs inputs) {
@@ -153,6 +177,9 @@ public class AmpArmIOTalonFX implements AmpArmIO {
     inputs.wristVelocity = wristMotor.getVelocity().getValueAsDouble();
     inputs.armPosition = armMotor.getPosition().getValueAsDouble();
     inputs.wristPosition = wristMotor.getPosition().getValueAsDouble();
+    inputs.ampIntakeSensor = this.getIntakeSensor();
+    inputs.zeroButton = this.getRawZeroButton();
+    inputs.brakeButton = this.getRawBrakeButton();
   }
 
   @Override
@@ -174,22 +201,40 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   public void zeroArm() {
     armMotor.setPosition(0.0);
   }
-  
-  public boolean getZeroButton(){
-    boolean zeroCurr = !this.zeroButton.get();
+
+  @Override
+  public void setWrist70() {
+    wristMotor.setPosition(70.0);
+  }
+
+  @Override
+  public void setArm78() {
+    armMotor.setPosition(-78.0);
+  }
+
+  private boolean getRawZeroButton() {
+    return !this.zeroButton.get();
+  }
+
+  public boolean getZeroButton() {
+    boolean zeroCurr = getRawZeroButton();
     boolean risingEdge = zeroCurr && !zeroPrev;
     zeroPrev = zeroCurr;
     return risingEdge;
   }
 
-  public boolean getBrakeButton(){
-    boolean brakeCurr = !this.brakeButton.get();
+  private boolean getRawBrakeButton() {
+    return !this.brakeButton.get();
+  }
+
+  public boolean getBrakeButton() {
+    boolean brakeCurr = getRawBrakeButton();
     boolean risingEdge = brakeCurr && !brakePrev;
     brakePrev = brakeCurr;
     return risingEdge;
   }
 
-  public boolean isBrakeMode(){
+  public boolean isBrakeMode() {
     return neutralMode == NeutralModeValue.Brake;
   }
 }

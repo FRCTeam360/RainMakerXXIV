@@ -4,11 +4,16 @@
 
 package frc.robot.commands;
 
+import java.sql.Driver;
 import java.util.Objects;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystems.AmpArm;
@@ -32,6 +37,7 @@ public class ShootInSpeaker extends Command {
   private final XboxController driverController = new XboxController(0);
 
   private Timer timer = new Timer();
+  private Timer loadedtimer = new Timer();
   private Intake intake;
 
   private ShootState state = ShootState.LOADED;
@@ -66,6 +72,12 @@ public class ShootInSpeaker extends Command {
     state = ShootState.LOADED;
     timer.stop();
     timer.reset();
+    loadedtimer.stop();
+    loadedtimer.reset();
+    loadedtimer.start();
+    if(!intake.hasNote()){
+      state = ShootState.END;
+    }
   }
 
   public ShootInSpeaker(AmpArm ampArm, Linkage linkage, Flywheel flywheel, Intake intake,
@@ -95,24 +107,29 @@ public class ShootInSpeaker extends Command {
   
   @Override
   public void execute() {
-    System.out.println("SHOOTING SHOOTNIG SHOOTING");
+    // System.out.println("SHOOTING SHOOTNIG SHOOTING");
     if (!Objects.isNull(drivetrain)) {
+      driveAngleSetpoint = DriverStation.getAlliance().get() == Alliance.Red ? 20.0 : -20.0;
       //drivetrain.turntoCMD(false,  UtilMethods.squareInput(getWithDeadband(driverController.getLeftX())),  UtilMethods.squareInput(getWithDeadband(driverController.getLeftY())), driveAngleSetpoint);
-      drivetrain.driveFieldCentricFacingAngle(UtilMethods.squareInput(getWithDeadband(-driverController.getLeftY())), UtilMethods.squareInput(getWithDeadband(-driverController.getLeftX())), 0.0, driveAngleSetpoint); // drivetrain is rotated in its own
+      drivetrain.driveFieldCentricFacingAngle(UtilMethods.squareInput(getWithDeadband(-driverController.getLeftY())), UtilMethods.squareInput(getWithDeadband(-driverController.getLeftX())), driveAngleSetpoint); // drivetrain is rotated in its own
                                                                                   // command ran in // parallel
     } 
     linkage.setAngle(linkageSetpoint, arm);
-    System.out.println("this is the robot state: " + this.state);
+    // System.out.println("this is the robot state: " + this.state);
+    Logger.recordOutput("ShootInSpeaker: State", this.state);
     flywheel.setBothRPM(flywheelSetpoint);
-    System.out.println("left velocity: " + flywheel.getLeftVelocity());
-    System.out.println("is above setpoint " + flywheel.isAboveSetpoint());
+    // System.out.println("left velocity: " + flywheel.getLeftVelocity());
+    // System.out.println("is above setpoint " + flywheel.isAtSetpoint());
+    // System.out.println("linkage is at SETPOINT" + linkage.isAtSetpoint());
     switch (state) {
       case LOADED:
         intake.stop();
-        boolean isLinkageAtSetpoint = linkage.isAtSetpoint();
-        boolean isFlywheelAtSetpoint = flywheel.isAtSetpoint();
+        boolean isLinkageAtSetpoint = linkage.isAtSetpoint() && Math.abs(linkage.getVelocity()) < 2;
+        boolean isFlywheelAtSetpoint = flywheel.isAboveSetpoint();
+        Logger.recordOutput("ShootInSpeaker: Linkage Setpoint", isLinkageAtSetpoint);
+        Logger.recordOutput("ShootInSpeaker: Flywheel Setpoint", isFlywheelAtSetpoint);
      //   boolean isDriveReady = Objects.isNull(drivetrain) || drivetrain.isFacingAngle();
-        if (isFlywheelAtSetpoint && isLinkageAtSetpoint) { // && isLinkageAtSetpoint
+        if (isFlywheelAtSetpoint && (loadedtimer.get() > 0.3 || isLinkageAtSetpoint)) { // && isLinkageAtSetpoint
           this.state = ShootState.SHOOT;
         }
         break;
@@ -120,10 +137,11 @@ public class ShootInSpeaker extends Command {
       case SHOOT:
         intake.run(1.0);
         boolean hasShot = flywheel.isBelowSetpoint(); // check logic in flywheel subsystem (180 rpm gap)
+        Logger.recordOutput("ShootInSpeaker: hasShot", hasShot);
         if (hasShot) {
           timer.start();
           state = ShootState.TIMER;
-          System.out.println(state);
+          // System.out.println(state);
           // timer.start();
           // if (timer.hasElapsed(0.3)) { // TUNE!!!
           // this.state = ShootState.END;
@@ -131,7 +149,7 @@ public class ShootInSpeaker extends Command {
         break;
       case TIMER:
         intake.run(1.0);
-        if (timer.hasElapsed(0.3) && intake.getSideSensor() && intake.getDiagonalSensor()) {
+        if (timer.hasElapsed(0.3) && intake.getSideSensor() && intake.getShooterSensor()) {
           this.state = ShootState.END;
         }
         break;

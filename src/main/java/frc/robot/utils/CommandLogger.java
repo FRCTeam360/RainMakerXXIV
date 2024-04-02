@@ -19,7 +19,6 @@ public class CommandLogger {
      */
     public static void logCommandStart(Command command) {
         Logger.recordOutput("Command Running: " + command.getClass().getName(), true);
-        System.out.println("Print Command Start: " + command.getClass().getName());
     }
 
     /**
@@ -36,7 +35,6 @@ public class CommandLogger {
      */
     public static void logCommandEnd(Command command) {
         Logger.recordOutput("Command Running: " + command.getClass().getName(), false);
-        System.out.println("Print Command End: " + command.getClass().getName());
     }
 
 }

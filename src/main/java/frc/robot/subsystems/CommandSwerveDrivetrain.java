@@ -7,6 +7,7 @@ import org.littletonrobotics.junction.Logger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.configs.Slot0Configs;
 
+import static edu.wpi.first.units.Units.Rotation;
 import static edu.wpi.first.units.Units.Volts;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
@@ -21,6 +22,7 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -51,6 +53,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private double m_lastSimTime;
     private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
     private PhoenixPIDController headingController;
+    private PIDController visionTargetPIDController;
     final double MAX_SPEED_MPS = Constants.MAX_SPEED_MPS; 
 
 
@@ -58,10 +61,16 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     GenericEntry kIEntry;
     GenericEntry kDEntry;
 
-    private double headingKP = 2.5;
+    private double headingKP = 10;
     private double headingKI = 0.2;
     private double headingIZone = 0.17;
-    private double headingKD = 0.0;
+    private double headingKD = 0.069;
+
+    // Point to vision target PID gains
+    private double visionTargetKP = 0.3;
+    private double visionTargetKI = 0.0;
+    private double visionTargetKD = 0.0;
+    private double visionTargetIZone = 0.0;
 
     // Create a new SysId Routine for characterizing the drive 
     public SysIdRoutine sysIdRoutine = new SysIdRoutine(
@@ -102,6 +111,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         headingController.enableContinuousInput(-Math.PI, Math.PI);
         headingController.setTolerance(Math.toRadians(2));
         headingController.setIntegratorRange(-headingIZone, headingIZone);
+        visionTargetPIDController = new PIDController(visionTargetKP, visionTargetKI, visionTargetKD);
+        visionTargetPIDController.setTolerance(Math.toRadians(1));
+        visionTargetPIDController.setIntegratorRange(-visionTargetIZone, visionTargetIZone);
     }
 
     public void updateDriveGains(double kP, double kI, double kD, double kS, double kV, double kA) {
@@ -196,7 +208,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                 .withVelocityX(velocityX)
                 .withVelocityY(velocityY);
         facingAngleCommand.HeadingController = headingController;
-        System.out.println("turntoCMD");
 
         if (shouldEnd) {
             return this.applyRequest(() -> facingAngleCommand)
@@ -231,11 +242,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     }
 
     public double getAngle() {
-        return this.getPigeon2().getAngle();
+        return getPose().getRotation().getDegrees();
     }
 
     public Rotation2d getRotation2d() {
-        return this.getPigeon2().getRotation2d();
+        return getPose().getRotation();
     }
 
     public void zero() {
@@ -261,29 +272,23 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     }
 
     // drive robot with field centric angle
-    public void driveFieldCentricFacingAngle(double forward, double left, double angle, double desiredAngle) {
+    public void driveFieldCentricFacingAngle(double forward, double left, double desiredAngle) {
+        
         FieldCentricFacingAngle request = new SwerveRequest.FieldCentricFacingAngle()
                 .withVelocityX(forward * Constants.MAX_SPEED_MPS)
                 .withVelocityY(left * Constants.MAX_SPEED_MPS)
                 .withTargetDirection(Rotation2d.fromDegrees(desiredAngle));
                 request.HeadingController = headingController;
-                request.ForwardReference = SwerveRequest.ForwardReference.RedAlliance;
+                //request.ForwardReference = SwerveRequest.ForwardReference.RedAlliance;
         this.setControl(request);
     }
 
-    private Pose2d getPose() {
-        // double x = this.getState().Pose.getX();
-        // double y = this.getState().Pose.getY();
-        // Rotation2d rot = this.getState().Pose.getRotation();
-        // System.out.println("CURRENT POSE X: " + x);
-        // System.out.println("CURRENT POSE Y: " + y);
-        // System.out.println("CURRENT POSE ROTATION: " + rot);
+    public Pose2d getPose() {
         return this.getState().Pose;
     }
 
     private void resetPose(Pose2d pose) {
         seedFieldRelative(pose);
-        //this.getPigeon2().setYaw(pose.getRotation().getDegrees());
     }
 
     private ChassisSpeeds getRobotRelativeSpeeds() {
@@ -298,10 +303,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     }
 
     private void driveRobotRelative(ChassisSpeeds speed) {
-        // print x and y speeds and rotation rate
-        // System.out.println("X VELOCITY: " + speed.vxMetersPerSecond);
-        // System.out.println("Y VELOCITY: " + speed.vyMetersPerSecond);
-        // System.out.println("ROTATION RATE: " + speed.omegaRadiansPerSecond);
         this.setControl(new SwerveRequest.ApplyChassisSpeeds().withSpeeds(speed));
     }
 
@@ -317,9 +318,39 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             return headingController.atSetpoint();
         }
     }
+    private double pastTX = 100.0;
+    private Rotation2d visionTargetRotation = new Rotation2d();
+    public void setPastTX(double tx) {
+        pastTX = tx;
+    }
+    /**
+     * this method should take in three doubles, forward, left, and tx value from vision system
+     * it should then use the tx value to turn the robot to the target, and then drive forward and left in field centric mode
+     */
+    public void pointAtTarget(double forward, double left, double tx) {
+        if (pastTX != tx) {
+            pastTX = tx;  
+            visionTargetRotation = this.getPose().getRotation().minus(Rotation2d.fromDegrees(tx));
+        }
+        // Call fieldCentric request with forward and left and the ouput of our PIDController
+        FieldCentricFacingAngle request = new SwerveRequest.FieldCentricFacingAngle()
+        .withVelocityX(forward * Constants.MAX_SPEED_MPS)
+        .withVelocityY(left * Constants.MAX_SPEED_MPS)
+        .withTargetDirection(visionTargetRotation);
+        request.HeadingController = headingController;
+        this.setControl(request);              
+    }
+
+    // checks if vision PID is at setpoint
+    public boolean isAtVisionTarget() {
+        return visionTargetPIDController.atSetpoint();
+    }
 
     @Override
     public void periodic() {
+        Logger.recordOutput("Swerve: Current Pose", this.getPose());
+        Logger.recordOutput("Swerve: Rotation", this.getRotation2d());
+        Logger.recordOutput("Swerve: Angle", this.getAngle());
         // String moduleName = "null";
         // for (int i = 0; i < 4; i++) {
         //     switch (i) {
@@ -344,5 +375,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
            
         //}
         // Logger.recordOutput("Rotation2d", this.getPigeon2().getRotation2d());
+        Logger.recordOutput("Swerve: CurrentState", this.getState().ModuleStates);
+        Logger.recordOutput("Swerve: TargetState", this.getState().ModuleTargets);
     }
 }
