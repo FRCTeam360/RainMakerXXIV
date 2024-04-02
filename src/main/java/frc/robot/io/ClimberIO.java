@@ -20,6 +20,8 @@ public interface ClimberIO {
     public double climberRightVelocity = 0.0;
     public double climberLeftPosition = 0.0;
     public double climberRightPosition = 0.0;
+    public double climberLeftSetpoint = 0.0;
+    public double climberRightSetpoint = 0.0;
   }
 
   public default void updateInputs(ClimberIOInputs inputs) {

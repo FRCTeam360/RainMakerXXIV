@@ -66,6 +66,7 @@ public class LinkageIOTalonFX implements LinkageIO {
     this.zeroButton = zeroButton;
     this.brakeButton = brakeButton;
 
+
     final double kA = 0.0;
     final double kD = 0.0;
     final double kG = 0.0;
@@ -128,6 +129,14 @@ public class LinkageIOTalonFX implements LinkageIO {
     talonFX.getConfigurator().apply(talonFXConfiguration, 0.050);
   }
 
+  public boolean zeroed() {
+    if (talonFX.getPosition().getValueAsDouble() == 0.0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   private boolean getRawZeroButton(){
     return !this.zeroButton.get();
   }
@@ -159,6 +168,8 @@ public class LinkageIOTalonFX implements LinkageIO {
     inputs.linkagePosition = talonFX.getPosition().getValueAsDouble() * GEAR_RATIO;
     inputs.zeroButton = this.getRawZeroButton();
     inputs.brakeButton = this.getRawBrakeButton();
+    inputs.linkageSetpoint = talonFX.getClosedLoopReference().getValueAsDouble();
+    inputs.linkageZeroed = zeroed();
   }
 
   public double getVelocity() {
