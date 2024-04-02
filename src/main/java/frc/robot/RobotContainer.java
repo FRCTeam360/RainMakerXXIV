@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.RobotType;
 import frc.robot.commands.DiagonalSensorIntake;
 import frc.robot.commands.DriveFieldCentricFacingAngle;
+import frc.robot.commands.DropNote;
 import frc.robot.commands.RunExtendIntake;
 import frc.robot.commands.RydarsSpinup;
 import frc.robot.commands.SetClimbers;
@@ -194,6 +195,7 @@ public class RobotContainer {
   private TrapSetUpTheSequel sequal;
   private Command passUnderStage;
   private RydarsSpinup rydarSubwoof;
+  private DropNote dropNote;
 
   private SetClimbers goToZero;
   private SetClimbers fullRetract;
@@ -361,6 +363,7 @@ public class RobotContainer {
     pointDrivebaseAtTarget = commandFactory.pointDriveBaseAtTarget();
     shootAtSpeakerVision = commandFactory.shootAtSpeakerVision();
     spinUpSpeakerVision = commandFactory.spinUpSpeakerVision();
+    dropNote = new DropNote(intake, flywheel);
 
     deploy = commandFactory.deploy();
 
@@ -430,6 +433,8 @@ public class RobotContainer {
         new ShootInSpeaker(ampArm, linkage, flywheel, intake, 151.5, 7000.0));
     NamedCommands.registerCommand("kiki shot", kiki);
     NamedCommands.registerCommand("Turn", pointDrivebaseAtTarget);
+    NamedCommands.registerCommand("drop note", dropNote);
+    
 
     NamedCommands.registerCommand("vision shoot", visionBoy);
     // NamedCommands.registerCommand("Intake", runExtendIntake);
