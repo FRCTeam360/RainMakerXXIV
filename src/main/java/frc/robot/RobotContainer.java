@@ -534,7 +534,7 @@ public class RobotContainer {
         .whileTrue(commandFactory.spinUpForUnderPassAndShoot());
 
 
-        
+
     driverController.pov(0).toggleOnTrue(deploy);
     driverController.pov(90).whileTrue(powerIntake);
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
@@ -545,6 +545,7 @@ public class RobotContainer {
 
     operatorController.back().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
     operatorController.start().whileTrue(powerAmpArm);
+    operatorController.start().whileTrue(stopClimber);
   
 
     //right stick is slow mode for amp intake

@@ -141,8 +141,8 @@ public class Flywheel extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putBoolean("Is At Setpoint", isAtSetpoint());
     // SmartDashboard.putNumber("setpoint rpm", rpmSetpoint);
-    // SmartDashboard.putNumber("curren left rpm", getLeftVelocity());
-    // SmartDashboard.putNumber("current right rpm", getRightVelocity());
+    SmartDashboard.putNumber("current left rpm", getLeftVelocity());
+    SmartDashboard.putNumber("current right rpm", getRightVelocity());
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.recordOutput("Flywheel Command",

@@ -52,19 +52,23 @@ public class TrapBackHookSequel extends Command {
     climber.setRightHeight(climbDown, 1);
 
     if (!isDone) {
+      System.out.println("NOT DONE CLIMINBG");
       ampArm.setArm(90, linkage);
-      ampArm.setWrist(90.0);
+      ampArm.setWrist(75.0);
     }
+
 
     if (Math.abs(climber.getLeftPosition() - climbDown) < 1.0
         && Math.abs(climber.getRightPosition() - climbDown) < 1.0) {
-      isDone = true;
+      //isDone = true;
+      System.out.println("DONE CLIMBING");
     }
 
-    if (isDone) {
-      ampArm.runArm(getWithDeadband(operatorCont.getLeftY()) * -0.5, linkage);
-      ampArm.runWrist(getWithDeadband(operatorCont.getRightY()));
+    if (Math.abs(operatorCont.getLeftY()) > 0.1 || Math.abs(operatorCont.getRightY()) > 0.05) {
+      System.out.println("MANUAL CONTROL");
 
+      ampArm.runArm(getWithDeadband(operatorCont.getLeftY()) * -0.5, linkage);
+      ampArm.setWrist((getWithDeadband(operatorCont.getRightY()) * 80.0) + ampArm.getArmPosition());
     }
 
   }
