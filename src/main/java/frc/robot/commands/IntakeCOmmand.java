@@ -63,6 +63,7 @@ public class IntakeCOmmand extends Command {
   public void execute() {
     if(bringup) {
       linkage.setAngle(110.0, ampArm);
+      intake.run(.2);
     }
     if(!intake.getIntakeSensor() && !bringup) {
       vision.blink();
@@ -74,19 +75,20 @@ public class IntakeCOmmand extends Command {
       //System.out.println("runnin at .5");
     }
     if(!intake.getSideSensor()) {
-      intake.run(0.2); 
-      // stop = true;
+      stop = true;
+      intake.stop();
+      
       // x = .35;
 
     }
-    if(!intake.getShooterSensor()) {
-      intake.run(-.2);
-      reversing = true;
-    }
-    if(intake.getShooterSensor() && reversing){
-      intake.run(0.0);
-      stop = true;
-    }
+    // if(!intake.getShooterSensor()) {
+    //   intake.run(-.2);
+    //   reversing = true;
+    // }
+    // if(intake.getShooterSensor() && reversing){
+    //   intake.run(0.0);
+    //   stop = true;
+    // }
 
   }
   
@@ -104,6 +106,6 @@ public class IntakeCOmmand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return stop && shouldEnd;
+    return stop;
   }
 }

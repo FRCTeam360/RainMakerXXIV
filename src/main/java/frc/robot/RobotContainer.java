@@ -516,7 +516,7 @@ public class RobotContainer {
     driverController.rightStick().whileTrue(defenseFieldOrientedDrive);
     
 
-    driverController.rightTrigger().and(driverController.leftTrigger().negate()).and(driverController.back().negate())
+    driverController.rightTrigger().and(driverController.leftTrigger().negate()).and(driverController.back().negate()).and(driverController.start().negate())
         .whileTrue(shootFromSubwoofer);
     driverController.rightTrigger().and(driverController.leftTrigger()).and(driverController.back().negate())
         .whileTrue(shootAtSpeakerVision);
@@ -533,7 +533,7 @@ public class RobotContainer {
     driverController.back().and(driverController.rightTrigger()).and(driverController.leftTrigger().negate())
         .whileTrue(commandFactory.spinUpForUnderPassAndShoot());
 
-    driverController.start().whileTrue(commandFactory.spinUpForOverPassAndShoot());
+   // driverController.start().whileTrue(commandFactory.spinUpForOverPassAndShoot());
 
     driverController.pov(0).toggleOnTrue(deploy);
     driverController.pov(90).whileTrue(powerIntake);

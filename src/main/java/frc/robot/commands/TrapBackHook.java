@@ -63,7 +63,7 @@ public class TrapBackHook extends Command {
     if (Math.abs(climber.getLeftPosition() - climbUp) < 2.0 && Math.abs(climber.getRightPosition() - climbUp) < 2.0 && linkage.getAngle() < 2.0) {
      driveTrain.robotCentricDrive(0.0, -0.1, 0.0);
 
-     if (distance > Units.inchesToMeters(3.0)) {
+     if (distance > Units.inchesToMeters(6.0)) {
       System.out.println(isDone);
       isDone = true;
      }
