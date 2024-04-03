@@ -76,6 +76,8 @@ public class IntakeCOmmand extends Command {
     }
     if(!intake.getSideSensor()) {
       stop = true;
+      intake.stop();
+      
       // x = .35;
 
     }
@@ -104,6 +106,6 @@ public class IntakeCOmmand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return stop && shouldEnd;
+    return stop;
   }
 }
