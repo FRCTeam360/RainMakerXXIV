@@ -80,6 +80,12 @@ public class Flywheel extends SubsystemBase {
     }
   }
 
+  public void setIndividualRPM(double leftRPM, double rightRPM) {
+    rpmSetpoint = leftRPM;
+    io.setLeftReference(leftRPM, ControlType.kVelocity);
+    io.setRightReference(rightRPM, ControlType.kVelocity);
+  }
+
   public void stop() {
     io.stopLeftMotor();
     io.stopRightMotor();

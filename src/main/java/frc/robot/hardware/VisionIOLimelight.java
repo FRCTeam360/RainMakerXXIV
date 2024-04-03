@@ -54,7 +54,7 @@ public class VisionIOLimelight implements VisionIO {
   /**
    * @return the ty without the angle fudge factor
    */
-  private double getTYBase() {
+  public double getTYBase() {
     return table.getEntry("ty").getDouble(0);
   }
 

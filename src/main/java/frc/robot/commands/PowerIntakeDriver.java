@@ -10,7 +10,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.utils.CommandLogger;
 
 public class PowerIntakeDriver extends Command {
-  private XboxController operatorCont = new XboxController(0);
+  private XboxController operatorCont = new XboxController(1);
 
   private Intake intake;
 

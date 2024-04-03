@@ -533,8 +533,8 @@ public class RobotContainer {
     driverController.back().and(driverController.rightTrigger()).and(driverController.leftTrigger().negate())
         .whileTrue(commandFactory.spinUpForUnderPassAndShoot());
 
-    driverController.start().whileTrue(commandFactory.spinUpForOverPassAndShoot());
 
+        
     driverController.pov(0).toggleOnTrue(deploy);
     driverController.pov(90).whileTrue(powerIntake);
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));

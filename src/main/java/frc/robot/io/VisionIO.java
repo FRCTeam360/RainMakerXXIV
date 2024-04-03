@@ -36,5 +36,7 @@ public interface VisionIO {
 
     public void takeSnapshot();
 
+    public double getTYBase();
+
     public void resetSnapshot();
 }

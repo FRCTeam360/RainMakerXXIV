@@ -182,7 +182,7 @@ public class CommandFactory {
         Command pointDrivebaseAtTarget = new PointDrivebaseAtTarget(drivetrain, vision);
         return new ParallelCommandGroup(
             new SetLinkage(linkage, 170, ampArm, vision, false),
-            new SetFlywheel(flywheel, 7500),
+            new SetFlywheelVision(flywheel, 7500),
             pointDrivebaseAtTarget);
     }
 
