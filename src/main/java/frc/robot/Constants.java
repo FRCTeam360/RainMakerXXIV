@@ -94,7 +94,7 @@ public class Constants {
         public static final double MAX_ANGULAR_RATE = Math.PI * 4; // Half a rotation per second max angular velocity
         public static final int PIGEON_ID = 13;
 
-        public static boolean isWoodBot() {
+public static boolean isWoodBot() {
                 if (getRobotType() == Constants.RobotType.WOODBOT) {
                         return true;
                 } else {
@@ -137,7 +137,7 @@ public class Constants {
                 REPLAY,
 
                 /* Running on a Wood Robot */
-                WOODBOT,
+WOODBOT,
 
                 /* Running on a Practice Robot */
                 PRACTICE,
@@ -154,17 +154,12 @@ public class Constants {
                 SmartDashboard.putString("serial address", serialAddress);
                 SmartDashboard.putString("Test Serial Address", SerialAddressConstants.TEST_SERIAL_ADDRESS);
 
-                if (serialAddress.equals(SerialAddressConstants.TEST_SERIAL_ADDRESS)) {
-                        return Constants.RobotType.TEST;
-
-                } else if (serialAddress.equals(SerialAddressConstants.WOOD_SERIAL_ADDRESS)) {
-                        return Constants.RobotType.WOODBOT;
-                } else if (serialAddress.equals(SerialAddressConstants.PRACTICE_SERIAL_ADDRESS)) {
+             if (serialAddress.equals(SerialAddressConstants.PRACTICE_SERIAL_ADDRESS)) {
                         return Constants.RobotType.PRACTICE;
                 } else if (serialAddress.equals(SerialAddressConstants.COMP_SERIAL_ADDRESS)) {
                         return Constants.RobotType.COMPETITION;
                 }
-                return Constants.RobotType.PRACTICE;
+                return Constants.RobotType.COMPETITION;
         }
 
         public static final class SerialAddressConstants {

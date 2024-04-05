@@ -11,11 +11,11 @@ import frc.robot.commands.DropNote;
 import frc.robot.commands.RunExtendIntake;
 import frc.robot.commands.RydarsSpinup;
 import frc.robot.commands.SetClimbers;
-import frc.robot.commands.SetFlywheel;
 import frc.robot.commands.ScoreInAmp;
 import frc.robot.commands.SetArmWrist;
 import frc.robot.commands.PowerIntakeReversed;
 import frc.robot.commands.PowerIntake;
+import frc.robot.commands.PowerIntakeDriver;
 import frc.robot.commands.PowerLinkage;
 import frc.robot.commands.PristineIntakeCommand;
 import frc.robot.commands.SetIntake;
@@ -181,6 +181,8 @@ public class RobotContainer {
   private ClimberPIDTuner pidTuner;
   private SetClimbers maxExtend;
   private SetClimbers minExtend;
+  private PowerIntakeDriver rydpos;
+  private PowerIntakeDriver rydneg;
 
   private AutoIntakeCOmmand longerinny;
   // private SetLinkageTalon setLinkageTalon = new SetLinkageTalon(linkage);
@@ -375,7 +377,8 @@ public class RobotContainer {
     shootAtSpeakerVision = commandFactory.shootAtSpeakerVision();
     spinUpSpeakerVision = commandFactory.spinUpSpeakerVision();
     dropNote = new DropNote(intake, flywheel);
-
+    rydpos = new PowerIntakeDriver(intake, false, flywheel);
+    rydneg = new PowerIntakeDriver(intake, true, flywheel);
     deploy = commandFactory.deploy();
 
     trapDrive = new TrapSetUp(drivetrain, linkage, ampArm, climber);
@@ -463,8 +466,6 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("run intake forevs <3", new IntakeForevsRun(intake, flywheel, linkage, ampArm));
     NamedCommands.registerCommand("vision shoot", visionBoy);
-    NamedCommands.registerCommand("real far shot", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 140.5, 8000.0));
-    NamedCommands.registerCommand("BIG spinny", new SetFlywheel(flywheel,9000.0));
     // NamedCommands.registerCommand("Intake", runExtendIntake);
     // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     // NamedCommands.registerCommand("Wait", new WaitCommand(2));
@@ -543,9 +544,9 @@ public class RobotContainer {
    // driverController.start().whileTrue(commandFactory.spinUpForOverPassAndShoot());
 
     driverController.pov(0).toggleOnTrue(deploy);
-    driverController.pov(90).whileTrue(powerIntake);
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
-
+    driverController.pov(270).whileTrue(rydpos);
+    driverController.pov(90).whileTrue(rydneg);
     // OPERATOR CONTROLS DO NOT DELETE JUST COMMENT OUT
     operatorController.leftBumper().whileTrue(powerAmpIntakeReverse);
     operatorController.rightBumper().whileTrue(powerAmpIntake);
@@ -571,7 +572,7 @@ public class RobotContainer {
       operatorController.pov(90).toggleOnTrue(trapBackHookSequel);
 
       operatorController.a().toggleOnTrue(ampSetpoint);
-      operatorController.x().onTrue(linkageToAmpHandoff);
+      operatorController.x().whileTrue(linkageToAmpHandoff);
       operatorController.b().toggleOnTrue(stowArm);
       operatorController.y().toggleOnTrue(homeArmWrist);
       // operatorController.pov(90).onTrue(homeAmpArmWrist);
