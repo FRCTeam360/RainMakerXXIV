@@ -5,6 +5,10 @@
 package frc.robot.utils;
 
 import frc.robot.subsystems.*;
+
+import org.littletonrobotics.junction.Logger;
+
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -44,6 +48,38 @@ public class CommandFactory {
 
     public SetClimbers setClimberShouldntFinish(double height) {
         return new SetClimbers(climber, height);
+    }
+
+    private class EndWhenShot extends Command {
+        private Intake intake;
+        private Flywheel flywheel;
+        private Timer timer = new Timer();
+
+        public EndWhenShot(Intake intake, Flywheel flywheel) {
+            this.intake = intake;
+            this.flywheel = flywheel;
+        }
+
+        public void initialize() {
+            CommandLogger.logCommandStart(this);
+            timer.reset();
+            timer.start();
+        }
+
+        public void end(boolean isInterrupted) {
+            timer.stop();
+            CommandLogger.logCommandEnd(this);
+        }
+
+        public boolean isFinished() {
+            Logger.recordOutput("end when shot: shooter sensor", intake.getShooterSensor());
+            Logger.recordOutput("end when shot: side sensor", intake.getSideSensor());
+
+            Logger.recordOutput("end when shot: timer", timer.get());
+
+            return timer.hasElapsed(.3) && intake.getSideSensor() && intake.getShooterSensor();
+        }
+
     }
 
     public SetClimbers setClimberShouldFinish(double height) {
@@ -119,15 +155,14 @@ public class CommandFactory {
         return new SetLinkage(linkage, setPoint, ampArm, shouldEnd);
     }
 
-    public Command tuneLinkageSetpoint(){
+    public Command tuneLinkageSetpoint() {
         return new ParallelCommandGroup(
-            new LinkageSetpoint(linkage, ampArm),
-            new SetFlywheel(flywheel, 7500)
-        );
+                new LinkageSetpoint(linkage, ampArm),
+                new SetFlywheel(flywheel, 7500));
     }
 
     public SetLinkage stowLinkage() {
-        return new SetLinkage(linkage, 140.0, ampArm, false); //was 130
+        return new SetLinkage(linkage, 140.0, ampArm, false); // was 130
     }
 
     public SetLinkage deploy() {
@@ -144,13 +179,13 @@ public class CommandFactory {
     }
 
     public Command shootAtSpeakerVision() {
-        return new ParallelCommandGroup(
+        return new ParallelRaceGroup(
                 spinUpSpeakerVision(),
                 new EndWhenShooterReady(linkage, flywheel, drivetrain, vision)
                         .andThen(
-                                new ParallelCommandGroup(
+                                new ParallelRaceGroup(
                                         new RunCommand(() -> intake.run(1.0), intake),
-                                        takeSnapshot())));
+                                        new EndWhenShot(intake, flywheel))));
     }
 
     public Command shootAtSpeakerVisionAuto() {
@@ -160,6 +195,7 @@ public class CommandFactory {
     private class InterruptWhenNoNote extends Command {
         boolean shouldEnd = false;
         private final Intake intake;
+
         @Override
         public void initialize() {
             shouldEnd = !intake.hasNote();
@@ -175,17 +211,13 @@ public class CommandFactory {
         }
     }
 
-    
-    
-
     public Command spinUpSpeakerVision() {
         Command pointDrivebaseAtTarget = new PointDrivebaseAtTarget(drivetrain, vision);
         return new ParallelCommandGroup(
-            new SetLinkage(linkage, 170, ampArm, vision, false),
-            new SetFlywheelVision(flywheel, 7500),
-            pointDrivebaseAtTarget);
+                new SetLinkage(linkage, 170, ampArm, vision, false),
+                new SetFlywheelVision(flywheel, 7500),
+                pointDrivebaseAtTarget);
     }
-
 
     public Command spinUpShooterSetpoint(double linkageSetpoint, double flywheelSetpoint) {
         return new ParallelCommandGroup(

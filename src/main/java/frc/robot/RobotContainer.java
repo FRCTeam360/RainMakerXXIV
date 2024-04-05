@@ -11,6 +11,7 @@ import frc.robot.commands.DropNote;
 import frc.robot.commands.RunExtendIntake;
 import frc.robot.commands.RydarsSpinup;
 import frc.robot.commands.SetClimbers;
+import frc.robot.commands.SetFlywheel;
 import frc.robot.commands.ScoreInAmp;
 import frc.robot.commands.SetArmWrist;
 import frc.robot.commands.PowerIntakeReversed;
@@ -30,6 +31,7 @@ import frc.robot.commands.TrapBackHook;
 import frc.robot.commands.TrapBackHookSequel;
 import frc.robot.commands.TuneFlywheel;
 import frc.robot.commands.TuneSwerveDrive;
+import frc.robot.commands.WereSafeAndSound;
 import frc.robot.commands.PowerFlywheel;
 import frc.robot.commands.RobotOrientedDrive;
 import frc.robot.commands.AmpArmGoToZero;
@@ -42,6 +44,7 @@ import frc.robot.commands.FieldOrientedDrive;
 import frc.robot.commands.HoldArmPosition;
 import frc.robot.commands.HomeAmpArmWrist;
 import frc.robot.commands.IntakeCOmmand;
+import frc.robot.commands.IntakeForevsRun;
 import frc.robot.commands.LevelClimbers;
 import frc.robot.commands.ClimberPIDTuner;
 import frc.robot.commands.DefenseFieldOrientedDrive;
@@ -340,7 +343,7 @@ public class RobotContainer {
     subwoofShotRy = new ShootingPrepRyRy(linkage, flywheel, ampArm, 177.0, 5000.0);
     sequal = new TrapSetUpTheSequel(linkage, ampArm, drivetrain, climber);
     intakeMe = new PristineIntakeCommand(intake, linkage, ampArm, 145.0);
-    visionBoy = commandFactory.shootAtSpeakerVision();
+    visionBoy = commandFactory.shootAtSpeakerVisionAuto();
     kiki = new ShootingPrepRyRy(linkage, flywheel, ampArm, 153.0, 7000.0);
 
     powerIntakeReversed = new PowerIntakeReversed(intake);
@@ -456,8 +459,12 @@ public class RobotContainer {
     NamedCommands.registerCommand("Turn", pointDrivebaseAtTarget);
     NamedCommands.registerCommand("drop note", dropNote);
     
+    NamedCommands.registerCommand("bloody intake", new WereSafeAndSound(intake, linkage, ampArm, vision, 140.5, true));
 
+    NamedCommands.registerCommand("run intake forevs <3", new IntakeForevsRun(intake, flywheel, linkage, ampArm));
     NamedCommands.registerCommand("vision shoot", visionBoy);
+    NamedCommands.registerCommand("real far shot", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 140.5, 8000.0));
+    NamedCommands.registerCommand("BIG spinny", new SetFlywheel(flywheel,9000.0));
     // NamedCommands.registerCommand("Intake", runExtendIntake);
     // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     // NamedCommands.registerCommand("Wait", new WaitCommand(2));
@@ -518,7 +525,7 @@ public class RobotContainer {
 
     driverController.rightTrigger().and(driverController.leftTrigger().negate()).and(driverController.back().negate()).and(driverController.start().negate())
         .whileTrue(shootFromSubwoofer);
-    driverController.rightTrigger().and(driverController.leftTrigger()).and(driverController.back().negate())
+    driverController.rightTrigger().and(driverController.leftTrigger()).and(driverController.back().negate()).and(driverController.start().negate())
         .whileTrue(shootAtSpeakerVision);
     driverController.leftTrigger().and(driverController.rightTrigger().negate()).and(driverController.back().negate())
         .whileTrue(spinUpSpeakerVision);

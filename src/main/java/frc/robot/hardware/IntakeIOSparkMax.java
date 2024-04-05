@@ -33,7 +33,7 @@ public class IntakeIOSparkMax implements IntakeIO {
 
   public IntakeIOSparkMax() {
     sparkMax.restoreFactoryDefaults();
-    sparkMax.setInverted(true);
+    sparkMax.setInverted(false);
     sparkMax.setIdleMode(IdleMode.kBrake);
     final double GEAR_RATIO = 0.5;
     encoder.setVelocityConversionFactor(GEAR_RATIO);
