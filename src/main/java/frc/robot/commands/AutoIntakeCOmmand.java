@@ -52,7 +52,7 @@ public class AutoIntakeCOmmand extends Command {
       linkage.setAngle(setthatguy, ampArm);
       intake.stop();
     }
-    else if(!intake.getIntakeSensor() && !bringup) {
+    else if(!bringup) {
       intake.run(.4);
       // System.out.println("runnin at 90");
     } else {

@@ -87,6 +87,7 @@ public class LinkageToAmpHandoff extends Command {
           state = States.INTAKING;
         }
         break;
+
       case INTAKING:
         intake.run(0.7);
         flywheel.handoff(1000.0);
@@ -99,7 +100,6 @@ public class LinkageToAmpHandoff extends Command {
         case MOVE_UP:
         ampIntake.runIntake(.1);
         if(intake.getSideSensor()){
-          
           lastPosition =ampIntake.getEncoderPosition();
           ampIntake.stop();
           state = States.HAS_NOTE;

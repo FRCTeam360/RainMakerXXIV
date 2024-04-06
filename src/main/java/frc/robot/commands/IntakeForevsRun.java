@@ -40,13 +40,13 @@ public class IntakeForevsRun extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(!intake.getSideSensor() || !intake.getShooterSensor() || !intake.getIntakeSensor()) {
+    if(!intake.getSideSensor() || !intake.getShooterSensor()) {
       IGOTIT = true;
     } 
     if(flywheel.isAtSetpoint()) {
     intake.run(1.0);
     }
-    if(intake.getIntakeSensor() && intake.getSideSensor() && intake.getShooterSensor() && IGOTIT) {
+    if(intake.getSideSensor() && intake.getShooterSensor() && IGOTIT) {
       stop = true;
   }
   }

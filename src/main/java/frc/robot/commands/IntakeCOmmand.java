@@ -61,20 +61,10 @@ public class IntakeCOmmand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(bringup) {
-      linkage.setAngle(110.0, ampArm);
-      intake.run(.2);
-    }
-    if(!intake.getIntakeSensor() && !bringup) {
-      vision.blink();
-      intake.run(.9);
-      bringup = true;
-      //System.out.println("runnin at 90");
-    } else {
       intake.run(.5);
       //System.out.println("runnin at .5");
-    }
     if(!intake.getSideSensor()) {
+      vision.blink();
       stop = true;
       intake.stop();
       
@@ -96,9 +86,7 @@ public class IntakeCOmmand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if(retracts) {
     linkage.setAngle(setthatguy, ampArm);
-    }
     intake.stop();
     CommandLogger.logCommandEnd(this);
   }
