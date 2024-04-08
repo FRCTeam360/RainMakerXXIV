@@ -221,6 +221,10 @@ public class AmpArm extends SubsystemBase {
     return io.getWristPosition();
   }
 
+  public void resetArmWristPos() {
+    io.resetArmWristPos();
+  }
+
   private void setupShuffleboard() {
     ShuffleboardTab tab = Shuffleboard.getTab("Arm");
     tab.addNumber("Arm Angle", () -> this.getArmPosition());

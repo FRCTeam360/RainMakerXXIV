@@ -44,22 +44,9 @@
           }
         },
         {
-          "type": "race",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "kikiSimpleShoot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Turn"
-                }
-              }
-            ]
+            "name": "vision shoot"
           }
         },
         {
@@ -108,22 +95,9 @@
           }
         },
         {
-          "type": "race",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "kikiSimpleShoot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Turn"
-                }
-              }
-            ]
+            "name": "vision shoot"
           }
         },
         {
@@ -172,22 +146,9 @@
           }
         },
         {
-          "type": "race",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "kikiSimpleShoot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Turn"
-                }
-              }
-            ]
+            "name": "vision shoot"
           }
         },
         {
@@ -236,16 +197,9 @@
           }
         },
         {
-          "type": "race",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Turn"
-                }
-              }
-            ]
+            "name": "vision shoot"
           }
         }
       ]

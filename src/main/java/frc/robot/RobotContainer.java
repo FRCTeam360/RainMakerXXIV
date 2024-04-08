@@ -152,7 +152,7 @@ public class RobotContainer {
   private AmpIntake ampIntake;
   private Vision vision;
   public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
-  
+
   private CommandFactory commandFactory;
   private PointDrivebaseAtTarget pointDrivebaseAtTarget;
   private ShootInSpeaker shootRoutine;
@@ -174,7 +174,6 @@ public class RobotContainer {
   private FieldOrientedDrive fieldOrientedDrive;
   private RobotOrientedDrive robotOrientedDrive;
   private DefenseFieldOrientedDrive defenseFieldOrientedDrive;
-
 
   private DriveFieldCentricFacingAngle passFromSourceAngle;
   private SnapDrivebaseToAngle snapDrivebaseToAngle;
@@ -214,7 +213,7 @@ public class RobotContainer {
   private SetClimbers soloRaise;
   private SetClimbers trap2Up;
   private SetClimbers soloRetract;
-  
+
   private ShootingPrepRyRy kiki;
 
   private SetLinkage deploy;
@@ -461,7 +460,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("kiki shot", kiki);
     NamedCommands.registerCommand("Turn", pointDrivebaseAtTarget);
     NamedCommands.registerCommand("drop note", dropNote);
-    
+
     NamedCommands.registerCommand("bloody intake", new WereSafeAndSound(intake, linkage, ampArm, vision, 140.5, true));
 
     NamedCommands.registerCommand("run intake forevs <3", new IntakeForevsRun(intake, flywheel, linkage, ampArm));
@@ -522,11 +521,12 @@ public class RobotContainer {
     driverController.a().and(driverController.rightTrigger().negate()).whileTrue(shootFromSubwooferSpinUp);
     driverController.x().whileTrue(snapDrivebaseToAngle);
     driverController.rightStick().whileTrue(defenseFieldOrientedDrive);
-    
 
-    driverController.rightTrigger().and(driverController.leftTrigger().negate()).and(driverController.back().negate()).and(driverController.start().negate())
+    driverController.rightTrigger().and(driverController.leftTrigger().negate()).and(driverController.back().negate())
+        .and(driverController.start().negate())
         .whileTrue(shootFromSubwoofer);
-    driverController.rightTrigger().and(driverController.leftTrigger()).and(driverController.back().negate()).and(driverController.start().negate())
+    driverController.rightTrigger().and(driverController.leftTrigger()).and(driverController.back().negate())
+        .and(driverController.start().negate())
         .whileTrue(shootAtSpeakerVision);
     driverController.leftTrigger().and(driverController.rightTrigger().negate()).and(driverController.back().negate())
         .whileTrue(spinUpSpeakerVision);
@@ -541,7 +541,7 @@ public class RobotContainer {
     driverController.back().and(driverController.rightTrigger()).and(driverController.leftTrigger().negate())
         .whileTrue(commandFactory.spinUpForUnderPassAndShoot());
 
-   // driverController.start().whileTrue(commandFactory.spinUpForOverPassAndShoot());
+    // driverController.start().whileTrue(commandFactory.spinUpForOverPassAndShoot());
 
     driverController.pov(0).toggleOnTrue(deploy);
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
@@ -552,11 +552,12 @@ public class RobotContainer {
     operatorController.rightBumper().whileTrue(powerAmpIntake);
 
     operatorController.back().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
+    operatorController.back().onTrue(new InstantCommand(() -> ampArm.zeroWrist(), ampArm));
+
     operatorController.start().whileTrue(powerAmpArm);
     operatorController.start().whileTrue(stopClimber);
-  
 
-    //right stick is slow mode for amp intake
+    // right stick is slow mode for amp intake
     operatorController.leftStick().onTrue(fullRetract);
 
     // operatorController.pov(0).onTrue(soloRaise);
@@ -564,8 +565,6 @@ public class RobotContainer {
     operatorController.pov(180).toggleOnTrue(soloRetract);
     operatorController.pov(270).onTrue(goToZero);
 
-    
-    
     if (Objects.nonNull(ampArm)) {
       driverController.y().whileTrue(new SequentialCommandGroup(trapBackHook, robotOrientedDrive));
 
