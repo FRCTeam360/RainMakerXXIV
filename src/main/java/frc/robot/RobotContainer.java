@@ -93,6 +93,7 @@ import javax.management.InstanceNotFoundException;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentricFacingAngle;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.fasterxml.jackson.core.sym.Name;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -454,6 +455,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("last guy", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 153, 7000.0));
     NamedCommands.registerCommand("blue linkage long prep",
         new InstantCommand(() -> linkage.setAngle(148, ampArm), linkage));
+    NamedCommands.registerCommand("stow linkage", new InstantCommand(() -> linkage.setAngle(172, ampArm)));
     NamedCommands.registerCommand("blue stay out of way shot",
         new ShootInSpeaker(ampArm, linkage, flywheel, intake, 148, 7000.0));
     NamedCommands.registerCommand("blue last guy",
