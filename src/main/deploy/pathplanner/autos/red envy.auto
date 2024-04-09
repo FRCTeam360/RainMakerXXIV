@@ -1,0 +1,67 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 15.088641362116851,
+      "y": 1.4200915605622666
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "red envy 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "red envy 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "red envy 3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "red envy 4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "red envy 5"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "red envy 6"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "red envy 7"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "red envy 8"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
