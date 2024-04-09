@@ -80,14 +80,9 @@ public class Vision extends SubsystemBase {
 
   public double getLinkageSetpoint() {
     double ty = this.getTY();
-    double lastBit = 0;
-    if (Constants.isCompBot()) {
-      lastBit = 162.557;
-    } else {
-      lastBit = 164.5;
-    }
+    double fudgeFactor = -1.5;
     //return (-0.000182*Math.pow(ty, 4)+0.000622*Math.pow(ty, 3)+0.039998*Math.pow(ty, 2)+0.944848*(ty)+lastBit); //pre sammamish
-    return (0.000441259 * Math.pow(ty, 3) + -0.021738 * Math.pow(ty, 2) + 0.953749 * ty + 163.092); // before dcmp
+    return (0.000441259 * Math.pow(ty, 3) + -0.021738 * Math.pow(ty, 2) + 0.953749 * ty + 163.092 + fudgeFactor); // before worlds !!
   }
 
   public double getFlywheelSetpoint() {

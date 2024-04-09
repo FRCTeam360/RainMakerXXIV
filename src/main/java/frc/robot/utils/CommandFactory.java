@@ -185,7 +185,7 @@ public class CommandFactory {
                         .andThen(
                                 new ParallelRaceGroup(
                                         new RunCommand(() -> intake.run(1.0), intake),
-                                        new EndWhenShot(intake, flywheel))));
+                                        new EndWhenShot(intake, flywheel)))).andThen(takeSnapshot());
     }
 
     public Command shootAtSpeakerVisionAuto() {

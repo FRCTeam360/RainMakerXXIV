@@ -50,17 +50,17 @@ public class WereSafeAndSound extends Command {
   public void execute() {
     if(bringup) {
       linkage.setAngle(setthatguy, ampArm);
+      intake.stop();
     }
     else if(!bringup) {
       intake.run(.4);
-      bringup = true;
       // System.out.println("runnin at 90");
     } else {
       intake.run(.5);
       // System.out.println("runnin at .5");
   }
     if(!intake.getSideSensor()) {
-      intake.stop();
+      bringup = true; 
     }
 
   }

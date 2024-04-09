@@ -552,7 +552,7 @@ public class RobotContainer {
     operatorController.rightBumper().whileTrue(powerAmpIntake);
 
     operatorController.back().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
-    operatorController.back().onTrue(new InstantCommand(() -> ampArm.zeroWrist(), ampArm));
+   // operatorController.back().onTrue(new InstantCommand(() -> ampArm.zeroWrist(), ampArm)); //BRING BACK BEFORE WORLDS
 
     operatorController.start().whileTrue(powerAmpArm);
     operatorController.start().whileTrue(stopClimber);
@@ -617,6 +617,10 @@ public class RobotContainer {
     if (!Objects.isNull(ampIntake)) {
       ampIntake.stop();
     }
+  }
+
+  public void onAutoInit() {
+    Constants.DRIVETRAIN_PITCH_AUTO_INIT = drivetrain.getPigeon2().getPitch().getValueAsDouble();
   }
 
   public void onTeleInit() {

@@ -44,6 +44,8 @@ public class Constants {
                 public static final int WOOD_BOT_LINKAGE_ID = 2;
         }
 
+        public static double DRIVETRAIN_PITCH_AUTO_INIT = 0.0;
+
         public static final String CANIVORE_NAME = "Default Name";
         public static final int DRIVER_CONTROLLER = 0;
         public static final int OPERATOR_CONTROLLER = 1;

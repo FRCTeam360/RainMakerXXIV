@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.PowerFlywheel;
@@ -45,12 +46,14 @@ public class EndWhenShooterReady extends Command {
     boolean isLinkageAtSetpoint = linkage.isAtSetpoint() && Math.abs(linkage.getVelocity()) < 2;
     boolean isFlywheelAboveSetpoint = flywheel.isAboveSetpoint();
     boolean isDrivetrainOnTarget = swerveDrivetrain.isFacingAngle();
+    boolean pitch = swerveDrivetrain.isFlat();
     Logger.recordOutput("EndWhenShooterReady: isLinkageAtSetpoint", isLinkageAtSetpoint);
     Logger.recordOutput("EndWhenShooterReady: isFlywheelAboveSetpoint", isFlywheelAboveSetpoint);
     Logger.recordOutput("EndWhenShooterReady: isDrivetrainOnTarget", isDrivetrainOnTarget);
-    if ((isLinkageAtSetpoint || timer.get() > 0.3) && ((isFlywheelAboveSetpoint && isDrivetrainOnTarget) || timer.get() > 0.75)) {
+    if ((isLinkageAtSetpoint || timer.get() > 0.3) && ((isFlywheelAboveSetpoint && isDrivetrainOnTarget) || timer.get() > 0.75) && pitch) {
       stop = true;
     }
+
   }
 
   // Called once the command ends or is interrupted.

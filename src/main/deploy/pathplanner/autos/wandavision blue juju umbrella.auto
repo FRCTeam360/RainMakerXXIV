@@ -187,7 +187,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Intake"
+                        "name": "bloody intake"
                       }
                     },
                     {
@@ -225,6 +225,12 @@
           "type": "named",
           "data": {
             "name": "vision shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "blue umbrella 9 run"
           }
         }
       ]

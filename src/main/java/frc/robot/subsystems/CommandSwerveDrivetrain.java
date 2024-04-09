@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import java.sql.Driver;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
@@ -54,8 +55,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private static SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle();
     private PhoenixPIDController headingController;
     private PIDController visionTargetPIDController;
-    final double MAX_SPEED_MPS = Constants.MAX_SPEED_MPS; 
-
+    final double MAX_SPEED_MPS = Constants.MAX_SPEED_MPS;
 
     GenericEntry kPEntry;
     GenericEntry kIEntry;
@@ -72,27 +72,24 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private double visionTargetKD = 0.0;
     private double visionTargetIZone = 0.0;
 
-    // Create a new SysId Routine for characterizing the drive 
+    // Create a new SysId Routine for characterizing the drive
     public SysIdRoutine sysIdRoutine = new SysIdRoutine(
-        new SysIdRoutine.Config(
-        null, null, null, // Use default config
-        (state) -> Logger.recordOutput("SysIdTestState", state.toString())
-        ),
-        new SysIdRoutine.Mechanism(
-        (voltage) -> this.runCharacterizationVolts(voltage.in(Volts)),
-        null, // No log consumer, since data is recorded by AdvantageKit
-        this
-        )
-    );
+            new SysIdRoutine.Config(
+                    null, null, null, // Use default config
+                    (state) -> Logger.recordOutput("SysIdTestState", state.toString())),
+            new SysIdRoutine.Mechanism(
+                    (voltage) -> this.runCharacterizationVolts(voltage.in(Volts)),
+                    null, // No log consumer, since data is recorded by AdvantageKit
+                    this));
 
     // See Robot Container: The methods below return Command objects
 
-    public void runCharacterizationVolts (double voltage) {
+    public void runCharacterizationVolts(double voltage) {
         double velocityX = voltage / 12.0 * MAX_SPEED_MPS;
         this.setControl(new SwerveRequest.RobotCentric()
-            .withVelocityX(velocityX)
-            .withVelocityY(0.0)
-            .withRotationalRate(0.0));
+                .withVelocityX(velocityX)
+                .withVelocityY(0.0)
+                .withRotationalRate(0.0));
     }
 
     private void setupShuffleboard() {
@@ -119,13 +116,13 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     public void updateDriveGains(double kP, double kI, double kD, double kS, double kV, double kA) {
         Slot0Configs slot0Configs = new Slot0Configs()
                 .withKA(kA).withKD(kD).withKI(kI).withKP(kP).withKS(kS).withKV(kV);
-        for(int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++) {
             this.getModule(i).getDriveMotor().getConfigurator().apply(slot0Configs, 0.05);
         }
     }
 
-    public void setupPathPlanner(){
-        
+    public void setupPathPlanner() {
+
         AutoBuilder.configureHolonomic(
                 this::getPose, // Robot pose supplier
                 this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
@@ -161,7 +158,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         // setupShuffleboard();
     }
 
-
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
         configurePID();
@@ -169,7 +165,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             startSimThread();
         }
 
-       setupPathPlanner();
+        setupPathPlanner();
         // setupShuffleboard();
     }
 
@@ -179,12 +175,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
         return sysIdRoutine.quasistatic(direction);
-      }
+    }
 
     public Command sysIdDynamic(SysIdRoutine.Direction direction) {
         return sysIdRoutine.dynamic(direction);
     }
-
 
     private void startSimThread() {
         m_lastSimTime = Utils.getCurrentTimeSeconds();
@@ -227,6 +222,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     /**
      * Flips a given angle by 180 degrees
+     * 
      * @param angle
      */
     public double flipAngle(double angle) {
@@ -273,13 +269,13 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     // drive robot with field centric angle
     public void driveFieldCentricFacingAngle(double forward, double left, double desiredAngle) {
-        
+
         FieldCentricFacingAngle request = new SwerveRequest.FieldCentricFacingAngle()
                 .withVelocityX(forward * Constants.MAX_SPEED_MPS)
                 .withVelocityY(left * Constants.MAX_SPEED_MPS)
                 .withTargetDirection(Rotation2d.fromDegrees(desiredAngle));
-                request.HeadingController = headingController;
-                //request.ForwardReference = SwerveRequest.ForwardReference.RedAlliance;
+        request.HeadingController = headingController;
+        // request.ForwardReference = SwerveRequest.ForwardReference.RedAlliance;
         this.setControl(request);
     }
 
@@ -318,27 +314,33 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             return headingController.atSetpoint();
         }
     }
+
     private double pastTX = 100.0;
     private Rotation2d visionTargetRotation = new Rotation2d();
+
     public void setPastTX(double tx) {
         pastTX = tx;
     }
+
     /**
-     * this method should take in three doubles, forward, left, and tx value from vision system
-     * it should then use the tx value to turn the robot to the target, and then drive forward and left in field centric mode
+     * this method should take in three doubles, forward, left, and tx value from
+     * vision system
+     * it should then use the tx value to turn the robot to the target, and then
+     * drive forward and left in field centric mode
      */
     public void pointAtTarget(double forward, double left, double tx) {
         if (pastTX != tx) {
-            pastTX = tx;  
+            pastTX = tx;
             visionTargetRotation = this.getPose().getRotation().minus(Rotation2d.fromDegrees(tx));
         }
-        // Call fieldCentric request with forward and left and the ouput of our PIDController
+        // Call fieldCentric request with forward and left and the ouput of our
+        // PIDController
         FieldCentricFacingAngle request = new SwerveRequest.FieldCentricFacingAngle()
-        .withVelocityX(forward * Constants.MAX_SPEED_MPS)
-        .withVelocityY(left * Constants.MAX_SPEED_MPS)
-        .withTargetDirection(visionTargetRotation);
+                .withVelocityX(forward * Constants.MAX_SPEED_MPS)
+                .withVelocityY(left * Constants.MAX_SPEED_MPS)
+                .withTargetDirection(visionTargetRotation);
         request.HeadingController = headingController;
-        this.setControl(request);              
+        this.setControl(request);
     }
 
     // checks if vision PID is at setpoint
@@ -346,34 +348,48 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         return visionTargetPIDController.atSetpoint();
     }
 
+    public boolean isFlat() {
+        double currentPitch = this.getPigeon2().getPitch().getValueAsDouble();
+        if (Math.abs(currentPitch - Constants.DRIVETRAIN_PITCH_AUTO_INIT) < 2.0 || DriverStation.isTeleop()) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void periodic() {
         Logger.recordOutput("Swerve: Current Pose", this.getPose());
         Logger.recordOutput("Swerve: Rotation", this.getRotation2d());
         Logger.recordOutput("Swerve: Angle", this.getAngle());
+        Logger.recordOutput("swerve: pithc", this.isFlat());
         // String moduleName = "null";
         // for (int i = 0; i < 4; i++) {
-        //     switch (i) {
-        //         case 0:
-        //             moduleName = "Front Left: ";
-        //             break;
-        //         case 1:
-        //             moduleName = "Front Right: ";
-        //             break;
-        //         case 2:
-        //             moduleName = "Back Left: ";
-        //             break;
-        //         case 3:
-        //             moduleName = "Back Right: ";
-        //             break;
-        //     }
-        //     Logger.recordOutput("Swerve " + moduleName + "Drive Voltage", this.getModule(i).getDriveMotor().getMotorVoltage().getValueAsDouble());
-        //     Logger.recordOutput("Swerve " + moduleName + "Drive Current", this.getModule(i).getDriveMotor().getSupplyCurrent().getValueAsDouble());
-        //     Logger.recordOutput("Swerve " + moduleName + "CANCoder Position", this.getModule(i).getCANcoder().getPosition().getValueAsDouble());
-        //     Logger.recordOutput("Swerve " + moduleName + "Steer Voltage", this.getModule(i).getSteerMotor().getMotorVoltage().getValueAsDouble());
-        //     Logger.recordOutput("Swerve " + moduleName + "Steer Current", this.getModule(i).getSteerMotor().getSupplyCurrent().getValueAsDouble());
-           
-        //}
+        // switch (i) {
+        // case 0:
+        // moduleName = "Front Left: ";
+        // break;
+        // case 1:
+        // moduleName = "Front Right: ";
+        // break;
+        // case 2:
+        // moduleName = "Back Left: ";
+        // break;
+        // case 3:
+        // moduleName = "Back Right: ";
+        // break;
+        // }
+        // Logger.recordOutput("Swerve " + moduleName + "Drive Voltage",
+        // this.getModule(i).getDriveMotor().getMotorVoltage().getValueAsDouble());
+        // Logger.recordOutput("Swerve " + moduleName + "Drive Current",
+        // this.getModule(i).getDriveMotor().getSupplyCurrent().getValueAsDouble());
+        // Logger.recordOutput("Swerve " + moduleName + "CANCoder Position",
+        // this.getModule(i).getCANcoder().getPosition().getValueAsDouble());
+        // Logger.recordOutput("Swerve " + moduleName + "Steer Voltage",
+        // this.getModule(i).getSteerMotor().getMotorVoltage().getValueAsDouble());
+        // Logger.recordOutput("Swerve " + moduleName + "Steer Current",
+        // this.getModule(i).getSteerMotor().getSupplyCurrent().getValueAsDouble());
+
+        // }
         // Logger.recordOutput("Rotation2d", this.getPigeon2().getRotation2d());
         Logger.recordOutput("Swerve: CurrentState", this.getState().ModuleStates);
         Logger.recordOutput("Swerve: TargetState", this.getState().ModuleTargets);
