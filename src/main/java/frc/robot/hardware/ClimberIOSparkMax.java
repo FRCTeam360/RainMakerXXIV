@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.io.ClimberIO;
@@ -30,14 +31,14 @@ public class ClimberIOSparkMax implements ClimberIO {
     private RelativeEncoder leftEncoder = leftMotor.getEncoder();
     private RelativeEncoder rightEncoder = rightMotor.getEncoder();
 
-
-    private final double POSITION_CONVERSION = 1; //motor rotations -> (pulley diameter inches * pi) / (5 * 3 gearbox) -> inches
+    private final double POSITION_CONVERSION = 1; // motor rotations -> (pulley diameter inches * pi) / (5 * 3 gearbox)
+                                                  // -> inches
     private final double MINIMUM_HEGIHT = 0;
 
-    private final float leftRetractLimit = -35;
+    private final float leftRetractLimit = -60;
     private final float leftExtensionLimit = 60;
 
-    private final float rightRetractLimit = -35;
+    private final float rightRetractLimit = -60;
     private final float rightExtensionLimit = 60;
 
     private static class UnloadedConstants {
@@ -51,13 +52,16 @@ public class ClimberIOSparkMax implements ClimberIO {
     }
 
     private static class LoadedConstants {
-        static final double leftkP = 0;
-        static final double leftkI = 0;
+        static final double leftkP = 1.0;
+        static final double leftkI = 0.0001;
         static final double leftkD = 0;
+        static final double leftkFF = -0.03;
 
-        static final double rightkP = 0;
-        static final double rightkI = 0;
+        static final double rightkP = 1.0;
+        static final double rightkI = 0.0001;
         static final double rightkD = 0;
+        static final double rightkFF = -0.03;
+
     }
 
     /** Creates a new ClimberIOSparkMax. */
@@ -91,10 +95,13 @@ public class ClimberIOSparkMax implements ClimberIO {
         leftPIDController.setP(LoadedConstants.leftkP, 1); // SLOT 1 IS LOADED
         leftPIDController.setI(LoadedConstants.leftkI, 1);
         leftPIDController.setD(LoadedConstants.leftkD, 1);
+        leftPIDController.setFF(LoadedConstants.leftkFF, 1);
 
         rightPIDController.setP(LoadedConstants.rightkP, 1);
         rightPIDController.setI(LoadedConstants.rightkI, 1);
         rightPIDController.setD(LoadedConstants.rightkD, 1);
+        rightPIDController.setFF(LoadedConstants.rightkFF, 1);
+
     }
 
     @Override
@@ -102,12 +109,12 @@ public class ClimberIOSparkMax implements ClimberIO {
         leftPIDController.setP(P, 1); // SLOT 0 IS EXTENSION
         leftPIDController.setI(I, 1);
         leftPIDController.setD(D, 1);
-        leftPIDController.setFF(F,1);
+        leftPIDController.setFF(F, 1);
 
         rightPIDController.setP(P, 1); // SLOT 0 IS EXTENSION
         rightPIDController.setI(I, 1);
         rightPIDController.setD(D, 1);
-        rightPIDController.setFF(F,1);
+        rightPIDController.setFF(F, 1);
         leftMotor.setInverted(false);
         rightMotor.setInverted(true);
     }
@@ -138,18 +145,18 @@ public class ClimberIOSparkMax implements ClimberIO {
      * @param height is in inches :D
      */
     @Override
-    public void setLeftHeight(double height) { // height should be in inches
+    public void setLeftHeight(double height, int pidSlot) { // height should be in inches
         height = height / POSITION_CONVERSION;
-        leftPIDController.setReference(height, ControlType.kPosition);
+        leftPIDController.setReference(height, ControlType.kPosition, pidSlot);
     }
 
     /**
      * @param height is in inches :D
      */
     @Override
-    public void setRightHeight(double height) {
+    public void setRightHeight(double height, int pidSlot) {
         height = height / POSITION_CONVERSION;
-        rightPIDController.setReference(height, ControlType.kPosition);
+        rightPIDController.setReference(height, ControlType.kPosition, pidSlot);
     }
 
     @Override
@@ -157,17 +164,18 @@ public class ClimberIOSparkMax implements ClimberIO {
         leftEncoder.setPosition(0.0);
         rightEncoder.setPosition(0.0);
     }
+
     public void level() {
         // double roll = 0.0;
 
         // if (roll > 1.0) {
-        //     runLeft(-0.3);
-        //     runRight(0.3);
+        // runLeft(-0.3);
+        // runRight(0.3);
         // } else if (roll < -1.0) {
-        //     runLeft(0.3);
-        //     runRight(-0.3);
+        // runLeft(0.3);
+        // runRight(-0.3);
         // } else {
-        //     stop();
+        // stop();
         // }
     }
 
@@ -195,9 +203,15 @@ public class ClimberIOSparkMax implements ClimberIO {
 
     @Override
     public void updateInputs(ClimberIOInputs inputs) {
-        inputs.speedLeft = leftMotor.get();
-        inputs.speedRight = rightMotor.get();
-        inputs.leftAmps = leftMotor.getOutputCurrent();
-        inputs.rightAmps = rightMotor.getOutputCurrent();
+        inputs.climberLeftStatorCurrent = leftMotor.getOutputCurrent();
+        inputs.climberRightStatorCurrent = rightMotor.getOutputCurrent();
+        inputs.climberLeftPosition = leftEncoder.getPosition();
+        inputs.climberRightPosition = rightEncoder.getPosition();
+        inputs.climberLeftVelocity = leftEncoder.getVelocity();
+        inputs.climberRightVelocity = rightEncoder.getVelocity();
+        inputs.climberLeftVoltage = leftMotor.getAppliedOutput() * leftMotor.getBusVoltage();
+        inputs.climberRightVoltage = rightMotor.getAppliedOutput() * rightMotor.getBusVoltage();
+        inputs.climberLeftDutyCycle = leftMotor.getAppliedOutput();
+        inputs.climberRightDutyCycle = rightMotor.getAppliedOutput();
     }
 }

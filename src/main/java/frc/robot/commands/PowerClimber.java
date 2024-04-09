@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber;
+import frc.robot.utils.CommandLogger;
 
 public class PowerClimber extends Command {
   private final Climber climber;
@@ -23,6 +24,7 @@ public class PowerClimber extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    CommandLogger.logCommandStart(this);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -42,6 +44,7 @@ public class PowerClimber extends Command {
   @Override
   public void end(boolean interrupted) {
     climber.stop();
+    CommandLogger.logCommandEnd(this);
   }
 
   // Returns true when the command should end.

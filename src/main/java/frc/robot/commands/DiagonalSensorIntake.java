@@ -9,6 +9,7 @@ import frc.robot.subsystems.AmpArm;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
+import frc.robot.utils.CommandLogger;
 
 public class DiagonalSensorIntake extends Command {
   private final Flywheel flywheel;
@@ -40,7 +41,8 @@ public class DiagonalSensorIntake extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
+  public void initialize() { //DONT USE I THIN? NO DIAGONAL SENSOR ANYMORE
+    CommandLogger.logCommandStart(this);
     state = IntakeCases.EXTEND_INTAKE;
   }
 
@@ -56,14 +58,14 @@ public class DiagonalSensorIntake extends Command {
       case EXTEND_INTAKE:
         linkage.setAngle(0.0, arm);
         intake.run(.4);
-        if(!intake.getDiagonalSensor()) {
+        if(!intake.getShooterSensor()) {
           state = IntakeCases.SPIN_UP_FLYWHEEL;
         }
         break;
       case MOVE_UP_INTAKE:
         linkage.setAngle(90.0, arm);
         intake.run(.5);
-        if(!intake.getDiagonalSensor()) {
+        if(!intake.getShooterSensor()) {
           state = IntakeCases.REVERSE_INTAKE;
         }
         break;
@@ -91,6 +93,7 @@ public class DiagonalSensorIntake extends Command {
     linkage.stop();
     intake.stop();
     flywheel.stop();
+    CommandLogger.logCommandEnd(this);
   }
 
   // Returns true when the command should end.

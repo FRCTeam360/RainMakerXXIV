@@ -4,11 +4,14 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AmpIntake;
+import frc.robot.utils.CommandLogger;
 
 public class PowerAmpIntake extends Command {
   private final AmpIntake ampIntake;
+  private XboxController opCont = new XboxController(1);
 
   /** Creates a new PowerArmIntake. */
   public PowerAmpIntake(AmpIntake ampIntake) {
@@ -20,18 +23,26 @@ public class PowerAmpIntake extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    CommandLogger.logCommandStart(this);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ampIntake.runIntake(0.3);
+    if(opCont.getRightStickButton()) {
+      ampIntake.runIntake(0.25);
+    } else {
+
+    ampIntake.runIntake(1.0);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     ampIntake.stop();
+    CommandLogger.logCommandEnd(this);
   }
 
   // Returns true when the command should end.

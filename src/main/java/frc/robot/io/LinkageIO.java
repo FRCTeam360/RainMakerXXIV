@@ -17,8 +17,13 @@ public interface LinkageIO {
   /** Creates a new LinkageIO. */
   @AutoLog
   public static class LinkageIOInputs {
-    public double linkageAngle = 0.0;
     public double linkageVoltage = 0.0;
+    public double linkagePosition = 0.0;
+    public double linkageVelocity = 0.0;
+    public double linkageStatorCurrent = 0.0;
+    public double linkageSupplyCurrent =  0.0;
+    public boolean zeroButton = false;
+    public boolean brakeButton = false;
   }
 
   public default void updateInputs(LinkageIOInputs inputs) {}
@@ -38,6 +43,8 @@ public interface LinkageIO {
   public void setReference(double setPoint);
 
   public void setPosition(double angle);
+
+  public double getVelocity();
 
   public void enableBrakeMode();
 

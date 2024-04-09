@@ -27,13 +27,13 @@ public class IntakeIOSparkMax implements IntakeIO {
     private final RelativeEncoder encoder = sparkMax.getEncoder();
     private final SparkPIDController pid = sparkMax.getPIDController();
     // new hardware class for sensor?
-    private final DigitalInput sideSensor = new DigitalInput(Constants.INTAKE_SIDE_SENSOR_PORT); // update port later idk what it is
-    private final DigitalInput highSensor = new DigitalInput(Constants.INTAKE_HIGH_SENSOR_PORT); // update port later idk what it is
-    private final DigitalInput diagonalSensor = new DigitalInput(Constants.INTAKE_DIAGONAL_SENSOR_PORT);
+    private final DigitalInput sideSensor = new DigitalInput(Constants.SIDE_SENSOR_PORT); // update port later idk what it is
+    private final DigitalInput shooterSensor = new DigitalInput(Constants.SHOOTER_SENSOR_PORT); // update port later idk what it is
+    private final DigitalInput intakeSensor = new DigitalInput(Constants.INTAKE_SENSOR_PORT);
 
   public IntakeIOSparkMax() {
     sparkMax.restoreFactoryDefaults();
-    sparkMax.setInverted(true);
+    sparkMax.setInverted(false);
     sparkMax.setIdleMode(IdleMode.kBrake);
     final double GEAR_RATIO = 0.5;
     encoder.setVelocityConversionFactor(GEAR_RATIO);
@@ -44,15 +44,18 @@ public class IntakeIOSparkMax implements IntakeIO {
     // get shuffleboard tab intake
     ShuffleboardTab tab = Shuffleboard.getTab("intake");
     tab.addBoolean("side sensor", () -> this.getSideSensor());
-    tab.addBoolean("high sensor", () -> this.getHighSensor());
+    tab.addBoolean("high sensor", () -> this.getIntakeSensor());
     tab.addDouble("applied otuput", () -> sparkMax.getAppliedOutput());
   }
 
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
-    inputs.intakeSpeed = sparkMax.get();
-    inputs.output = sparkMax.getAppliedOutput();
-    inputs.amps = sparkMax.getOutputCurrent();
+    inputs.sideSensor = sideSensor.get();
+    inputs.intakeSensor = intakeSensor.get();
+    inputs.intakeVoltage = sparkMax.getAppliedOutput();
+    inputs.intakeStatorCurrent = sparkMax.getOutputCurrent();
+    inputs.intakeVelocity = encoder.getVelocity();
+    inputs.intakePosition = encoder.getPosition();
   }
 
   @Override
@@ -66,8 +69,18 @@ public class IntakeIOSparkMax implements IntakeIO {
   }
 
   @Override
-  public boolean getDiagonalSensor() {
-    return diagonalSensor.get();
+  public boolean getIntakeSensor() {
+    return intakeSensor.get();
+  }
+
+  @Override
+  public boolean getSideSensor() {
+    return sideSensor.get();
+  }
+
+  @Override
+  public boolean getShooterSensor() {
+    return shooterSensor.get();
   }
 
   @Override
@@ -79,15 +92,7 @@ public class IntakeIOSparkMax implements IntakeIO {
   public double getOutputCurrent() {
     return sparkMax.getOutputCurrent();
   }
-
-  @Override
-  public boolean getSideSensor() {
-    return sideSensor.get();
-  }
-    @Override
-  public boolean getHighSensor() {
-    return highSensor.get();
-  }
+  
   @Override
   public double getEncoderValue() {
     return sparkMax.getEncoder().getPosition();

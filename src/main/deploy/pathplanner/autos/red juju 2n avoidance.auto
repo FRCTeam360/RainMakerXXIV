@@ -59,7 +59,7 @@
         {
           "type": "named",
           "data": {
-            "name": "stay out of way shot"
+            "name": "vision shoot"
           }
         },
         {
@@ -67,7 +67,7 @@
           "data": {
             "commands": [
               {
-                "type": "parallel",
+                "type": "race",
                 "data": {
                   "commands": [
                     {
@@ -110,7 +110,7 @@
         {
           "type": "named",
           "data": {
-            "name": "last guy"
+            "name": "vision shoot"
           }
         },
         {
@@ -118,7 +118,7 @@
           "data": {
             "commands": [
               {
-                "type": "parallel",
+                "type": "race",
                 "data": {
                   "commands": [
                     {
@@ -161,7 +161,7 @@
         {
           "type": "named",
           "data": {
-            "name": "last guy"
+            "name": "vision shoot"
           }
         },
         {
@@ -169,7 +169,7 @@
           "data": {
             "commands": [
               {
-                "type": "parallel",
+                "type": "race",
                 "data": {
                   "commands": [
                     {
@@ -212,7 +212,7 @@
         {
           "type": "named",
           "data": {
-            "name": "last guy"
+            "name": "vision shoot"
           }
         }
       ]

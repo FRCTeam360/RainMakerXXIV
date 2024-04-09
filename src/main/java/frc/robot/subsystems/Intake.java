@@ -32,6 +32,7 @@ public class Intake extends SubsystemBase {
 
   public void setupShuffleboard() {
     ShuffleboardTab tab = Shuffleboard.getTab("intake");
+    
     tab.addNumber("Encoder position", () -> io.getEncoderValue());
   }
   /** Creates a new Intake. */
@@ -48,12 +49,12 @@ public class Intake extends SubsystemBase {
     return io.getSideSensor();
   }
 
-  public boolean getHighSensor() {
-    return io.getHighSensor();
+  public boolean getShooterSensor() {
+    return io.getShooterSensor();
   }
 
-  public boolean getDiagonalSensor() {
-    return io.getDiagonalSensor();
+  public boolean getIntakeSensor() {
+    return io.getIntakeSensor();
   }
 
   public void run(double speed) {
@@ -88,8 +89,14 @@ public class Intake extends SubsystemBase {
     io.moveEncoder(setpoint);
   }
 
+  public boolean hasNote() {
+    return !this.getSideSensor() || !this.getShooterSensor();
+  }
+
+
   @Override
   public void periodic() {
+    SmartDashboard.putBoolean("intake sensor", getShooterSensor());
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("Intake", inputs);

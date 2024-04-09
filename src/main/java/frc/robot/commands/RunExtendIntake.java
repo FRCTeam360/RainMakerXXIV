@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -55,7 +57,7 @@ public class RunExtendIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println(state);
+    Logger.recordOutput(this.getName() + ": state", state);
     switch(state){
       case CHECK_ROBOT_EMPTY:
         if(intake.getSideSensor()) {
@@ -168,9 +170,7 @@ public class RunExtendIntake extends Command {
     // }
 
       
-    //   System.out.println(operatorCont.getRightTriggerAxis());
     //   SmartDashboard.putNumber("Trigger val: ", operatorCont.getRightTriggerAxis());
-    CommandLogger.logCommandRunning(this);
   }
 
   // Called once the command ends or is interrupted.
@@ -191,7 +191,6 @@ public class RunExtendIntake extends Command {
   @Override
   public boolean isFinished() {
     if(state == IntakeCases.RETRACT_STOP) {
-      System.out.print("COMMAND ENDED");
       return true;
     }
     return false;

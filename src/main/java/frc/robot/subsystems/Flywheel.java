@@ -33,7 +33,8 @@ public class Flywheel extends SubsystemBase {
   /** Creates a new Flywheel. */
   public Flywheel(FlywheelIO io) {
     this.io = io;
-    SmartDashboard.putNumber("error", 0);
+    //SmartDashboard.putNumber("error", 0);
+    SmartDashboard.putBoolean("Is At Setpoint", false);
   }
 
   public void runLeft(double speed) {
@@ -79,6 +80,12 @@ public class Flywheel extends SubsystemBase {
     }
   }
 
+  public void setIndividualRPM(double leftRPM, double rightRPM) {
+    rpmSetpoint = leftRPM;
+    io.setLeftReference(leftRPM, ControlType.kVelocity);
+    io.setRightReference(rightRPM, ControlType.kVelocity);
+  }
+
   public void stop() {
     io.stopLeftMotor();
     io.stopRightMotor();
@@ -119,11 +126,11 @@ public class Flywheel extends SubsystemBase {
   // public boolean isBelowSetpoint() {
   // return this.getTopVelocity() <= topRPMSetpoint - 30.0; }
   public boolean isAtSetpoint() {
-    return Math.abs(this.getLeftVelocity() - rpmSetpoint) < 175.0;
+    return Math.abs(this.getLeftVelocity() - rpmSetpoint) < 215.0;
   }
 
   public boolean isAboveSetpoint() {
-    return this.getLeftVelocity() >= rpmSetpoint;
+    return this.getLeftVelocity() >= rpmSetpoint-100.0;
   }
 
   public boolean isBelowSetpoint() {
@@ -132,8 +139,9 @@ public class Flywheel extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("setpoint rpm", rpmSetpoint);
-    SmartDashboard.putNumber("curren left rpm", getLeftVelocity());
+    SmartDashboard.putBoolean("Is At Setpoint", isAtSetpoint());
+    // SmartDashboard.putNumber("setpoint rpm", rpmSetpoint);
+    SmartDashboard.putNumber("current left rpm", getLeftVelocity());
     SmartDashboard.putNumber("current right rpm", getRightVelocity());
     // This method will be called once per scheduler run
     io.updateInputs(inputs);

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AmpArm;
 import frc.robot.subsystems.Linkage;
+import frc.robot.utils.CommandLogger;
 
 public class LinkageSetpoint extends Command {
   private final Linkage linkage;
@@ -23,14 +24,15 @@ public class LinkageSetpoint extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putNumber("Setpoint", 0.0);
+    CommandLogger.logCommandStart(this);
+    SmartDashboard.putNumber("Linkage Setpoint", 0.0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     SmartDashboard.putNumber("Linkage angle", linkage.getAngle());
-    double setpoint = SmartDashboard.getNumber("Setpoint", 0.0);
+    double setpoint = SmartDashboard.getNumber("Linkage Setpoint", 0.0);
     linkage.setAngle(setpoint, arm);
     SmartDashboard.putBoolean("Linkage at setpoint?", linkage.isAtSetpoint());
   }
@@ -39,6 +41,7 @@ public class LinkageSetpoint extends Command {
   @Override
   public void end(boolean interrupted) {
     linkage.stop();
+    CommandLogger.logCommandEnd(this);
   }
 
   // Returns true when the command should end.

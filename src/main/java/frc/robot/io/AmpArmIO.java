@@ -16,12 +16,19 @@ public interface AmpArmIO {
   /** Creates a new AmpArmIO. */
   @AutoLog
   public static class AmpArmIOInputs {
-    public double armSpeed = 0.0;
-    public double wristSpeed = 0.0;
-    public double armAngle = 0.0;
-    public double wristAngle = 0.0;
-    public double armAmps = 0.0;
-    public double wristAmps = 0.0;
+    public double armStatorCurrent = 0.0;
+    public double wristStatorCurrent = 0.0;
+    public double armSupplyCurrent = 0.0;
+    public double wristSupplyCurrent = 0.0;
+    public double armVoltage = 0.0;
+    public double wristVoltage = 0.0;
+    public double armVelocity = 0.0;
+    public double wristVelocity = 0.0;
+    public double armPosition = 0.0;
+    public double wristPosition = 0.0;
+    public boolean ampIntakeSensor = false;
+    public boolean zeroButton = false;
+    public boolean brakeButton = false;
   }
 
   public default void updateInputs(AmpArmIOInputs inputs) {}
@@ -45,4 +52,24 @@ public interface AmpArmIO {
   public void zeroWrist();
 
   public void zeroArm();
+
+  public boolean getIntakeSensor();
+
+  public void resetArmWristPos();
+
+  public void enableBrakeMode();
+
+  public void disableBrakeMode();
+
+  public boolean getBrakeButton();
+
+  public boolean isBrakeMode();
+
+  public boolean getZeroButton();
+
+  public void setWrist70();
+
+  public void setArm78();
+
+ // public double getAbsEncoder();
 }

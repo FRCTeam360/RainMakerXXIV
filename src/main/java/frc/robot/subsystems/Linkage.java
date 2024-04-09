@@ -37,23 +37,25 @@ public class Linkage extends SubsystemBase {
   private final LinkageIOInputsAutoLogged inputs = new LinkageIOInputsAutoLogged();
   private double positionSetpoint;
   
-  
   private static final double STARTING_ANGLE = 50.0;
   static XboxController driverCont = new XboxController(0);
 
   
   /** Creates a new ShooterLinkage. */
   public Linkage(LinkageIO io) {
-  this.io = io;
+    this.io = io;
     ShuffleboardTab tab = Shuffleboard.getTab("Linkage");
     tab.addBoolean("Zero Button", () -> io.getZeroButton());
     tab.addBoolean("Brake Button", () -> io.getBrakeButton());
     tab.addDouble("Angle", () -> this.getAngle());
     tab.addBoolean("Brake Mode", () -> io.isBrakeMode());
+
+    SmartDashboard.putNumber("Linkage Angle", getAngle());
+    SmartDashboard.putBoolean("Linkage is at home", isAtZero());
   }
 
   public boolean isAtSetpoint() {
-	  if(Math.abs(this.getAngle() - positionSetpoint) < 3.0) {
+	  if(Math.abs(this.getAngle() - positionSetpoint) < 1.0) {
       return true;
     } else {
       return false;
@@ -72,7 +74,7 @@ public class Linkage extends SubsystemBase {
     }
     double armAngle = ampArm.getArmPosition();
     double linkageAngle = io.getPosition();
-    if (armAngle > 0.0) {
+    if (armAngle > -10.0) {
       safeFromCollision = true;
     } else if (armAngle < -70.0) {
       safeFromCollision = true;
@@ -93,6 +95,10 @@ public class Linkage extends SubsystemBase {
     io.stopMotor();
   }
 
+  public double getVelocity() {
+    return io.getVelocity();
+  }
+
   public double getAngle() {
     return io.getPosition();
   }
@@ -101,6 +107,8 @@ public class Linkage extends SubsystemBase {
     if (avoidCollisionWithAmpArm(ampArm)) {
       io.setReference(setPoint);
       positionSetpoint = setPoint;
+    } else {
+      io.stopMotor();
     }
   }
 
@@ -127,10 +135,15 @@ public class Linkage extends SubsystemBase {
     io.setFF(ff * Math.cos(getAngle()));
   }
 
+  public boolean isAtZero() {
+    return Math.abs(getAngle()) < 5.0;
+  }
+
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Angle", getAngle());
+    SmartDashboard.putNumber("Linkage Angle", getAngle());
+    SmartDashboard.putBoolean("Linkage is at home", isAtZero());
     // This method will be called once per scheduler run
     io.updateInputs(inputs);
     Logger.processInputs("Linkage", inputs);

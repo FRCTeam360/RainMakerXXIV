@@ -73,7 +73,7 @@ public class PowerCenterNote extends Command{
       case UP_TO_SHOOTER:
         intake.run(.4);
         linkage.setAngle(130.0, arm);
-        if(!intake.getHighSensor()){
+        if(!intake.getShooterSensor()){
             state = IntakeCases.BACK_UP;
         }
         break;
@@ -85,7 +85,7 @@ public class PowerCenterNote extends Command{
         break;
       case CENTER:
         intake.run(.2);
-        if(!intake.getHighSensor()){
+        if(!intake.getShooterSensor()){
             state = IntakeCases.RETRACT_STOP;
         }
         break;
@@ -126,7 +126,6 @@ public class PowerCenterNote extends Command{
       
     //   System.out.println(operatorCont.getRightTriggerAxis());
     //   SmartDashboard.putNumber("Trigger val: ", operatorCont.getRightTriggerAxis());
-    CommandLogger.logCommandRunning(this);
   }
 
   // Called once the command ends or is interrupted.

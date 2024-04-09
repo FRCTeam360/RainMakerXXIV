@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.RobotType;
 import frc.robot.generated.WoodbotConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
@@ -80,8 +81,10 @@ public class Robot extends LoggedRobot {
     }
 
     // Logger.disableDeterministicTimestamps() // See "Deterministic Timestamps" in the "Understanding Data Flow" page
+    if(Constants.getRobotType() == Constants.RobotType.COMPETITION) {
     Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
     SignalLogger.start();
+    }
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
@@ -162,6 +165,8 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
     m_autonomousCommand.schedule();
     }
+
+    m_robotContainer.onAutoInit();
   }
 
   /** This function is called periodically during autonomous. */

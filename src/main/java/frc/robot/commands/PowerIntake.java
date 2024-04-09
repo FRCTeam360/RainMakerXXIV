@@ -11,7 +11,9 @@ import frc.robot.utils.CommandLogger;
 
 public class PowerIntake extends Command {
   private XboxController operatorCont = new XboxController(1);
+
   private Intake intake;
+
   /** Creates a new ManualIntake. */
   public PowerIntake(Intake intake) {
     addRequirements(intake);
@@ -29,15 +31,20 @@ public class PowerIntake extends Command {
   @Override
   public void execute() {
     // if(operatorCont.getRightTriggerAxis() > .75) {
-    //   intake.run(-.5);
+    // intake.run(-.5);
     // } else {
-    //   intake.run(-.15);
+    // intake.run(-.15);
     // }
 
-    intake.run(1.0);
-    CommandLogger.logCommandRunning(this);
+    if (operatorCont.getRightTriggerAxis() > 0.1) {
+      intake.run(operatorCont.getRightTriggerAxis());
+    } else if (operatorCont.getLeftTriggerAxis() > 0.1) {
+      intake.run(-1.0 * operatorCont.getLeftTriggerAxis());
+    } else {
+      intake.stop();
+    }
   }
-
+  
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {

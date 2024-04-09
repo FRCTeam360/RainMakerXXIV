@@ -13,55 +13,63 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants;
 import frc.robot.io.IntakeIO;
 
-public class IntakeIOSparkFlex implements IntakeIO{ 
+public class IntakeIOSparkFlex implements IntakeIO {
     /* Creates a new IntakeIOSparkFlex */
     private final CANSparkFlex sparkFlex = new CANSparkFlex(Constants.INTAKE_ID, MotorType.kBrushless);
-    private final RelativeEncoder encoder = sparkFlex.getEncoder(); 
+    private final RelativeEncoder encoder = sparkFlex.getEncoder();
     private final SparkPIDController pidController = sparkFlex.getPIDController();
-    //Sensors: ports?
-    private final DigitalInput sideSensor = new DigitalInput(Constants.INTAKE_SIDE_SENSOR_PORT);
-    private final DigitalInput highSensor = new DigitalInput(Constants.INTAKE_HIGH_SENSOR_PORT);
-    private final DigitalInput diagonalSensor = new DigitalInput(Constants.INTAKE_DIAGONAL_SENSOR_PORT);
+    // Sensors: ports?
+    private final DigitalInput sideSensor = new DigitalInput(Constants.SIDE_SENSOR_PORT);
+    private final DigitalInput intakeSensor = new DigitalInput(Constants.INTAKE_SENSOR_PORT);
+    private final DigitalInput shooterSensor = new DigitalInput(Constants.SHOOTER_SENSOR_PORT);
+    
     public IntakeIOSparkFlex(){
         sparkFlex.restoreFactoryDefaults(); 
-        sparkFlex.setInverted(false);
+        sparkFlex.setInverted(Constants.isCompBot() ? false : true);
+
         sparkFlex.setIdleMode(IdleMode.kBrake);
         sparkFlex.setSmartCurrentLimit(120, 50);
         final double GEAR_RATIO = 2.0;
         // get shuffleboard tab intake
         ShuffleboardTab tab = Shuffleboard.getTab("intake");
         tab.addBoolean("side sensor", () -> this.getSideSensor());
-        tab.addBoolean("high sensor", () -> this.getHighSensor());
+        tab.addBoolean("shooter sensor", () -> this.getShooterSensor());
     }
-    @Override 
-    public void updateInputs(IntakeIOInputs inputs) {
-        inputs.intakeSpeed = sparkFlex.get();
-        inputs.output = sparkFlex.getAppliedOutput();
-        inputs.amps = sparkFlex.getOutputCurrent();
-    }
+
     @Override
-    public void set(double speed){
+    public void updateInputs(IntakeIOInputs inputs) {
+        inputs.sideSensor = getSideSensor();
+        inputs.intakeSensor = getIntakeSensor();
+        inputs.intakeVoltage = sparkFlex.getAppliedOutput() * sparkFlex.getBusVoltage();
+        inputs.intakeStatorCurrent = sparkFlex.getOutputCurrent();
+        inputs.intakeVelocity = encoder.getVelocity();
+        inputs.intakePosition = encoder.getPosition();
+        inputs.shooterSensor = getShooterSensor();
+    }
+
+    @Override
+    public void set(double speed) {
         sparkFlex.set(speed);
     }
+
     @Override
-    public void stopMotor(){
+    public void stopMotor() {
         sparkFlex.stopMotor();
     }
+
     @Override
-    public double getPower(){
+    public double getPower() {
         return sparkFlex.get();
     }
+
     @Override
-    public double getOutputCurrent(){
+    public double getOutputCurrent() {
         return sparkFlex.getOutputCurrent();
     }
+
     @Override
-    public boolean getSideSensor(){
+    public boolean getSideSensor() {
         return sideSensor.get();
-    }
-    @Override
-    public boolean getHighSensor(){
-        return highSensor.get();
     }
 
     @Override
@@ -70,8 +78,13 @@ public class IntakeIOSparkFlex implements IntakeIO{
     }
 
     @Override
-    public boolean getDiagonalSensor() {
-        return diagonalSensor.get();
+    public boolean getShooterSensor() {
+        return shooterSensor.get();
+    }
+
+    @Override
+    public boolean getIntakeSensor() {
+        return intakeSensor.get();
     }
 
     @Override
@@ -83,6 +96,7 @@ public class IntakeIOSparkFlex implements IntakeIO{
     public void moveEncoder(double setpoint) {
 
     }
+
     @Override
     public void setEncoderValue(double encoderPosition) {
         sparkFlex.getEncoder().setPosition(encoderPosition);

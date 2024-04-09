@@ -86,7 +86,7 @@ public class AutoPowerCenterNote extends Command{
         break;
       case UP_TO_SHOOTER:
         intake.run(.3);
-        if(intake.getDiagonalSensor()) {
+        if(intake.getShooterSensor()) {
           state = IntakeCases.BACK_UP;
         }
         // if(!intake.get[\][]\HighSensor()){
@@ -108,7 +108,7 @@ public class AutoPowerCenterNote extends Command{
         } else {
           intake.run(.2);
         }
-        if(!intake.getDiagonalSensor()){
+        if(!intake.getShooterSensor()){
           intake.stop();
           state = IntakeCases.DONE;
         }
@@ -160,7 +160,6 @@ Logger.recordOutput("INTAKE_STATE", 6);
       
     //   System.out.println(operatorCont.getRightTriggerAxis());
     //   SmartDashboard.putNumber("Trigger val: ", operatorCont.getRightTriggerAxis());
-    CommandLogger.logCommandRunning(this);
   }
 
   // Called once the command ends or is interrupted.
