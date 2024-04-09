@@ -101,22 +101,9 @@
           }
         },
         {
-          "type": "race",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Turn"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "real far shot"
-                }
-              }
-            ]
+            "name": "vision shoot"
           }
         },
         {
@@ -158,22 +145,9 @@
           }
         },
         {
-          "type": "race",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Turn"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "real far shot"
-                }
-              }
-            ]
+            "name": "vision shoot"
           }
         },
         {
@@ -215,22 +189,9 @@
           }
         },
         {
-          "type": "race",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Turn"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "blue last guy"
-                }
-              }
-            ]
+            "name": "vision shoot"
           }
         }
       ]
