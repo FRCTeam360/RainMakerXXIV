@@ -619,6 +619,10 @@ public class RobotContainer {
     }
   }
 
+  public void onAutoInit() {
+    Constants.DRIVETRAIN_PITCH_AUTO_INIT = drivetrain.getPigeon2().getPitch().getValueAsDouble();
+  }
+
   public void onTeleInit() {
     drivetrain.configNeutralMode(NeutralModeValue.Brake);
     linkage.enableBrakeMode();
