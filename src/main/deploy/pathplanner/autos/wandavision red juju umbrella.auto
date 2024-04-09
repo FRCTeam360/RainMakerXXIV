@@ -226,6 +226,12 @@
           "data": {
             "name": "vision shoot"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "umbrella 9 run"
+          }
         }
       ]
     }
