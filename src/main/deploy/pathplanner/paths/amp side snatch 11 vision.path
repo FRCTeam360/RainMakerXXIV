@@ -53,7 +53,32 @@
     {
       "waypointRelativePos": 2,
       "rotationDegrees": 0,
-      "rotateFast": false
+      "rotateFast": true
+    },
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": -45.0,
+      "rotateFast": true
+    },
+    {
+      "waypointRelativePos": 1.2,
+      "rotationDegrees": -45.0,
+      "rotateFast": true
+    },
+    {
+      "waypointRelativePos": 1.4,
+      "rotationDegrees": -135.0,
+      "rotateFast": true
+    },
+    {
+      "waypointRelativePos": 1.55,
+      "rotationDegrees": 135.0,
+      "rotateFast": true
+    },
+    {
+      "waypointRelativePos": 1.8,
+      "rotationDegrees": 180.0,
+      "rotateFast": true
     }
   ],
   "constraintZones": [],
@@ -61,18 +86,18 @@
   "globalConstraints": {
     "maxVelocity": 5.71,
     "maxAcceleration": 6.0,
-    "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 720.0
+    "maxAngularVelocity": 900.0,
+    "maxAngularAcceleration": 900.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 45.0,
-    "rotateFast": true
+    "rotation": 0.0,
+    "rotateFast": false
   },
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": 159.93,
+    "rotation": 0,
     "velocity": 0
   },
   "useDefaultConstraints": false
