@@ -37,7 +37,6 @@ public class TrapBackHook extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("INIT ONE");
     CommandLogger.logCommandStart(this);
 
     intialTranslation2d = driveTrain.getPose().getTranslation();
@@ -49,8 +48,6 @@ public class TrapBackHook extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("EXECUTE ONE");
-
     Translation2d currentTranslation2d = driveTrain.getPose().getTranslation();
     double distance = Math.abs(currentTranslation2d.getDistance(intialTranslation2d));
     
@@ -63,7 +60,7 @@ public class TrapBackHook extends Command {
     if (Math.abs(climber.getLeftPosition() - climbUp) < 2.0 && Math.abs(climber.getRightPosition() - climbUp) < 2.0 && linkage.getAngle() < 2.0) {
      driveTrain.robotCentricDrive(0.0, -0.1, 0.0);
 
-     if (distance > Units.inchesToMeters(3.0)) {
+     if (distance > Units.inchesToMeters(6.0)) {
       System.out.println(isDone);
       isDone = true;
      }

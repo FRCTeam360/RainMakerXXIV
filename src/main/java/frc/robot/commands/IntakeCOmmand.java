@@ -61,32 +61,24 @@ public class IntakeCOmmand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(bringup) {
-      linkage.setAngle(110.0, ampArm);
-    }
-    if(!intake.getIntakeSensor() && !bringup) {
-      vision.blink();
-      intake.run(.9);
-      bringup = true;
-      //System.out.println("runnin at 90");
-    } else {
       intake.run(.5);
       //System.out.println("runnin at .5");
-    }
     if(!intake.getSideSensor()) {
-      intake.run(0.2); 
-      // stop = true;
+      vision.blink();
+      stop = true;
+      intake.stop();
+      
       // x = .35;
 
     }
-    if(!intake.getShooterSensor()) {
-      intake.run(-.2);
-      reversing = true;
-    }
-    if(intake.getShooterSensor() && reversing){
-      intake.run(0.0);
-      stop = true;
-    }
+    // if(!intake.getShooterSensor()) {
+    //   intake.run(-.2);
+    //   reversing = true;
+    // }
+    // if(intake.getShooterSensor() && reversing){
+    //   intake.run(0.0);
+    //   stop = true;
+    // }
 
   }
   
@@ -94,9 +86,7 @@ public class IntakeCOmmand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if(retracts) {
     linkage.setAngle(setthatguy, ampArm);
-    }
     intake.stop();
     CommandLogger.logCommandEnd(this);
   }
@@ -104,6 +94,6 @@ public class IntakeCOmmand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return stop && shouldEnd;
+    return stop;
   }
 }

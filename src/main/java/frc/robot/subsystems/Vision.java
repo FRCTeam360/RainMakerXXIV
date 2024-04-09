@@ -14,6 +14,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -85,11 +86,16 @@ public class Vision extends SubsystemBase {
     } else {
       lastBit = 164.5;
     }
-    return (-0.000182*Math.pow(ty, 4)+0.000622*Math.pow(ty, 3)+0.039998*Math.pow(ty, 2)+0.944848*(ty)+lastBit); // comp OLD 162.557 // add linkage regression equation thing
+    //return (-0.000182*Math.pow(ty, 4)+0.000622*Math.pow(ty, 3)+0.039998*Math.pow(ty, 2)+0.944848*(ty)+lastBit); //pre sammamish
+    return (0.000441259 * Math.pow(ty, 3) + -0.021738 * Math.pow(ty, 2) + 0.953749 * ty + 163.092); // before dcmp
   }
 
   public double getFlywheelSetpoint() {
-    return 0.0; // add flywheel regression equation thing
+    if(io.getTYBase() <-9.0) {
+      return 8500.0;
+    }  else {
+      return 7500.0;
+    }
   }
 
   public void takeSnapshot() {
@@ -135,6 +141,7 @@ public class Vision extends SubsystemBase {
     }
     io.updateInputs(inputs);
     Logger.processInputs("Limelight", inputs);
+    SmartDashboard.putNumber("tY", io.getTYBase());
     // This method will be called once per scheduler run
   }
 }

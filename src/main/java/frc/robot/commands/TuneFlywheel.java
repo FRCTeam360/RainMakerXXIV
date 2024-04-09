@@ -17,6 +17,7 @@ public class TuneFlywheel extends Command {
   private Flywheel flywheel;
 
   private double goalRPM = 0.0;
+  private double r = 0.0;
 
 
   /** Creates a new SetFlywheel. */
@@ -38,7 +39,12 @@ public class TuneFlywheel extends Command {
   @Override
   public void execute() {
     double updatedGoalRPM = SmartDashboard.getNumber("Goal RPM", 0.0);
-    flywheel.setBothRPM(updatedGoalRPM);
+    if(updatedGoalRPM >0) {
+      r = 6750;
+    } else {
+      r =0;
+    }
+    flywheel.setIndividualRPM(updatedGoalRPM, r);
     SmartDashboard.putNumber("Left RPM", flywheel.getLeftVelocity());
     SmartDashboard.putNumber("Right RPm", flywheel.getRightVelocity());
     // processVariable = encoder.getPosition();

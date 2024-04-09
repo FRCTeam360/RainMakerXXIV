@@ -11,7 +11,7 @@ import frc.robot.utils.CommandLogger;
 import frc.robot.subsystems.Linkage;
 import frc.robot.subsystems.Vision;
 
-public class AutoIntakeCOmmand extends Command {
+public class WereSafeAndSound extends Command {
   private final Intake intake;
   private final Linkage linkage;
   private AmpArm ampArm;
@@ -23,7 +23,7 @@ public class AutoIntakeCOmmand extends Command {
   private boolean retracts;
   private boolean reversing = false; 
   /** Creates a new IntakeCOmmand. */
-  public AutoIntakeCOmmand(Intake intake, Linkage linkage, AmpArm ampArm, Vision vision, double setthatguy, boolean retracts) {
+  public WereSafeAndSound(Intake intake, Linkage linkage, AmpArm ampArm, Vision vision, double setthatguy, boolean retracts) {
     this.intake = intake;
     this.linkage = linkage;
     this.ampArm = ampArm;
@@ -50,17 +50,17 @@ public class AutoIntakeCOmmand extends Command {
   public void execute() {
     if(bringup) {
       linkage.setAngle(setthatguy, ampArm);
-      intake.stop();
     }
     else if(!bringup) {
       intake.run(.4);
+      bringup = true;
       // System.out.println("runnin at 90");
     } else {
       intake.run(.5);
       // System.out.println("runnin at .5");
   }
     if(!intake.getSideSensor()) {
-      bringup = true; 
+      intake.stop();
     }
 
   }

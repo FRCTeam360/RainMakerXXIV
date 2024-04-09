@@ -35,7 +35,7 @@ public class DropNote extends Command {
   public void execute() {
     intake.run(1.0);
     flywheel.setBothRPM(2000.0);
-    if(intake.getSideSensor() && intake.getIntakeSensor() && intake.getShooterSensor() == true) {
+    if(intake.getSideSensor() &&intake.getShooterSensor() == true) {
       stop = true;
     }
   }

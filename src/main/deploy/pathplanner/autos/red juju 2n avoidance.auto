@@ -59,7 +59,7 @@
         {
           "type": "named",
           "data": {
-            "name": "stay out of way shot"
+            "name": "vision shoot"
           }
         },
         {
@@ -110,7 +110,7 @@
         {
           "type": "named",
           "data": {
-            "name": "last guy"
+            "name": "vision shoot"
           }
         },
         {
@@ -161,7 +161,7 @@
         {
           "type": "named",
           "data": {
-            "name": "last guy"
+            "name": "vision shoot"
           }
         },
         {
@@ -212,7 +212,7 @@
         {
           "type": "named",
           "data": {
-            "name": "last guy"
+            "name": "vision shoot"
           }
         }
       ]

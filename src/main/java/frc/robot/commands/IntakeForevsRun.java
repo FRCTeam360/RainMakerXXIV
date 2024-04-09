@@ -4,24 +4,28 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.AmpArm;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Linkage;
 import frc.robot.utils.CommandLogger;
 
-public class PowerIntakeDriver extends Command {
-
+public class IntakeForevsRun extends Command {
   private Intake intake;
+  private boolean stop;
+  private Linkage linkage;
   private Flywheel flywheel;
-  private boolean neg;
-
-  /** Creates a new ManualIntake. */
-  public PowerIntakeDriver(Intake intake, boolean neg, Flywheel flywheel) {
-    this.neg = neg;
+  private AmpArm amparm;
+  private boolean IGOTIT;
+  /** Creates a new IntakeForevsRun. */
+  public IntakeForevsRun(Intake intake, Flywheel flywheel, Linkage linkage, AmpArm amparm) {
     this.intake = intake;
     this.flywheel = flywheel;
-    addRequirements(intake, flywheel);
+    this.linkage = linkage;
+    this.amparm = amparm;
+    addRequirements(intake, linkage);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -29,37 +33,36 @@ public class PowerIntakeDriver extends Command {
   @Override
   public void initialize() {
     CommandLogger.logCommandStart(this);
+    IGOTIT = false;
+    stop = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(neg) {
-      intake.run(-.1);
-      flywheel.setBothRPM(-500);
-    } else {
-      intake.run(.3);
+    if(!intake.getSideSensor() || !intake.getShooterSensor()) {
+      IGOTIT = true;
+    } 
+    if(flywheel.isAtSetpoint()) {
+    intake.run(1.0);
     }
-    // if(operatorCont.getRightTriggerAxis() > .75) {
-    // intake.run(-.5);
-    // } else {
-    // intake.run(-.15);
-    // }
-
-    CommandLogger.logCommandRunning(this);
+    if(intake.getSideSensor() && intake.getShooterSensor() && IGOTIT) {
+      stop = true;
+  }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.stop();
-    flywheel.stop();
+    linkage.setAngle(0.0, amparm);
     CommandLogger.logCommandEnd(this);
+    intake.stop();
+    System.out.println("IT IS FINISHED");
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return stop;
   }
 }
