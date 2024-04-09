@@ -32,6 +32,7 @@ public class IntakeForevsRun extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    linkage.setAngle(0.0, amparm);
     CommandLogger.logCommandStart(this);
     IGOTIT = false;
     stop = false;

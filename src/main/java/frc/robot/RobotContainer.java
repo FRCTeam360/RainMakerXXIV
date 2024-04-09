@@ -11,6 +11,7 @@ import frc.robot.commands.DropNote;
 import frc.robot.commands.RunExtendIntake;
 import frc.robot.commands.RydarsSpinup;
 import frc.robot.commands.SetClimbers;
+import frc.robot.commands.SetFlywheel;
 import frc.robot.commands.ScoreInAmp;
 import frc.robot.commands.SetArmWrist;
 import frc.robot.commands.PowerIntakeReversed;
@@ -465,6 +466,8 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("run intake forevs <3", new IntakeForevsRun(intake, flywheel, linkage, ampArm));
     NamedCommands.registerCommand("vision shoot", visionBoy);
+    NamedCommands.registerCommand("real far shot", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 140.5, 8000.0));
+    NamedCommands.registerCommand("BIG spinny", new SetFlywheel(flywheel, 9000.0));
     // NamedCommands.registerCommand("Intake", runExtendIntake);
     // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
     // NamedCommands.registerCommand("Wait", new WaitCommand(2));

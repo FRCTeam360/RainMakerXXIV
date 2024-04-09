@@ -173,6 +173,10 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         return run(() -> this.setControl(requestSupplier.get()));
     }
 
+    public double getRadiansPerSecond() {
+        return this.getState().speeds.omegaRadiansPerSecond;
+    }
+
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
         return sysIdRoutine.quasistatic(direction);
     }

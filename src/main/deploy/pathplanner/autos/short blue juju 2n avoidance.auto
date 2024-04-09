@@ -214,6 +214,12 @@
           "data": {
             "name": "vision shoot"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "amp side snatch 16"
+          }
         }
       ]
     }

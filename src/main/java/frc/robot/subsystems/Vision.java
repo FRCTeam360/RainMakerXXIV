@@ -80,7 +80,7 @@ public class Vision extends SubsystemBase {
 
   public double getLinkageSetpoint() {
     double ty = this.getTY();
-    double fudgeFactor = -1.5;
+    double fudgeFactor = -2.5;
     //return (-0.000182*Math.pow(ty, 4)+0.000622*Math.pow(ty, 3)+0.039998*Math.pow(ty, 2)+0.944848*(ty)+lastBit); //pre sammamish
     return (0.000441259 * Math.pow(ty, 3) + -0.021738 * Math.pow(ty, 2) + 0.953749 * ty + 163.092 + fudgeFactor); // before worlds !!
   }
