@@ -150,9 +150,9 @@ WOODBOT,
         }
 
         public static RobotType getRobotType() {
+                String serialAddress = HALUtil.getSerialNumber();
+                SmartDashboard.putString("serial address", serialAddress);
                 return Constants.RobotType.COMPETITION;
-        //         String serialAddress = HALUtil.getSerialNumber();
-        //         SmartDashboard.putString("serial address", serialAddress);
         //         SmartDashboard.putString("Test Serial Address", SerialAddressConstants.TEST_SERIAL_ADDRESS);
 
         //      if (serialAddress.equals(SerialAddressConstants.PRACTICE_SERIAL_ADDRESS)) {
