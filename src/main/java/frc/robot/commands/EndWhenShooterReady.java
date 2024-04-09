@@ -45,10 +45,11 @@ public class EndWhenShooterReady extends Command {
     boolean isLinkageAtSetpoint = linkage.isAtSetpoint() && Math.abs(linkage.getVelocity()) < 2;
     boolean isFlywheelAboveSetpoint = flywheel.isAboveSetpoint();
     boolean isDrivetrainOnTarget = swerveDrivetrain.isFacingAngle();
+    boolean pitch = Math.abs(swerveDrivetrain.getPigeon2().getPitch().getValueAsDouble()) < 2.0;
     Logger.recordOutput("EndWhenShooterReady: isLinkageAtSetpoint", isLinkageAtSetpoint);
     Logger.recordOutput("EndWhenShooterReady: isFlywheelAboveSetpoint", isFlywheelAboveSetpoint);
     Logger.recordOutput("EndWhenShooterReady: isDrivetrainOnTarget", isDrivetrainOnTarget);
-    if ((isLinkageAtSetpoint || timer.get() > 0.3) && ((isFlywheelAboveSetpoint && isDrivetrainOnTarget) || timer.get() > 0.75)) {
+    if ((isLinkageAtSetpoint || timer.get() > 0.3) && ((isFlywheelAboveSetpoint && isDrivetrainOnTarget) || timer.get() > 0.75) && pitch) {
       stop = true;
     }
   }
