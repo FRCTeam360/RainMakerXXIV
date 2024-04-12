@@ -4,14 +4,20 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants;
 import frc.robot.subsystems.AmpArm;
 import frc.robot.subsystems.Intake;
 import frc.robot.utils.CommandLogger;
 import frc.robot.subsystems.Linkage;
 import frc.robot.subsystems.Vision;
 
+
 public class IntakeCOmmand extends Command {
+  private final CommandXboxController driverController = new CommandXboxController(Constants.DRIVER_CONTROLLER);
   private final Intake intake;
   private final Linkage linkage;
   private AmpArm ampArm;
@@ -88,6 +94,7 @@ public class IntakeCOmmand extends Command {
   public void end(boolean interrupted) {
     linkage.setAngle(setthatguy, ampArm);
     intake.stop();
+    driverController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0.0);
     CommandLogger.logCommandEnd(this);
   }
 

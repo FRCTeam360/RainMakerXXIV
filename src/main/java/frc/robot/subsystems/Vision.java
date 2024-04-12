@@ -12,18 +12,22 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.io.VisionIO;
 import frc.robot.io.VisionIOInputsAutoLogged;
 import frc.robot.io.VisionIO.VisionIOInputs;
+import frc.robot.utils.CommandFactory;
 import frc.robot.utils.CommandLogger;
 
 public class Vision extends SubsystemBase {
+  private final CommandXboxController driverController = new CommandXboxController(Constants.DRIVER_CONTROLLER);
   private final VisionIO io;
   private final VisionIOInputsAutoLogged inputs = new VisionIOInputsAutoLogged();
   private Timer snapshotTimer = new Timer();

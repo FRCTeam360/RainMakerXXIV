@@ -8,7 +8,9 @@ import frc.robot.subsystems.*;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -16,10 +18,13 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants;
 import frc.robot.commands.*;
 
 /** Add your docs here. */
 public class CommandFactory {
+    private final CommandXboxController driverController = new CommandXboxController(Constants.DRIVER_CONTROLLER);
     private final Climber climber;
     private final CommandSwerveDrivetrain drivetrain;
     private final Intake intake;
@@ -261,6 +266,11 @@ public class CommandFactory {
                 new EndWhenShooterReady(linkage, flywheel, drivetrain, vision)
                         .andThen(
                                 new RunCommand(() -> intake.run(1.0), intake)));
+    }
+
+    public Command rumbleDriverController(CommandXboxController controller) {
+        return Commands.runEnd(() -> controller.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 1.0),
+                            () -> controller.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0.0));
     }
 
     private class TakeSnapshot extends InstantCommand {

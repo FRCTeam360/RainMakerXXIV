@@ -105,6 +105,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -199,7 +200,7 @@ public class RobotContainer {
   private AutoPowerCenterNote autoPowerCenterNote;
   private PowerAmpIntakeReverse powerAmpIntakeReverse;
   private AmpArmNote ampArmNote;
-  private IntakeCOmmand inny;
+  private Command inny;
   private AutoIntakeCOmmand autoinny;
   private ScoreInAmp scoreInAmp;
   private Command linkageToAmpHandoff;
@@ -363,7 +364,8 @@ public class RobotContainer {
     powerLinkage = new PowerLinkage(linkage, ampArm);
     stowLinkage = commandFactory.stowLinkage();
     powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
-    inny = new IntakeCOmmand(intake, linkage, ampArm, vision, 140.0, true);
+    inny = new IntakeCOmmand(intake, linkage, ampArm, vision, 140.0, true)
+    .andThen(commandFactory.rumbleDriverController(driverController).withTimeout(.5));
     autoinny = new AutoIntakeCOmmand(intake, linkage, ampArm, vision, 177.0, true);
     longerinny = new AutoIntakeCOmmand(intake, linkage, ampArm, vision, 144.0, true);
     ryryinny = new IntakeCOmmand(intake, linkage, ampArm, vision, 0.0, false);
