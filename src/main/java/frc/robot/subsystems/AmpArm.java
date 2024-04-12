@@ -229,6 +229,7 @@ public class AmpArm extends SubsystemBase {
     ShuffleboardTab tab = Shuffleboard.getTab("Arm");
     tab.addNumber("Arm Angle", () -> this.getArmPosition());
     tab.addNumber("Wrist Angle", () -> this.getWristPosition());
+    tab.addBoolean("Amp Intake Sensor", () -> this.getIntakeSensor());
   }
 
   @Override

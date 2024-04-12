@@ -82,8 +82,8 @@ public class Robot extends LoggedRobot {
 
     // Logger.disableDeterministicTimestamps() // See "Deterministic Timestamps" in the "Understanding Data Flow" page
     if(Constants.getRobotType() == Constants.RobotType.COMPETITION) {
-    Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
-    SignalLogger.start();
+      Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
+      SignalLogger.start();
     }
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
