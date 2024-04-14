@@ -241,8 +241,7 @@ public class AmpArm extends SubsystemBase {
     io.updateInputs(inputs);
     Logger.processInputs("AmpArm", inputs);
 
-    // io.enableBrakeMode();
-    if (RobotState.isDisabled()) { // TODO: FIX?
+    if (RobotState.isDisabled()) {
       if (io.getBrakeButton()) {
         if (io.isBrakeMode()) {
           io.disableBrakeMode();
