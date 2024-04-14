@@ -10,10 +10,10 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AmpArm;
 import frc.robot.subsystems.AmpIntake;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Linkage;
+import frc.robot.subsystems.Vision;
 import frc.robot.utils.CommandLogger;
 
 public class LinkageToAmpHandoff extends Command {
@@ -22,6 +22,7 @@ public class LinkageToAmpHandoff extends Command {
   private final AmpIntake ampIntake;
   private final Flywheel flywheel;
   private final Intake intake;
+  private final Vision vision;
 
   private boolean done;
 
@@ -37,12 +38,13 @@ public class LinkageToAmpHandoff extends Command {
   }
 
   /** Creates a new LinkageToAmpHandoff. */
-  public LinkageToAmpHandoff(Linkage linkage, AmpArm ampArm, AmpIntake ampIntake, Flywheel flywheel, Intake intake) {
+  public LinkageToAmpHandoff(Linkage linkage, AmpArm ampArm, AmpIntake ampIntake, Flywheel flywheel, Intake intake, Vision vision) {
     this.linkage = linkage;
     this.ampArm = ampArm;
     this.ampIntake = ampIntake;
     this.flywheel = flywheel;
     this.intake = intake;
+    this.vision = vision;
 
     addRequirements(linkage, ampArm, ampIntake, flywheel, intake);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -92,7 +94,7 @@ public class LinkageToAmpHandoff extends Command {
         intake.run(0.7);
         flywheel.handoff(1000.0);
         ampIntake.runIntake(0.70);
-
+        vision.blink();
         if (intake.getSideSensor() ) {
           state = States.MOVE_UP;
         }

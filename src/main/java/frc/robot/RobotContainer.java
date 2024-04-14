@@ -424,7 +424,7 @@ public class RobotContainer {
 
     if (Objects.nonNull(ampArm) && Objects.nonNull(ampIntake)) {
       scoreInAmp = new ScoreInAmp(ampArm, ampIntake, linkage);
-      linkageToAmpHandoff = new LinkageToAmpHandoff(linkage, ampArm, ampIntake, flywheel, intake)
+      linkageToAmpHandoff = new LinkageToAmpHandoff(linkage, ampArm, ampIntake, flywheel, intake, vision)
           .alongWith(fieldOrientedSlowGuy);
       ampArmNote = new AmpArmNote(ampIntake);
     }
