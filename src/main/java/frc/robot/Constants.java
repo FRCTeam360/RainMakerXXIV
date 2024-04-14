@@ -25,7 +25,7 @@ public class Constants {
                 // if the amp arm base is leaning out of the robot, the angle fudge factor is
                 // negative.
                 // if the amp arm base is straight up, the angle fudge factor is 0.
-                public static final double PRACTICE_LIMELIGHT_PITCH_FUDGE_FACTOR_DEGREES = 0.0;
+                public static final double PRACTICE_LIMELIGHT_PITCH_FUDGE_FACTOR_DEGREES = -4.8;
 
                 // these values will be used for calculating the distance to the targets later
                 // on.

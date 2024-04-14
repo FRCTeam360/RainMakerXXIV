@@ -1,0 +1,10 @@
+Log in to server as admin
+ssh -A admin@10.3.60.2
+
+If you can't log in, find the .ssh folder in your user folder and delete known hosts
+
+Run
+/etc/init.d/systemWebServer stop; update-rc.d -f systemWebServer remove; sync
+
+Run 
+chmod a-x /usr/local/natinst/etc/init.d/systemWebServer; sync
