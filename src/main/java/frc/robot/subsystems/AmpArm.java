@@ -241,26 +241,23 @@ public class AmpArm extends SubsystemBase {
     io.updateInputs(inputs);
     Logger.processInputs("AmpArm", inputs);
 
-    if (io.getZeroButton()) {
-      io.resetArmWristPos();
+    // io.enableBrakeMode();
+    if (RobotState.isDisabled()) { // TODO: FIX?
+      if (io.getBrakeButton()) {
+        if (io.isBrakeMode()) {
+          io.disableBrakeMode();
+        } else {
+          io.enableBrakeMode();
+        }
+      }
+      if (io.getZeroButton()) {
+        io.resetArmWristPos();
+      }
+    } else {
+      if (!io.isBrakeMode()) {
+        io.enableBrakeMode();
+      }
     }
-    // io.enableBrakeMode();
-    // if(RobotState.isDisabled()){ //TODO: FIX?
-    // if(io.getBrakeButton()){
-    // if(io.isBrakeMode()){
-    // io.disableBrakeMode();
-    // } else {
-    // io.enableBrakeMode();
-    // }
-    // }
-    // if (io.getZeroButton()) {
-    // io.resetArmWristPos();
-    // }
-    // } else {
-    // if(!io.isBrakeMode()){
-    // io.enableBrakeMode();
-    // }
-    // }
   }
 
 }

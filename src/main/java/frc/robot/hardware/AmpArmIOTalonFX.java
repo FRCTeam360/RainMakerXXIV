@@ -31,7 +31,9 @@ public class AmpArmIOTalonFX implements AmpArmIO {
 
   private final double PRACTICE_ARM_RATIO = 1.68; // degrees / motor rotation
   private final double COMP_ARM_RATIO = 360.0 / ((5.0 / 1.0) * (36.0 / 14.0) * (60.0 / 18.0));
-  private final double WRIST_RATIO = 11.25; // degrees / motor rotation
+  private final double WRIST_RATIO = 360.0/(4.0*4.0*3.0); // degrees / motor rotation
+  // was 11.25
+
 
   private final double ARM_FORWARD_LIMIT = 120.0;
   private final double ARM_REVERSE_LIMIT = -78.0;
@@ -131,7 +133,8 @@ public class AmpArmIOTalonFX implements AmpArmIO {
   @Override
   public void resetArmWristPos() {
     armMotor.setPosition(-78.0);
-    wristMotor.setPosition(70.0);
+    wristMotor.setPosition(75.0);
+    // was 70.0
   }
 
   @Override
