@@ -425,7 +425,10 @@ public class RobotContainer {
     if (Objects.nonNull(ampArm) && Objects.nonNull(ampIntake)) {
       scoreInAmp = new ScoreInAmp(ampArm, ampIntake, linkage);
       linkageToAmpHandoff = new LinkageToAmpHandoff(linkage, ampArm, ampIntake, flywheel, intake, vision)
-          .alongWith(fieldOrientedSlowGuy);
+          .alongWith(fieldOrientedSlowGuy)
+          .alongWith(Commands.waitUntil(() -> !intake.getSideSensor())
+          .andThen(Commands.waitUntil(() -> intake.getSideSensor())
+          .andThen(commandFactory.rumbleDriverController(driverController).withTimeout(.5))));
       ampArmNote = new AmpArmNote(ampIntake);
     }
 
