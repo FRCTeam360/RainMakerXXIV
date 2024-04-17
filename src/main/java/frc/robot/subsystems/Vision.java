@@ -81,7 +81,7 @@ public class Vision extends SubsystemBase {
   public double getLinkageSetpoint() {
     double ty = this.getTY();
     double factor = 0.0;
-    double compFactor = -2.75;
+    double compFactor = 0.0;
     double practiceFactor = 1.0;
     if (Constants.isCompBot()) {
       factor = compFactor;

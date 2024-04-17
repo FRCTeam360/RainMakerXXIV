@@ -86,6 +86,7 @@ public class LinkageToAmpHandoff extends Command {
         flywheel.handoff(1000.0);
         ampIntake.runIntake(0.70);
         if(!intake.getSideSensor()) {
+          // vision.blink();
           state = States.INTAKING;
         }
         break;
@@ -94,7 +95,6 @@ public class LinkageToAmpHandoff extends Command {
         intake.run(0.7);
         flywheel.handoff(1000.0);
         ampIntake.runIntake(0.70);
-        vision.blink();
         if (intake.getSideSensor() ) {
           state = States.MOVE_UP;
         }

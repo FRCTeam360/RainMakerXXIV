@@ -426,9 +426,11 @@ public class RobotContainer {
       scoreInAmp = new ScoreInAmp(ampArm, ampIntake, linkage);
       linkageToAmpHandoff = new LinkageToAmpHandoff(linkage, ampArm, ampIntake, flywheel, intake, vision)
           .alongWith(fieldOrientedSlowGuy)
-          .alongWith(Commands.waitUntil(() -> !intake.getSideSensor())
-          .andThen(Commands.waitUntil(() -> intake.getSideSensor())
-          .andThen(commandFactory.rumbleDriverController(driverController).withTimeout(.5))));
+          .alongWith(Commands.waitUntil(() -> intake.getSideSensor())
+          .andThen(Commands.waitUntil(() -> !intake.getSideSensor())
+          .andThen(new ParallelCommandGroup(
+            commandFactory.rumbleDriverController(driverController).withTimeout(.5),
+             new InstantCommand(() -> vision.blink())))));
       ampArmNote = new AmpArmNote(ampIntake);
     }
 
