@@ -564,7 +564,7 @@ public class RobotContainer {
     operatorController.rightBumper().whileTrue(powerAmpIntake);
 
     operatorController.back().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
-   operatorController.back().onTrue(new InstantCommand(() -> ampArm.zeroWrist(), ampArm)); //BRING BACK BEFORE WORLDS
+  //  operatorController.back().onTrue(new InstantCommand(() -> ampArm.zeroWrist(), ampArm)); /killed bc chain wrist
 
     operatorController.start().whileTrue(powerAmpArm);
     operatorController.start().whileTrue(stopClimber);

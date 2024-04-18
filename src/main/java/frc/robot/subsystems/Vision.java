@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.io.VisionIO;
 import frc.robot.io.VisionIOInputsAutoLogged;
 import frc.robot.io.VisionIO.VisionIOInputs;
@@ -30,6 +31,7 @@ public class Vision extends SubsystemBase {
   private Timer blinkTimer = new Timer();
 
   private final String VISION_LOGGING_PREFIX = "Vision: ";
+  private double fudgeFactor = 0.0;
 
   /** Creates a new Limelight. */
   public Vision(VisionIO io) {
@@ -88,14 +90,18 @@ public class Vision extends SubsystemBase {
     } else {
       factor = practiceFactor;
     }
-    //return (-0.000182*Math.pow(ty, 4)+0.000622*Math.pow(ty, 3)+0.039998*Math.pow(ty, 2)+0.944848*(ty)+lastBit); //pre sammamish
-    return (0.000441259 * Math.pow(ty, 3) + -0.021738 * Math.pow(ty, 2) + 0.953749 * ty + 163.092 + factor); // before worlds !!
+
+    // return (-0.000182*Math.pow(ty, 4)+0.000622*Math.pow(ty,
+    // 3)+0.039998*Math.pow(ty, 2)+0.944848*(ty)+lastBit); //pre sammamish
+    return (0.000441259 * Math.pow(ty, 3) + -0.021738 * Math.pow(ty, 2) + 0.953749 * ty + 163.092); // before
+                                                                                                             // worlds
+                                                                                                             // !!
   }
 
   public double getFlywheelSetpoint() {
-    if(this.getTY() <-9.0) {
+    if (this.getTY() < -9.0) {
       return 8500.0;
-    }  else {
+    } else {
       return 7500.0;
     }
   }
@@ -128,6 +134,7 @@ public class Vision extends SubsystemBase {
 
   @Override
   public void periodic() {
+
     if (DriverStation.isDSAttached()) {
       if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
         setPipeline(0);
@@ -135,10 +142,10 @@ public class Vision extends SubsystemBase {
         setPipeline(1);
       }
     }
-    if(snapshotTimer.get() > 0.2){
+    if (snapshotTimer.get() > 0.2) {
       resetSnapshot();
     }
-    if(blinkTimer.get() > 0.5) {
+    if (blinkTimer.get() > 0.5) {
       lightsOut();
     }
     io.updateInputs(inputs);

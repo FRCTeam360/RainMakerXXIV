@@ -20,6 +20,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -36,11 +37,11 @@ public class Linkage extends SubsystemBase {
   private final LinkageIO io;
   private final LinkageIOInputsAutoLogged inputs = new LinkageIOInputsAutoLogged();
   private double positionSetpoint;
-  
+
   private static final double STARTING_ANGLE = 50.0;
   static XboxController driverCont = new XboxController(0);
 
-  
+
   /** Creates a new ShooterLinkage. */
   public Linkage(LinkageIO io) {
     this.io = io;
@@ -55,7 +56,7 @@ public class Linkage extends SubsystemBase {
   }
 
   public boolean isAtSetpoint() {
-	  if(Math.abs(this.getAngle() - positionSetpoint) < 1.0) {
+    if (Math.abs(this.getAngle() - positionSetpoint) < 1.0) {
       return true;
     } else {
       return false;
@@ -64,11 +65,12 @@ public class Linkage extends SubsystemBase {
 
   /**
    * Avoids collision between the linkage and the amp arm
+   * 
    * @param AmpArm ampArm
    */
   private boolean avoidCollisionWithAmpArm(AmpArm ampArm) {
     boolean safeFromCollision = false;
-    if (Objects.isNull(ampArm)){
+    if (Objects.isNull(ampArm)) {
       safeFromCollision = true;
       return safeFromCollision;
     }
@@ -117,13 +119,14 @@ public class Linkage extends SubsystemBase {
   }
 
   public void zero() {
-    io.setPosition(0.0); //-10.5 when resting on hard stops
+    io.setPosition(0.0); // -10.5 when resting on hard stops
   }
 
   public void setEncoderTo174() {
     io.setPosition(174.0);
   }
-  public void enableBrakeMode(){
+
+  public void enableBrakeMode() {
     io.enableBrakeMode();
   }
 
@@ -139,7 +142,6 @@ public class Linkage extends SubsystemBase {
     return Math.abs(getAngle()) < 5.0;
   }
 
-
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Linkage Angle", getAngle());
@@ -148,9 +150,9 @@ public class Linkage extends SubsystemBase {
     io.updateInputs(inputs);
     Logger.processInputs("Linkage", inputs);
 
-    if(RobotState.isDisabled()){
-      if(io.getBrakeButton()){
-        if(io.isBrakeMode()){
+    if (RobotState.isDisabled()) {
+      if (io.getBrakeButton()) {
+        if (io.isBrakeMode()) {
           io.disableBrakeMode();
         } else {
           io.enableBrakeMode();
@@ -160,7 +162,7 @@ public class Linkage extends SubsystemBase {
         this.zero();
       }
     } else {
-      if(!io.isBrakeMode()){
+      if (!io.isBrakeMode()) {
         io.enableBrakeMode();
       }
       // DO NOT REMOVE
