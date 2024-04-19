@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.util.Optional;
+
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.MathUtil;
@@ -47,7 +49,8 @@ public class DefenseFieldOrientedDrive extends Command {
   public void execute() {
     Logger.recordOutput("running defense mode");
 
-    if (DriverStation.getAlliance().get() == Alliance.Red) {
+    Optional<Alliance> alliance = DriverStation.getAlliance();
+    if (alliance.isPresent() && alliance.get() == Alliance.Red) {
       x = -1;
     } else {
       x = 1;

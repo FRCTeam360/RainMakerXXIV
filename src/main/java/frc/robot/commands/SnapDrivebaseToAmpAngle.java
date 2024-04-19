@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.util.Optional;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,7 +24,8 @@ public class SnapDrivebaseToAmpAngle extends Command {
   @Override
   public void initialize() {
     double angleToAmp = 0.0;
-    if(DriverStation.getAlliance().get() == Alliance.Blue) {
+    Optional<Alliance> alliance = DriverStation.getAlliance();
+    if(alliance.isPresent() && alliance.get() == Alliance.Blue) {
       if(swerveDrivetrain.getAngle() >= 30 && swerveDrivetrain.getAngle() < 150) {
         angleToAmp = 90;
       }
@@ -31,7 +34,7 @@ public class SnapDrivebaseToAmpAngle extends Command {
       }
       swerveDrivetrain.driveFieldCentricFacingAngle(0.0, 0.0, angleToAmp);
     }
-    else if (DriverStation.getAlliance().get() == Alliance.Red) {
+    else if (alliance.isPresent() && alliance.get() == Alliance.Red) {
       if(swerveDrivetrain.getAngle() >= -30 && swerveDrivetrain.getAngle() < -150) {
         angleToAmp = 90;
       }

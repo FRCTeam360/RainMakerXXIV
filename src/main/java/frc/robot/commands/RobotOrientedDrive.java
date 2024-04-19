@@ -5,6 +5,8 @@
 
 package frc.robot.commands;
 
+import java.util.Optional;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
@@ -47,7 +49,8 @@ public class RobotOrientedDrive extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (DriverStation.getAlliance().get() == Alliance.Red) {
+    Optional<Alliance> alliance = DriverStation.getAlliance();
+    if(alliance.isPresent() && alliance.get() == Alliance.Red) {
       x = -1;
     } else {
       x = 1;

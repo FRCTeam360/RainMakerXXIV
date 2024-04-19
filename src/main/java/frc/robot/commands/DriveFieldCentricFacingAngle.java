@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.util.Optional;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
@@ -35,7 +37,8 @@ public class DriveFieldCentricFacingAngle extends Command {
   public void execute() {
     double x = 1;
     double angle = blue;
-    if(DriverStation.getAlliance().get() == Alliance.Red){
+    Optional<Alliance> alliance = DriverStation.getAlliance();
+    if(alliance.isPresent() && alliance.get() == Alliance.Red){
       angle = red;
       x=-1;
     }

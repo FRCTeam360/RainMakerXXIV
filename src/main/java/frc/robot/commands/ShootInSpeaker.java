@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import java.sql.Driver;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -109,7 +110,8 @@ public class ShootInSpeaker extends Command {
   public void execute() {
     // System.out.println("SHOOTING SHOOTNIG SHOOTING");
     if (!Objects.isNull(drivetrain)) {
-      driveAngleSetpoint = DriverStation.getAlliance().get() == Alliance.Red ? 20.0 : -20.0;
+      Optional<Alliance> alliance = DriverStation.getAlliance();
+      driveAngleSetpoint = alliance.isPresent() && alliance.get() == Alliance.Red ? 20.0 : -20.0;
       //drivetrain.turntoCMD(false,  UtilMethods.squareInput(getWithDeadband(driverController.getLeftX())),  UtilMethods.squareInput(getWithDeadband(driverController.getLeftY())), driveAngleSetpoint);
       drivetrain.driveFieldCentricFacingAngle(UtilMethods.squareInput(getWithDeadband(-driverController.getLeftY())), UtilMethods.squareInput(getWithDeadband(-driverController.getLeftX())), driveAngleSetpoint); // drivetrain is rotated in its own
                                                                                   // command ran in // parallel

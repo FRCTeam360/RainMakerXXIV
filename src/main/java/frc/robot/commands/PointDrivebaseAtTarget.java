@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -41,7 +42,8 @@ public class PointDrivebaseAtTarget extends Command {
   @Override
   public void execute() {
     double x =1;
-    if(DriverStation.getAlliance().get() == Alliance.Red) {
+    Optional<Alliance> alliance = DriverStation.getAlliance();
+    if(alliance.isPresent() && alliance.get() == Alliance.Red) {
       x= -1;
     }
     double left = x*UtilMethods.squareInput(MathUtil.applyDeadband(-driverController.getLeftX(), 0.1));
