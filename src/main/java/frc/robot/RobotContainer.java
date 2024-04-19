@@ -575,6 +575,7 @@ public class RobotContainer {
     // operatorController.pov(0).onTrue(soloRaise);
     operatorController.pov(0).onTrue(trap2Up);
     operatorController.pov(180).toggleOnTrue(soloRetract);
+    
     operatorController.pov(270).onTrue(goToZero);
 
     if (Objects.nonNull(ampArm)) {
