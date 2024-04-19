@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.PhotonUtils;
 import java.util.Objects;
+import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.networktables.NetworkTable;
@@ -14,6 +15,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -136,9 +138,10 @@ public class Vision extends SubsystemBase {
   public void periodic() {
 
     if (DriverStation.isDSAttached()) {
-      if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
+      Optional<Alliance> alliance = DriverStation.getAlliance();
+      if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Blue) {
         setPipeline(0);
-      } else if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+      } else if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
         setPipeline(1);
       }
     }
