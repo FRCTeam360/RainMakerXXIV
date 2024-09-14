@@ -67,13 +67,13 @@ public class Constants {
         public static final int AMP_ARM_ID = 15;
         public static final int AMP_WRIST_ID = 16;
 
-        public static final int INTAKE_SENSOR_PORT = isCompBot() ? 5 : 1;
-        public static final int SIDE_SENSOR_PORT = isCompBot() ? 0 : 2;
-        public static final int SHOOTER_SENSOR_PORT = isCompBot() ? 1 : 0;
+        public static final int INTAKE_SENSOR_PORT = 5;
+        public static final int SIDE_SENSOR_PORT = 0;
+        public static final int SHOOTER_SENSOR_PORT = 1;
 
-        public static final int AMP_INTAKE_SENSOR_PORT = isCompBot() ? 4 : 3;
+        public static final int AMP_INTAKE_SENSOR_PORT = 4;
 
-        public static final int AMP_ARM_ABS_ENCODER = isCompBot() ? 3 : 4;
+        public static final int AMP_ARM_ABS_ENCODER = 3;
 
         public static final int LINKAGE_ZERO_BUTTON_PORT = 9;
         public static final int LINKAGE_BRAKE_TOGGLE_BUTTON_PORT = 8;
