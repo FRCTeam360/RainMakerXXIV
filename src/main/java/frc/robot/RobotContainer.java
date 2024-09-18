@@ -425,12 +425,7 @@ public class RobotContainer {
     if (Objects.nonNull(ampArm) && Objects.nonNull(ampIntake)) {
       scoreInAmp = new ScoreInAmp(ampArm, ampIntake, linkage);
       linkageToAmpHandoff = new LinkageToAmpHandoff(linkage, ampArm, ampIntake, flywheel, intake, vision)
-          .alongWith(fieldOrientedSlowGuy)
-          .alongWith(Commands.waitUntil(() -> intake.getSideSensor())
-          .andThen(Commands.waitUntil(() -> !intake.getSideSensor())
-          .andThen(new ParallelCommandGroup(
-            commandFactory.rumbleDriverController(driverController).withTimeout(.5),
-             new InstantCommand(() -> vision.blink())))));
+          .alongWith(fieldOrientedSlowGuy);
       ampArmNote = new AmpArmNote(ampIntake);
     }
 
@@ -548,26 +543,30 @@ public class RobotContainer {
     driverController.start().and(driverController.rightTrigger()).and(driverController.leftTrigger().negate())
         .whileTrue(commandFactory.spinUpForOverPassAndShoot());
 
+
     driverController.back().and(driverController.rightTrigger().negate()).and(driverController.leftTrigger().negate())
         .whileTrue(commandFactory.spinUpForUnderPass());
     driverController.back().and(driverController.rightTrigger()).and(driverController.leftTrigger().negate())
         .whileTrue(commandFactory.spinUpForUnderPassAndShoot());
 
+        
     // driverController.start().whileTrue(commandFactory.spinUpForOverPassAndShoot());
 
     driverController.pov(0).toggleOnTrue(deploy);
     driverController.pov(180).whileTrue(new InstantCommand(() -> drivetrain.zero(), drivetrain));
     driverController.pov(270).whileTrue(rydpos);
     driverController.pov(90).whileTrue(rydneg);
+
     // OPERATOR CONTROLS DO NOT DELETE JUST COMMENT OUT
     operatorController.leftBumper().whileTrue(powerAmpIntakeReverse);
     operatorController.rightBumper().whileTrue(powerAmpIntake);
 
     operatorController.back().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
-  //  operatorController.back().onTrue(new InstantCommand(() -> ampArm.zeroWrist(), ampArm)); /killed bc chain wrist
+   // operatorController.back().onTrue(new InstantCommand(() -> ampArm.zeroWrist(), ampArm)); //BRING BACK BEFORE WORLDS
 
     operatorController.start().whileTrue(powerAmpArm);
     operatorController.start().whileTrue(stopClimber);
+
 
     // right stick is slow mode for amp intake
     operatorController.leftStick().onTrue(fullRetract);
@@ -575,7 +574,6 @@ public class RobotContainer {
     // operatorController.pov(0).onTrue(soloRaise);
     operatorController.pov(0).onTrue(trap2Up);
     operatorController.pov(180).toggleOnTrue(soloRetract);
-    
     operatorController.pov(270).onTrue(goToZero);
 
     if (Objects.nonNull(ampArm)) {
@@ -586,11 +584,13 @@ public class RobotContainer {
       operatorController.a().toggleOnTrue(ampSetpoint);
       operatorController.x().whileTrue(linkageToAmpHandoff);
       operatorController.b().toggleOnTrue(stowArm);
+      
       operatorController.y().toggleOnTrue(homeArmWrist);
       // operatorController.pov(90).onTrue(homeAmpArmWrist);
       // operatorController.pov(180).onTrue(ampArmGoToZero);
     }
 
+    
     // operatorController.leftStick().onTrue(new InstantCommand(() -> {
     // ampArm.setArm78();
     // ampArm.setWrist70();
