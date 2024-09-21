@@ -365,7 +365,7 @@ public class RobotContainer {
     stowLinkage = commandFactory.stowLinkage();
     powerAmpIntakeReverse = new PowerAmpIntakeReverse(ampIntake);
     inny = new IntakeCOmmand(intake, linkage, ampArm, vision, 140.0, true)
-    .andThen(commandFactory.rumbleDriverController(driverController).withTimeout(.5));
+        .andThen(commandFactory.rumbleDriverController(driverController).withTimeout(.5));
     autoinny = new AutoIntakeCOmmand(intake, linkage, ampArm, vision, 177.0, true);
     longerinny = new AutoIntakeCOmmand(intake, linkage, ampArm, vision, 144.0, true);
     ryryinny = new IntakeCOmmand(intake, linkage, ampArm, vision, 0.0, false);
@@ -470,7 +470,8 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("run intake forevs <3", new IntakeForevsRun(intake, flywheel, linkage, ampArm));
     NamedCommands.registerCommand("vision shoot", visionBoy);
-    NamedCommands.registerCommand("real far shot", new ShootInSpeaker(ampArm, linkage, flywheel, intake, 140.5, 8000.0));
+    NamedCommands.registerCommand("real far shot",
+        new ShootInSpeaker(ampArm, linkage, flywheel, intake, 140.5, 8000.0));
     NamedCommands.registerCommand("BIG spinny", new SetFlywheel(flywheel, 9000.0));
     // NamedCommands.registerCommand("Intake", runExtendIntake);
     // NamedCommands.registerCommand("Wait1", new WaitCommand(1));
@@ -543,13 +544,11 @@ public class RobotContainer {
     driverController.start().and(driverController.rightTrigger()).and(driverController.leftTrigger().negate())
         .whileTrue(commandFactory.spinUpForOverPassAndShoot());
 
-
     driverController.back().and(driverController.rightTrigger().negate()).and(driverController.leftTrigger().negate())
         .whileTrue(commandFactory.spinUpForUnderPass());
     driverController.back().and(driverController.rightTrigger()).and(driverController.leftTrigger().negate())
         .whileTrue(commandFactory.spinUpForUnderPassAndShoot());
 
-        
     // driverController.start().whileTrue(commandFactory.spinUpForOverPassAndShoot());
 
     driverController.pov(0).toggleOnTrue(deploy);
@@ -562,11 +561,10 @@ public class RobotContainer {
     operatorController.rightBumper().whileTrue(powerAmpIntake);
 
     operatorController.back().onTrue(new InstantCommand(() -> climber.zeroBoth(), climber));
-   // operatorController.back().onTrue(new InstantCommand(() -> ampArm.zeroWrist(), ampArm)); //BRING BACK BEFORE WORLDS
+    operatorController.back().onTrue(new InstantCommand(() -> ampArm.zeroWrist(), ampArm)); //brought back for bp
 
     operatorController.start().whileTrue(powerAmpArm);
     operatorController.start().whileTrue(stopClimber);
-
 
     // right stick is slow mode for amp intake
     operatorController.leftStick().onTrue(fullRetract);
@@ -584,13 +582,12 @@ public class RobotContainer {
       operatorController.a().toggleOnTrue(ampSetpoint);
       operatorController.x().whileTrue(linkageToAmpHandoff);
       operatorController.b().toggleOnTrue(stowArm);
-      
+
       operatorController.y().toggleOnTrue(homeArmWrist);
       // operatorController.pov(90).onTrue(homeAmpArmWrist);
       // operatorController.pov(180).onTrue(ampArmGoToZero);
     }
 
-    
     // operatorController.leftStick().onTrue(new InstantCommand(() -> {
     // ampArm.setArm78();
     // ampArm.setWrist70();

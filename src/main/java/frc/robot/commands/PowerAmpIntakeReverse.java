@@ -34,7 +34,7 @@ public class PowerAmpIntakeReverse extends Command {
     if (opCont.getRightStickButton()) {
       ampIntake.runIntake(-0.25);
     } else {
-      ampIntake.runIntake(-1.0);
+      ampIntake.runIntake(-0.5);
     }
   }
 
