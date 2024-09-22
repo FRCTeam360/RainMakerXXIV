@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystems.AmpArm;
@@ -63,6 +64,9 @@ public class ShootInSpeaker extends Command {
     this.driveAngleSetpoint = driveSetpoint;
     this.intake = intake;
     this.arm = ampArm;
+    SmartDashboard.putBoolean("Flywheel is at setpoint", false);
+    SmartDashboard.putBoolean("Linkage is at setpoint", false);
+    
 
     // withDriveTrain = true;
   }
@@ -128,6 +132,8 @@ public class ShootInSpeaker extends Command {
         intake.stop();
         boolean isLinkageAtSetpoint = linkage.isAtSetpoint() && Math.abs(linkage.getVelocity()) < 2;
         boolean isFlywheelAtSetpoint = flywheel.isAboveSetpoint();
+        SmartDashboard.putBoolean("Flywheel is at setpoint", isFlywheelAtSetpoint);
+        SmartDashboard.putBoolean("Linkage is at setpoint", isLinkageAtSetpoint);
         Logger.recordOutput("ShootInSpeaker: Linkage Setpoint", isLinkageAtSetpoint);
         Logger.recordOutput("ShootInSpeaker: Flywheel Setpoint", isFlywheelAtSetpoint);
      //   boolean isDriveReady = Objects.isNull(drivetrain) || drivetrain.isFacingAngle();

@@ -529,6 +529,7 @@ public class RobotContainer {
     driverController.x().whileTrue(snapDrivebaseToAngle);
     driverController.rightStick().whileTrue(defenseFieldOrientedDrive);
 
+
     driverController.rightTrigger().and(driverController.leftTrigger().negate()).and(driverController.back().negate())
         .and(driverController.start().negate())
         .whileTrue(shootFromSubwoofer);
@@ -579,7 +580,7 @@ public class RobotContainer {
     if (Objects.nonNull(ampArm)) {
       driverController.y().whileTrue(new SequentialCommandGroup(trapBackHook, robotOrientedDrive));
 
-      operatorController.pov(90).toggleOnTrue(trapBackHookSequel);
+      // operatorController.pov(90).toggleOnTrue(trapBackHookSequel);
 
       operatorController.a().toggleOnTrue(ampSetpoint);
       operatorController.x().whileTrue(linkageToAmpHandoff);

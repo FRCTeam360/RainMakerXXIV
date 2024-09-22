@@ -34,7 +34,7 @@ public class PowerAmpIntake extends Command {
       ampIntake.runIntake(0.25);
     } else {
 
-    ampIntake.runIntake(1.0);
+    ampIntake.runIntake(0.5);
     }
   }
 
