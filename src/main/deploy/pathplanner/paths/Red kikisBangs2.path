@@ -61,7 +61,7 @@
     "rotateFast": true
   },
   "reversed": false,
-  "folder": "kikisBangs",
+  "folder": null,
   "previewStartingState": {
     "rotation": -120.0,
     "velocity": 0
