@@ -243,7 +243,7 @@ public class CommandFactory {
     public Command spinUpForOverPass() {
         return new ParallelCommandGroup(
                 spinUpShooterSetpoint(170.0, 5000.0 * 0.85),
-                new DriveFieldCentricFacingAngle(drivetrain, -150.0, -40.0));
+                new DriveFieldCentricFacingAngle(drivetrain, -140.0, -40.0));
     }
 
     public Command spinUpForOverPassAndShoot() {
