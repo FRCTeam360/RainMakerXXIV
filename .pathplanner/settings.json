@@ -21,7 +21,7 @@
     "5 notes",
     "6 notes"
   ],
-  "defaultMaxVel": 5.7,
+  "defaultMaxVel": 7.0,
   "defaultMaxAccel": 6.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
