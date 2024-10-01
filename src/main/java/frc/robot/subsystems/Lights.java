@@ -43,7 +43,7 @@ public class Lights extends SubsystemBase {
     this.vision = vision;
   }
   public void isZero(){
-   if (!zeroButton.get()) {
+   if (zeroButton.get()) {
       setFirstBlue();
    }
   }
@@ -70,7 +70,7 @@ public class Lights extends SubsystemBase {
     lights.setLEDs(0,0,255,0,0,1);
   }
   public void setAllGreen(){
-    lights.setLEDs(4,212,132,0,8,20);
+    lights.setLEDs(4,212,132,0,0,20);
   }
   public void setAllRed(){
     lights.setLEDs(255, 0, 0,0,8,20);

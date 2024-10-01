@@ -69,7 +69,7 @@ import frc.robot.subsystems.AmpIntake;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Intake;
-
+import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Linkage;
 import frc.robot.subsystems.Vision;
@@ -141,6 +141,7 @@ public class RobotContainer {
   private Climber climber;
   private AmpArm ampArm;
   private AmpIntake ampIntake;
+  private Lights lights;
   private Vision vision;
   private PointDrivebaseAtTarget pointDrivebaseAtTarget;
 
@@ -257,6 +258,7 @@ public class RobotContainer {
             Constants.VisionConstants.PRACTICE_LIMELIGHT_PITCH_DEGREES,
             Constants.VisionConstants.PRACTICE_LIMELIGHT_HEIGHT_FUDGE_FACTOR_METERS,
             Constants.VisionConstants.PRACTICE_LIMELIGHT_PITCH_FUDGE_FACTOR_DEGREES));
+        lights = new Lights(zeroButton, linkage, vision);
         break;
       case COMPETITION:
         drivetrain = CompBotConstants.DriveTrain;
@@ -274,6 +276,7 @@ public class RobotContainer {
             Constants.VisionConstants.COMP_LIMELIGHT_PITCH_DEGREES,
             Constants.VisionConstants.COMP_LIMELIGHT_HEIGHT_FUDGE_FACTOR_METERS,
             Constants.VisionConstants.COMP_LIMELIGHT_PITCH_FUDGE_FACTOR_DEGREES));
+        lights = new Lights(zeroButton, linkage, vision);
         break;
       case TEST:
 
@@ -309,6 +312,7 @@ public class RobotContainer {
     SmartDashboard.putData("Auto Chooser", autoChooser);
     configureBindings();
     configureDefaultCommands();
+    configureTestBindings();
   }
 
   private final void initializeCommands() {
@@ -548,6 +552,7 @@ public class RobotContainer {
     testController.rightBumper().whileTrue(inny);
     testController.leftTrigger().whileTrue(commandFactory.tuneLinkageSetpoint());
     testController.rightTrigger().whileTrue(intake.runEnd(()-> intake.run(1.0), ()-> intake.run(0.0)));
+    testController.a().onTrue(new InstantCommand(()->lights.setAllGreen(), lights));
    // testController.x().onTrue(linkageToAmpHandoff.alongWith(fieldOrientedSlowGuy));
   }
 
@@ -560,7 +565,6 @@ public class RobotContainer {
   }
 
   public void onDisable() {
-
     climber.stop();
     flywheel.stop();
     intake.stop();
