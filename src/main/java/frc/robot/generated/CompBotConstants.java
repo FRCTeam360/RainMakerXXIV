@@ -119,7 +119,7 @@ public class CompBotConstants {
     private static final int kBackRightDriveMotorId = 6;
     private static final int kBackRightSteerMotorId = 4;
     private static final int kBackRightEncoderId = 5;
-    private static final double kBackRightEncoderOffset = 0.227783203125;
+    private static final double kBackRightEncoderOffset = -0.183349609375;
 
     private static final double kBackRightXPosInches = -9.625;
     private static final double kBackRightYPosInches = -9.625;
