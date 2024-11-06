@@ -18,9 +18,10 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentricFacingAngle;
 import com.ctre.phoenix6.mechanisms.swerve.utility.PhoenixPIDController;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
-import com.pathplanner.lib.util.ReplanningConfig;
+import com.pathplanner.lib.config.ModuleConfig;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -28,6 +29,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
@@ -39,9 +42,11 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Telemetry;
+import frc.robot.generated.CompBotConstants;
 import frc.robot.utils.CommandLogger;
 import edu.wpi.first.units.Unit;
-import edu.wpi.first.units.Voltage;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Voltage;
 
 /**
  * Class that extends the Phoenix SwerveDrivetrain class and implements
@@ -122,20 +127,38 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     }
 
     public void setupPathPlanner() {
+        // numbers are not 100% accurate, needs to be verified
+        double weight  = Units.lbsToKilograms(115.0+12.0);
+        double radius = Units.inchesToMeters(20.0);
+        double momentOfInertia = (1.0 / 6.0) * weight * Math.pow(radius, 2.0);
+        double trackwidth = Units.inchesToMeters(19.25);
+        double wheelbase = Units.inchesToMeters(19.25);
+        double coefficientOfFriction = 0.7;
+        DCMotor motor = DCMotor.getKrakenX60(1);
+        double driveCurrentLimit = 80.0;
 
-        AutoBuilder.configureHolonomic(
+        double wheelRadius = Units.inchesToMeters(2.0);
+        ModuleConfig moduleConfig = new ModuleConfig(wheelRadius, Constants.MAX_SPEED_MPS, coefficientOfFriction, motor, driveCurrentLimit, 4);
+        // Load the RobotConfig from the GUI settings. You should probably
+        // store this in your Constants file
+        RobotConfig config = new RobotConfig(
+            weight,
+            momentOfInertia,
+            moduleConfig,
+            trackwidth, 
+            wheelbase);
+
+        AutoBuilder.configure(
                 this::getPose, // Robot pose supplier
                 this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
                 this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-                this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your
+                (speeds, feedForwards) -> this.driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+                new PPHolonomicDriveController( // HolonomicPathFollowerConfig, this should likely live in your
                                                  // Constants class
                         new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                        new PIDConstants(5.75, 0.0, 0.0), // Rotation PID constants
-                        4.5, // Max module speed, in m/s
-                        0.4, // Drive base radius in meters. Distance from robot center to furthest module.
-                        new ReplanningConfig() // Default path replanning config. See the API for the options here
+                        new PIDConstants(5.75, 0.0, 0.0) // Rotation PID constants
                 ),
+                config,
                 () -> {
                     // Boolean supplier that controls when the path will be mirrored for the red
                     // alliance
