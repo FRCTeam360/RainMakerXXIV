@@ -61,6 +61,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     GenericEntry kIEntry;
     GenericEntry kDEntry;
 
+    //chattering teeth
+
     private double headingKP = 10;
     private double headingKI = 0.2;
     private double headingIZone = 0.17;

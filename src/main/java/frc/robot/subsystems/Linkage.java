@@ -41,7 +41,7 @@ public class Linkage extends SubsystemBase {
   private static final double STARTING_ANGLE = 50.0;
   static XboxController driverCont = new XboxController(0);
 
-
+//HI GUYS ITS NOVEMBER SEVENTH THIS IS A TEST 
   /** Creates a new ShooterLinkage. */
   public Linkage(LinkageIO io) {
     this.io = io;
