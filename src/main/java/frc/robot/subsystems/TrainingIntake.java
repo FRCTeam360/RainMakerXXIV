@@ -4,9 +4,15 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkFlex;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class TrainingIntake extends SubsystemBase {
+  
   /** Creates a new TrainingIntake. */
   public TrainingIntake() {}
 
