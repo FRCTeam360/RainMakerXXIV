@@ -27,18 +27,17 @@ public class CommandFactory {
     private final CommandXboxController driverController = new CommandXboxController(Constants.DRIVER_CONTROLLER);
     private final Climber climber;
     private final CommandSwerveDrivetrain drivetrain;
-    private final Intake intake;
+    private Intake intake;
     private final Flywheel flywheel;
     private final Linkage linkage;
     private final AmpArm ampArm;
     private final Vision vision;
 
     // create a constructor that will require all files from the "subsystems" folder
-    public CommandFactory(Climber climber, CommandSwerveDrivetrain drivetrain, Intake intake, Flywheel flywheel,
+    public CommandFactory(Climber climber, CommandSwerveDrivetrain drivetrain, Flywheel flywheel,
             Linkage linkage, AmpArm ampArm, Vision vision) {
         this.climber = climber;
         this.drivetrain = drivetrain;
-        this.intake = intake;
         this.flywheel = flywheel;
         this.linkage = linkage;
         this.ampArm = ampArm;
