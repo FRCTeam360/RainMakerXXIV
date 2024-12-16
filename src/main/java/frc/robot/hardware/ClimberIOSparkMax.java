@@ -25,7 +25,7 @@ public class ClimberIOSparkMax implements ClimberIO {
     private CANSparkMax leftMotor = new CANSparkMax(Constants.CLIMBER_LEFT_ID, MotorType.kBrushless);
     private CANSparkMax rightMotor = new CANSparkMax(Constants.CLIMBER_RIGHT_ID, MotorType.kBrushless);
 
-    public SparkPIDController leftPIDController = leftMotor.getPIDController();
+    private SparkPIDController leftPIDController = leftMotor.getPIDController();
     private SparkPIDController rightPIDController = rightMotor.getPIDController();
 
     private RelativeEncoder leftEncoder = leftMotor.getEncoder();
